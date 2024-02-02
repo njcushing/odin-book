@@ -1,6 +1,6 @@
 /* Default */
 :root,
-:root[theme |= "default"] {
+:root[theme |="default"] {
     /* Text */
     --text-primary: rgb(255, 255, 255);
     --text-primary-hover: rgb(255, 255, 255);
