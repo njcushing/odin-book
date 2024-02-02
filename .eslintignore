@@ -1,0 +1,8 @@
+.eslintrc.json
+.prettierrc.json
+node_modules
+.env
+*/dist
+coverage
+build
+npm-debug.log*

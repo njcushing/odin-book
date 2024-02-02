@@ -1,0 +1,79 @@
+/* Default */
+:root,
+:root[theme |= "default"] {
+    /* Text */
+    --text-primary: rgb(255, 255, 255);
+    --text-primary-hover: rgb(255, 255, 255);
+    --text-primary-focus: rgb(255, 255, 255);
+    --text-secondary: rgb(255, 255, 255);
+    --text-secondary-hover: rgb(255, 255, 255);
+    --text-secondary-focus: rgb(255, 255, 255);
+    --text-tertiary: rgb(255, 255, 255);
+    --text-tertiary-hover: rgb(255, 255, 255);
+    --text-tertiary-focus: rgb(255, 255, 255);
+    --text-active: rgb(255, 255, 255);
+    --text-inactive: rgb(255, 255, 255);
+    --text-link: rgb(255, 255, 255);
+    --text-visited: rgb(255, 255, 255);
+
+    /* Background */
+    --background-primary: rgb(255, 255, 255);
+    --background-secondary: rgb(255, 255, 255);
+    --background-tertiary: rgb(255, 255, 255);
+
+    /* Borders & Outlines */
+    --border-primary: rgb(255, 255, 255);
+    --border-secondary: rgb(255, 255, 255);
+    --outline-primary: rgb(255, 255, 255);
+    --outline-secondary: rgb(255, 255, 255);
+
+    /* Inputs */
+    --input-text: rgb(255, 255, 255);
+    --input-text-invalid: rgb(255, 255, 255);
+    --input-text-valid: rgb(255, 255, 255);
+    --input-text-disabled: rgb(255, 255, 255);
+    --input-background: rgb(255, 255, 255);
+    --input-background-invalid: rgb(255, 255, 255);
+    --input-background-valid: rgb(255, 255, 255);
+    --input-background-disabled: rgb(255, 255, 255);
+    --input-outline: rgb(255, 255, 255);
+    --input-outline-hover: rgb(255, 255, 255);
+    --input-outline-focus: rgb(255, 255, 255);
+
+    /* Scrollbar */
+    --scrollbar-track: transparent;
+    --scrollbar-track-hover: rgba(255, 255, 255, 0.1);
+    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.7);
+    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.9);
+
+    /* Buttons */
+    --button-text-primary: rgb(255, 255, 255);
+    --button-text-secondary: rgb(255, 255, 255);
+    --button-primary: rgb(255, 255, 255);
+    --button-primary-hover: rgb(255, 255, 255);
+    --button-primary-focus: rgb(255, 255, 255);
+    --button-primary-disabled: rgb(255, 255, 255);
+    --button-primary-border: rgb(255, 255, 255);
+    --button-secondary: rgb(255, 255, 255);
+    --button-secondary-hover: rgb(255, 255, 255);
+    --button-secondary-focus: rgb(255, 255, 255);
+    --button-secondary-disabled: rgb(255, 255, 255);
+    --button-secondary-border: rgb(255, 255, 255);
+
+    /* Tooltip */
+    --tooltip-text: #fff;
+    --tooltip-background: #fff;
+}
+
+/* Custom */
+@media (prefers-color-scheme: light) {
+    :root {
+        --background-primary: rgb(255, 255, 255);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-primary: rgb(255, 255, 255);
+    }
+}
