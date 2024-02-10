@@ -1,4 +1,5 @@
 import Router from "@/routes";
+import LayoutMain from "@/layouts/main";
 
 function App() {
     return (
@@ -9,6 +10,7 @@ function App() {
                 textAlign: "center",
             }}
         >
+            <LayoutMain />
             <Router />
         </div>
     );

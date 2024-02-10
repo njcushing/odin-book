@@ -1,0 +1,106 @@
+.wrapper {
+    container-name: wrapper;
+    container-type: inline-size;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--background-secondary);
+
+    /* Widths */
+    --wide-to-slim-swap-ratio: calc((2 / 3));
+    --slim-to-thin-swap-ratio: calc((1 / 3));
+
+    --layout-wide-min-width: calc(var(--page-max-width) * var(--wide-to-slim-swap-ratio));
+    --layout-wide-max-width: 100%;
+    --layout-wide-width: max(var(--layout-wide-min-width), var(--layout-wide-max-width));
+    --layout-wide-main-panel-width: calc(var(--layout-wide-width) / 2);
+    --layout-wide-navigation-panel-width: calc(var(--layout-wide-main-panel-width) / 2);
+    --layout-wide-other-content-panel-width: calc(var(--layout-wide-main-panel-width) / 2);
+
+    --layout-slim-min-width: calc(var(--page-max-width) * var(--slim-to-thin-swap-ratio));
+    --layout-slim-max-width: 100%;
+    --layout-slim-width: max(var(--layout-slim-min-width), var(--layout-slim-max-width));
+    --layout-slim-main-panel-width: calc(var(--layout-slim-width) * calc(2 / 3));
+    --layout-slim-navigation-panel-width: calc( var(--layout-slim-width) -
+                                                var(--layout-slim-main-panel-width)
+                                              );
+
+    --layout-thin-min-width: var(--page-min-width);
+    --layout-thin-max-width: 100%;
+    --layout-thin-width: max(var(--layout-thin-min-width), var(--layout-thin-max-width));
+    --layout-thin-navigation-panel-width: calc(var(--page-min-width) / 4);
+    --layout-thin-main-panel-width: calc(   var(--layout-thin-width) -
+                                            var(--layout-thin-navigation-panel-width)
+                                        );
+
+    /* Heights */
+    
+    width: 100%;
+    height: 100%;
+    margin: auto;
+
+    --breakpoint: 800px;
+}
+
+.container {
+    display: grid;
+
+    width: 100%;
+    height: 100%;
+}
+
+.navigation-panel {
+    grid-area: 1 / 1 / -1 / 2;
+    
+    outline: 2px solid black;
+    background-color: rgb(218, 114, 114);
+}
+
+.main-panel {
+    grid-area: 1 / 2 / -1 / 3;
+
+    outline: 2px solid black;
+    background-color: rgb(142, 185, 92);
+}
+
+.other-content-panel {
+    grid-area: 1 / 3 / -1 / -1;
+
+    outline: 2px solid black;
+    background-color: rgb(92, 101, 185);
+}
+
+.container {
+    grid-template-columns:  var(--layout-slim-navigation-panel-width)
+                            var(--layout-slim-main-panel-width);
+}
+
+/*
+ *  Magic numbers here for the container queries is annoying; ideally I want to use CSS vars, but
+ *  there is no specification for this. Since we have set our max page width at 1440px, for now I
+ *  have just hard-coded two-thirds and one-third as the 'swap-points' between the different
+ *  horizontal layouts. If container queries allow CSS vars in future, I will update this.
+ */
+
+@container wrapper (width > 960px) {
+    .container {
+        grid-template-columns:  var(--layout-wide-navigation-panel-width)
+                                var(--layout-wide-main-panel-width)
+                                var(--layout-wide-other-content-panel-width);
+    }
+}
+
+@container wrapper (width <= 960px) {
+    .container {
+        grid-template-columns:  var(--layout-slim-navigation-panel-width)
+                                var(--layout-slim-main-panel-width);
+    }
+}
+
+@container wrapper (width <= 480px) {
+    .container {
+        grid-template-columns:  var(--layout-thin-navigation-panel-width)
+                                var(--layout-thin-main-panel-width);
+    }
+}
