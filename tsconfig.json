@@ -7,7 +7,7 @@
       "esnext"
     ],
     "paths": {
-        "@/*": ["./src/*"],
+        "@/*": ["./packages/frontend/src/*"],
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -24,7 +24,8 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src",
-    "vite.config.js"
+    "packages/frontend/src",
+    "packages/frontend/vite.config.js",
+    "packages/frontend/tests.config.js"
   ]
 }

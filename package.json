@@ -1,12 +1,11 @@
 {
-  "name": "widgets",
+  "name": "odin-book",
   "version": "0.0.0",
-  "private": true,
   "scripts": {
-    "start": "vite .",
-    "build": "vite build .",
-    "test": "vitest watch --root .",
-    "test:coverage": "vitest watch . --coverage",
+    "start:front": "vite ./packages/frontend",
+    "build:front": "vite build ./packages/frontend",
+    "test:front": "vitest watch --root ./packages/frontend",
+    "coverage:front": "vitest watch ./packages/frontend --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -58,6 +57,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",

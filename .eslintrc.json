@@ -53,7 +53,13 @@
   },
   "settings": {
     "import/resolver": {
-      "typescript": {}
+      "typescript": {},
+      "alias": {
+        "map": [
+          ["@", "./packages/frontend/src"]
+        ],
+        "extensions": [".ts", ".tsx"]
+      }
     },
     "react": {
       "version": "detect"
