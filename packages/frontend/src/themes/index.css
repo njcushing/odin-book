@@ -18,7 +18,7 @@
 
     /* Background */
     --background-primary: rgb(255, 255, 255);
-    --background-secondary: rgb(167, 240, 236);
+    --background-secondary: rgb(255, 255, 255);
     --background-tertiary: rgb(255, 255, 255);
 
     /* Borders & Outlines */
@@ -26,6 +26,7 @@
     --border-secondary: rgb(255, 255, 255);
     --outline-primary: rgb(255, 255, 255);
     --outline-secondary: rgb(255, 255, 255);
+    --layout-outline: rgba(0, 0, 0, 0.5);
 
     /* Inputs */
     --input-text: rgb(255, 255, 255);
@@ -68,12 +69,22 @@
 /* Custom */
 @media (prefers-color-scheme: light) {
     :root {
-        --background-primary: rgb(255, 255, 255);
+        /* Text */
+        --text-primary: rgb(0, 0, 0);
     }
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --background-primary: rgb(255, 255, 255);
+        /* Text */
+        --text-primary: rgb(255, 255, 255);
+
+        /* Background */
+        --background-primary: rgb(18, 18, 20);
+        --background-secondary: rgb(40, 40, 49);
+        --background-tertiary: rgb(50, 50, 66);
+
+        /* Borders & Outlines */
+        --layout-outline: rgba(255, 255, 255, 0.5);
     }
 }
