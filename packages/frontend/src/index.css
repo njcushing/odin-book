@@ -64,52 +64,54 @@ table {
 :root {
     display: flex;
 
-    font-family: Gabarito, Spectral, "DM Serif Display", Roboto, Nunito, Jost, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: Spectral, 'DM Serif Display', Gabarito, Roboto, Nunito, Jost, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
+  
+    color: var(--text-primary);
+    background-color: var(--background-primary);
 
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.92);
+    min-width: 100vw;
+    min-height: 100vh;
+    width: 100%;
+    height: 100%;
+    padding: 0rem;
+    margin: 0rem;
+  
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
-    background-color: rgb(148, 216, 221);
 
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-
-    padding: 0rem;
-    margin: 0rem;
+    --page-max-width: 1440px;
+    --page-min-width: 320px;
+    --page-max-height: 1000px;
+    --page-min-height: 480px;
 }
 
 body,
 body > #root {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-
-    margin: auto;
 
     width: 100%;
     height: 100%;
-}
-
-body > #root {
-    max-width: 1280px;
-    min-width: 600px;
+    padding: 0rem;
+    margin: auto;
 }
 
 .app {
     display: flex;
     flex-direction: column;
 
-    margin: auto;
-
+    min-width: var(--page-min-width);
+    min-height: var(--page-min-height);
     width: 100%;
     height: 100%;
+    max-width: var(--page-max-width);
+    max-height: var(--page-max-height);
+    margin: auto;
 }
 
 /* Custom Scrollbar */
