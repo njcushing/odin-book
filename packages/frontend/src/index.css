@@ -86,7 +86,7 @@ table {
 
     --page-max-width: 1440px;
     --page-min-width: 320px;
-    --page-max-height: 1000px;
+    --page-max-height: 100%;
     --page-min-height: 480px;
 }
 

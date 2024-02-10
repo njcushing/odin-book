@@ -44,6 +44,7 @@
     "react/require-default-props": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "react/self-closing-comp": "off",
+    "react/no-unknown-property": "off",
     "import/prefer-default-export": "off",
     "import/extensions": [
       "error",
