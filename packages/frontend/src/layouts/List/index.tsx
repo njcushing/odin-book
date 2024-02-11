@@ -25,9 +25,12 @@ function List({
                             listStyles
                                 ? {
                                       flexDirection: listStyles.flexDirection,
+                                      justifyContent: listStyles.justifyContent,
+                                      alignItems: listStyles.alignItems,
+                                      flexWrap: listStyles.flexWrap,
                                       gap: listStyles.gap,
-                                      width: listStyles.width,
-                                      height: listStyles.height,
+                                      width: `calc(${listStyles.width} - (2 * ${listStyles.padding}))`,
+                                      height: `calc(${listStyles.height} - (2 * ${listStyles.padding}))`,
                                       padding: listStyles.padding,
                                       margin: listStyles.margin,
                                   }
@@ -55,6 +58,23 @@ List.propTypes = {
     scrollable: PropTypes.bool,
     listStyles: PropTypes.exact({
         flexDirection: PropTypes.oneOf(["row", "column"]),
+        justifyContent: PropTypes.oneOf([
+            "flex-start",
+            "center",
+            "flex-end",
+            "space-between",
+            "space-around",
+            "space-evenly",
+        ]),
+        alignItems: PropTypes.oneOf([
+            "flex-start",
+            "center",
+            "flex-end",
+            "space-between",
+            "space-around",
+            "space-evenly",
+        ]),
+        flexWrap: PropTypes.oneOf(["nowrap", "wrap", "wrap-reverse"]),
         gap: extendedPropTypes.cssSizeRequired,
         width: extendedPropTypes.cssSizeRequired,
         height: extendedPropTypes.cssSizeRequired,
@@ -69,6 +89,9 @@ List.defaultProps = {
     scrollable: true,
     listStyles: {
         flexDirection: "column",
+        alignHorizontal: "center",
+        alignVertical: "flex-start",
+        flexWrap: "nowrap",
         gap: "6px",
         width: "100%",
         height: "auto",
