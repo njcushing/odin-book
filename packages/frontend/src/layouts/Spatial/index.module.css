@@ -1,0 +1,11 @@
+.wrapper {
+    container-name: wrapper;
+    container-type: inline-size;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--background-secondary);
+    
+    margin: auto;
+}
