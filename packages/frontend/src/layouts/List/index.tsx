@@ -3,14 +3,14 @@ import * as extendedPropTypes from "@/utils/extendedPropTypes";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./index.module.css";
 
-function LayoutList({
+function List({
     label,
     ordered,
     listItems,
     scrollable,
     listStyles,
-}: InferProps<typeof LayoutList.propTypes>) {
-    const List = ordered ? "ol" : "ul";
+}: InferProps<typeof List.propTypes>) {
+    const ListComponent = ordered ? "ol" : "ul";
 
     const items = listItems ? listItems.map((item) => ({ item, key: uuidv4() })) : [];
 
@@ -18,7 +18,7 @@ function LayoutList({
         <div className={styles["wrapper"]}>
             <div className={styles["container"]}>
                 <div className={styles[`${scrollable ? "scrollable-wrapper" : ""}`]}>
-                    <List
+                    <ListComponent
                         className={styles["list"]}
                         aria-label={label}
                         style={
@@ -41,14 +41,14 @@ function LayoutList({
                                 </li>
                             );
                         })}
-                    </List>
+                    </ListComponent>
                 </div>
             </div>
         </div>
     );
 }
 
-LayoutList.propTypes = {
+List.propTypes = {
     label: PropTypes.string.isRequired,
     ordered: PropTypes.bool,
     listItems: PropTypes.arrayOf(PropTypes.element),
@@ -63,7 +63,7 @@ LayoutList.propTypes = {
     }),
 };
 
-LayoutList.defaultProps = {
+List.defaultProps = {
     ordered: false,
     listItems: [],
     scrollable: true,
@@ -77,4 +77,4 @@ LayoutList.defaultProps = {
     },
 };
 
-export default LayoutList;
+export default List;

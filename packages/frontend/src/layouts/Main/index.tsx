@@ -2,11 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes, { InferProps } from "prop-types";
 import styles from "./index.module.css";
 
-function LayoutMain({
+function Main({
     navigationPanelElement,
     mainPanelElement,
     otherContentPanelElement,
-}: InferProps<typeof LayoutMain.propTypes>) {
+}: InferProps<typeof Main.propTypes>) {
     const [layout, setLayout] = useState("wide");
 
     const wrapperRef = useRef(null);
@@ -75,10 +75,10 @@ function LayoutMain({
     );
 }
 
-LayoutMain.propTypes = {
+Main.propTypes = {
     navigationPanelElement: PropTypes.element,
     mainPanelElement: PropTypes.element,
     otherContentPanelElement: PropTypes.element,
 };
 
-export default LayoutMain;
+export default Main;

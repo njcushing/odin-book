@@ -1,6 +1,5 @@
 import Router from "@/routes";
-import LayoutMain from "@/layouts/LayoutMain";
-import LayoutList from "@/layouts/LayoutList";
+import LayoutUI from "@/layouts";
 
 function App() {
     return (
@@ -11,9 +10,9 @@ function App() {
                 textAlign: "center",
             }}
         >
-            <LayoutMain
+            <LayoutUI.Main
                 mainPanelElement={
-                    <LayoutList
+                    <LayoutUI.List
                         label="test list"
                         listItems={[]}
                         listStyles={{

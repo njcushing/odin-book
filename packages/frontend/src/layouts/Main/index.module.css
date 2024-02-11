@@ -29,7 +29,7 @@
     --layout-thin-min-width: var(--page-min-width);
     --layout-thin-max-width: 100%;
     --layout-thin-width: max(var(--layout-thin-min-width), var(--layout-thin-max-width));
-    --layout-thin-navigation-panel-width: calc(var(--layout-thin-width) / 4);
+    --layout-thin-navigation-panel-width: 70px;
     --layout-thin-main-panel-width: calc(   var(--layout-thin-width) -
                                             var(--layout-thin-navigation-panel-width)
                                         );
