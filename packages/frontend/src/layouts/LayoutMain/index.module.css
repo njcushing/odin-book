@@ -29,7 +29,7 @@
     --layout-thin-min-width: var(--page-min-width);
     --layout-thin-max-width: 100%;
     --layout-thin-width: max(var(--layout-thin-min-width), var(--layout-thin-max-width));
-    --layout-thin-navigation-panel-width: calc(var(--page-min-width) / 4);
+    --layout-thin-navigation-panel-width: calc(var(--layout-thin-width) / 4);
     --layout-thin-main-panel-width: calc(   var(--layout-thin-width) -
                                             var(--layout-thin-navigation-panel-width)
                                         );
@@ -39,8 +39,6 @@
     width: 100%;
     height: 100%;
     margin: auto;
-
-    --breakpoint: 800px;
 }
 
 .container {
@@ -74,7 +72,7 @@
 .main-panel {
     grid-area: 1 / 2 / -1 / 3;
 
-    outline: 1px solid var(--layout-outline);
+    outline: 2px solid var(--layout-outline);
 }
 
 .other-content-panel {

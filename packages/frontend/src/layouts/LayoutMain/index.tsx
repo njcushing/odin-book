@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef } from "react";
+import PropTypes, { InferProps } from "prop-types";
 import styles from "./index.module.css";
 
-function LayoutMain() {
+function LayoutMain({
+    navigationPanelElement,
+    mainPanelElement,
+    otherContentPanelElement,
+}: InferProps<typeof LayoutMain.propTypes>) {
     const [layout, setLayout] = useState("wide");
 
     const wrapperRef = useRef(null);
@@ -30,30 +35,31 @@ function LayoutMain() {
         };
     }, []);
 
+    const navigationPanel = (
+        <div className={styles["navigation-panel"]}>{navigationPanelElement}</div>
+    );
+    const mainPanel = <div className={styles["main-panel"]}>{mainPanelElement}</div>;
+    const otherContentPanel = (
+        <div className={styles["other-content-panel"]}>{otherContentPanelElement}</div>
+    );
+
     let content = null;
     switch (layout) {
         case "wide":
             content = (
                 <>
-                    <div className={styles["navigation-panel"]}></div>
-                    <div className={styles["main-panel"]}></div>
-                    <div className={styles["other-content-panel"]}></div>
+                    {navigationPanel}
+                    {mainPanel}
+                    {otherContentPanel}
                 </>
             );
             break;
         case "slim":
-            content = (
-                <>
-                    <div className={styles["navigation-panel"]}></div>
-                    <div className={styles["main-panel"]}></div>
-                </>
-            );
-            break;
         case "thin":
             content = (
                 <>
-                    <div className={styles["navigation-panel"]}></div>
-                    <div className={styles["main-panel"]}></div>
+                    {navigationPanel}
+                    {mainPanel}
                 </>
             );
             break;
@@ -68,5 +74,11 @@ function LayoutMain() {
         </div>
     );
 }
+
+LayoutMain.propTypes = {
+    navigationPanelElement: PropTypes.element,
+    mainPanelElement: PropTypes.element,
+    otherContentPanelElement: PropTypes.element,
+};
 
 export default LayoutMain;

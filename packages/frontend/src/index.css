@@ -85,7 +85,7 @@ table {
     -webkit-text-size-adjust: 100%;
 
     --page-max-width: 1440px;
-    --page-min-width: 320px;
+    --page-min-width: 0px;
     --page-max-height: 100%;
     --page-min-height: 480px;
 }

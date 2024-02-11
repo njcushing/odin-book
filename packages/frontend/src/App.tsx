@@ -1,5 +1,6 @@
 import Router from "@/routes";
-import LayoutMain from "@/layouts/main";
+import LayoutMain from "@/layouts/LayoutMain";
+import LayoutList from "@/layouts/LayoutList";
 
 function App() {
     return (
@@ -10,7 +11,22 @@ function App() {
                 textAlign: "center",
             }}
         >
-            <LayoutMain />
+            <LayoutMain
+                mainPanelElement={
+                    <LayoutList
+                        label="test list"
+                        listItems={[]}
+                        listStyles={{
+                            flexDirection: "column",
+                            gap: "6px",
+                            width: "100%",
+                            height: "auto",
+                            padding: "6px",
+                            margin: "0px",
+                        }}
+                    />
+                }
+            />
             <Router />
         </div>
     );
