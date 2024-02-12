@@ -24,15 +24,9 @@ function List({
                         style={
                             listStyles
                                 ? {
-                                      flexDirection: listStyles.flexDirection,
-                                      justifyContent: listStyles.justifyContent,
-                                      alignItems: listStyles.alignItems,
-                                      flexWrap: listStyles.flexWrap,
-                                      gap: listStyles.gap,
+                                      ...listStyles,
                                       width: `calc(${listStyles.width} - (2 * ${listStyles.padding}))`,
                                       height: `calc(${listStyles.height} - (2 * ${listStyles.padding}))`,
-                                      padding: listStyles.padding,
-                                      margin: listStyles.margin,
                                   }
                                 : {}
                         }
