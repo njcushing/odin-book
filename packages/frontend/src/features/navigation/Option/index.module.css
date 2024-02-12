@@ -1,0 +1,46 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 2.30rem;
+
+    outline: 1px solid black;
+}
+
+.link {
+    display: flex;
+
+    text-decoration: none;
+    border: 0.1rem solid rgba(255, 255, 255, 0.0);
+    border-radius: 0.4rem;
+    background-color: var(--background-base);
+}
+
+@media (hover: hover) {
+    .link:hover {
+        outline-width: 1px;
+        outline-style: solid;
+        outline-color: var(--outline-primary);
+    }
+}
+
+.link:focus {
+    outline-width: 2px;
+    outline-style: solid;
+    outline-color: var(--outline-primary);
+}
+
+.symbol,
+.text {
+    color: var(--text-primary);
+    font-size: inherit;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.text {
+    font-family: Gabarito;
+}
