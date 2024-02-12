@@ -60,6 +60,12 @@
     --button-secondary-focus: rgb(255, 255, 255);
     --button-secondary-disabled: rgb(255, 255, 255);
     --button-secondary-border: rgb(255, 255, 255);
+    --navigation-option-primary: rgb(255, 255, 255);
+    --navigation-option-primary-text: rgb(0, 0, 0);
+    --navigation-option-primary-hover: rgb(215, 215, 215);
+    --navigation-option-primary-focus: rgb(200, 200, 200);
+    --navigation-option-primary-disabled: rgb(128, 128, 128);
+    --navigation-option-primary-outline: transparent;
 
     /* Tooltip */
     --tooltip-text: #fff;
