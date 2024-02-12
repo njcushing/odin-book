@@ -93,18 +93,7 @@ Option.defaultProps = {
     symbol: "",
     onClickHandler: null,
     link: "",
-    style: {
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        flexWrap: "nowrap",
-        gap: "6px",
-        fontSize: "30px",
-        width: "100%",
-        height: "auto",
-        padding: "6px",
-        margin: "0px",
-    },
+    style: { ...defaultStyles },
 };
 
 export default Option;
