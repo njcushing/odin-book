@@ -83,8 +83,8 @@ List.defaultProps = {
     scrollable: true,
     listStyles: {
         flexDirection: "column",
-        alignHorizontal: "center",
-        alignVertical: "flex-start",
+        justifyContent: "center",
+        alignItems: "flex-start",
         flexWrap: "nowrap",
         gap: "6px",
         width: "100%",
