@@ -37,13 +37,7 @@ function List({
                                 : {}
                         }
                     >
-                        {items.map((item) => {
-                            return (
-                                <li className={styles["list-item"]} key={item.key}>
-                                    {item.item}
-                                </li>
-                            );
-                        })}
+                        {items.map((item) => item.item)}
                     </ListComponent>
                 </div>
             </div>
