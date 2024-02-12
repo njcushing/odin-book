@@ -1,10 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Page from "@/pages";
 
 function Router() {
     const browserRouter = createBrowserRouter([
         {
             path: "/",
-            element: <div></div>,
+            element: <Page.Home />,
             errorElement: <div></div>,
         },
     ]);
