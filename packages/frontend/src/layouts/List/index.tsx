@@ -3,6 +3,18 @@ import * as extendedPropTypes from "@/utils/extendedPropTypes";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./index.module.css";
 
+const defaultStyles = {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    flexWrap: "nowrap",
+    gap: "6px",
+    width: "100%",
+    height: "auto",
+    padding: "6px",
+    margin: "0px",
+};
+
 function List({
     label,
     ordered,
@@ -14,6 +26,9 @@ function List({
 
     const items = listItems ? listItems.map((item) => ({ item, key: uuidv4() })) : [];
 
+    let stylesConcatenated = { ...defaultStyles };
+    if (listStyles) stylesConcatenated = { ...stylesConcatenated, ...listStyles };
+
     return (
         <div className={styles["wrapper"]}>
             <div className={styles["container"]}>
@@ -24,9 +39,9 @@ function List({
                         style={
                             listStyles
                                 ? {
-                                      ...listStyles,
-                                      width: `calc(${listStyles.width} - (2 * ${listStyles.padding}))`,
-                                      height: `calc(${listStyles.height} - (2 * ${listStyles.padding}))`,
+                                      ...stylesConcatenated,
+                                      width: `calc(${stylesConcatenated.width} - (2 * ${stylesConcatenated.padding}))`,
+                                      height: `calc(${stylesConcatenated.height} - (2 * ${stylesConcatenated.padding}))`,
                                   }
                                 : {}
                         }
@@ -75,17 +90,7 @@ List.defaultProps = {
     ordered: false,
     listItems: [],
     scrollable: true,
-    listStyles: {
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        flexWrap: "nowrap",
-        gap: "6px",
-        width: "100%",
-        height: "auto",
-        padding: "6px",
-        margin: "0px",
-    },
+    listStyles: { ...defaultStyles },
 };
 
 export default List;
