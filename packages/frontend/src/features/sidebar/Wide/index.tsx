@@ -1,10 +1,11 @@
+import Navigation from "@/features/navigation";
 import styles from "./index.module.css";
 
 function Wide() {
     return (
-        <div className={styles["wrapper"]}>
-            <div className={styles["container"]}></div>
-        </div>
+        <>
+            <Navigation.Menu type="wide" />
+        </>
     );
 }
 
