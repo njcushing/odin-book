@@ -45,6 +45,10 @@ function Spatial({ width, height, arrangements }: InferProps<typeof Spatial.prop
             gridTemplateRows: "",
             gridTemplateColumns: "",
         };
+        const alignments = {
+            justifySelf: "center",
+            alignSelf: "center",
+        };
         if (layout) {
             for (let i = 0; i < layout.areas.length; i++) {
                 const area = layout.areas[i];
@@ -62,6 +66,8 @@ function Spatial({ width, height, arrangements }: InferProps<typeof Spatial.prop
             }
             if (layout.type === "rows") gridTemplate.gridTemplateRows = areaSizes.join(" ");
             if (layout.type === "columns") gridTemplate.gridTemplateColumns = areaSizes.join(" ");
+            alignments.justifySelf = layout.justifySelf;
+            alignments.alignSelf = layout.alignSelf;
         }
         contentNew = (
             <div
@@ -69,9 +75,10 @@ function Spatial({ width, height, arrangements }: InferProps<typeof Spatial.prop
                 style={{
                     display: "grid",
                     ...gridTemplate,
+                    ...alignments,
 
-                    width: "100%",
-                    height: "100%",
+                    width,
+                    height,
                 }}
             >
                 {areas}
@@ -112,8 +119,22 @@ Spatial.propTypes = {
                     children: PropTypes.arrayOf(PropTypes.element),
                 }),
             ),
-            horizontalOrientation: PropTypes.oneOf(["left", "center", "right"]),
-            verticalOrientation: PropTypes.oneOf(["left", "center", "right"]),
+            justifySelf: PropTypes.oneOf([
+                "flex-start",
+                "center",
+                "flex-end",
+                "space-between",
+                "space-around",
+                "space-evenly",
+            ]),
+            alignSelf: PropTypes.oneOf([
+                "flex-start",
+                "center",
+                "flex-end",
+                "space-between",
+                "space-around",
+                "space-evenly",
+            ]),
         }),
     ),
 };
