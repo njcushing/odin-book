@@ -34,6 +34,16 @@
     position: absolute;
 
     display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
 
     list-style: none;
+
+    width: 100%;
+    height: auto;
+    padding: 6px;
+    margin: 0px;
 }
