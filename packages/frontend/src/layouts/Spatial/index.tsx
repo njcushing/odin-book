@@ -1,11 +1,47 @@
 import { useState, useEffect, useRef } from "react";
-import PropTypes, { InferProps } from "prop-types";
+import PropTypes from "prop-types";
 import * as extendedPropTypes from "@/utils/extendedPropTypes";
 import styles from "./index.module.css";
 
-function Spatial({ width, height, arrangements }: InferProps<typeof Spatial.propTypes>) {
-    const [layout, setLayout] = useState(null);
-    const [content, setContent] = useState(null);
+type Arrangement = {
+    type: "rows" | "columns";
+    width?: string;
+    minWidth: number;
+    maxWidth: number;
+    height?: string;
+    minHeight: number;
+    maxHeight: number;
+    areas: [
+        {
+            size: string;
+            children: React.ReactNode[];
+        },
+    ];
+    justifySelf:
+        | "flex-start"
+        | "center"
+        | "flex-end"
+        | "space-between"
+        | "space-around"
+        | "space-evenly";
+    alignSelf:
+        | "flex-start"
+        | "center"
+        | "flex-end"
+        | "space-between"
+        | "space-around"
+        | "space-evenly";
+};
+
+type SpatialProps = {
+    width?: string;
+    height?: string;
+    arrangements: Arrangement[];
+};
+
+function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps) {
+    const [layout, setLayout] = useState<Arrangement | null>(null);
+    const [content, setContent] = useState<React.ReactNode | null>(null);
 
     const wrapperRef = useRef(null);
 
@@ -46,7 +82,7 @@ function Spatial({ width, height, arrangements }: InferProps<typeof Spatial.prop
             gridTemplateColumns: "",
         };
         const alignments = {
-            justifySelf: "center",
+            justifySelf: "flex-start",
             alignSelf: "center",
         };
         if (layout) {
@@ -85,7 +121,7 @@ function Spatial({ width, height, arrangements }: InferProps<typeof Spatial.prop
             </div>
         );
         setContent(contentNew);
-    }, [layout]);
+    }, [width, height, layout]);
 
     return (
         <div
