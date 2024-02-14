@@ -1,9 +1,7 @@
-import Wide from "./Wide";
-import Thin from "./Thin";
+import Generic from "./Generic";
 
 const Sidebar = {
-    Wide,
-    Thin,
+    Generic,
 };
 
 export default Sidebar;

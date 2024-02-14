@@ -20,7 +20,7 @@ function Home() {
                     minHeight: 0,
                     maxHeight: 999999,
                     areas: [
-                        { size: "280px", children: [<Sidebar.Wide />] },
+                        { size: "280px", children: [<Sidebar.Generic type="wide" key={0} />] },
                         { size: "600px", children: [main] },
                         { size: "320px", children: [otherContent] },
                     ],
@@ -36,7 +36,7 @@ function Home() {
                     minHeight: 0,
                     maxHeight: 999999,
                     areas: [
-                        { size: "60px", children: [<Sidebar.Thin />] },
+                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
                         { size: "600px", children: [main] },
                         { size: "320px", children: [otherContent] },
                     ],
@@ -52,7 +52,7 @@ function Home() {
                     minHeight: 0,
                     maxHeight: 999999,
                     areas: [
-                        { size: "60px", children: [<Sidebar.Thin />] },
+                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
                         { size: "600px", children: [main] },
                     ],
                     justifySelf: "flex-start",
@@ -67,7 +67,7 @@ function Home() {
                     minHeight: 0,
                     maxHeight: 999999,
                     areas: [
-                        { size: "60px", children: [<Sidebar.Thin />] },
+                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
                         { size: "300px", children: [main] },
                     ],
                     justifySelf: "flex-start",
@@ -75,18 +75,18 @@ function Home() {
                 },
                 {
                     type: "columns",
-                    width: "320px",
+                    width: "100%",
                     minWidth: 0,
                     maxWidth: 360,
                     height: "100%",
                     minHeight: 0,
                     maxHeight: 999999,
                     areas: [
-                        { size: "60px", children: [<Sidebar.Thin />] },
-                        { size: "260px", children: [main] },
+                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
+                        { size: "1fr", children: [main] },
                     ],
                     justifySelf: "flex-start",
-                    alignSelf: "center",
+                    alignSelf: "flex-start",
                 },
             ]}
         />
