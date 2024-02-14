@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import * as extendedTypes from "@/utils/extendedTypes";
 import styles from "./index.module.css";
 
@@ -6,6 +7,7 @@ type ProfileImageTypes = {
     alt?: string;
     status?: "online" | "away" | "busy" | "offline" | null;
     sizePx?: number;
+    style?: React.CSSProperties;
 };
 
 function ProfileImage({
@@ -13,12 +15,13 @@ function ProfileImage({
     alt = "",
     status = null,
     sizePx = 50,
+    style,
 }: ProfileImageTypes) {
     const blob = new Blob([Buffer.from(src)], { type: "image/png" });
     const imgSrc = URL.createObjectURL(blob);
 
     return (
-        <div className={styles["container"]}>
+        <div className={styles["container"]} style={{ ...style }}>
             <img
                 className={styles["profile-image"]}
                 aria-label="profile-image"
