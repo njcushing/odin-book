@@ -2,13 +2,13 @@
 :root,
 :root[theme |="default"] {
     /* Text */
-    --text-primary: rgb(255, 255, 255);
+    --text-primary: rgb(0, 0, 0);
     --text-primary-hover: rgb(255, 255, 255);
     --text-primary-focus: rgb(255, 255, 255);
-    --text-secondary: rgb(255, 255, 255);
+    --text-secondary: rgb(48, 48, 48);
     --text-secondary-hover: rgb(255, 255, 255);
     --text-secondary-focus: rgb(255, 255, 255);
-    --text-tertiary: rgb(255, 255, 255);
+    --text-tertiary: rgb(72, 72, 72);
     --text-tertiary-hover: rgb(255, 255, 255);
     --text-tertiary-focus: rgb(255, 255, 255);
     --text-active: rgb(255, 255, 255);
