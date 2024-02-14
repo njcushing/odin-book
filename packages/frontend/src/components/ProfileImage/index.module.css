@@ -1,0 +1,40 @@
+.container {
+    display: flex;
+    place-content: end;
+
+    position: relative;
+}
+
+.profile-image {
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: #cecece;
+}
+
+.status-indicator {
+    position: absolute;
+    align-self: end;
+
+    outline-color: transparent;
+    outline-style: solid;
+    background-color: transparent;
+    border-radius: 9999px;
+    border: none;
+}
+
+.status-indicator[data-status |= "online"] {
+    outline-color: var(--background-primary);
+    background-color: rgb(46, 196, 0);
+}
+.status-indicator[data-status |= "away"] {
+    outline-color: var(--background-primary);
+    background-color: rgb(196, 118, 0);
+}
+.status-indicator[data-status |= "busy"] {
+    outline-color: var(--background-primary);
+    background-color: rgb(192, 6, 0);
+}
+.status-indicator[data-status |= "offline"] {
+    outline-color: var(--background-primary);
+    background-color: rgb(170, 170, 170);
+}
