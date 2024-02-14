@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import * as extendedPropTypes from "@/utils/extendedPropTypes";
 import styles from "./index.module.css";
 
 type Arrangement = {
@@ -136,47 +134,5 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
         </div>
     );
 }
-
-Spatial.propTypes = {
-    width: extendedPropTypes.cssSizeRequired,
-    height: extendedPropTypes.cssSizeRequired,
-    arrangements: PropTypes.arrayOf(
-        PropTypes.shape({
-            type: PropTypes.oneOf(["rows", "columns"]),
-            width: extendedPropTypes.cssSizeRequired,
-            minWidth: extendedPropTypes.integerRequired,
-            maxWidth: extendedPropTypes.integerRequired,
-            height: extendedPropTypes.cssSizeRequired,
-            minHeight: extendedPropTypes.integerRequired,
-            maxHeight: extendedPropTypes.integerRequired,
-            areas: PropTypes.arrayOf(
-                PropTypes.shape({
-                    size: extendedPropTypes.cssSizeRequired,
-                    children: PropTypes.arrayOf(PropTypes.element),
-                }),
-            ),
-            justifySelf: PropTypes.oneOf([
-                "flex-start",
-                "center",
-                "flex-end",
-                "space-between",
-                "space-around",
-                "space-evenly",
-            ]),
-            alignSelf: PropTypes.oneOf([
-                "flex-start",
-                "center",
-                "flex-end",
-                "space-between",
-                "space-around",
-                "space-evenly",
-            ]),
-        }),
-    ),
-};
-
-Spatial.defaultProps = {
-    arrangements: [],
-};
 
 export default Spatial;
