@@ -1,0 +1,154 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    font-family: Gabarito;
+    outline: 1px solid var(--outline-primary);
+
+    width: calc(100% - (2 * 0.6rem));
+    height: min-content;
+    padding: 0.6rem;
+}
+
+.row-one {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.6rem;
+
+    width: 100%;
+}
+
+.row-one-right {
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.4rem;
+
+    width: 100%;
+}
+
+.display-name {
+    place-self: start;
+
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    max-width: 100%;
+}
+
+.account-tag {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+
+    max-width: 100%;
+}
+
+.row-two {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    margin: 0.2rem 0rem;
+}
+
+.content {
+    font-size: 1.1rem;
+    line-height: 1.2rem;
+    text-align: start;
+}
+
+.row-three {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    
+    font-size: 1.1rem;
+}
+
+.view-likes-button,
+.view-replies-button {
+    color: var(--text-primary);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+    border: none;
+    background-color: transparent;
+
+    width: auto;
+    height: auto;
+}
+
+.view-likes-button:hover,
+.view-likes-button:focus,
+.view-replies-button:hover,
+.view-replies-button:focus {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.row-three-buttons {
+    align-self: end;
+
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
+}
+
+.reply-button,
+.share-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+
+    color: var(--button-primary-text);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 9999px;
+    outline: 1px solid var(--button-primary-outline);
+    background-color: var(--button-primary);
+
+    width: 6.6rem;
+    min-height: 2rem;
+}
+
+.reply-button:hover,
+.share-button:hover {
+    background-color: var(--button-primary-hover);
+}
+
+.reply-button:focus,
+.share-button:focus {
+    background-color: var(--button-primary-focus);
+}
+
+.likes-count,
+.replies-count {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.likes-count > strong,
+.replies-count > strong {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.row-four {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.replies {
+    color: var(--text-tertiary);
+    font-size: 1.1rem;
+}
