@@ -1,12 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.module.css";
 
 type Arrangement = {
     type: "rows" | "columns";
-    width?: string;
     minWidth: number;
     maxWidth: number;
-    height?: string;
     minHeight: number;
     maxHeight: number;
     areas: [
@@ -15,20 +13,7 @@ type Arrangement = {
             children: React.ReactNode[];
         },
     ];
-    justifySelf:
-        | "flex-start"
-        | "center"
-        | "flex-end"
-        | "space-between"
-        | "space-around"
-        | "space-evenly";
-    alignSelf:
-        | "flex-start"
-        | "center"
-        | "flex-end"
-        | "space-between"
-        | "space-around"
-        | "space-evenly";
+    style: React.CSSProperties;
 };
 
 type SpatialProps = {
@@ -79,10 +64,7 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
             gridTemplateRows: "",
             gridTemplateColumns: "",
         };
-        const alignments = {
-            justifySelf: "flex-start",
-            alignSelf: "center",
-        };
+        let additionalStyles = {};
         if (layout) {
             for (let i = 0; i < layout.areas.length; i++) {
                 const area = layout.areas[i];
@@ -100,19 +82,15 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
             }
             if (layout.type === "rows") gridTemplate.gridTemplateRows = areaSizes.join(" ");
             if (layout.type === "columns") gridTemplate.gridTemplateColumns = areaSizes.join(" ");
-            alignments.justifySelf = layout.justifySelf;
-            alignments.alignSelf = layout.alignSelf;
+            additionalStyles = { ...layout.style };
         }
         contentNew = (
             <div
                 className={styles["container"]}
                 style={{
+                    ...additionalStyles,
                     display: "grid",
                     ...gridTemplate,
-                    ...alignments,
-
-                    width,
-                    height,
                 }}
             >
                 {areas}
@@ -122,14 +100,7 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
     }, [width, height, layout]);
 
     return (
-        <div
-            className={styles["wrapper"]}
-            style={{
-                width,
-                height,
-            }}
-            ref={wrapperRef}
-        >
+        <div className={styles["wrapper"]} ref={wrapperRef}>
             {content}
         </div>
     );
