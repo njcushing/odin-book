@@ -20,13 +20,7 @@ function List({ label, ordered, listItems, scrollable, listStyles }: ListProps) 
             <div className={styles["container"]}>
                 <div className={styles[`${scrollable ? "scrollable-wrapper" : ""}`]}>
                     <ListComponent className={styles["list"]} aria-label={label} style={listStyles}>
-                        {items.map((item) => {
-                            return (
-                                <li className={styles["list-item"]} key={item.key}>
-                                    {item.item}
-                                </li>
-                            );
-                        })}
+                        {items.map((item) => item.item)}
                     </ListComponent>
                 </div>
             </div>
