@@ -30,10 +30,7 @@ function Post() {
             <div className={styles["row-three"]}>
                 <p className={styles["likes-count"]}>
                     <strong>234</strong>
-                    {createButton("Likes", "", styles, "view-likes-button", () => {
-                        if (viewing === "likes") setViewing("");
-                        if (viewing !== "likes") setViewing("likes");
-                    })}
+                    {createButton("Likes", "", styles, "view-likes-button", null)}
                 </p>
                 <p className={styles["replies-count"]}>
                     <strong>18</strong>
@@ -47,11 +44,6 @@ function Post() {
                     {createButton("Share", "share", styles, "share-button", null)}
                 </div>
             </div>
-            {viewing === "likes" ? (
-                <div className={styles["row-four"]}>
-                    <li className={styles["likes"]}></li>
-                </div>
-            ) : null}
             {viewing === "replies" ? (
                 <div className={styles["row-four"]}>
                     <ul className={styles["replies"]}>
