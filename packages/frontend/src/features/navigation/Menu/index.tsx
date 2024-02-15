@@ -20,14 +20,14 @@ function Menu({ type }: MenuProps) {
         <LayoutUI.List
             label="navigation"
             ordered={false}
-            listItems={options.map((option, i) => {
+            listItems={options.map((option) => {
                 return (
                     <Navigation.Option
                         text={type === "wide" ? option.text : ""}
                         symbol={option.symbol}
                         link={option.link}
                         style={optionStyles}
-                        key={i}
+                        key={option.text}
                     />
                 );
             })}
