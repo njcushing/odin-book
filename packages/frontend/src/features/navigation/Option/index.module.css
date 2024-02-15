@@ -8,7 +8,13 @@
 
 .link {
     display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
 
+    font-size: 24px;
     text-decoration: none;
     border: none;
     border-radius: 0rem;
@@ -16,6 +22,11 @@
     outline-style: solid;
     outline-color: var(--navigation-option-primary-outline);
     background-color: var(--navigation-option-primary);
+    
+    width: 100%;
+    height: auto;
+    padding: 6px;
+    margin: 0px;
 
     transition: border-radius 0.3s ease-in-out 0s,
                 background-color 0.1s ease-in-out 0s;
@@ -25,7 +36,6 @@
     .link:hover {
         border-radius: 0.4rem;
         outline-width: 1px;
-        outline-style: solid;
         outline-color: var(--navigation-option-primary-outline);
         background-color: var(--navigation-option-primary-hover);
     }
@@ -34,14 +44,19 @@
 .link:focus {
     border-radius: 0.4rem;
     outline-width: 2px;
-    outline-style: solid;
+    outline-color: var(--navigation-option-primary-outline);
+    background-color: var(--navigation-option-primary-focus);
+}
+
+.link[data-highlighted |= "true"] {
+    border-radius: 0.4rem;
+    outline-width: 1px;
     outline-color: var(--navigation-option-primary-outline);
     background-color: var(--navigation-option-primary-focus);
 }
 
 .link:disabled {
     outline-width: 1px;
-    outline-style: solid;
     outline-color: var(--navigation-option-primary-outline);
     background-color: var(--navigation-option-primary-disabled);
 }
