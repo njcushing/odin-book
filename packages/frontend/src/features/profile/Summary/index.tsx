@@ -15,12 +15,8 @@ function Summary({ type }: SummaryTypes) {
                         <ProfileImage src={new Uint8Array([])} sizePx={64} />
                     </div>
                     <div className={styles["row-one-right"]}>
-                        <h3 className={`truncate-ellipsis ${styles["display-name"]}`}>
-                            John Smith is a Legendados
-                        </h3>
-                        <h4 className={`truncate-ellpisis ${styles["account-tag"]}`}>
-                            @JohnSmith84
-                        </h4>
+                        <p className={`truncate-ellipsis ${styles["display-name"]}`}>John Smith</p>
+                        <p className={`truncate-ellpisis ${styles["account-tag"]}`}>@JohnSmith84</p>
                     </div>
                 </div>
                 <div className={styles["row-two"]}>
@@ -33,15 +29,15 @@ function Summary({ type }: SummaryTypes) {
                     </p>
                 </div>
                 <div className={styles["row-three"]}>
-                    <h4 className={styles["following-count"]}>
+                    <p className={styles["following-count"]}>
                         <strong>300</strong> Following
-                    </h4>
-                    <h4 className={styles["followers-count"]}>
+                    </p>
+                    <p className={styles["followers-count"]}>
                         <strong>192</strong> Followers
-                    </h4>
-                    <h4 className={styles["likes-count"]}>
+                    </p>
+                    <p className={styles["likes-count"]}>
                         <strong>3892</strong> Likes
-                    </h4>
+                    </p>
                 </div>
                 <div className={styles["row-four"]}>
                     <p className={styles["account-creation-date"]}>Joined February 2024</p>
