@@ -24,7 +24,7 @@
     /* Borders & Outlines */
     --border-primary: rgb(255, 255, 255);
     --border-secondary: rgb(255, 255, 255);
-    --outline-primary: rgb(255, 255, 255);
+    --outline-primary: rgb(180, 180, 180);
     --outline-secondary: rgb(255, 255, 255);
     --layout-outline: rgba(0, 0, 0, 0.5);
 
@@ -42,20 +42,20 @@
     --input-outline-focus: rgb(255, 255, 255);
 
     /* Scrollbar */
-    --scrollbar-track: transparent;
-    --scrollbar-track-hover: rgba(255, 255, 255, 0.1);
-    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.7);
-    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.9);
+    --scrollbar-track: rgba(0, 0, 0, 0.16);
+    --scrollbar-track-hover: rgba(0, 0, 0, 0.24);
+    --scrollbar-thumb: rgba(0, 0, 0, 0.4);
+    --scrollbar-thumb-hover: rgba(0, 0, 0, 0.6);
 
     /* Buttons */
-    --button-text-primary: rgb(255, 255, 255);
-    --button-text-secondary: rgb(255, 255, 255);
-    --button-primary: rgb(255, 255, 255);
-    --button-primary-hover: rgb(255, 255, 255);
-    --button-primary-focus: rgb(255, 255, 255);
-    --button-primary-disabled: rgb(255, 255, 255);
-    --button-primary-border: rgb(255, 255, 255);
+    --button-primary: transparent;
+    --button-primary-text: rgb(0, 0, 0);
+    --button-primary-hover: rgba(0, 0, 0, 0.15);
+    --button-primary-focus: rgba(0, 0, 0, 0.25);
+    --button-primary-disabled: transparent;
+    --button-primary-border: transparent;
     --button-secondary: rgb(255, 255, 255);
+    --button-secondary-text: rgb(255, 255, 255);
     --button-secondary-hover: rgb(255, 255, 255);
     --button-secondary-focus: rgb(255, 255, 255);
     --button-secondary-disabled: rgb(255, 255, 255);
@@ -66,10 +66,10 @@
     --navigation-option-primary-focus: rgb(200, 200, 200);
     --navigation-option-primary-disabled: rgb(128, 128, 128);
     --navigation-option-primary-outline: transparent;
-
-    /* Tooltip */
-    --tooltip-text: #fff;
-    --tooltip-background: #fff;
+    --button-create-new-post: rgb(15, 185, 236);
+    --button-create-new-post-text: rgb(255, 255, 255);
+    --button-create-new-post-hover: rgb(45, 206, 255);
+    --button-create-new-post-focus: rgb(7, 159, 206); 
 }
 
 /* Custom */

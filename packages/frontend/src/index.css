@@ -117,13 +117,13 @@ body > #root {
 /* Custom Scrollbar */
 
 ::-webkit-scrollbar {
-    border-radius: 50%;
+    border-radius: 9999px;
 
     width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    border-radius: 50%;
+    border-radius: 9999px;
     background-color: var(--scrollbar-track);
 }
 
@@ -134,7 +134,7 @@ body > #root {
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 50%;
+    border-radius: 9999px;
     background-color: var(--scrollbar-thumb);
 }
 
