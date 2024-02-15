@@ -57,6 +57,7 @@
 }
 
 .content {
+    color: var(--text-primary);
     font-size: 1.1rem;
     line-height: 1.2rem;
     text-align: start;
@@ -96,12 +97,13 @@
     align-self: end;
 
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 0.2rem;
 }
 
 .reply-button,
-.share-button {
+.share-button,
+.see-more-replies-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -122,13 +124,22 @@
 }
 
 .reply-button:hover,
-.share-button:hover {
+.share-button:hover,
+.see-more-replies-button:hover {
     background-color: var(--button-primary-hover);
 }
 
 .reply-button:focus,
-.share-button:focus {
+.share-button:focus,
+.see-more-replies-button:focus {
     background-color: var(--button-primary-focus);
+}
+
+.see-more-replies-button-wrapper {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
 }
 
 .likes-count,
@@ -145,10 +156,15 @@
 
 .row-four {
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
+
+    border-top: 1px solid var(--outline-primary);
 }
 
 .replies {
     color: var(--text-tertiary);
     font-size: 1.1rem;
+
+    padding: 0rem 0rem 0.6rem 1.6rem;
 }
