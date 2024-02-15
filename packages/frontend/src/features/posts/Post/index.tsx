@@ -1,39 +1,14 @@
 import { useState } from "react";
 import ProfileImage from "@/components/ProfileImage";
+import Posts from "..";
+import createButton from "../utils/createButton";
 import styles from "./index.module.css";
 
 function Post() {
     const [viewing, setViewing]: [string, React.Dispatch<React.SetStateAction<string>>] =
         useState("");
 
-    const createButton = (
-        text: string,
-        symbol: string,
-        className: string,
-        onClickHandler: ((event?: React.MouseEvent<HTMLButtonElement>) => void) | null,
-    ) => {
-        return (
-            <button
-                type="button"
-                className={styles[className]}
-                onClick={(e) => {
-                    if (onClickHandler) onClickHandler(e);
-                    e.currentTarget.blur();
-                    e.preventDefault();
-                }}
-                onMouseLeave={(e) => {
-                    e.currentTarget.blur();
-                }}
-            >
-                {symbol && symbol.length > 0 && (
-                    <p className={`material-symbols-rounded ${styles["button-symbol"]}`}>
-                        {symbol}
-                    </p>
-                )}
-                {text}
-            </button>
-        );
-    };
+    const posts = [null, null, null, null, null, null, null, null];
 
     return (
         <div className={styles["container"]}>
@@ -55,21 +30,21 @@ function Post() {
             <div className={styles["row-three"]}>
                 <p className={styles["likes-count"]}>
                     <strong>234</strong>
-                    {createButton("Likes", "", "view-likes-button", () => {
+                    {createButton("Likes", "", styles, "view-likes-button", () => {
                         if (viewing === "likes") setViewing("");
                         if (viewing !== "likes") setViewing("likes");
                     })}
                 </p>
                 <p className={styles["replies-count"]}>
                     <strong>18</strong>
-                    {createButton("Replies", "", "view-replies-button", () => {
+                    {createButton("Replies", "", styles, "view-replies-button", () => {
                         if (viewing === "replies") setViewing("");
                         if (viewing !== "replies") setViewing("replies");
                     })}
                 </p>
                 <div className={styles["row-three-buttons"]}>
-                    {createButton("Reply", "reply", "reply-button", null)}
-                    {createButton("Share", "share", "share-button", null)}
+                    {createButton("Reply", "reply", styles, "reply-button", null)}
+                    {createButton("Share", "share", styles, "share-button", null)}
                 </div>
             </div>
             {viewing === "likes" ? (
@@ -79,7 +54,15 @@ function Post() {
             ) : null}
             {viewing === "replies" ? (
                 <div className={styles["row-four"]}>
-                    <li className={styles["replies"]}></li>
+                    <ul className={styles["replies"]}>
+                        {posts.map((post, i) => {
+                            if (i >= 3) return null;
+                            return <Posts.Reply key={i} />;
+                        })}
+                    </ul>
+                    <div className={styles["see-more-replies-button-wrapper"]}>
+                        {createButton("See More", "", styles, "see-more-replies-button", null)}
+                    </div>
                 </div>
             ) : null}
         </div>
