@@ -20,7 +20,7 @@
     align-items: end;
 
     width: 100%;
-    height: calc(100% - 20px);
+    height: calc(100vh - 20px);
 }
 
 .create-new-post-button {
