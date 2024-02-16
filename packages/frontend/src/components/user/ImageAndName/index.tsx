@@ -1,4 +1,5 @@
 import * as extendedTypes from "@/utils/extendedTypes";
+import Buttons from "@/components/buttons";
 import ProfileImage from "@/components/images/ProfileImage";
 import styles from "./index.module.css";
 
@@ -55,20 +56,40 @@ function ImageAndName({
             </div>
             <div className={styles["row-one-right"]}>
                 {displayName.length > 0 ? (
-                    <p
-                        className={`truncate-ellipsis ${styles["display-name"]}`}
-                        style={{ fontSize: `${sizes.displayName}rem` }}
+                    <button
+                        type="button"
+                        className={`truncate-ellipsis ${styles["display-name-button"]}`}
+                        onClick={(e) => {
+                            e.currentTarget.blur();
+                            e.preventDefault();
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.blur();
+                        }}
+                        style={{
+                            fontSize: `${sizes.displayName}rem`,
+                        }}
                     >
                         {displayName}
-                    </p>
+                    </button>
                 ) : null}
-                {accountTag.length > 0 ? (
-                    <p
-                        className={`truncate-ellipsis ${styles["account-tag"]}`}
-                        style={{ fontSize: `${sizes.accountTag}rem` }}
+                {displayName.length > 0 ? (
+                    <button
+                        type="button"
+                        className={`truncate-ellipsis ${styles["account-tag-button"]}`}
+                        onClick={(e) => {
+                            e.currentTarget.blur();
+                            e.preventDefault();
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.blur();
+                        }}
+                        style={{
+                            fontSize: `${sizes.accountTag}rem`,
+                        }}
                     >
                         {accountTag}
-                    </p>
+                    </button>
                 ) : null}
             </div>
         </div>

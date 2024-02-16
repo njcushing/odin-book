@@ -15,26 +15,42 @@
     display: flex;
     flex-direction: column;
     align-items: start;
-    gap: 0.4rem;
+    gap: 0.3rem;
 
     width: 100%;
 }
 
-.display-name {
+.display-name-button,
+.account-tag-button {
     place-self: start;
 
+    pointer-events: auto;
+
+    font-family: Gabarito;
+    border: none;
+    outline: none;
+    background-color: transparent;
+
+    max-width: 100%;
+    padding: 0rem;
+}
+
+.display-name-button {
     color: var(--text-primary);
     font-size: 1.1rem;
     font-weight: bold;
-
-    max-width: 100%;
 }
 
-.account-tag {
-    place-self: start;
-
+.account-tag-button {
     color: var(--text-secondary);
     font-size: 0.9rem;
+}
 
-    max-width: 100%;
+.display-name-button:hover,
+.display-name-button:focus,
+.account-tag-button:hover,
+.account-tag-button:focus {
+    cursor: pointer;
+
+    text-decoration: underline;
 }
