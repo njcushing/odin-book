@@ -1,7 +1,7 @@
-import Generic from "./Generic";
+import Home from "./Home";
 
 const Infobar = {
-    Generic,
+    Home,
 };
 
 export default Infobar;
