@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import PropTypes, { InferProps, string } from "prop-types";
-import * as extendedPropTypes from "@/utils/extendedPropTypes";
 import React from "react";
 import styles from "./index.module.css";
 
@@ -29,7 +27,6 @@ function Option({ text, symbol, onClickHandler, link, highlighted, style }: Opti
                 onClick={(e) => {
                     if (onClickHandler) onClickHandler(e);
                     e.currentTarget.blur();
-                    e.preventDefault();
                 }}
                 onMouseLeave={(e) => {
                     e.currentTarget.blur();
