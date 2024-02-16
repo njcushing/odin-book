@@ -8,6 +8,21 @@ function Router() {
             element: <Page.Home />,
             errorElement: <div></div>,
         },
+        {
+            path: "/profile",
+            element: <Page.Profile />,
+            errorElement: <div></div>,
+        },
+        {
+            path: "/chats",
+            element: <Page.Chats />,
+            errorElement: <div></div>,
+        },
+        {
+            path: "/settings",
+            element: <Page.Settings />,
+            errorElement: <div></div>,
+        },
     ]);
 
     return <RouterProvider router={browserRouter} />;
