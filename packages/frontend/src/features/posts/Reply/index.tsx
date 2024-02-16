@@ -1,6 +1,7 @@
 import ProfileImage from "@/components/images/ProfileImage";
 import createMultilineTextTruncateStyles from "@/utils/createMultilineTextTruncateStyles";
 import Buttons from "@/components/buttons";
+import User from "@/components/user";
 import createButton from "../utils/createButton";
 import styles from "./index.module.css";
 
@@ -8,13 +9,12 @@ function Reply() {
     return (
         <div className={styles["container"]}>
             <div className={styles["row-one"]}>
-                <div className={styles["row-one-left"]}>
-                    <ProfileImage src={new Uint8Array([])} sizePx={48} />
-                </div>
-                <div className={styles["row-one-right"]}>
-                    <p className={`truncate-ellipsis ${styles["display-name"]}`}>John Smith</p>
-                    <p className={`truncate-ellpisis ${styles["account-tag"]}`}>@JohnSmith84</p>
-                </div>
+                <User.ImageAndName
+                    image={{ src: new Uint8Array([]), alt: "" }}
+                    displayName="John Smith"
+                    accountTag="@JohnSmith84"
+                    size="s"
+                />
             </div>
             <div className={styles["row-two"]}>
                 <p
