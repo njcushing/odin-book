@@ -15,6 +15,7 @@ function Menu({ type }: MenuProps) {
         { text: "Home", symbol: "home", link: "/" },
         { text: "Profile", symbol: "person", link: "/profile" },
         { text: "Chats", symbol: "message", link: "/chats" },
+        { text: "Settings", symbol: "settings", link: "/settings" },
     ];
 
     return (
