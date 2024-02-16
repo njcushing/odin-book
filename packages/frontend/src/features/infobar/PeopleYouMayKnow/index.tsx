@@ -44,6 +44,7 @@ function PeopleYouMayKnow() {
                     );
                 })}
             </ul>
+            <Buttons.Basic text="See More" />
         </div>
     );
 }
