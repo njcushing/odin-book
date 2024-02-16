@@ -65,10 +65,13 @@
 .text {
     color: var(--navigation-option-primary-text);
     font-size: inherit;
+    font-weight: bold;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    padding: 0.2rem;
 }
 
 .text {
