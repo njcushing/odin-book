@@ -5,14 +5,14 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router-dom";
-import NavigationButton from "./index.jsx";
+import NavigationButton from ".";
 
 const renderComponent = (
     text: string = "",
     symbol: string = "",
     onClickHandler = () => {},
     link: string = "",
-    style = null,
+    style = {},
 ) => {
     return render(
         <BrowserRouter>
