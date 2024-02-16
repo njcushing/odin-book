@@ -54,7 +54,7 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
         return () => {
             if (wrapperRefCurrent instanceof Element) observer.unobserve(wrapperRefCurrent);
         };
-    }, [arrangements]);
+    }, [width, height, arrangements]);
 
     useEffect(() => {
         let contentNew = null;
@@ -74,6 +74,7 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
                         style={{
                             gridArea: `${layout.type === "rows" ? `${i + 1} / 1 / ${i + 2} / -1` : `1 / ${i + 1} / -1 / ${i + 2}`}`,
                         }}
+                        key={i}
                     >
                         {area.children}
                     </div>,
@@ -100,7 +101,16 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
     }, [width, height, layout]);
 
     return (
-        <div className={styles["wrapper"]} ref={wrapperRef}>
+        <div
+            className={styles["wrapper"]}
+            style={{
+                width,
+                height,
+                maxWidth: width,
+                maxHeight: height,
+            }}
+            ref={wrapperRef}
+        >
             {content}
         </div>
     );
