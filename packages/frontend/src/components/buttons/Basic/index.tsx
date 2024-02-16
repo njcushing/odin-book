@@ -8,7 +8,7 @@ type BasicTypes = {
     onClickHandler?: ((event?: React.MouseEvent<HTMLButtonElement>) => void) | null;
     onSubmitHandler?: ((event?: React.FormEvent<HTMLButtonElement>) => void) | null;
     disabled?: boolean;
-    palette?: "primary" | "secondary" | "red" | "orange" | "green" | "blue";
+    palette?: "primary" | "secondary" | "bare" | "red" | "orange" | "green" | "blue";
     style?: {
         shape?: "sharp" | "rounded";
     };

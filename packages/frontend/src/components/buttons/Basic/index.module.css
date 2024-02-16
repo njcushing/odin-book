@@ -17,6 +17,11 @@
     padding: 0.4rem 1.0rem;
 }
 
+.button:hover,
+.button:hover {
+    cursor: pointer;
+}
+
 .button[data-palette|="primary"]            {            color: var(--button-primary-text);
                                               background-color: var(--button-primary);
                                                  outline-color: var(--button-primary-border); }
@@ -30,6 +35,13 @@
 .button[data-palette|="secondary"]:hover    { background-color: var(--button-secondary-hover); }
 .button[data-palette|="secondary"]:focus    { background-color: var(--button-secondary-focus); }
 .button[data-palette|="secondary"]:disabled { background-color: var(--button-secondary-disabled); }
+
+.button[data-palette|="bare"]               {            color: var(--text-primary);
+                                              background-color: transparent;
+                                                 outline-color: transparent; }
+.button[data-palette|="bare"]:hover         {  text-decoration: underline; }
+.button[data-palette|="bare"]:focus         {  text-decoration: underline; }
+.button[data-palette|="bare"]:disabled      {  text-decoration: none; }
 
 .button[data-palette|="red"]                {            color: var(--button-red-text);
                                               background-color: var(--button-red);
