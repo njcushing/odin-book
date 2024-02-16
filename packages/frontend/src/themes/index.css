@@ -15,11 +15,13 @@
     --text-inactive: rgb(255, 255, 255);
     --text-link: rgb(255, 255, 255);
     --text-visited: rgb(255, 255, 255);
+    --text-infopanel: rgb(255, 255, 255);
 
     /* Background */
     --background-primary: rgb(255, 255, 255);
     --background-secondary: rgb(255, 255, 255);
     --background-tertiary: rgb(255, 255, 255);
+    --background-infopanel: rgb(208, 248, 255);
 
     /* Borders & Outlines */
     --border-primary: rgb(255, 255, 255);
@@ -66,10 +68,30 @@
     --navigation-option-primary-focus: rgb(200, 200, 200);
     --navigation-option-primary-disabled: rgb(128, 128, 128);
     --navigation-option-primary-outline: transparent;
-    --button-create-new-post: rgb(15, 185, 236);
-    --button-create-new-post-text: rgb(255, 255, 255);
-    --button-create-new-post-hover: rgb(45, 206, 255);
-    --button-create-new-post-focus: rgb(7, 159, 206); 
+    --button-red: rgb(228, 28, 28);
+    --button-red-text: rgb(255, 255, 255);
+    --button-red-hover: rgb(255, 51, 51);
+    --button-red-focus: rgb(196, 16, 16);
+    --button-red-disabled: rgb(128, 128, 128);
+    --button-red-border: transparent;
+    --button-orange: rgb(252, 127, 11);
+    --button-orange-text: rgb(255, 255, 255);
+    --button-orange-hover: rgb(255, 150, 51);
+    --button-orange-focus: rgb(228, 114, 8);
+    --button-orange-disabled: rgb(128, 128, 128);
+    --button-orange-border: transparent;
+    --button-green: rgb(12, 214, 22);
+    --button-green-text: rgb(255, 255, 255);
+    --button-green-hover: rgb(47, 240, 57);
+    --button-green-focus: rgb(5, 185, 14);
+    --button-green-disabled: rgb(128, 128, 128);
+    --button-green-border: transparent;
+    --button-blue: rgb(15, 185, 236);
+    --button-blue-text: rgb(255, 255, 255);
+    --button-blue-hover: rgb(45, 206, 255);
+    --button-blue-focus: rgb(7, 159, 206);
+    --button-blue-disabled: rgb(128, 128, 128);
+    --button-blue-border: transparent;
 }
 
 /* Custom */
