@@ -1,11 +1,10 @@
 import LayoutUI from "@/layouts";
 import Sidebar from "@/features/sidebar";
+import Posts from "@/features/posts";
+import Infobar from "@/features/infobar";
 import styles from "./index.module.css";
 
 function Home() {
-    const main = null;
-    const otherContent = null;
-
     const layout = (
         <LayoutUI.Spatial
             width="auto"
@@ -19,15 +18,15 @@ function Home() {
                     maxHeight: 999999,
                     areas: [
                         { size: "280px", children: [<Sidebar.Generic type="wide" key={0} />] },
-                        { size: "600px", children: [main] },
-                        { size: "320px", children: [otherContent] },
+                        { size: "600px", children: [<Posts.List key={0} />] },
+                        { size: "320px", children: [<Infobar.Home key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "center",
-                        width: "calc(1200px - (2 * 0.6rem))",
-                        height: "calc(100% - (2 * 0.6rem))",
-                        padding: "0.6rem",
+                        width: "1200px",
+                        height: "100%",
+                        padding: "0rem",
                     },
                 },
                 {
@@ -38,15 +37,15 @@ function Home() {
                     maxHeight: 999999,
                     areas: [
                         { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
-                        { size: "600px", children: [main] },
-                        { size: "320px", children: [otherContent] },
+                        { size: "600px", children: [<Posts.List key={0} />] },
+                        { size: "320px", children: [<Infobar.Home key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "center",
-                        width: "calc(980px - (2 * 0.6rem))",
-                        height: "calc(100% - (2 * 0.6rem))",
-                        padding: "0.6rem",
+                        width: "980px",
+                        height: "100%",
+                        padding: "0rem",
                     },
                 },
                 {
@@ -57,14 +56,14 @@ function Home() {
                     maxHeight: 999999,
                     areas: [
                         { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
-                        { size: "600px", children: [main] },
+                        { size: "600px", children: [<Posts.List key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "center",
-                        width: "calc(660px - (2 * 0.6rem))",
-                        height: "calc(100% - (2 * 0.6rem))",
-                        padding: "0.6rem",
+                        width: "660px",
+                        height: "100%",
+                        padding: "0rem",
                     },
                 },
                 {
@@ -75,14 +74,14 @@ function Home() {
                     maxHeight: 999999,
                     areas: [
                         { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
-                        { size: "300px", children: [main] },
+                        { size: "300px", children: [<Posts.List key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "center",
-                        width: "calc(360px - (2 * 0.6rem))",
-                        height: "calc(100% - (2 * 0.6rem))",
-                        padding: "0.6rem",
+                        width: "360px",
+                        height: "100%",
+                        padding: "0rem",
                     },
                 },
                 {
@@ -95,14 +94,14 @@ function Home() {
                     maxHeight: 999999,
                     areas: [
                         { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
-                        { size: "1fr", children: [main] },
+                        { size: "1fr", children: [<Posts.List key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
-                        width: "calc(100% - (2 * 0.6rem))",
-                        height: "calc(100% - (2 * 0.6rem))",
-                        padding: "0.6rem",
+                        width: "100%",
+                        height: "100%",
+                        padding: "0rem",
                     },
                 },
             ]}
