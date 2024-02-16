@@ -1,5 +1,6 @@
-import ProfileImage from "@/components/ProfileImage";
+import ProfileImage from "@/components/images/ProfileImage";
 import createMultilineTextTruncateStyles from "@/utils/createMultilineTextTruncateStyles";
+import Buttons from "@/components/buttons";
 import createButton from "../utils/createButton";
 import styles from "./index.module.css";
 
@@ -35,8 +36,8 @@ function Reply() {
                     {createButton("Replies", "", styles, "view-replies-button", null)}
                 </p>
                 <div className={styles["row-three-buttons"]}>
-                    {createButton("Reply", "reply", styles, "reply-button", null)}
-                    {createButton("Share", "share", styles, "share-button", null)}
+                    <Buttons.Basic text="Reply" symbol="reply" />
+                    <Buttons.Basic text="Share" symbol="share" />
                 </div>
             </div>
         </div>

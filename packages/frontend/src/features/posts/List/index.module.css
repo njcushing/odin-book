@@ -22,32 +22,3 @@
     width: 100%;
     height: calc(100vh - 20px);
 }
-
-.create-new-post-button {
-    pointer-events: auto;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 0.6rem;
-
-    color: var(--button-create-new-post-text);
-    font-family: Gabarito;
-    font-size: 1.25rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 9999px;
-    outline: 1px solid var(--button-primary-outline);
-    background-color: var(--button-create-new-post);
-
-    padding: 0.8rem 1.6rem;
-}
-
-.create-new-post-button:hover {
-    background-color: var(--button-create-new-post-hover);
-}
-
-.create-new-post-button:focus {
-    background-color: var(--button-create-new-post-focus);
-}

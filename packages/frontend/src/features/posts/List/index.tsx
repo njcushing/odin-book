@@ -1,4 +1,5 @@
 import LayoutUI from "@/layouts";
+import Buttons from "@/components/buttons";
 import Posts from "..";
 import styles from "./index.module.css";
 
@@ -26,22 +27,15 @@ function List() {
                 }}
             />
             <div className={styles["create-new-post-button-wrapper"]}>
-                <button
-                    type="button"
-                    className={styles["create-new-post-button"]}
-                    onClick={(e) => {
-                        e.currentTarget.blur();
-                        e.preventDefault();
+                <Buttons.Basic
+                    text="Create New Post"
+                    symbol="stylus_note"
+                    palette="blue"
+                    otherStyles={{
+                        fontSize: "1.25rem",
+                        padding: "0.8rem 1.6rem",
                     }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.blur();
-                    }}
-                >
-                    <p className={`material-symbols-rounded ${styles["button-symbol"]}`}>
-                        stylus_note
-                    </p>
-                    Create New Post
-                </button>
+                />
             </div>
         </div>
     );

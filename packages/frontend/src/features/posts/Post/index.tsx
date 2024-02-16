@@ -1,5 +1,6 @@
 import { useState } from "react";
-import ProfileImage from "@/components/ProfileImage";
+import ProfileImage from "@/components/images/ProfileImage";
+import Buttons from "@/components/buttons";
 import Posts from "..";
 import createButton from "../utils/createButton";
 import styles from "./index.module.css";
@@ -40,8 +41,16 @@ function Post() {
                     })}
                 </p>
                 <div className={styles["row-three-buttons"]}>
-                    {createButton("Reply", "reply", styles, "reply-button", null)}
-                    {createButton("Share", "share", styles, "share-button", null)}
+                    <Buttons.Basic
+                        text="Reply"
+                        symbol="reply"
+                        otherStyles={{ fontSize: "1.1rem" }}
+                    />
+                    <Buttons.Basic
+                        text="Share"
+                        symbol="share"
+                        otherStyles={{ fontSize: "1.1rem" }}
+                    />
                 </div>
             </div>
             {viewing === "replies" ? (
@@ -53,7 +62,7 @@ function Post() {
                         })}
                     </ul>
                     <div className={styles["see-more-replies-button-wrapper"]}>
-                        {createButton("See More", "", styles, "see-more-replies-button", null)}
+                        <Buttons.Basic text="See More" otherStyles={{ fontSize: "1.1rem" }} />
                     </div>
                 </div>
             ) : null}

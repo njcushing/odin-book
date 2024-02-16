@@ -102,47 +102,6 @@
     gap: 0.2rem;
 }
 
-.reply-button,
-.share-button,
-.see-more-replies-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 0.4rem;
-
-    color: var(--button-primary-text);
-    font-family: Gabarito;
-    font-size: 1.0rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 9999px;
-    outline: 1px solid var(--button-primary-outline);
-    background-color: var(--button-primary);
-
-    width: 6rem;
-    min-height: 1.8rem;
-}
-
-.reply-button:hover,
-.share-button:hover,
-.see-more-replies-button:hover {
-    background-color: var(--button-primary-hover);
-}
-
-.reply-button:focus,
-.share-button:focus,
-.see-more-replies-button:focus {
-    background-color: var(--button-primary-focus);
-}
-
-.see-more-replies-button-wrapper {
-    display: flex;
-    justify-content: center;
-    
-    width: 100%;
-}
-
 .likes-count,
 .replies-count {
     color: var(--text-primary);
