@@ -51,18 +51,22 @@
     cursor: pointer;
 }
 
-.message-textarea ::placeholder {
+.message-textarea::placeholder {
     font-family: Gabarito;
 }
 
 .message-textarea:disabled,
-.message-textarea:disabled ::placeholder {
+.message-textarea:disabled::placeholder {
     color: rgba(128, 128, 128, 0.5);
     outline-width: 1px;
     border-radius: 1px;
     background-color: rgba(128, 128, 128, 0.2);
     
     cursor: default;
+}
+
+.message-textarea:focus::placeholder {
+    opacity: 0%;
 }
 
 .send-options-container {
