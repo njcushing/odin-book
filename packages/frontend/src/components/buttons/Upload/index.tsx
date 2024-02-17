@@ -13,7 +13,16 @@ type UploadTypes = {
 function Upload({
     accept = "*",
     multiple = true,
-    button = { text: "Upload", disabled: false },
+    button = {
+        text: "Upload",
+        symbol: "",
+        label: "",
+        disabled: false,
+        palette: "primary",
+        animation: "rigid",
+        style: { shape: "sharp" },
+        otherStyles: {},
+    },
     onUploadHandler = null,
 }: UploadTypes) {
     const associationId = uuidv4();
