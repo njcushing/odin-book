@@ -20,7 +20,7 @@ function List() {
                     justifyContent: "flex-start",
                     alignItems: "center",
                     flexWrap: "nowrap",
-                    gap: "1px",
+                    gap: "0px",
                     width: "100%",
                     height: "auto",
                     margin: "0rem",

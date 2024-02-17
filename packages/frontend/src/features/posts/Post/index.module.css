@@ -1,7 +1,6 @@
 .container {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
 
     font-family: Gabarito;
     outline: 1px solid var(--outline-primary);
@@ -9,6 +8,12 @@
     width: calc(100% - (2 * 0.6rem));
     height: min-content;
     padding: 0.6rem;
+}
+
+.container[data-is-reply] {
+    outline: none;
+    border-left: 1px solid var(--outline-primary);
+    border-bottom: 1px solid var(--outline-primary);
 }
 
 .row-one {
@@ -31,23 +36,6 @@
     width: 100%;
 }
 
-.display-name {
-    place-self: start;
-
-    color: var(--text-primary);
-    font-size: 1.5rem;
-    font-weight: bold;
-
-    max-width: 100%;
-}
-
-.account-tag {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-
-    max-width: 100%;
-}
-
 .row-two {
     display: flex;
     justify-content: flex-start;
@@ -58,8 +46,6 @@
 
 .content {
     color: var(--text-primary);
-    font-size: 1.1rem;
-    line-height: 1.2rem;
     text-align: start;
 }
 
@@ -69,15 +55,12 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 0.2rem;
-    
-    font-size: 1.1rem;
 }
 
 .view-likes-button,
 .view-replies-button {
     color: var(--text-primary);
     font-family: Gabarito;
-    font-size: 1.1rem;
     border: none;
     background-color: transparent;
 
@@ -111,16 +94,14 @@
 .likes-count,
 .replies-count {
     color: var(--text-primary);
-    font-size: 1.1rem;
 }
 
 .likes-count > strong,
 .replies-count > strong {
-    font-size: 1.25rem;
     font-weight: bold;
 }
 
-.row-four {
+.row-five {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
