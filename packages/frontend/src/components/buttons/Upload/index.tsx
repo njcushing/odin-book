@@ -7,7 +7,7 @@ type UploadTypes = {
     accept: string;
     multiple: boolean;
     button: Types.Basic;
-    onUploadHandler?: ((event?: ProgressEvent<FileReader>) => void) | null;
+    onUploadHandler?: ((event: ProgressEvent<FileReader>) => void) | null;
 };
 
 function Upload({
