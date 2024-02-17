@@ -1,0 +1,93 @@
+.message-box {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: repeat(2, auto);
+    gap: 0.4rem;
+
+    width: 100%;
+    height: 100%;
+}
+
+.message-textarea {
+    grid-area: 1 / 1 / -1 / 2;
+
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-family: Gabarito;
+    background-color: transparent;
+    border: none;
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: var(--outline-primary);
+    border-radius: 1px;
+
+    height: calc(100% - (2 * 0.6rem));
+    min-height: calc(3rem - (2 * 0.6rem));
+    max-height: calc(6rem - (2 * 0.6rem));
+    padding: 0.6rem;
+
+    transition: background-color 0.15s ease-in-out 0s,
+                border-radius 0.1s ease-in-out 0s,
+                min-height 0.1s ease-out 0s;
+}
+
+@media (hover: hover) {
+    .message-textarea:hover {
+        outline-width: 2px;
+        border-radius: 4px;
+        background-color: rgba(255, 255, 255, 0.04);
+
+        cursor: pointer;
+    }
+}
+
+.message-textarea:focus {
+    outline-width: 2px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.04);
+
+    min-height: 6rem;
+    
+    cursor: pointer;
+}
+
+.message-textarea ::placeholder {
+    font-family: Gabarito;
+}
+
+.message-textarea:disabled,
+.message-textarea:disabled ::placeholder {
+    color: rgba(128, 128, 128, 0.5);
+    outline-width: 1px;
+    border-radius: 1px;
+    background-color: rgba(128, 128, 128, 0.2);
+    
+    cursor: default;
+}
+
+.send-options-container {
+    grid-area: 1 / 2 / -1 / -1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    gap: 0.44rem;
+}
+
+.submission-errors {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    padding: 0rem auto;
+    margin: 0rem;
+}
+
+.error,
+.submission-error {
+    color: var(--text-error);
+    font-size: 0.9rem;
+    font-family: Gabarito;
+    font-weight: normal;
+}
