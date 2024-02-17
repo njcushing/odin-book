@@ -1,0 +1,19 @@
+.label {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+.label:hover,
+.label:focus {
+    cursor: pointer;
+}
+
+.upload-input {
+    position: absolute;
+    top: -9999px;
+    opacity: 0;
+}
