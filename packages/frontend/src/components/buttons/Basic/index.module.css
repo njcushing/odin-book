@@ -1,4 +1,7 @@
-.button {
+.button,
+.overlay-container {
+    position: relative;
+
     pointer-events: auto;
 
     display: flex;
@@ -17,8 +20,21 @@
     padding: 0.4rem 1.0rem;
 }
 
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    border: 1px solid #000;
+}
+
 .button:hover,
-.button:focus {
+.button:focus,
+.overlay-container:hover,
+.overlay-container:focus {
     cursor: pointer;
 }
 

@@ -4,8 +4,8 @@ import styles from "./index.module.css";
 function Basic({
     type = "button",
     text = "Button",
-    label = "",
     symbol = "",
+    label = "",
     onClickHandler = null,
     onSubmitHandler = null,
     disabled = false,
