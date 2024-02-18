@@ -12,7 +12,7 @@ function List() {
                 label="navigation"
                 ordered={false}
                 listItems={posts.map((post, i) => {
-                    return <Posts.Post key={i} />;
+                    return <Posts.Post type="post" key={i} />;
                 })}
                 scrollable
                 listStyles={{
