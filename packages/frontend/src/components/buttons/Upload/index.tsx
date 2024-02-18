@@ -3,26 +3,28 @@ import Buttons from "..";
 import * as Types from "../types";
 import styles from "./index.module.css";
 
+const buttonDefaultProps = {
+    text: "",
+    symbol: "",
+    label: "",
+    disabled: false,
+    palette: "primary",
+    animation: "rigid",
+    style: { shape: "sharp" },
+    otherStyles: {},
+};
+
 type UploadTypes = {
-    accept: string;
-    multiple: boolean;
-    button: Types.Basic;
-    onUploadHandler?: ((event: ProgressEvent<FileReader>) => void) | null;
+    accept?: string;
+    multiple?: boolean;
+    button?: Types.Basic;
+    onUploadHandler?: ((uploads: [ProgressEvent<FileReader>, File][]) => void) | null;
 };
 
 function Upload({
     accept = "*",
-    multiple = true,
-    button = {
-        text: "Upload",
-        symbol: "",
-        label: "",
-        disabled: false,
-        palette: "primary",
-        animation: "rigid",
-        style: { shape: "sharp" },
-        otherStyles: {},
-    },
+    multiple = false,
+    button = { ...buttonDefaultProps },
     onUploadHandler = null,
 }: UploadTypes) {
     const associationId = uuidv4();
@@ -30,14 +32,14 @@ function Upload({
     return (
         <Buttons.Basic
             type="button"
-            text={button.text}
-            symbol={button.symbol}
-            label={button.label}
-            disabled={button.disabled}
-            palette={button.palette}
-            animation={button.animation}
-            style={button.style}
-            otherStyles={button.otherStyles}
+            text={button.text || buttonDefaultProps.text}
+            symbol={button.symbol || buttonDefaultProps.symbol}
+            label={button.label || buttonDefaultProps.label}
+            disabled={button.disabled || buttonDefaultProps.disabled}
+            palette={button.palette || buttonDefaultProps.palette}
+            animation={button.animation || buttonDefaultProps.animation}
+            style={button.style || buttonDefaultProps.style}
+            otherStyles={button.otherStyles || buttonDefaultProps.otherStyles}
         >
             <label
                 className={styles["label"]}
@@ -54,15 +56,25 @@ function Upload({
                     id={associationId}
                     accept={accept}
                     multiple={multiple}
-                    disabled={button.disabled}
-                    onChange={(changeEvent) => {
-                        const file = new FileReader();
+                    disabled={button.disabled || buttonDefaultProps.disabled}
+                    onChange={async (changeEvent) => {
+                        const uploads: [ProgressEvent<FileReader>, File][] = [];
                         if (changeEvent.target.files && changeEvent.target.files.length > 0) {
-                            file.readAsArrayBuffer(changeEvent.target.files[0]);
-                            file.onloadend = (endEvent) => {
-                                if (onUploadHandler) onUploadHandler(endEvent);
-                            };
+                            const promises = Array.from(changeEvent.target.files).map(
+                                (file: File) => {
+                                    return new Promise<void>((resolve) => {
+                                        const reader = new FileReader();
+                                        reader.onloadend = (event) => {
+                                            uploads.push([event, file]);
+                                            resolve();
+                                        };
+                                        reader.readAsArrayBuffer(file);
+                                    });
+                                },
+                            );
+                            await Promise.all(promises);
                         }
+                        if (onUploadHandler) onUploadHandler(uploads);
                     }}
                 ></input>
             </label>
