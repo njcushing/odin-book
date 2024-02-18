@@ -3,7 +3,7 @@ import * as extendedTypes from "@/utils/extendedTypes";
 import styles from "./index.module.css";
 
 type ProfileTypes = {
-    src: extendedTypes.TypedArray;
+    src?: extendedTypes.TypedArray;
     alt?: string;
     status?: "online" | "away" | "busy" | "offline" | null;
     sizePx?: number;
@@ -17,8 +17,11 @@ function Profile({
     sizePx = 50,
     style,
 }: ProfileTypes) {
-    const blob = new Blob([Buffer.from(src)], { type: "image/png" });
-    const imgSrc = URL.createObjectURL(blob);
+    let imgSrc = "";
+    if (src) {
+        const blob = new Blob([Buffer.from(src)], { type: "image/png" });
+        imgSrc = URL.createObjectURL(blob);
+    }
 
     return (
         <div className={styles["container"]} style={{ ...style }}>
