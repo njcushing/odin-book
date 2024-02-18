@@ -8,12 +8,12 @@
     height: 100%;
 }
 
-.message-textarea {
+.input-container {
     grid-area: 1 / 1 / -1 / 2;
 
-    color: var(--text-primary);
-    font-size: 1.1rem;
-    font-family: Gabarito;
+    display: flex;
+    flex-direction: column;
+
     background-color: transparent;
     border: none;
     outline-width: 1px;
@@ -21,20 +21,35 @@
     outline-color: var(--outline-primary);
     border-radius: 1px;
 
+    transition: border-radius 0.1s ease-in-out 0s,
+}
+
+.message-textarea {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-family: Gabarito;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    border-radius: 0px;
+
+    width: calc(100% - (2 * 0.6rem));
     height: calc(100% - (2 * 0.6rem));
-    min-height: calc(3rem - (2 * 0.6rem));
-    max-height: calc(6rem - (2 * 0.6rem));
+    min-height: calc(5rem - (2 * 0.6rem));
+    max-height: calc(7rem - (2 * 0.6rem));
     padding: 0.6rem;
 
     transition: background-color 0.15s ease-in-out 0s,
-                border-radius 0.1s ease-in-out 0s,
                 min-height 0.1s ease-out 0s;
 }
 
 @media (hover: hover) {
-    .message-textarea:hover {
+    .input-container:hover {
         outline-width: 2px;
         border-radius: 4px;
+    }
+
+    .message-textarea:hover {
         background-color: rgba(255, 255, 255, 0.04);
 
         cursor: pointer;
@@ -42,11 +57,9 @@
 }
 
 .message-textarea:focus {
-    outline-width: 2px;
-    border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.04);
 
-    min-height: 6rem;
+    min-height: 7rem;
     
     cursor: pointer;
 }
@@ -69,12 +82,61 @@
     opacity: 0%;
 }
 
+.image-buttons-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+
+    border-top: 1px solid var(--outline-primary);
+
+    padding: 0.4rem;
+}
+
+.image-button {
+    place-self: start;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.3rem;
+
+    outline: 1px solid var(--outline-tertiary);
+    border-radius: 9999px;
+    background-color: var(--background-tertiary);
+
+    padding: 0.3rem 0.3rem 0.3rem 0.8rem;
+}
+
+.file-info {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.1rem;
+}
+
+.image-file-name {
+    color: var(--text-secondary);
+    font-family: Gabarito;
+    font-size: 1.0rem;
+    font-weight: bold;
+}
+
+.image-file-size {
+    color: var(--text-secondary);
+    font-family: Rubik;
+    font-size: 0.8rem;
+    font-weight: normal;
+    font-style: italic;
+}
+
 .send-options-container {
     grid-area: 1 / 2 / -1 / -1;
 
     display: flex;
     flex-direction: column;
-    justify-content: end;
+    justify-content: flex-start;
     align-items: center;
     gap: 0.44rem;
 }
