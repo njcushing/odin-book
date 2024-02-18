@@ -1,3 +1,9 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
 .message-box {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -141,13 +147,28 @@
     gap: 0.44rem;
 }
 
-.submission-errors {
+.errors-list {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 0.2rem;
 
     padding: 0rem auto;
     margin: 0rem;
+}
+
+.submission-errors {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+}
+
+.submission-errors-title {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-family: Gabarito;
+    font-weight: normal;
 }
 
 .error,

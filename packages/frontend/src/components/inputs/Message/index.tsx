@@ -85,7 +85,7 @@ function Message({
     };
 
     return (
-        <>
+        <div className={styles["container"]}>
             <div className={styles["message-box"]} aria-label="message-box">
                 <div className={styles["input-container"]}>
                     <textarea
@@ -174,24 +174,34 @@ function Message({
                     />
                 </div>
             </div>
-            {textError.length > 0 ? <p className={styles["error"]}>{textError}</p> : null}
-            {imageError.length > 0 ? <p className={styles["error"]}>{imageError}</p> : null}
-            {submissionErrors.length > 0 ? (
-                <ul className={styles["submission-errors"]} aria-label="message-submission-errors">
-                    {submissionErrors.map((error) => {
-                        return (
-                            <li
-                                className={styles["error"]}
-                                aria-label="message-submission-error"
-                                key={uuidv4()}
+            {textError.length > 0 || imageError.length > 0 || submissionErrors.length > 0 ? (
+                <div className={styles["errors-list"]}>
+                    {textError.length > 0 ? <p className={styles["error"]}>{textError}</p> : null}
+                    {imageError.length > 0 ? <p className={styles["error"]}>{imageError}</p> : null}
+                    {submissionErrors.length > 0 ? (
+                        <>
+                            <p className={styles["submission-errors-title"]}>Submission Errors:</p>
+                            <ul
+                                className={styles["submission-errors"]}
+                                aria-label="message-submission-errors"
                             >
-                                {error}
-                            </li>
-                        );
-                    })}
-                </ul>
+                                {submissionErrors.map((error) => {
+                                    return (
+                                        <li
+                                            className={styles["error"]}
+                                            aria-label="message-submission-error"
+                                            key={uuidv4()}
+                                        >
+                                            {error}
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </>
+                    ) : null}
+                </div>
             ) : null}
-        </>
+        </div>
     );
 }
 
