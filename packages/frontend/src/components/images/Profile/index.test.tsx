@@ -3,10 +3,10 @@
 import { vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import ProfileImage from ".";
+import Profile from ".";
 
 const renderComponent = (src = new Uint8Array(), alt = "image alt", status = null, sizePx = 50) => {
-    return render(<ProfileImage src={src} alt={alt} status={status} sizePx={sizePx} />);
+    return render(<Profile src={src} alt={alt} status={status} sizePx={sizePx} />);
 };
 
 global.URL.createObjectURL = vi.fn(() => "image");

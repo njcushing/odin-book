@@ -1,6 +1,6 @@
 import * as extendedTypes from "@/utils/extendedTypes";
 import Buttons from "@/components/buttons";
-import ProfileImage from "@/components/images/ProfileImage";
+import Images from "@/components/images";
 import styles from "./index.module.css";
 
 type ImageAndNameTypes = {
@@ -52,7 +52,7 @@ function ImageAndName({
     return (
         <div className={styles["container"]}>
             <div className={styles["row-one-left"]}>
-                <ProfileImage src={image.src} alt={image.alt} sizePx={sizes.image} />
+                <Images.Profile src={image.src} alt={image.alt} sizePx={sizes.image} />
             </div>
             <div className={styles["row-one-right"]}>
                 {displayName.length > 0 ? (

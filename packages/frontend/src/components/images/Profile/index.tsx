@@ -2,7 +2,7 @@ import { Buffer } from "buffer";
 import * as extendedTypes from "@/utils/extendedTypes";
 import styles from "./index.module.css";
 
-type ProfileImageTypes = {
+type ProfileTypes = {
     src: extendedTypes.TypedArray;
     alt?: string;
     status?: "online" | "away" | "busy" | "offline" | null;
@@ -10,13 +10,13 @@ type ProfileImageTypes = {
     style?: React.CSSProperties;
 };
 
-function ProfileImage({
+function Profile({
     src = new Uint8Array([]),
     alt = "",
     status = null,
     sizePx = 50,
     style,
-}: ProfileImageTypes) {
+}: ProfileTypes) {
     const blob = new Blob([Buffer.from(src)], { type: "image/png" });
     const imgSrc = URL.createObjectURL(blob);
 
@@ -49,4 +49,4 @@ function ProfileImage({
     );
 }
 
-export default ProfileImage;
+export default Profile;

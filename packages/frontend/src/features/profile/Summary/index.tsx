@@ -1,5 +1,5 @@
 import createMultilineTextTruncateStyles from "@/utils/createMultilineTextTruncateStyles";
-import ProfileImage from "@/components/images/ProfileImage";
+import Images from "@/components/images";
 import User from "@/components/user";
 import styles from "./index.module.css";
 
@@ -49,7 +49,7 @@ function Summary({ type }: SummaryTypes) {
     if (type === "thin") {
         return (
             <div className={styles["container"]}>
-                <ProfileImage src={new Uint8Array([])} sizePx={48} />
+                <Images.Profile src={new Uint8Array([])} sizePx={48} />
             </div>
         );
     }

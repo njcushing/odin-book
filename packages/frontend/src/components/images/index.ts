@@ -1,7 +1,7 @@
-import ProfileImage from "./ProfileImage";
+import Profile from "./Profile";
 
 const Images = {
-    ProfileImage,
+    Profile,
 };
 
 export default Images;
