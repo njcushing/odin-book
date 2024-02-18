@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { ClientRequest } from "http";
 import styles from "./index.module.css";
 
 type Arrangement = {
@@ -32,6 +33,7 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
         let wrapperRefCurrent: Element;
         const observer = new ResizeObserver((entries) => {
             // Find first matching layout from 'layouts' prop, otherwise null
+            console.log(entries[0].contentRect);
             if (arrangements) {
                 for (let i = 0; i < arrangements.length; i++) {
                     if (
@@ -57,15 +59,14 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
     }, [width, height, arrangements]);
 
     useEffect(() => {
-        let contentNew = null;
-        const areas = [];
-        const areaSizes = [];
-        const gridTemplate = {
-            gridTemplateRows: "",
-            gridTemplateColumns: "",
-        };
-        let additionalStyles = {};
         if (layout) {
+            let contentNew = null;
+            const areas = [];
+            const areaSizes = [];
+            const gridTemplate = {
+                gridTemplateRows: "",
+                gridTemplateColumns: "",
+            };
             for (let i = 0; i < layout.areas.length; i++) {
                 const area = layout.areas[i];
                 areas.push(
@@ -83,21 +84,20 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
             }
             if (layout.type === "rows") gridTemplate.gridTemplateRows = areaSizes.join(" ");
             if (layout.type === "columns") gridTemplate.gridTemplateColumns = areaSizes.join(" ");
-            additionalStyles = { ...layout.style };
-        }
-        contentNew = (
-            <div
-                className={styles["container"]}
-                style={{
-                    ...additionalStyles,
-                    display: "grid",
-                    ...gridTemplate,
-                }}
-            >
-                {areas}
-            </div>
-        );
-        setContent(contentNew);
+            contentNew = (
+                <div
+                    className={styles["container"]}
+                    style={{
+                        ...layout.style,
+                        display: "grid",
+                        ...gridTemplate,
+                    }}
+                >
+                    {areas}
+                </div>
+            );
+            setContent(contentNew);
+        } else setContent(null);
     }, [width, height, layout]);
 
     return (
