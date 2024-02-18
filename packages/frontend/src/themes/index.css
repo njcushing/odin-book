@@ -15,6 +15,7 @@
     --text-inactive: rgb(255, 255, 255);
     --text-link: rgb(255, 255, 255);
     --text-visited: rgb(255, 255, 255);
+    --text-error: rgb(235, 2, 2);
     --text-infopanel: rgb(255, 255, 255);
 
     /* Background */
