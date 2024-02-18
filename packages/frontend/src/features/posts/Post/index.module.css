@@ -3,17 +3,16 @@
     flex-direction: column;
 
     font-family: Gabarito;
-    outline: 1px solid var(--outline-primary);
+    border-bottom: 1px solid var(--outline-primary);
 
     width: calc(100% - (2 * 0.6rem));
     height: min-content;
     padding: 0.6rem;
 }
 
-.container[data-is-reply] {
+.container[data-is-reply |= "true"] {
     outline: none;
     border-left: 1px solid var(--outline-primary);
-    border-bottom: 1px solid var(--outline-primary);
 }
 
 .row-one {
