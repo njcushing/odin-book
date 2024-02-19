@@ -5,8 +5,6 @@
     flex-wrap: nowrap;
     gap: 0.2rem;
 
-    border-bottom: 1px solid var(--outline-primary);
-
     padding: 0.4rem;
 }
 
