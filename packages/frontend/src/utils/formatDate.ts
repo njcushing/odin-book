@@ -4,9 +4,9 @@ const isDate = (date: string) => {
     return !Number.isNaN(new Date(date));
 };
 
-const formatDate = (dateString: string) => {
-    if (dateString && isDate(dateString)) {
-        return DateTime.fromJSDate(new Date(dateString)).toLocaleString(
+const formatDate = (date: string) => {
+    if (date && isDate(date)) {
+        return DateTime.fromJSDate(new Date(date)).toLocaleString(
             DateTime.DATETIME_SHORT_WITH_SECONDS,
         );
     }
