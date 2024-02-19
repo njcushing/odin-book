@@ -1,5 +1,4 @@
-.button,
-.overlay-container {
+.button {
     position: relative;
 
     pointer-events: auto;
@@ -20,22 +19,13 @@
     padding: 0.4rem 1.0rem;
 }
 
-.overlay-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    border: 1px solid #000;
+.button:hover,
+.button:focus {
+    cursor: pointer;
 }
 
-.button:hover,
-.button:focus,
-.overlay-container:hover,
-.overlay-container:focus {
-    cursor: pointer;
+.symbol {
+    font-size: inherit;
 }
 
 /* Palettes */

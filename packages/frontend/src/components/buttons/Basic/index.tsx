@@ -45,7 +45,7 @@ function Basic({
             data-animation={animation}
         >
             {symbol && symbol.length > 0 && (
-                <p className={`material-symbols-rounded ${styles["button-symbol"]}`}>{symbol}</p>
+                <p className={`material-symbols-rounded ${styles["symbol"]}`}>{symbol}</p>
             )}
             {text}
             {children}
