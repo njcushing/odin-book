@@ -78,7 +78,7 @@ function Message({
                         delete newImages[key];
                         setImages(newImages);
                     }}
-                    otherStyles={{ fontSize: "1.0rem", padding: "0.2rem" }}
+                    otherStyles={{ fontSize: "1.2rem", padding: "0.2rem" }}
                 />
             </li>
         );
