@@ -25,7 +25,6 @@ function Basic({
             onClick={(e) => {
                 if (onClickHandler) onClickHandler(e);
                 e.currentTarget.blur();
-                e.preventDefault();
             }}
             onMouseLeave={(e) => {
                 e.currentTarget.blur();
