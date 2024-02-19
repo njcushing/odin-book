@@ -1,0 +1,49 @@
+.header {
+    display: grid;
+    grid-template-columns: minmax(0, 100%) auto;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
+
+    border-bottom: 1px solid var(--outline-primary);
+
+    padding: 0.4rem;
+}
+
+.name-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+}
+
+.name,
+.edit-name {
+    color: var(--text-primary);
+    font-family: Gabarito;
+    font-weight: bold;
+    text-align: left;
+    text-wrap: nowrap;
+}
+
+.name {
+    font-size: 1.8rem;
+
+    padding: 0.2rem 0rem;
+}
+
+.edit-name {
+    font-size: 1.6rem;
+
+    width: 100%;
+    max-width: 20rem;
+}
+
+.options {
+    display: flex;
+    justify-content: end;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
+}
