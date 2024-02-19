@@ -33,7 +33,6 @@ function Spatial({ width = "auto", height = "auto", arrangements }: SpatialProps
         let wrapperRefCurrent: Element;
         const observer = new ResizeObserver((entries) => {
             // Find first matching layout from 'layouts' prop, otherwise null
-            console.log(entries[0].contentRect);
             if (arrangements) {
                 for (let i = 0; i < arrangements.length; i++) {
                     if (
