@@ -38,7 +38,7 @@ function PeopleYouMayKnow() {
                                 text="Follow"
                                 symbol="person_add"
                                 palette="orange"
-                                otherStyles={{ fontSize: "0.9rem" }}
+                                otherStyles={{ fontSize: "1.0rem" }}
                             />
                         </li>
                     );
