@@ -11,7 +11,7 @@ const buttonDefaultProps = {
     palette: "primary",
     animation: "rigid",
     style: { shape: "sharp" },
-    otherStyles: {},
+    otherStyles: { fontSize: "1.25rem" },
 };
 
 type UploadTypes = {
