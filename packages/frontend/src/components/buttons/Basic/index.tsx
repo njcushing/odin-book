@@ -7,7 +7,6 @@ function Basic({
     symbol = "",
     label = "",
     onClickHandler = null,
-    onSubmitHandler = null,
     disabled = false,
     palette = "primary",
     animation = "rigid",
@@ -25,10 +24,6 @@ function Basic({
             aria-label={label}
             onClick={(e) => {
                 if (onClickHandler) onClickHandler(e);
-                e.currentTarget.blur();
-            }}
-            onSubmit={(e) => {
-                if (onSubmitHandler) onSubmitHandler(e);
                 e.currentTarget.blur();
                 e.preventDefault();
             }}

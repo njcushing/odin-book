@@ -5,8 +5,7 @@ export type Basic = {
     text?: string;
     symbol?: string;
     label?: string;
-    onClickHandler?: ((event?: React.MouseEvent<HTMLButtonElement>) => void) | null;
-    onSubmitHandler?: ((event?: React.FormEvent<HTMLButtonElement>) => void) | null;
+    onClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     disabled?: boolean;
     palette?: "primary" | "secondary" | "bare" | "red" | "orange" | "green" | "blue";
     animation?: "rigid" | "squishy";
