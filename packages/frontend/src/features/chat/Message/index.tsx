@@ -51,7 +51,7 @@ function Message({ author, content, onReplyClickHandler }: MessageTypes) {
     return (
         <div className={styles["wrapper"]} data-position={author.self}>
             <div className={styles["container"]}>
-                <div className={styles["profile-image"]} data-position={author.self}>
+                <div className={styles["profile-image"]}>
                     <Images.Profile
                         src={author.image && author.image.src}
                         alt={author.image && author.image.alt}
@@ -59,7 +59,7 @@ function Message({ author, content, onReplyClickHandler }: MessageTypes) {
                         sizePx={48}
                     />
                 </div>
-                <div className={styles["message-container"]} data-position={author.self}>
+                <div className={styles["message-container"]}>
                     {content.text && content.text.length > 0 ? (
                         <p className={styles["message-text"]} aria-label="message-text">
                             {content.text}
@@ -97,7 +97,7 @@ function Message({ author, content, onReplyClickHandler }: MessageTypes) {
                         </div>
                     ) : null}
                 </div>
-                <div className={styles["option-button"]} data-position={author.self}>
+                <div className={styles["option-button"]}>
                     <Buttons.Basic
                         text=""
                         symbol="reply"
@@ -107,11 +107,7 @@ function Message({ author, content, onReplyClickHandler }: MessageTypes) {
                         style={{ shape: "rounded" }}
                     />
                 </div>
-                <p
-                    className={styles["name-and-date-string"]}
-                    aria-label="author-and-date"
-                    data-position={author.self}
-                >
+                <p className={styles["name-and-date-string"]} aria-label="author-and-date">
                     {`${author.displayName} at ${formatDate(content.dateSent || "")}`}
                 </p>
             </div>
