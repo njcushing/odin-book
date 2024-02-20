@@ -35,6 +35,8 @@ function Header({ name = "Chat Title", onEditNameHandler = null }: HeaderTypes) 
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             setChatName(e.target.value)
                         }
+                        onBlur={() => setEditingName(false)}
+                        autoFocus
                     ></input>
                 )}
                 <Buttons.Basic
