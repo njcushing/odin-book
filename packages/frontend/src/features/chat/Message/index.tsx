@@ -1,6 +1,7 @@
 import Buttons from "@/components/buttons";
 import Images from "@/components/images";
 import * as extendedTypes from "@/utils/extendedTypes";
+import objectURLFromTypedArray from "@/utils/objectURLFromTypedArray";
 import formatDate from "@/utils/formatDate";
 import styles from "./index.module.css";
 
@@ -42,11 +43,6 @@ type MessageTypes = {
     onReplyClickHandler?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const formatImage = (src: extendedTypes.TypedArray): string => {
-    const blob = new Blob([Buffer.from(src)], { type: "image/png" });
-    return URL.createObjectURL(blob);
-};
-
 function Message({ author, content, onReplyClickHandler }: MessageTypes) {
     return (
         <div className={styles["wrapper"]} data-position={author.self}>
@@ -70,7 +66,9 @@ function Message({ author, content, onReplyClickHandler }: MessageTypes) {
                             <img
                                 className={styles["message-image"]}
                                 aria-label="message-image"
-                                src={content.image.src && formatImage(content.image.src)}
+                                src={
+                                    content.image.src && objectURLFromTypedArray(content.image.src)
+                                }
                                 alt={content.image.alt || ""}
                             ></img>
                         </div>
@@ -88,7 +86,7 @@ function Message({ author, content, onReplyClickHandler }: MessageTypes) {
                                         aria-label="replying-to-message-image"
                                         src={
                                             content.replyingTo.image.src &&
-                                            formatImage(content.replyingTo.image.src)
+                                            objectURLFromTypedArray(content.replyingTo.image.src)
                                         }
                                         alt={content.replyingTo.image.alt}
                                     ></img>
