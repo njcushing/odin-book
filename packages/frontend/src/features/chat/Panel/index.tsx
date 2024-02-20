@@ -1,10 +1,15 @@
+import { useState } from "react";
 import LayoutUI from "@/layouts";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
+import * as extendedTypes from "@/utils/extendedTypes";
 import Chat from "..";
 import styles from "./index.module.css";
 
 function Panel() {
+    const [replyingTo, setReplyingTo]: [string | null, extendedTypes.Setter<string | null>] =
+        useState(null);
+
     const messages = [
         true,
         false,
@@ -42,6 +47,9 @@ function Panel() {
                         <Chat.Message
                             author={{ self: message, displayName: "Greg" }}
                             content={{ text: "Hello" }}
+                            onReplyClickHandler={() => {
+                                setReplyingTo("user");
+                            }}
                             key={i}
                         />
                     );
@@ -61,6 +69,20 @@ function Panel() {
             />
         </div>
     );
+
+    const replyingToElement = replyingTo ? (
+        <div className={styles["replying-to-container"]} key={0}>
+            <Buttons.Basic
+                text=""
+                symbol="cancel"
+                onClickHandler={() => setReplyingTo(null)}
+                otherStyles={{ fontSize: "1.2rem", padding: "0.5rem" }}
+            />
+            <p className={`truncate-ellipsis ${styles["replying-to-string"]}`} key={0}>
+                {`Replying to ${replyingTo}`}
+            </p>
+        </div>
+    ) : null;
 
     const messageBox = (
         <div className={styles["message-box-container"]} key={0}>
@@ -83,6 +105,7 @@ function Panel() {
                         areas: [
                             { size: "auto", children: [<Chat.Header key={0} />] },
                             { size: "1fr", children: [messageList] },
+                            { size: "auto", children: [replyingToElement] },
                             { size: "auto", children: [messageBox] },
                         ],
                         style: {
