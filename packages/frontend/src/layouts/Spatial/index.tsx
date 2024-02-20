@@ -8,12 +8,10 @@ type Arrangement = {
     maxWidth: number;
     minHeight: number;
     maxHeight: number;
-    areas: [
-        {
-            size: string;
-            children: React.ReactNode[];
-        },
-    ];
+    areas: {
+        size: string;
+        children: React.ReactNode[];
+    }[];
     style: React.CSSProperties;
 };
 
