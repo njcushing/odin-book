@@ -1,14 +1,6 @@
 import { Buffer } from "buffer";
-import * as extendedTypes from "@/utils/extendedTypes";
+import * as Types from "../types";
 import styles from "./index.module.css";
-
-type ProfileTypes = {
-    src?: extendedTypes.TypedArray;
-    alt?: string;
-    status?: "online" | "away" | "busy" | "offline" | null;
-    sizePx?: number;
-    style?: React.CSSProperties;
-};
 
 function Profile({
     src = new Uint8Array([]),
@@ -16,7 +8,7 @@ function Profile({
     status = null,
     sizePx = 50,
     style,
-}: ProfileTypes) {
+}: Types.Profile) {
     let imgSrc = "";
     if (src) {
         const blob = new Blob([Buffer.from(src)], { type: "image/png" });
