@@ -1,11 +1,15 @@
 import Panel from "./Panel";
-import Message from "./Message";
 import Header from "./Header";
+import Option from "./Option";
+import Active from "./Active";
+import Message from "./Message";
 
 const Chat = {
     Panel,
-    Message,
     Header,
+    Option,
+    Active,
+    Message,
 };
 
 export default Chat;

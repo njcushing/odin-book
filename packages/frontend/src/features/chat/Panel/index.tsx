@@ -1,92 +1,21 @@
-import { useState } from "react";
 import LayoutUI from "@/layouts";
-import Inputs from "@/components/inputs";
-import Buttons from "@/components/buttons";
-import * as extendedTypes from "@/utils/extendedTypes";
+import Navigation from "@/features/navigation";
 import Chat from "..";
+import * as mockData from "@/mockData";
 import styles from "./index.module.css";
 
 function Panel() {
-    const [replyingTo, setReplyingTo]: [string | null, extendedTypes.Setter<string | null>] =
-        useState(null);
-
-    const messages = [
-        true,
-        false,
-        false,
-        true,
-        false,
-        false,
-        true,
-        true,
-        false,
-        false,
-        true,
-        true,
-        false,
-        false,
-        true,
-        true,
-        false,
-        false,
-        true,
-        true,
-        false,
-        false,
-        true,
-        true,
-    ];
-
-    const messageList = (
-        <div className={styles["message-list-container"]} key={0}>
-            <LayoutUI.List
-                label="navigation"
-                ordered={false}
-                listItems={messages.map((message, i) => {
-                    return (
-                        <Chat.Message
-                            author={{ self: message, displayName: "Greg" }}
-                            content={{ text: "Hello" }}
-                            onReplyClickHandler={() => {
-                                setReplyingTo("user");
-                            }}
-                            key={i}
-                        />
-                    );
-                })}
-                scrollable
-                listStyles={{
-                    flexDirection: "column",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    flexWrap: "nowrap",
-                    gap: "0.4rem",
-                    width: "calc(100% - (2 * 0.4rem))",
-                    height: "auto",
-                    padding: "0.4rem",
-                    margin: "0rem",
-                }}
+    const navigation = (
+        <div className={styles["navigation-container"]} key={0}>
+            <Navigation.TopBar
+                options={[
+                    { text: "test 1" },
+                    { text: "test 2" },
+                    { text: "test 3" },
+                    { text: "test 4" },
+                ]}
+                activeOption="test 1"
             />
-        </div>
-    );
-
-    const replyingToElement = replyingTo ? (
-        <div className={styles["replying-to-container"]} key={0}>
-            <Buttons.Basic
-                text=""
-                symbol="cancel"
-                onClickHandler={() => setReplyingTo(null)}
-                otherStyles={{ fontSize: "1.2rem", padding: "0.5rem" }}
-            />
-            <p className={`truncate-ellipsis ${styles["replying-to-string"]}`} key={0}>
-                {`Replying to ${replyingTo}`}
-            </p>
-        </div>
-    ) : null;
-
-    const messageBox = (
-        <div className={styles["message-box-container"]} key={0}>
-            <Inputs.Message placeholder="Type your message..." />
         </div>
     );
 
@@ -103,10 +32,8 @@ function Panel() {
                         minHeight: 0,
                         maxHeight: 999999,
                         areas: [
-                            { size: "auto", children: [<Chat.Header key={0} />] },
-                            { size: "1fr", children: [messageList] },
-                            { size: "auto", children: [replyingToElement] },
-                            { size: "auto", children: [messageBox] },
+                            { size: "auto", children: [navigation] },
+                            { size: "1fr", children: [<Chat.Active key={0} />] },
                         ],
                         style: {
                             justifySelf: "flex-start",

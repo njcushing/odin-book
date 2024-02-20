@@ -1,40 +1,6 @@
 .container {
-    position: relative;
-
     width: 100%;
     height: 100%;
 
     outline: 1px solid var(--outline-primary);
-}
-
-.message-list-container {
-    border-top: 1px solid var(--outline-primary);
-    border-bottom: 1px solid var(--outline-primary);
-
-    width: 100%;
-    height: 100%;
-}
-
-.replying-to-container {
-    display: grid;
-    grid-template-columns: auto minmax(0, 100%);
-    align-items: center;
-    gap: 0.2rem;
-
-    width: calc(100% - (2 * 0.4rem));
-    height: calc(100% - 0.2rem);
-    padding: 0.2rem 0.4rem 0rem 0.4rem;
-}
-
-.replying-to-string {
-    color: var(--text-primary);
-    font-family: Gabarito;
-    font-size: 1.0rem;
-    text-align: start;
-}
-
-.message-box-container {
-    width: calc(100% - (2 * 0.6rem));
-    height: calc(100% - (2 * 0.6rem));
-    padding: 0.6rem;
 }
