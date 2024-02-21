@@ -1,10 +1,11 @@
 import LayoutUI from "@/layouts";
 import Buttons from "@/components/buttons";
+import * as mockData from "@/mockData";
 import Chat from "..";
 import styles from "./index.module.css";
 
 function List() {
-    const chats = [null, null, null, null, null, null, null, null, null, null, null, null, null];
+    const chats = mockData.chats(10);
 
     const buttons = (
         <div className={styles["create-new-chat-button-container"]} key={0}>
@@ -24,19 +25,7 @@ function List() {
         <LayoutUI.List
             label="navigation"
             ordered={false}
-            listItems={[
-                chats.map((chat, i) => {
-                    return (
-                        <Chat.Option
-                            name=""
-                            participants={["name", "name", "name", "name", "name", "name", "name"]}
-                            image={{ src: new Uint8Array([]), alt: "" }}
-                            recentMessage={{ author: "test", text: "test" }}
-                            key={i}
-                        />
-                    );
-                }),
-            ]}
+            listItems={chats.map((chat) => chat)}
             scrollable
             listStyles={{
                 flexDirection: "column",
