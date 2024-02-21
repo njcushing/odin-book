@@ -1,9 +1,8 @@
 .container {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: auto minmax(0, 100%) auto;
     align-items: center;
-    flex-wrap: nowrap;
-    gap: 0.4rem;
+    gap: 0.6rem;
 
     font-size: 24px;
     text-decoration: none;
