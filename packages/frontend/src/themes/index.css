@@ -69,6 +69,14 @@
     --navigation-option-primary-focus: rgb(200, 200, 200);
     --navigation-option-primary-disabled: rgb(128, 128, 128);
     --navigation-option-primary-outline: transparent;
+    --chat-option-primary: rgb(255, 255, 255);
+    --chat-option-primary-text: rgb(0, 0, 0);
+    --chat-option-primary-hover: rgb(215, 215, 215);
+    --chat-option-primary-focus: rgb(200, 200, 200);
+    --chat-option-primary-disabled: rgb(128, 128, 128);
+    --chat-option-primary-outline: transparent;
+    --chat-option-primary-image-outline: rgb(0, 0, 0);
+    --text-secondary: rgb(48, 48, 48);
     --button-red: rgb(228, 28, 28);
     --button-red-text: rgb(255, 255, 255);
     --button-red-hover: rgb(255, 51, 51);
