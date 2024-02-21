@@ -10,13 +10,6 @@ type NormalImageTypes = {
     alt?: string;
 };
 
-type ProfileImageTypes = {
-    src: extendedTypes.TypedArray;
-    alt?: string;
-    sizePx?: number;
-    style?: React.CSSProperties;
-};
-
 type ReplyingToTypes = {
     author: string;
     text?: string;
@@ -26,7 +19,7 @@ type ReplyingToTypes = {
 type AuthorTypes = {
     self: boolean;
     displayName?: string;
-    image?: ProfileImageTypes;
+    image?: Images.Types.Profile;
     status?: "online" | "away" | "busy" | "offline" | null;
 };
 
