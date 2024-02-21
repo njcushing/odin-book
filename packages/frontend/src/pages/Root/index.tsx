@@ -1,27 +1,27 @@
+import { Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
-import Chat from "@/features/chat";
-import Infobar from "@/features/infobar";
+import Sidebar from "@/features/sidebar";
 import styles from "./index.module.css";
 
-function Chats() {
+function Root() {
     const layout = (
         <LayoutUI.Spatial
-            width="100%"
+            width="auto"
             height="100%"
             arrangements={[
                 {
                     type: "columns",
-                    minWidth: 920,
+                    minWidth: 1200,
                     maxWidth: 999999,
                     minHeight: 0,
                     maxHeight: 999999,
                     areas: [
-                        { size: "600px", children: [<Chat.Panel key={0} />] },
-                        { size: "320px", children: [<Infobar.Home key={0} />] },
+                        { size: "280px", children: [<Sidebar.Generic type="wide" key={0} />] },
+                        { size: "920px", children: [<Outlet key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
-                        alignSelf: "flex-start",
+                        alignSelf: "center",
                         width: "1200px",
                         height: "100%",
                         padding: "0rem",
@@ -29,14 +29,35 @@ function Chats() {
                 },
                 {
                     type: "columns",
-                    minWidth: 600,
-                    maxWidth: 920,
+                    minWidth: 980,
+                    maxWidth: 1200,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "600px", children: [<Chat.Panel key={0} />] }],
+                    areas: [
+                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
+                        { size: "920px", children: [<Outlet key={0} />] },
+                    ],
                     style: {
                         justifySelf: "flex-start",
-                        alignSelf: "flex-start",
+                        alignSelf: "center",
+                        width: "980px",
+                        height: "100%",
+                        padding: "0rem",
+                    },
+                },
+                {
+                    type: "columns",
+                    minWidth: 660,
+                    maxWidth: 980,
+                    minHeight: 0,
+                    maxHeight: 999999,
+                    areas: [
+                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
+                        { size: "600px", children: [<Outlet key={0} />] },
+                    ],
+                    style: {
+                        justifySelf: "flex-start",
+                        alignSelf: "center",
                         width: "660px",
                         height: "100%",
                         padding: "0rem",
@@ -44,14 +65,17 @@ function Chats() {
                 },
                 {
                     type: "columns",
-                    minWidth: 300,
-                    maxWidth: 600,
+                    minWidth: 360,
+                    maxWidth: 660,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "300px", children: [<Chat.Panel key={0} />] }],
+                    areas: [
+                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
+                        { size: "300px", children: [<Outlet key={0} />] },
+                    ],
                     style: {
                         justifySelf: "flex-start",
-                        alignSelf: "flex-start",
+                        alignSelf: "center",
                         width: "360px",
                         height: "100%",
                         padding: "0rem",
@@ -63,7 +87,10 @@ function Chats() {
                     maxWidth: 360,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "1fr", children: [<Chat.Panel key={0} />] }],
+                    areas: [
+                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
+                        { size: "1fr", children: [<Outlet key={0} />] },
+                    ],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
@@ -83,4 +110,4 @@ function Chats() {
     );
 }
 
-export default Chats;
+export default Root;
