@@ -1,25 +1,23 @@
-import { Buffer } from "buffer";
+import objectURLFromTypedArray from "@/utils/objectURLFromTypedArray";
 import * as Types from "../types";
 import styles from "./index.module.css";
 
 function Profile({
     src = new Uint8Array([]),
     alt = "",
+    label = "profile image",
     status = null,
     sizePx = 50,
     style,
 }: Types.Profile) {
     let imgSrc = "";
-    if (src) {
-        const blob = new Blob([Buffer.from(src)], { type: "image/png" });
-        imgSrc = URL.createObjectURL(blob);
-    }
+    if (src) imgSrc = objectURLFromTypedArray(src);
 
     return (
         <div className={styles["container"]} style={{ ...style }}>
             <img
                 className={styles["profile-image"]}
-                aria-label="profile-image"
+                aria-label={label}
                 src={imgSrc}
                 alt={alt}
                 style={{
