@@ -10,7 +10,7 @@ function Generic({ type }: GenericTypes) {
     if (type === "wide") {
         return (
             <div className={styles["container"]}>
-                <Profile.Summary type="wide" />
+                <Profile.Sidebar type="wide" />
                 <Navigation.Menu type="wide" />
             </div>
         );
@@ -19,7 +19,7 @@ function Generic({ type }: GenericTypes) {
     if (type === "thin") {
         return (
             <div className={styles["container"]}>
-                <Profile.Summary type="thin" />
+                <Profile.Sidebar type="thin" />
                 <Navigation.Menu type="thin" />
             </div>
         );

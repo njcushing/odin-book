@@ -3,11 +3,11 @@ import Images from "@/components/images";
 import User from "@/components/user";
 import styles from "./index.module.css";
 
-type SummaryTypes = {
+type SidebarTypes = {
     type: "wide" | "thin";
 };
 
-function Summary({ type }: SummaryTypes) {
+function Sidebar({ type }: SidebarTypes) {
     if (type === "wide") {
         return (
             <div className={styles["container"]}>
@@ -55,4 +55,4 @@ function Summary({ type }: SummaryTypes) {
     }
 }
 
-export default Summary;
+export default Sidebar;
