@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+
+    position: relative;
+}
+
+.image {
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: #cecece;
+}
