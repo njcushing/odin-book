@@ -22,7 +22,7 @@ function Horizontal({
     style = {},
 }: HorizontalTypes) {
     const [optionSelected, setOptionSelected] = useState<string | null>(selected);
-    const [optionsDisplaying, setOptionsDisplaying] = useState<Option[]>([]);
+    const [optionsDisplaying, setOptionsDisplaying] = useState<Option[]>(options);
     const [displayMenuButton, setDisplayMenuButton] = useState<boolean>(false);
 
     const listRef = useRef(null);
