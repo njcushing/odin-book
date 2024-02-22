@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.module.css";
 
 type Option = {
@@ -10,9 +10,17 @@ type HorizontalTypes = {
     options: Option[];
     selected: string | null;
     label?: string;
+    minPaddingPx?: number;
+    style?: React.CSSProperties;
 };
 
-function Horizontal({ options = [], selected = null, label = "navigation" }: HorizontalTypes) {
+function Horizontal({
+    options = [],
+    selected = null,
+    label = "navigation",
+    minPaddingPx = 16,
+    style = {},
+}: HorizontalTypes) {
     const [optionSelected, setOptionSelected] = useState<string | null>(selected);
     const [optionsDisplaying, setOptionsDisplaying] = useState<Option[]>([]);
     const [displayMenuButton, setDisplayMenuButton] = useState<boolean>(false);
@@ -20,8 +28,7 @@ function Horizontal({ options = [], selected = null, label = "navigation" }: Hor
     const listRef = useRef(null);
     const menuButtonRef = useRef(null);
 
-    const fontSize = "1.1rem";
-    const minPaddingPx = 16;
+    const fontSize = style.fontSize || "1.1rem";
 
     const menuButton = (
         <button
@@ -99,7 +106,7 @@ function Horizontal({ options = [], selected = null, label = "navigation" }: Hor
     if (displayMenuButton) gridColumnWidths += "min-content";
 
     return (
-        <nav className={styles["container"]} aria-label={label}>
+        <nav className={styles["container"]} aria-label={label} style={{ ...style }}>
             <ul
                 className={styles["list"]}
                 style={{ gridTemplateColumns: gridColumnWidths }}
