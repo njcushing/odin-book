@@ -1,3 +1,14 @@
+@keyframes menuZoom {
+    from {
+        opacity: 80%;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 100%;
+        transform: translateY(0px);
+    }
+}
+
 .container {
     width: 100%;
     height: min-content;
@@ -74,7 +85,8 @@
 }
 
 .option:hover .highlight-bar,
-.option[data-highlighted |= "true"] .highlight-bar {
+.option[data-highlighted |= "true"] .highlight-bar,
+.option[data-selected |= "true"] .highlight-bar {
     width: 100%;
 }
 
@@ -95,4 +107,22 @@
 .menu-button-false-render {
     position: absolute;
     opacity: 0%;
+}
+
+.menu {
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 4px;
+    outline: 1px solid var(--outline-primary);
+
+    width: min-content;
+
+    animation: menuZoom 0.12s ease-in-out forwards;
+}
+
+.menu .option {
+    border-radius: 0px;
 }
