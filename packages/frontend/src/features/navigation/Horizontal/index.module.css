@@ -85,12 +85,13 @@
 }
 
 .option:hover .highlight-bar,
+.option:focus .highlight-bar,
 .option[data-highlighted |= "true"] .highlight-bar,
 .option[data-selected |= "true"] .highlight-bar {
     width: 100%;
 }
 
-.option[data-highlighted |= "true"] .highlight-bar {
+.option[data-highlighted |= "true"]:not(:focus) .highlight-bar {
     background-color: var(--navigation-horizontal-option-primary-highlight-active);
 }
 
