@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import * as extendedTypes from "./extendedTypes";
 
 const objectURLFromTypedArray = (src: extendedTypes.TypedArray): string => {
