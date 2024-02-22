@@ -1,10 +1,10 @@
 import Menu from "./Menu";
-import TopBar from "./TopBar";
+import Horizontal from "./Horizontal";
 import Option from "./Option";
 
 const Navigation = {
     Menu,
-    TopBar,
+    Horizontal,
     Option,
 };
 
