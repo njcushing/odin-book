@@ -7,7 +7,7 @@ function Router() {
         {
             path: "/",
             element: <Page.Root />,
-            children: [...home(), ...chats()],
+            children: [...home(), ...profile(), ...chats(), ...settings()],
             errorElement: <div></div>,
         },
     ]);
@@ -25,11 +25,31 @@ const home = () => {
     ];
 };
 
+const profile = () => {
+    return [
+        {
+            path: ":accountTag",
+            element: <Page.Profile />,
+            errorElement: <div></div>,
+        },
+    ];
+};
+
 const chats = () => {
     return [
         {
             path: "chats",
             element: <Page.Chats />,
+            errorElement: <div></div>,
+        },
+    ];
+};
+
+const settings = () => {
+    return [
+        {
+            path: "settings",
+            element: <Page.Settings />,
             errorElement: <div></div>,
         },
     ];

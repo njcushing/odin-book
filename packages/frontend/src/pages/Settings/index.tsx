@@ -1,28 +1,27 @@
 import LayoutUI from "@/layouts";
-import Sidebar from "@/features/sidebar";
+import SettingsComponents from "@/features/settings";
 import Infobar from "@/features/infobar";
 import styles from "./index.module.css";
 
 function Settings() {
     const layout = (
         <LayoutUI.Spatial
-            width="auto"
+            width="100%"
             height="100%"
             arrangements={[
                 {
                     type: "columns",
-                    minWidth: 1200,
+                    minWidth: 920,
                     maxWidth: 999999,
                     minHeight: 0,
                     maxHeight: 999999,
                     areas: [
-                        { size: "280px", children: [<Sidebar.Generic type="wide" key={0} />] },
-                        { size: "600px", children: [] },
+                        { size: "600px", children: [<SettingsComponents.Main key={0} />] },
                         { size: "320px", children: [<Infobar.Home key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
-                        alignSelf: "center",
+                        alignSelf: "flex-start",
                         width: "1200px",
                         height: "100%",
                         padding: "0rem",
@@ -30,36 +29,14 @@ function Settings() {
                 },
                 {
                     type: "columns",
-                    minWidth: 980,
-                    maxWidth: 1200,
+                    minWidth: 600,
+                    maxWidth: 920,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [
-                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
-                        { size: "600px", children: [] },
-                        { size: "320px", children: [<Infobar.Home key={0} />] },
-                    ],
+                    areas: [{ size: "600px", children: [<SettingsComponents.Main key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
-                        alignSelf: "center",
-                        width: "980px",
-                        height: "100%",
-                        padding: "0rem",
-                    },
-                },
-                {
-                    type: "columns",
-                    minWidth: 660,
-                    maxWidth: 980,
-                    minHeight: 0,
-                    maxHeight: 999999,
-                    areas: [
-                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
-                        { size: "600px", children: [] },
-                    ],
-                    style: {
-                        justifySelf: "flex-start",
-                        alignSelf: "center",
+                        alignSelf: "flex-start",
                         width: "660px",
                         height: "100%",
                         padding: "0rem",
@@ -67,17 +44,14 @@ function Settings() {
                 },
                 {
                     type: "columns",
-                    minWidth: 360,
-                    maxWidth: 660,
+                    minWidth: 300,
+                    maxWidth: 600,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [
-                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
-                        { size: "300px", children: [] },
-                    ],
+                    areas: [{ size: "300px", children: [<SettingsComponents.Main key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
-                        alignSelf: "center",
+                        alignSelf: "flex-start",
                         width: "360px",
                         height: "100%",
                         padding: "0rem",
@@ -85,16 +59,11 @@ function Settings() {
                 },
                 {
                     type: "columns",
-                    width: "100%",
                     minWidth: 0,
                     maxWidth: 360,
-                    height: "100%",
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [
-                        { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
-                        { size: "1fr", children: [] },
-                    ],
+                    areas: [{ size: "1fr", children: [<SettingsComponents.Main key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
