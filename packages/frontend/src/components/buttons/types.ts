@@ -7,7 +7,7 @@ export type Basic = {
     label?: string;
     onClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     disabled?: boolean;
-    palette?: "primary" | "secondary" | "bare" | "red" | "orange" | "green" | "blue";
+    palette?: "primary" | "secondary" | "bare" | "red" | "orange" | "gold" | "green" | "blue";
     animation?: "rigid" | "squishy";
     style?: {
         shape?: "sharp" | "rounded";

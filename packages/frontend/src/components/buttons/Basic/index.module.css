@@ -65,6 +65,13 @@
 .button[data-palette|="orange"]:focus       { background-color: var(--button-orange-focus); }
 .button[data-palette|="orange"]:disabled    { background-color: var(--button-orange-disabled); }
 
+.button[data-palette|="gold"]               {            color: var(--button-gold-text);
+                                              background-color: var(--button-gold);
+                                                 outline-color: var(--button-gold-border); }
+.button[data-palette|="gold"]:hover         { background-color: var(--button-gold-hover); }
+.button[data-palette|="gold"]:focus         { background-color: var(--button-gold-focus); }
+.button[data-palette|="gold"]:disabled      { background-color: var(--button-gold-disabled); }
+
 .button[data-palette|="green"]              {            color: var(--button-green-text);
                                               background-color: var(--button-green);
                                                  outline-color: var(--button-green-border); }

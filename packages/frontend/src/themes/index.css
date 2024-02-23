@@ -96,6 +96,12 @@
     --button-orange-focus: rgb(228, 114, 8);
     --button-orange-disabled: rgb(128, 128, 128);
     --button-orange-border: transparent;
+    --button-gold: rgb(238, 156, 5);
+    --button-gold-text: rgb(255, 255, 255);
+    --button-gold-hover: rgb(216, 143, 7);
+    --button-gold-focus: rgb(196, 129, 4);
+    --button-gold-disabled: rgb(128, 128, 128);
+    --button-gold-border: transparent;
     --button-green: rgb(12, 214, 22);
     --button-green-text: rgb(255, 255, 255);
     --button-green-hover: rgb(47, 240, 57);
