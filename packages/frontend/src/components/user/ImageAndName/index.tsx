@@ -77,7 +77,7 @@ function ImageAndName({
                             fontSize: `${sizes.accountTag}rem`,
                         }}
                     >
-                        {accountTag}
+                        @{accountTag}
                     </button>
                 ) : null}
             </div>
