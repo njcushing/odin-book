@@ -69,6 +69,13 @@
     --navigation-option-primary-focus: rgb(200, 200, 200);
     --navigation-option-primary-disabled: rgb(128, 128, 128);
     --navigation-option-primary-outline: transparent;
+    --navigation-horizontal-option-primary: rgb(255, 255, 255);
+    --navigation-horizontal-option-primary-text: rgb(0, 0, 0);
+    --navigation-horizontal-option-primary-hover: rgb(238, 238, 238);
+    --navigation-horizontal-option-primary-focus: rgb(255, 255, 255);
+    --navigation-horizontal-option-primary-disabled: rgb(128, 128, 128);
+    --navigation-horizontal-option-primary-highlight: rgb(28, 180, 207);
+    --navigation-horizontal-option-primary-highlight-active: rgb(32, 197, 54);
     --chat-option-primary: rgb(255, 255, 255);
     --chat-option-primary-text: rgb(0, 0, 0);
     --chat-option-primary-hover: rgb(215, 215, 215);
