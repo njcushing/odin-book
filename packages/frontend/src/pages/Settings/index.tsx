@@ -1,7 +1,16 @@
+import { Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
 import SettingsComponents from "@/features/settings";
 import Infobar from "@/features/infobar";
 import styles from "./index.module.css";
+
+export const routes = [
+    {
+        path: "",
+        element: <SettingsComponents.Main />,
+        errorElement: <div></div>,
+    },
+];
 
 function Settings() {
     const layout = (
@@ -16,7 +25,7 @@ function Settings() {
                     minHeight: 0,
                     maxHeight: 999999,
                     areas: [
-                        { size: "600px", children: [<SettingsComponents.Main key={0} />] },
+                        { size: "600px", children: [<Outlet key={0} />] },
                         { size: "320px", children: [<Infobar.Home key={0} />] },
                     ],
                     style: {
@@ -33,7 +42,7 @@ function Settings() {
                     maxWidth: 920,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "600px", children: [<SettingsComponents.Main key={0} />] }],
+                    areas: [{ size: "600px", children: [<Outlet key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
@@ -48,7 +57,7 @@ function Settings() {
                     maxWidth: 600,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "300px", children: [<SettingsComponents.Main key={0} />] }],
+                    areas: [{ size: "300px", children: [<Outlet key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
@@ -63,7 +72,7 @@ function Settings() {
                     maxWidth: 360,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "1fr", children: [<SettingsComponents.Main key={0} />] }],
+                    areas: [{ size: "1fr", children: [<Outlet key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",

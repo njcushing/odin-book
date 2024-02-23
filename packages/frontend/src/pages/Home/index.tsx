@@ -1,7 +1,16 @@
+import { Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
 import Posts from "@/features/posts";
 import Infobar from "@/features/infobar";
 import styles from "./index.module.css";
+
+export const routes = [
+    {
+        path: "",
+        element: <Posts.List />,
+        errorElement: <div></div>,
+    },
+];
 
 function Home() {
     const layout = (
@@ -16,7 +25,7 @@ function Home() {
                     minHeight: 0,
                     maxHeight: 999999,
                     areas: [
-                        { size: "600px", children: [<Posts.List key={0} />] },
+                        { size: "600px", children: [<Outlet key={0} />] },
                         { size: "320px", children: [<Infobar.Home key={0} />] },
                     ],
                     style: {
@@ -33,7 +42,7 @@ function Home() {
                     maxWidth: 920,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "600px", children: [<Posts.List key={0} />] }],
+                    areas: [{ size: "600px", children: [<Outlet key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
@@ -48,7 +57,7 @@ function Home() {
                     maxWidth: 600,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "300px", children: [<Posts.List key={0} />] }],
+                    areas: [{ size: "300px", children: [<Outlet key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
@@ -63,7 +72,7 @@ function Home() {
                     maxWidth: 360,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "1fr", children: [<Posts.List key={0} />] }],
+                    areas: [{ size: "1fr", children: [<Outlet key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",

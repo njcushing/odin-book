@@ -1,7 +1,22 @@
+import { Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
 import ProfileComponents from "@/features/profile";
 import Infobar from "@/features/infobar";
+import * as mockData from "@/mockData";
 import styles from "./index.module.css";
+
+export const routes = [
+    {
+        path: "",
+        element: <ProfileComponents.Main />,
+        errorElement: <div></div>,
+    },
+    {
+        path: "edit",
+        element: mockData.chats(10),
+        errorElement: <div></div>,
+    },
+];
 
 function Profile() {
     const layout = (
@@ -16,7 +31,7 @@ function Profile() {
                     minHeight: 0,
                     maxHeight: 999999,
                     areas: [
-                        { size: "600px", children: [<ProfileComponents.Main key={0} />] },
+                        { size: "600px", children: [<Outlet key={0} />] },
                         { size: "320px", children: [<Infobar.Home key={0} />] },
                     ],
                     style: {
@@ -33,7 +48,7 @@ function Profile() {
                     maxWidth: 920,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "600px", children: [<ProfileComponents.Main key={0} />] }],
+                    areas: [{ size: "600px", children: [<Outlet key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
@@ -48,7 +63,7 @@ function Profile() {
                     maxWidth: 600,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "300px", children: [<ProfileComponents.Main key={0} />] }],
+                    areas: [{ size: "300px", children: [<Outlet key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
@@ -63,7 +78,7 @@ function Profile() {
                     maxWidth: 360,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [{ size: "1fr", children: [<ProfileComponents.Main key={0} />] }],
+                    areas: [{ size: "1fr", children: [<Outlet key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",

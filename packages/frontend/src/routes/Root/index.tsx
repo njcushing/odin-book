@@ -1,7 +1,35 @@
 import { Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
+import Page, { Routes } from "@/pages";
 import Sidebar from "@/features/sidebar";
 import styles from "./index.module.css";
+
+export const routes = [
+    {
+        path: "",
+        element: <Page.Home />,
+        children: Routes.Home,
+        errorElement: <div></div>,
+    },
+    {
+        path: ":accountTag",
+        element: <Page.Profile />,
+        children: Routes.Profile,
+        errorElement: <div></div>,
+    },
+    {
+        path: "chats",
+        element: <Page.Chats />,
+        children: Routes.Chats,
+        errorElement: <div></div>,
+    },
+    {
+        path: "settings",
+        element: <Page.Settings />,
+        children: Routes.Settings,
+        errorElement: <div></div>,
+    },
+];
 
 function Root() {
     const layout = (

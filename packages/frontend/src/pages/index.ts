@@ -1,11 +1,9 @@
-import Root from "./Root";
-import Home from "./Home";
-import Profile from "./Profile";
-import Chats from "./Chats";
-import Settings from "./Settings";
+import Home, { routes as HomeRoutes } from "./Home";
+import Profile, { routes as ProfileRoutes } from "./Profile";
+import Chats, { routes as ChatsRoutes } from "./Chats";
+import Settings, { routes as SettingsRoutes } from "./Settings";
 
 const Page = {
-    Root,
     Home,
     Profile,
     Chats,
@@ -13,3 +11,10 @@ const Page = {
 };
 
 export default Page;
+
+export const Routes = {
+    Home: HomeRoutes,
+    Profile: ProfileRoutes,
+    Chats: ChatsRoutes,
+    Settings: SettingsRoutes,
+};
