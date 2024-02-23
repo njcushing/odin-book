@@ -26,6 +26,7 @@
     grid-template-rows: 1fr auto;
     justify-items: center;
 
+    text-decoration: none;
     outline: none;
     border: none;
     border-radius: 4px;

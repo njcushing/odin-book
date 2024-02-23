@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./index.module.css";
 
 type Option = {
     text: string;
+    link?: string;
     disabled?: boolean;
 };
 
@@ -12,7 +14,7 @@ type HorizontalTypes = {
     selected: string | null;
     label?: string;
     minPaddingPx?: number;
-    onSelectHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+    onSelectHandler?: ((event: React.MouseEvent<HTMLAnchorElement>) => void) | null;
     style?: React.CSSProperties;
 };
 
@@ -131,15 +133,18 @@ function Horizontal({
             >
                 {optionsDisplaying.map((option) => {
                     return (
-                        <button
-                            type="button"
+                        <Link
+                            to={option.link || ""}
                             className={styles["option"]}
                             data-highlighted={!!(optionSelected === option.text)}
-                            onClick={(e) => {
+                            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                                 setOptionSelected(option.text);
                                 if (onSelectHandler) onSelectHandler(e);
+                                e.currentTarget.blur();
                             }}
-                            disabled={option.disabled && option.disabled}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.blur();
+                            }}
                             key={option.text}
                         >
                             <div
@@ -153,7 +158,7 @@ function Horizontal({
                                 {option.text}
                             </div>
                             <div className={styles["highlight-bar"]}></div>
-                        </button>
+                        </Link>
                     );
                 })}
                 {displayMenuButton ? <div ref={menuButtonContainerRef}>{menuButton}</div> : null}
@@ -176,15 +181,19 @@ function Horizontal({
                     >
                         {optionsInMenu.map((option) => {
                             return (
-                                <button
-                                    type="button"
+                                <Link
+                                    to={option.link || ""}
                                     className={styles["option"]}
                                     data-highlighted={!!(optionSelected === option.text)}
-                                    onClick={() => {
+                                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                                         setOptionSelected(option.text);
+                                        if (onSelectHandler) onSelectHandler(e);
                                         setMenuOpen(false);
+                                        e.currentTarget.blur();
                                     }}
-                                    disabled={option.disabled && option.disabled}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.blur();
+                                    }}
                                     key={option.text}
                                 >
                                     <div
@@ -198,7 +207,7 @@ function Horizontal({
                                         {option.text}
                                     </div>
                                     <div className={styles["highlight-bar"]}></div>
-                                </button>
+                                </Link>
                             );
                         })}
                     </ul>
