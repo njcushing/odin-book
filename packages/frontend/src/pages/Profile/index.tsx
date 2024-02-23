@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
-import ProfileComponents from "@/features/profile";
+import ProfileComponents, { Routes } from "@/features/profile";
 import Infobar from "@/features/infobar";
 import * as mockData from "@/mockData";
 import styles from "./index.module.css";
@@ -9,6 +9,7 @@ export const routes = [
     {
         path: "",
         element: <ProfileComponents.Main />,
+        children: Routes.Main,
         errorElement: <div></div>,
     },
     {
