@@ -1,44 +1,30 @@
 import User from "@/components/user";
 import Buttons from "@/components/buttons";
+import * as mockData from "@/mockData";
 import styles from "./index.module.css";
 
 function PeopleYouMayKnow() {
-    const users = [
-        {
-            image: { src: new Uint8Array([]), alt: "" },
-            displayName: "John Smith",
-            accountTag: "@JohnSmith84",
-        },
-        {
-            image: { src: new Uint8Array([]), alt: "" },
-            displayName: "John Smith",
-            accountTag: "@JohnSmith84",
-        },
-        {
-            image: { src: new Uint8Array([]), alt: "" },
-            displayName: "John Smith",
-            accountTag: "@JohnSmith84",
-        },
-    ];
+    const users = mockData.users(3);
 
     return (
         <div className={styles["container"]}>
             <h3 className={styles["title"]}>People You May Know</h3>
             <ul className={styles["users"]}>
-                {users.map((user, i) => {
+                {users.map((user) => {
                     return (
-                        <li className={styles["user"]} key={i}>
-                            <User.ImageAndName
-                                image={{ src: user.image.src, alt: user.image.alt }}
-                                displayName={user.displayName}
-                                accountTag={user.accountTag}
-                                size="s"
-                            />
-                            <Buttons.Basic
-                                text="Follow"
-                                symbol="person_add"
-                                palette="orange"
-                                otherStyles={{ fontSize: "1.0rem" }}
+                        <li className={styles["user"]} key={user._id}>
+                            <User.Option
+                                user={{
+                                    image: {
+                                        src: user.preferences.profileImage.src,
+                                        alt: user.preferences.profileImage.alt,
+                                        status: user.status,
+                                    },
+                                    displayName: user.preferences.displayName,
+                                    accountTag: user.accountTag,
+                                    size: "s",
+                                }}
+                                following
                             />
                         </li>
                     );
