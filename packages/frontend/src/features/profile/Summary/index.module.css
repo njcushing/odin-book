@@ -1,0 +1,99 @@
+.container {
+    display: flex;
+    flex-direction: column;
+
+    font-family: Gabarito;
+
+    width: 100%;
+    height: min-content;
+}
+
+.main-content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    width: calc(100% - (2 * 0.6rem));
+    height: min-content;
+    padding: 0.6rem;
+}
+
+.row-one {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.6rem;
+
+    width: 100%;
+}
+
+.row-one-right {
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.4rem;
+}
+
+.display-name {
+    place-self: start;
+
+    color: var(--text-primary);
+    font-size: 1.7rem;
+    font-weight: bold;
+
+    max-width: 100%;
+}
+
+.account-tag {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+
+    max-width: 100%;
+}
+
+.row-two {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    margin: 0.2rem 0rem;
+}
+
+.bio {
+    font-size: 1.1rem;
+    line-height: 1.2rem;
+    text-align: start;
+}
+
+.row-three {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.account-creation-date {
+    color: var(--text-tertiary);
+    font-size: 1.1rem;
+}
+
+.row-four {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+}
+
+.following-count,
+.followers-count,
+.likes-count {
+    color: var(--text-primary);
+    font-size: 1.0rem;
+}
+
+.following-count > strong,
+.followers-count > strong,
+.likes-count > strong {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
