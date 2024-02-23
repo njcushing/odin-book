@@ -1,5 +1,4 @@
 import * as extendedTypes from "@/utils/extendedTypes";
-import Buttons from "@/components/buttons";
 import Images from "@/components/images";
 import styles from "./index.module.css";
 
