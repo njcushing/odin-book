@@ -7,3 +7,7 @@
     width: calc(100% - 1px); /* subtract for border */
     height: 100%;
 }
+
+.navigation-container {
+    border-bottom: 1px solid var(--outline-primary);
+}
