@@ -64,7 +64,7 @@ export const chats = (quantity: number): ReactElement[] => {
     const quantityFloored = Math.floor(quantity);
     const chatElements: ReactElement[] = [];
     for (let i = 0; i < quantityFloored; i++) {
-        const participants = randomNames.filter((name) => Math.random() < 0.5);
+        const participants = randomNames.filter(() => Math.random() < 0.5);
         const chatNew = (
             <Chat.Option
                 name={
@@ -90,7 +90,7 @@ export const posts = (quantity: number, type: "post" | "reply" | "summary"): Rea
     const quantityFloored = Math.floor(quantity);
     const postElements: ReactElement[] = [];
     for (let i = 0; i < quantityFloored; i++) {
-        const postNew = <Posts.Post type={type} key={i} />;
+        const postNew = <Posts.Post type={type} liked={Math.random() < 0.5} key={i} />;
         postElements.push(postNew);
     }
     return postElements;
