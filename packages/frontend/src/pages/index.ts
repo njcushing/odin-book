@@ -1,9 +1,11 @@
+import Root, { routes as RootRoutes } from "./Root";
 import Home, { routes as HomeRoutes } from "./Home";
 import Profile, { routes as ProfileRoutes } from "./Profile";
 import Chats, { routes as ChatsRoutes } from "./Chats";
 import Settings, { routes as SettingsRoutes } from "./Settings";
 
 const Page = {
+    Root,
     Home,
     Profile,
     Chats,
@@ -13,6 +15,7 @@ const Page = {
 export default Page;
 
 export const Routes = {
+    Root: RootRoutes,
     Home: HomeRoutes,
     Profile: ProfileRoutes,
     Chats: ChatsRoutes,

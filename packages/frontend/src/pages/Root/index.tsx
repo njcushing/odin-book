@@ -1,32 +1,35 @@
 import { Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
-import Page, { Routes } from "@/pages";
 import Sidebar from "@/features/sidebar";
+import Home, { routes as HomeRoutes } from "../Home";
+import Profile, { routes as ProfileRoutes } from "../Profile";
+import Chats, { routes as ChatsRoutes } from "../Chats";
+import Settings, { routes as SettingsRoutes } from "../Settings";
 import styles from "./index.module.css";
 
 export const routes = [
     {
         path: "",
-        element: <Page.Home />,
-        children: Routes.Home,
+        element: <Home />,
+        children: HomeRoutes,
         errorElement: <div></div>,
     },
     {
         path: ":accountTag",
-        element: <Page.Profile />,
-        children: Routes.Profile,
+        element: <Profile />,
+        children: ProfileRoutes,
         errorElement: <div></div>,
     },
     {
         path: "chats",
-        element: <Page.Chats />,
-        children: Routes.Chats,
+        element: <Chats />,
+        children: ChatsRoutes,
         errorElement: <div></div>,
     },
     {
         path: "settings",
-        element: <Page.Settings />,
-        children: Routes.Settings,
+        element: <Settings />,
+        children: SettingsRoutes,
         errorElement: <div></div>,
     },
 ];
