@@ -1,24 +1,26 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
 import Inputs from "@/components/inputs";
+import * as mockData from "@/mockData";
 import Posts from "..";
 import styles from "./index.module.css";
 
 type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
 
 type PostTypes = {
-    type: "post" | "reply";
+    type: "post" | "reply" | "summary";
+    liked: boolean;
     viewingDefault?: "" | "replies";
     replyingOpen?: boolean;
 };
 
-function Post({ type = "post", viewingDefault = "", replyingOpen = false }: PostTypes) {
+function Post({ type = "post", liked, viewingDefault = "", replyingOpen = false }: PostTypes) {
     const [viewing, setViewing]: ["" | "replies", Setter<"" | "replies">] =
         useState(viewingDefault);
     const [replying, setReplying]: [boolean, Setter<boolean>] = useState(replyingOpen);
 
-    const posts = [null, null, null, null, null, null, null, null];
+    const replies = mockData.posts(8, "reply");
 
     let sizes = {
         imageAndName: "l",
@@ -37,7 +39,6 @@ function Post({ type = "post", viewingDefault = "", replyingOpen = false }: Post
             sizes.linksAndButtonsStrong = "1.15rem";
             sizes.rowGap = "4px";
             break;
-        case "post":
         default:
             sizes = { ...sizes };
             break;
@@ -55,7 +56,7 @@ function Post({ type = "post", viewingDefault = "", replyingOpen = false }: Post
                 <User.ImageAndName
                     image={{ src: new Uint8Array([]), alt: "" }}
                     displayName="John Smith"
-                    accountTag="@JohnSmith84"
+                    accountTag="JohnSmith84"
                     size={sizes.imageAndName}
                 />
             </div>
@@ -103,7 +104,7 @@ function Post({ type = "post", viewingDefault = "", replyingOpen = false }: Post
                                 if (viewing === "replies") setViewing("");
                                 if (viewing !== "replies") setViewing("replies");
                             }
-                            if (type === "reply") {
+                            if (type === "reply" || type === "summary") {
                                 // redirect user to reply
                             }
                             e.currentTarget.blur();
@@ -120,6 +121,12 @@ function Post({ type = "post", viewingDefault = "", replyingOpen = false }: Post
                     </button>
                 </p>
                 <div className={styles["row-three-buttons"]}>
+                    <Buttons.Basic
+                        text={liked ? "" : "Like"}
+                        symbol="star"
+                        palette={liked ? "gold" : "primary"}
+                        otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+                    />
                     <Buttons.Basic
                         text="Reply"
                         symbol="reply"
@@ -141,9 +148,9 @@ function Post({ type = "post", viewingDefault = "", replyingOpen = false }: Post
             {viewing === "replies" ? (
                 <div className={styles["row-five"]}>
                     <ul className={styles["replies"]}>
-                        {posts.map((post, i) => {
+                        {replies.map((reply, i) => {
                             if (i >= 3) return null;
-                            return <Posts.Post type="reply" key={i} />;
+                            return <Posts.Post type="reply" liked={false} key={i} />;
                         })}
                     </ul>
                     <div className={styles["see-more-replies-button-wrapper"]}>
