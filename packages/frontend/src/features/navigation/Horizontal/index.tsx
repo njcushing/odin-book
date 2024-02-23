@@ -12,6 +12,7 @@ type HorizontalTypes = {
     selected: string | null;
     label?: string;
     minPaddingPx?: number;
+    onSelectHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     style?: React.CSSProperties;
 };
 
@@ -20,6 +21,7 @@ function Horizontal({
     selected = null,
     label = "navigation",
     minPaddingPx = 16,
+    onSelectHandler = null,
     style = {},
 }: HorizontalTypes) {
     const [optionSelected, setOptionSelected] = useState<string | null>(selected);
@@ -133,8 +135,9 @@ function Horizontal({
                             type="button"
                             className={styles["option"]}
                             data-highlighted={!!(optionSelected === option.text)}
-                            onClick={() => {
+                            onClick={(e) => {
                                 setOptionSelected(option.text);
+                                if (onSelectHandler) onSelectHandler(e);
                             }}
                             disabled={option.disabled && option.disabled}
                             key={option.text}
