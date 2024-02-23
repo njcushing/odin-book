@@ -1,6 +1,7 @@
-import { useParams, Outlet } from "react-router-dom";
+import { useParams, useLocation, Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
 import Navigation from "@/features/navigation";
+import User from "@/components/user";
 import * as mockData from "@/mockData";
 import Profile from "..";
 import styles from "./index.module.css";
@@ -8,25 +9,7 @@ import styles from "./index.module.css";
 export const routes = [
     {
         path: "",
-        element: (
-            <LayoutUI.List
-                label="navigation"
-                ordered={false}
-                listItems={mockData.posts(10, "summary")}
-                scrollable
-                listStyles={{
-                    flexDirection: "column",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    flexWrap: "nowrap",
-                    gap: "0.4rem",
-                    width: "calc(100% - (2 * 0.4rem))",
-                    height: "auto",
-                    padding: "0.4rem",
-                    margin: "0rem",
-                }}
-            />
-        ),
+        element: mockData.posts(10, "summary"),
         errorElement: <div></div>,
     },
     {
@@ -36,17 +19,51 @@ export const routes = [
     },
     {
         path: "likes",
-        element: <div></div>,
+        element: mockData.posts(10, "summary"),
         errorElement: <div></div>,
     },
     {
         path: "followers",
-        element: <div></div>,
+        element: mockData.users(10).map((user) => {
+            return (
+                <User.Option
+                    user={{
+                        image: {
+                            src: user.preferences.profileImage.src,
+                            alt: user.preferences.profileImage.alt,
+                            status: user.status,
+                        },
+                        displayName: user.preferences.displayName,
+                        accountTag: user.accountTag,
+                        size: "s",
+                    }}
+                    following={Math.random() < 0.5}
+                    key={user._id}
+                />
+            );
+        }),
         errorElement: <div></div>,
     },
     {
         path: "following",
-        element: <div></div>,
+        element: mockData.users(10).map((user) => {
+            return (
+                <User.Option
+                    user={{
+                        image: {
+                            src: user.preferences.profileImage.src,
+                            alt: user.preferences.profileImage.alt,
+                            status: user.status,
+                        },
+                        displayName: user.preferences.displayName,
+                        accountTag: user.accountTag,
+                        size: "s",
+                    }}
+                    following
+                    key={user._id}
+                />
+            );
+        }),
         errorElement: <div></div>,
     },
 ];
@@ -54,18 +71,25 @@ export const routes = [
 function Main() {
     const { accountTag } = useParams();
 
+    const location = useLocation();
+    const path = location.pathname.split("/");
+
+    const navigationOptions = [
+        { text: "Posts", link: "" },
+        { text: "Replies", link: "replies" },
+        { text: "Likes", link: "likes" },
+        { text: "Followers", link: "followers" },
+        { text: "Following", link: "following" },
+    ];
+    let selected = "Posts";
+    if (path[path.length - 1] === "replies") selected = "Replies";
+    if (path[path.length - 1] === "likes") selected = "Likes";
+    if (path[path.length - 1] === "followers") selected = "Followers";
+    if (path[path.length - 1] === "following") selected = "Following";
+
     const navigation = (
         <div className={styles["navigation-container"]} key={0}>
-            <Navigation.Horizontal
-                options={[
-                    { text: "Posts", link: "" },
-                    { text: "Replies", link: "replies" },
-                    { text: "Likes", link: "likes" },
-                    { text: "Followers", link: "followers" },
-                    { text: "Following", link: "following" },
-                ]}
-                selected="Posts"
-            />
+            <Navigation.Horizontal options={navigationOptions} selected={selected} />
         </div>
     );
 
@@ -84,7 +108,29 @@ function Main() {
                         areas: [
                             { size: "auto", children: [<Profile.Summary key={0} />] },
                             { size: "auto", children: [navigation] },
-                            { size: "1fr", children: [<Outlet key={0} />] },
+                            {
+                                size: "1fr",
+                                children: [
+                                    <LayoutUI.List
+                                        label="navigation"
+                                        ordered={false}
+                                        listItems={[<Outlet key={0} />]}
+                                        scrollable
+                                        listStyles={{
+                                            flexDirection: "column",
+                                            justifyContent: "flex-start",
+                                            alignItems: "center",
+                                            flexWrap: "nowrap",
+                                            gap: "0.4rem",
+                                            width: "calc(100% - (2 * 0.4rem))",
+                                            height: "auto",
+                                            padding: "0.4rem",
+                                            margin: "0rem",
+                                        }}
+                                        key={0}
+                                    />,
+                                ],
+                            },
                         ],
                         style: {
                             justifySelf: "flex-start",
