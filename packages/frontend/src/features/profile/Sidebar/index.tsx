@@ -15,7 +15,7 @@ function Sidebar({ type }: SidebarTypes) {
                     <User.ImageAndName
                         image={{ src: new Uint8Array([]), alt: "" }}
                         displayName="John Smith"
-                        accountTag="@JohnSmith84"
+                        accountTag="JohnSmith84"
                         size="m"
                     />
                 </div>
