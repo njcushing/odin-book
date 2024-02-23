@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./index.module.css";
 
 type Option = {
@@ -155,48 +156,50 @@ function Horizontal({
                 {displayMenuButton ? <div ref={menuButtonContainerRef}>{menuButton}</div> : null}
             </ul>
             {menuOpen ? (
-                <ul
-                    className={styles["menu"]}
-                    style={
-                        menuButtonContainerRef.current
-                            ? {
-                                  top:
-                                      menuButtonContainerRef.current.offsetTop +
-                                      menuButtonContainerRef.current.offsetHeight +
-                                      4,
-                                  right: 4,
-                              }
-                            : { top: 4, right: 4 }
-                    }
-                >
-                    {optionsInMenu.map((option) => {
-                        return (
-                            <button
-                                type="button"
-                                className={styles["option"]}
-                                data-highlighted={!!(optionSelected === option.text)}
-                                onClick={() => {
-                                    setOptionSelected(option.text);
-                                    setMenuOpen(false);
-                                }}
-                                disabled={option.disabled && option.disabled}
-                                key={option.text}
-                            >
-                                <div
-                                    className={styles["text"]}
-                                    style={{
-                                        fontSize,
-                                        paddingLeft: minPaddingPx,
-                                        paddingRight: minPaddingPx,
+                <OutsideClickHandler onOutsideClick={() => setMenuOpen(false)}>
+                    <ul
+                        className={styles["menu"]}
+                        style={
+                            menuButtonContainerRef.current
+                                ? {
+                                      top:
+                                          menuButtonContainerRef.current.offsetTop +
+                                          menuButtonContainerRef.current.offsetHeight +
+                                          4,
+                                      right: 4,
+                                  }
+                                : { top: 4, right: 4 }
+                        }
+                    >
+                        {optionsInMenu.map((option) => {
+                            return (
+                                <button
+                                    type="button"
+                                    className={styles["option"]}
+                                    data-highlighted={!!(optionSelected === option.text)}
+                                    onClick={() => {
+                                        setOptionSelected(option.text);
+                                        setMenuOpen(false);
                                     }}
+                                    disabled={option.disabled && option.disabled}
+                                    key={option.text}
                                 >
-                                    {option.text}
-                                </div>
-                                <div className={styles["highlight-bar"]}></div>
-                            </button>
-                        );
-                    })}
-                </ul>
+                                    <div
+                                        className={styles["text"]}
+                                        style={{
+                                            fontSize,
+                                            paddingLeft: minPaddingPx,
+                                            paddingRight: minPaddingPx,
+                                        }}
+                                    >
+                                        {option.text}
+                                    </div>
+                                    <div className={styles["highlight-bar"]}></div>
+                                </button>
+                            );
+                        })}
+                    </ul>
+                </OutsideClickHandler>
             ) : null}
             <div
                 className={styles["menu-button-false-render"]}
