@@ -1,23 +1,13 @@
-import * as extendedTypes from "@/utils/extendedTypes";
 import Images from "@/components/images";
+import * as Types from "../types";
 import styles from "./index.module.css";
-
-type ImageAndNameTypes = {
-    image: {
-        src: extendedTypes.TypedArray;
-        alt?: string;
-    };
-    displayName: string;
-    accountTag: string;
-    size?: "xs" | "s" | "m" | "l" | "xl";
-};
 
 function ImageAndName({
     image = { src: new Uint8Array([]), alt: "" },
     displayName = "Display Name",
     accountTag = "@account_name",
     size = "m",
-}: ImageAndNameTypes) {
+}: Types.ImageAndName) {
     const sizes = { image: 48, displayName: 1.0, accountTag: 0.8 };
     switch (size) {
         case "xs":
