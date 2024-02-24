@@ -33,6 +33,7 @@
     "buffer": "^6.0.3",
     "dotenv": "^16.4.1",
     "luxon": "^3.4.4",
+    "mongoose": "^8.2.0",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.8.1",
     "pubsub-js": "^1.9.4",
