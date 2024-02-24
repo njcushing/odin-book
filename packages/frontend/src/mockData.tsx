@@ -3,8 +3,8 @@ import * as modelTypes from "@/utils/modelTypes";
 import * as extendedTypes from "@/utils/extendedTypes";
 import Chat from "./features/chat";
 
-type StringKeyObject<T> = {
-    [key: string]: T;
+type ObjectType<T> = {
+    [key: string | number]: T;
 };
 
 const sampleTextGenerator = (): string => {
@@ -17,7 +17,7 @@ const sampleTextGenerator = (): string => {
     return string;
 };
 
-const getRandomFromObject = (obj: StringKeyObject<any>) => {
+const getRandomFromObject = (obj: ObjectType<any>) => {
     const keys = Object.keys(obj);
     return obj[keys[Math.floor(Math.random() * keys.length)]];
 };
@@ -40,7 +40,7 @@ const createUser = (
     };
 };
 
-const mockUsers: StringKeyObject<modelTypes.User> = {
+const mockUsers: ObjectType<modelTypes.User> = {
     "0": createUser("0", "CoolCat123", "Emily", { src: new Uint8Array([]), alt: "" }, "online"),
     "1": createUser("1", "AwesomeGamer", "James", { src: new Uint8Array([]), alt: "" }, "busy"),
     "2": createUser("2", "PizzaLover22", "Sophia", { src: new Uint8Array([]), alt: "" }, "online"),
@@ -104,7 +104,7 @@ const createPostImages = () => {
         }));
 };
 
-const mockPosts: StringKeyObject<modelTypes.Post> = {
+const mockPosts: ObjectType<modelTypes.Post> = {
     "0": createPost("0", "0", { text: sampleTextGenerator(), images: createPostImages() }, null),
     "1": createPost("1", "5", { text: sampleTextGenerator(), images: createPostImages() }, "0"),
     "2": createPost("2", "8", { text: sampleTextGenerator(), images: createPostImages() }, null),
@@ -170,8 +170,8 @@ export const chats = (quantity: number): ReactElement[] => {
     return chatElements;
 };
 
-export const getUser = (_id: string): modelTypes.User | null => {
-    return mockUsers[_id] || null;
+export const getUser = (_id: extendedTypes.MongoDBObjectId): modelTypes.User | null => {
+    return mockUsers[_id.toString()] || null;
 };
 
 export const getUsers = (quantity: number): modelTypes.User[] => {
@@ -185,8 +185,8 @@ export const getUsers = (quantity: number): modelTypes.User[] => {
     return userArr;
 };
 
-export const getPost = (_id: string): modelTypes.Post | null => {
-    return mockPosts[_id] || null;
+export const getPost = (_id: extendedTypes.MongoDBObjectId): modelTypes.Post | null => {
+    return mockPosts[_id.toString()] || null;
 };
 
 export const getPosts = (quantity: number): modelTypes.Post[] => {
