@@ -12,7 +12,7 @@ function List() {
                 label="navigation"
                 ordered={false}
                 listItems={posts.map((post) => {
-                    return <Posts.Post _id={post} canToggleReplies key={post} />;
+                    return <Posts.Post _id={post} canToggleReplies canReply key={post} />;
                 })}
                 scrollable
                 listStyles={{
