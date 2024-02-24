@@ -2,9 +2,9 @@ import { useState } from "react";
 import LayoutUI from "@/layouts";
 import Buttons from "@/components/buttons";
 import Inputs from "@/components/inputs";
-import Chat from "..";
 import * as extendedTypes from "@/utils/extendedTypes";
 import * as mockData from "@/mockData";
+import Chat from "..";
 import styles from "./index.module.css";
 
 function Active() {
@@ -34,19 +34,20 @@ function Active() {
         </div>
     );
 
-    const replyingToElement = replyingTo.length > 0 ? (
-        <div className={styles["replying-to-container"]} key={0}>
-            <Buttons.Basic
-                text=""
-                symbol="cancel"
-                onClickHandler={() => setReplyingTo("")}
-                otherStyles={{ fontSize: "1.2rem", padding: "0.5rem" }}
-            />
-            <p className={`truncate-ellipsis ${styles["replying-to-string"]}`} key={0}>
-                {`Replying to ${replyingTo}`}
-            </p>
-        </div>
-    ) : null;
+    const replyingToElement =
+        replyingTo.length > 0 ? (
+            <div className={styles["replying-to-container"]} key={0}>
+                <Buttons.Basic
+                    text=""
+                    symbol="cancel"
+                    onClickHandler={() => setReplyingTo("")}
+                    otherStyles={{ fontSize: "1.2rem", padding: "0.5rem" }}
+                />
+                <p className={`truncate-ellipsis ${styles["replying-to-string"]}`} key={0}>
+                    {`Replying to ${replyingTo}`}
+                </p>
+            </div>
+        ) : null;
 
     const messageBox = (
         <div className={styles["message-box-container"]} key={0}>
