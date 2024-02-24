@@ -4,15 +4,15 @@ import Posts from "..";
 import styles from "./index.module.css";
 
 function List() {
-    const posts = [null, null, null, null, null, null, null, null];
+    const posts = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
     return (
         <div className={styles["container"]}>
             <LayoutUI.List
                 label="navigation"
                 ordered={false}
-                listItems={posts.map((post, i) => {
-                    return <Posts.Post type="post" key={i} />;
+                listItems={posts.map((post) => {
+                    return <Posts.Post _id={post} canToggleReplies key={post} />;
                 })}
                 scrollable
                 listStyles={{
