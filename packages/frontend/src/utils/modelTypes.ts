@@ -16,7 +16,9 @@ export type Post = {
     _id: string;
     author: User;
     content: { text: string; images: { src: extendedTypes.TypedArray; alt: string }[] };
+    likes: string[];
     likesQuantity: number;
+    replies: string[];
     repliesQuantity: number;
     replyingTo?: string | null;
 };
