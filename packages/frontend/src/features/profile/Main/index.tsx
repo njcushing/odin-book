@@ -3,28 +3,42 @@ import LayoutUI from "@/layouts";
 import Navigation from "@/features/navigation";
 import User from "@/components/user";
 import * as mockData from "@/mockData";
+import Posts from "@/features/posts";
 import Profile from "..";
 import styles from "./index.module.css";
 
 export const routes = [
     {
         path: "",
-        element: mockData.posts(10, "summary"),
+        element: ["1", "2", "3", "4", "5"].map((_id) => {
+            return <Posts.Post _id={_id} key={`post-self-${_id}`} />;
+        }),
         errorElement: <div></div>,
     },
     {
         path: "replies",
-        element: <div></div>,
+        element: ["1", "2", "3", "4", "5"].map((_id) => {
+            return (
+                <Posts.Post
+                    _id={_id}
+                    overrideReplies={["6"]}
+                    viewingDefault="replies"
+                    key={`reply-self-${_id}`}
+                />
+            );
+        }),
         errorElement: <div></div>,
     },
     {
         path: "likes",
-        element: mockData.posts(10, "summary"),
+        element: ["1", "2", "3", "4", "5"].map((_id) => {
+            return <Posts.Post _id={_id} key={`post-liked-${_id}`} />;
+        }),
         errorElement: <div></div>,
     },
     {
         path: "followers",
-        element: mockData.users(10).map((user) => {
+        element: mockData.getUsers(10).map((user) => {
             return (
                 <User.Option
                     user={{
@@ -46,7 +60,7 @@ export const routes = [
     },
     {
         path: "following",
-        element: mockData.users(10).map((user) => {
+        element: mockData.getUsers(10).map((user) => {
             return (
                 <User.Option
                     user={{
@@ -121,10 +135,9 @@ function Main() {
                                             justifyContent: "flex-start",
                                             alignItems: "center",
                                             flexWrap: "nowrap",
-                                            gap: "0.4rem",
-                                            width: "calc(100% - (2 * 0.4rem))",
+                                            gap: "0rem",
+                                            width: "100%",
                                             height: "auto",
-                                            padding: "0.4rem",
                                             margin: "0rem",
                                         }}
                                         key={0}
