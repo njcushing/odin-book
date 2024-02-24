@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
 
 export type Validator<T> = {
@@ -24,3 +26,10 @@ export type TypedArray =
     | Float64Array
     | BigInt64Array
     | BigUint64Array;
+
+export type MongoDBObjectId =
+    | string
+    | number
+    | mongoose.mongo.BSON.ObjectId
+    | mongoose.mongo.BSON.ObjectIdLike
+    | Uint8Array;
