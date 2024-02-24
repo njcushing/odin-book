@@ -9,13 +9,24 @@ import styles from "./index.module.css";
 type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
 
 type PostTypes = {
-    type: "post" | "reply" | "summary";
     liked: boolean;
     viewingDefault?: "" | "replies";
+    canViewReplies?: boolean;
+    maxRepliesToDisplay?: number;
+    canReply?: boolean;
     replyingOpen?: boolean;
+    size?: "s" | "l";
 };
 
-function Post({ type = "post", liked, viewingDefault = "", replyingOpen = false }: PostTypes) {
+function Post({
+    liked,
+    viewingDefault = "",
+    canViewReplies = false,
+    maxRepliesToDisplay = 10,
+    canReply = false,
+    replyingOpen = false,
+    size = "l",
+}: PostTypes) {
     const [viewing, setViewing]: ["" | "replies", Setter<"" | "replies">] =
         useState(viewingDefault);
     const [replying, setReplying]: [boolean, Setter<boolean>] = useState(replyingOpen);
@@ -30,8 +41,8 @@ function Post({ type = "post", liked, viewingDefault = "", replyingOpen = false 
         linksAndButtonsStrong: "1.25rem",
         rowGap: "6px",
     };
-    switch (type) {
-        case "reply":
+    switch (size) {
+        case "s":
             sizes.imageAndName = "s";
             sizes.contentFont = "1.0rem";
             sizes.contentLineHeight = "1.1rem";
@@ -45,112 +56,118 @@ function Post({ type = "post", liked, viewingDefault = "", replyingOpen = false 
     }
 
     return (
-        <div
-            className={styles["container"]}
-            data-is-reply={type === "reply"}
-            style={{
-                gap: sizes.rowGap,
-            }}
-        >
-            <div className={styles["row-one"]}>
-                <User.ImageAndName
-                    image={{ src: new Uint8Array([]), alt: "" }}
-                    displayName="John Smith"
-                    accountTag="JohnSmith84"
-                    size={sizes.imageAndName}
-                />
-            </div>
-            <div className={styles["row-two"]}>
-                <p
-                    className={styles["content"]}
-                    style={{
-                        fontSize: sizes.contentFont,
-                        lineHeight: sizes.contentLineHeight,
-                    }}
-                >
-                    Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample
-                    Text Sample Text Sample Text
-                </p>
-            </div>
-            <div className={styles["row-three"]}>
-                <p className={styles["likes-count"]}>
-                    <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>234</strong>
-                    <button
-                        type="button"
-                        className={styles["view-likes-button"]}
-                        aria-label="view-likes"
-                        onClick={(e) => {
-                            e.currentTarget.blur();
-                            e.preventDefault();
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.blur();
-                        }}
-                        style={{
-                            fontSize: sizes.linksAndButtonsRegular,
-                        }}
-                    >
-                        Likes
-                    </button>
-                </p>
-                <p className={styles["replies-count"]}>
-                    <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>18</strong>
-                    <button
-                        type="button"
-                        className={styles["view-replies-button"]}
-                        aria-label="view-replies"
-                        onClick={(e) => {
-                            if (type === "post") {
-                                if (viewing === "replies") setViewing("");
-                                if (viewing !== "replies") setViewing("replies");
-                            }
-                            if (type === "reply" || type === "summary") {
-                                // redirect user to reply
-                            }
-                            e.currentTarget.blur();
-                            e.preventDefault();
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.blur();
-                        }}
-                        style={{
-                            fontSize: sizes.linksAndButtonsRegular,
-                        }}
-                    >
-                        Replies
-                    </button>
-                </p>
-                <div className={styles["row-three-buttons"]}>
-                    <Buttons.Basic
-                        text={liked ? "" : "Like"}
-                        symbol="star"
-                        palette={liked ? "gold" : "primary"}
-                        otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
-                    />
-                    <Buttons.Basic
-                        text="Reply"
-                        symbol="reply"
-                        onClickHandler={() => setReplying(!replying)}
-                        otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
-                    />
-                    <Buttons.Basic
-                        text="Share"
-                        symbol="share"
-                        otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+        <>
+            <div
+                className={styles["container"]}
+                style={{
+                    gap: sizes.rowGap,
+                }}
+            >
+                <div className={styles["row-one"]}>
+                    <User.ImageAndName
+                        image={{ src: new Uint8Array([]), alt: "" }}
+                        displayName="John Smith"
+                        accountTag="JohnSmith84"
+                        size={sizes.imageAndName}
                     />
                 </div>
-            </div>
-            {replying ? (
-                <div className={styles["row-four"]}>
-                    <Inputs.Message placeholder="Type your reply..." />
+                <div className={styles["row-two"]}>
+                    <p
+                        className={styles["content"]}
+                        style={{
+                            fontSize: sizes.contentFont,
+                            lineHeight: sizes.contentLineHeight,
+                        }}
+                    >
+                        Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text
+                        Sample Text Sample Text Sample Text
+                    </p>
                 </div>
-            ) : null}
+                <div className={styles["row-three"]}>
+                    <p className={styles["likes-count"]}>
+                        <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>234</strong>
+                        <button
+                            type="button"
+                            className={styles["view-likes-button"]}
+                            aria-label="view-likes"
+                            onClick={(e) => {
+                                e.currentTarget.blur();
+                                e.preventDefault();
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.blur();
+                            }}
+                            style={{
+                                fontSize: sizes.linksAndButtonsRegular,
+                            }}
+                        >
+                            Likes
+                        </button>
+                    </p>
+                    <p className={styles["replies-count"]}>
+                        <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>18</strong>
+                        <button
+                            type="button"
+                            className={styles["view-replies-button"]}
+                            aria-label="view-replies"
+                            onClick={(e) => {
+                                if (canViewReplies) {
+                                    if (viewing === "replies") setViewing("");
+                                    if (viewing !== "replies") setViewing("replies");
+                                } else {
+                                    // redirect user to reply
+                                }
+                                e.currentTarget.blur();
+                                e.preventDefault();
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.blur();
+                            }}
+                            style={{
+                                fontSize: sizes.linksAndButtonsRegular,
+                            }}
+                        >
+                            Replies
+                        </button>
+                    </p>
+                    <div className={styles["row-three-buttons"]}>
+                        <Buttons.Basic
+                            text={liked ? "" : "Like"}
+                            symbol="star"
+                            palette={liked ? "gold" : "primary"}
+                            otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+                        />
+                        <Buttons.Basic
+                            text="Reply"
+                            symbol="reply"
+                            onClickHandler={() => {
+                                if (canReply) setReplying(!replying);
+                            }}
+                            otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+                        />
+                        <Buttons.Basic
+                            text="Share"
+                            symbol="share"
+                            otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+                        />
+                    </div>
+                </div>
+                {replying ? (
+                    <div className={styles["row-four"]}>
+                        <Inputs.Message placeholder="Type your reply..." />
+                    </div>
+                ) : null}
+            </div>
             {viewing === "replies" ? (
                 <div className={styles["row-five"]}>
                     <ul className={styles["replies"]}>
                         {replies.map((reply, i) => {
-                            if (i >= 3) return null;
-                            return <Posts.Post type="reply" liked={false} key={i} />;
+                            if (i >= maxRepliesToDisplay) return null;
+                            return (
+                                <li className={styles["reply"]} key={i}>
+                                    <Posts.Post liked={false} size="s" />
+                                </li>
+                            );
                         })}
                     </ul>
                     <div className={styles["see-more-replies-button-wrapper"]}>
@@ -158,7 +175,7 @@ function Post({ type = "post", liked, viewingDefault = "", replyingOpen = false 
                     </div>
                 </div>
             ) : null}
-        </div>
+        </>
     );
 }
 
