@@ -1,37 +1,54 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
 import Inputs from "@/components/inputs";
+import * as modelTypes from "@/utils/modelTypes";
+import * as extendedTypes from "@/utils/extendedTypes";
 import * as mockData from "@/mockData";
+import formatNumber from "@/utils/formatNumber";
 import Posts from "..";
 import styles from "./index.module.css";
 
-type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
-
 type PostTypes = {
-    liked: boolean;
+    _id?: extendedTypes.MongoDBObjectId;
+    overridePostData?: modelTypes.Post;
     viewingDefault?: "" | "replies";
-    canViewReplies?: boolean;
+    canToggleReplies?: boolean;
     maxRepliesToDisplay?: number;
+    overrideReplies?: extendedTypes.MongoDBObjectId[];
     canReply?: boolean;
     replyingOpen?: boolean;
     size?: "s" | "l";
 };
 
 function Post({
-    liked,
+    _id,
+    overridePostData,
     viewingDefault = "",
-    canViewReplies = false,
+    canToggleReplies = false,
     maxRepliesToDisplay = 10,
+    overrideReplies = [],
     canReply = false,
     replyingOpen = false,
     size = "l",
 }: PostTypes) {
-    const [viewing, setViewing]: ["" | "replies", Setter<"" | "replies">] =
-        useState(viewingDefault);
-    const [replying, setReplying]: [boolean, Setter<boolean>] = useState(replyingOpen);
+    const [postData, setPostData] = useState<modelTypes.Post | null>(null);
+    const [liked, setLiked] = useState<boolean>(false);
+    const [viewing, setViewing] = useState<"" | "replies">(viewingDefault);
+    const [replying, setReplying] = useState<boolean>(replyingOpen);
 
-    const replies = mockData.posts(8, "reply");
+    useEffect(() => {
+        (async () => {
+            if (overridePostData) {
+                setPostData(overridePostData);
+            } else {
+                // fetch post data
+                let data = null;
+                if (_id) data = mockData.getPost(_id);
+                setPostData(data);
+            }
+        })();
+    }, [_id, overridePostData]);
 
     let sizes = {
         imageAndName: "l",
@@ -55,20 +72,23 @@ function Post({
             break;
     }
 
-    return (
+    let replies: extendedTypes.MongoDBObjectId[] = [];
+    if (overrideReplies.length > 0) {
+        replies = overrideReplies;
+    }
+
+    return postData ? (
         <>
-            <div
-                className={styles["container"]}
-                style={{
-                    gap: sizes.rowGap,
-                }}
-            >
+            <div className={styles["container"]} style={{ gap: sizes.rowGap }}>
                 <div className={styles["row-one"]}>
                     <User.ImageAndName
-                        image={{ src: new Uint8Array([]), alt: "" }}
-                        displayName="John Smith"
-                        accountTag="JohnSmith84"
-                        size={sizes.imageAndName}
+                        image={{
+                            src: postData.author.preferences.profileImage.src,
+                            alt: postData.author.preferences.profileImage.alt,
+                        }}
+                        displayName={postData.author.preferences.displayName}
+                        accountTag={postData.author.accountTag}
+                        size={sizes.imageAndName as "s" | "l"}
                     />
                 </div>
                 <div className={styles["row-two"]}>
@@ -79,13 +99,14 @@ function Post({
                             lineHeight: sizes.contentLineHeight,
                         }}
                     >
-                        Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text
-                        Sample Text Sample Text Sample Text
+                        {postData.content.text}
                     </p>
                 </div>
                 <div className={styles["row-three"]}>
                     <p className={styles["likes-count"]}>
-                        <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>234</strong>
+                        <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
+                            {formatNumber(postData.likesQuantity, 1)}
+                        </strong>
                         <button
                             type="button"
                             className={styles["view-likes-button"]}
@@ -105,17 +126,19 @@ function Post({
                         </button>
                     </p>
                     <p className={styles["replies-count"]}>
-                        <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>18</strong>
+                        <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
+                            {formatNumber(postData.repliesQuantity, 1)}
+                        </strong>
                         <button
                             type="button"
                             className={styles["view-replies-button"]}
                             aria-label="view-replies"
                             onClick={(e) => {
-                                if (canViewReplies) {
+                                if (canToggleReplies) {
                                     if (viewing === "replies") setViewing("");
                                     if (viewing !== "replies") setViewing("replies");
                                 } else {
-                                    // redirect user to reply
+                                    // repliesClickHandler
                                 }
                                 e.currentTarget.blur();
                                 e.preventDefault();
@@ -164,8 +187,8 @@ function Post({
                         {replies.map((reply, i) => {
                             if (i >= maxRepliesToDisplay) return null;
                             return (
-                                <li className={styles["reply"]} key={i}>
-                                    <Posts.Post liked={false} size="s" />
+                                <li className={styles["reply"]} key={reply.toString()}>
+                                    <Posts.Post _id={reply} size="s" />
                                 </li>
                             );
                         })}
@@ -176,7 +199,7 @@ function Post({
                 </div>
             ) : null}
         </>
-    );
+    ) : null;
 }
 
 export default Post;
