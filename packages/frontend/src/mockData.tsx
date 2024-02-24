@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import * as modelTypes from "@/utils/modelTypes";
 import * as extendedTypes from "@/utils/extendedTypes";
 import Chat from "./features/chat";
 
@@ -16,21 +17,9 @@ const sampleTextGenerator = (): string => {
     return string;
 };
 
-const getRandomFromObject = (obj: object) => {
+const getRandomFromObject = (obj: StringKeyObject<any>) => {
     const keys = Object.keys(obj);
     return obj[keys[Math.floor(Math.random() * keys.length)]];
-};
-
-type Status = "online" | "away" | "busy" | "offline" | null;
-
-type UserTypes = {
-    _id: string;
-    accountTag: string;
-    preferences: {
-        displayName: string;
-        profileImage: { src: extendedTypes.TypedArray; alt: string };
-    };
-    status: Status;
 };
 
 const createUser = (
@@ -38,8 +27,8 @@ const createUser = (
     accountTag: string,
     displayName: string,
     profileImage: { src: extendedTypes.TypedArray; alt: string },
-    status: Status,
-): UserTypes => {
+    status: modelTypes.Status,
+): modelTypes.User => {
     return {
         _id,
         accountTag,
@@ -51,7 +40,7 @@ const createUser = (
     };
 };
 
-const mockUsers: StringKeyObject<UserTypes> = {
+const mockUsers: StringKeyObject<modelTypes.User> = {
     "0": createUser("0", "CoolCat123", "Emily", { src: new Uint8Array([]), alt: "" }, "online"),
     "1": createUser("1", "AwesomeGamer", "James", { src: new Uint8Array([]), alt: "" }, "busy"),
     "2": createUser("2", "PizzaLover22", "Sophia", { src: new Uint8Array([]), alt: "" }, "online"),
@@ -92,19 +81,12 @@ const mockUsers: StringKeyObject<UserTypes> = {
     ),
 };
 
-type PostTypes = {
-    _id: string;
-    author: string;
-    content: { text: string; images: { src: extendedTypes.TypedArray; alt: string }[] };
-    replyingTo?: string | null;
-};
-
 const createPost = (
     _id: string,
     author: string,
     content: { text: string; images: { src: extendedTypes.TypedArray; alt: string }[] },
     replyingTo?: string | null,
-): PostTypes => {
+): modelTypes.Post => {
     return {
         _id,
         author,
@@ -122,7 +104,7 @@ const createPostImages = () => {
         }));
 };
 
-const mockPosts: StringKeyObject<PostTypes> = {
+const mockPosts: StringKeyObject<modelTypes.Post> = {
     "0": createPost("0", "0", { text: sampleTextGenerator(), images: createPostImages() }, null),
     "1": createPost("1", "5", { text: sampleTextGenerator(), images: createPostImages() }, "0"),
     "2": createPost("2", "8", { text: sampleTextGenerator(), images: createPostImages() }, null),
@@ -188,14 +170,14 @@ export const chats = (quantity: number): ReactElement[] => {
     return chatElements;
 };
 
-export const getUser = (_id: string): UserTypes | null => {
+export const getUser = (_id: string): modelTypes.User | null => {
     return mockUsers[_id] || null;
 };
 
-export const getUsers = (quantity: number): UserTypes[] => {
+export const getUsers = (quantity: number): modelTypes.User[] => {
     const quantityFloored = Math.floor(quantity);
     const keys = Object.keys(mockUsers);
-    const userArr: UserTypes[] = [];
+    const userArr: modelTypes.User[] = [];
     for (let i = 0; i < Math.min(quantityFloored, keys.length); i++) {
         const key = keys.pop();
         if (key) userArr.push(mockUsers[key]);
@@ -203,14 +185,14 @@ export const getUsers = (quantity: number): UserTypes[] => {
     return userArr;
 };
 
-export const getPost = (_id: string): PostTypes | null => {
+export const getPost = (_id: string): modelTypes.Post | null => {
     return mockPosts[_id] || null;
 };
 
-export const getPosts = (quantity: number): PostTypes[] => {
+export const getPosts = (quantity: number): modelTypes.Post[] => {
     const quantityFloored = Math.floor(quantity);
     const keys = Object.keys(mockPosts);
-    const postArr: PostTypes[] = [];
+    const postArr: modelTypes.Post[] = [];
     for (let i = 0; i < Math.min(quantityFloored, keys.length); i++) {
         const key = keys.pop();
         if (key) postArr.push(mockPosts[key]);
