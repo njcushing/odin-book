@@ -4,7 +4,7 @@ import * as mockData from "@/mockData";
 import styles from "./index.module.css";
 
 function PeopleYouMayKnow() {
-    const users = mockData.users(3);
+    const users = mockData.getUsers(3);
 
     return (
         <div className={styles["container"]}>
