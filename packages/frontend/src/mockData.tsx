@@ -1,34 +1,10 @@
 import { ReactElement } from "react";
 import * as extendedTypes from "@/utils/extendedTypes";
-import { v4 as uuidv4 } from "uuid";
 import Chat from "./features/chat";
-import Posts from "./features/posts";
 
-const randomNames = [
-    { accountTag: "CoolCat123", displayName: "Emily" },
-    { accountTag: "AwesomeGamer", displayName: "James" },
-    { accountTag: "PizzaLover22", displayName: "Sophia" },
-    { accountTag: "SunnyDayz", displayName: "William" },
-    { accountTag: "TechNinja", displayName: "Olivia" },
-    { accountTag: "GuitarHero", displayName: "Alexander" },
-    { accountTag: "StarGazer", displayName: "Emma" },
-    { accountTag: "ChocoChip", displayName: "Benjamin" },
-    { accountTag: "AdventureTime", displayName: "Isabella" },
-    { accountTag: "NatureLover", displayName: "Michael" },
-    { accountTag: "MoonWalker", displayName: "Ava" },
-    { accountTag: "CoffeeAddict", displayName: "Daniel" },
-    { accountTag: "BeachGoer", displayName: "Charlotte" },
-    { accountTag: "BookWorm", displayName: "Jacob" },
-    { accountTag: "RockStar", displayName: "Amelia" },
-    { accountTag: "PizzaLover", displayName: "Ethan" },
-    { accountTag: "SuperStar", displayName: "Mia" },
-    { accountTag: "GameMaster", displayName: "Matthew" },
-    { accountTag: "HappyCamper", displayName: "Harper" },
-    { accountTag: "MidnightOwl", displayName: "Christopher" },
-];
-
-type Status = "online" | "away" | "busy" | "offline" | null;
-const statuses = ["online", "away", "busy", "offline", null];
+type StringKeyObject<T> = {
+    [key: string]: T;
+};
 
 const sampleTextGenerator = (): string => {
     let string = "";
@@ -40,6 +16,135 @@ const sampleTextGenerator = (): string => {
     return string;
 };
 
+const getRandomFromObject = (obj: object) => {
+    const keys = Object.keys(obj);
+    return obj[keys[Math.floor(Math.random() * keys.length)]];
+};
+
+type Status = "online" | "away" | "busy" | "offline" | null;
+
+type UserTypes = {
+    _id: string;
+    accountTag: string;
+    preferences: {
+        displayName: string;
+        profileImage: { src: extendedTypes.TypedArray; alt: string };
+    };
+    status: Status;
+};
+
+const createUser = (
+    _id: string,
+    accountTag: string,
+    displayName: string,
+    profileImage: { src: extendedTypes.TypedArray; alt: string },
+    status: Status,
+): UserTypes => {
+    return {
+        _id,
+        accountTag,
+        preferences: {
+            displayName,
+            profileImage,
+        },
+        status,
+    };
+};
+
+const mockUsers: StringKeyObject<UserTypes> = {
+    "0": createUser("0", "CoolCat123", "Emily", { src: new Uint8Array([]), alt: "" }, "online"),
+    "1": createUser("1", "AwesomeGamer", "James", { src: new Uint8Array([]), alt: "" }, "busy"),
+    "2": createUser("2", "PizzaLover22", "Sophia", { src: new Uint8Array([]), alt: "" }, "online"),
+    "3": createUser("3", "SunnyDayz", "William", { src: new Uint8Array([]), alt: "" }, "busy"),
+    "4": createUser("4", "TechNinja", "Olivia", { src: new Uint8Array([]), alt: "" }, "online"),
+    "5": createUser("5", "GuitarHero", "Alexander", { src: new Uint8Array([]), alt: "" }, "away"),
+    "6": createUser("6", "StarGazer", "Emma", { src: new Uint8Array([]), alt: "" }, "offline"),
+    "7": createUser("7", "ChocoChip", "Benjamin", { src: new Uint8Array([]), alt: "" }, "busy"),
+    "8": createUser(
+        "8",
+        "AdventureTime",
+        "Isabella",
+        { src: new Uint8Array([]), alt: "" },
+        "online",
+    ),
+    "9": createUser("9", "NatureLover", "Michael", { src: new Uint8Array([]), alt: "" }, "offline"),
+    "10": createUser("10", "MoonWalker", "Ava", { src: new Uint8Array([]), alt: "" }, "offline"),
+    "11": createUser(
+        "11",
+        "CoffeeAddict",
+        "Daniel",
+        { src: new Uint8Array([]), alt: "" },
+        "online",
+    ),
+    "12": createUser("12", "BeachGoer", "Charlotte", { src: new Uint8Array([]), alt: "" }, "away"),
+    "13": createUser("13", "BookWorm", "Jacob", { src: new Uint8Array([]), alt: "" }, "offline"),
+    "14": createUser("14", "RockStar", "Amelia", { src: new Uint8Array([]), alt: "" }, "away"),
+    "15": createUser("15", "PizzaLover", "Ethan", { src: new Uint8Array([]), alt: "" }, "away"),
+    "16": createUser("16", "SuperStar", "Mia", { src: new Uint8Array([]), alt: "" }, "offline"),
+    "17": createUser("17", "GameMaster", "Matthew", { src: new Uint8Array([]), alt: "" }, "online"),
+    "18": createUser("18", "HappyCamper", "Harper", { src: new Uint8Array([]), alt: "" }, "busy"),
+    "19": createUser(
+        "19",
+        "MidnightOwl",
+        "Christopher",
+        { src: new Uint8Array([]), alt: "" },
+        "away",
+    ),
+};
+
+type PostTypes = {
+    _id: string;
+    author: string;
+    content: { text: string; images: { src: extendedTypes.TypedArray; alt: string }[] };
+    replyingTo?: string | null;
+};
+
+const createPost = (
+    _id: string,
+    author: string,
+    content: { text: string; images: { src: extendedTypes.TypedArray; alt: string }[] },
+    replyingTo?: string | null,
+): PostTypes => {
+    return {
+        _id,
+        author,
+        content,
+        replyingTo,
+    };
+};
+
+const createPostImages = () => {
+    return [0, 0, 0, 0]
+        .filter(() => Math.random() < 0.5)
+        .map(() => ({
+            src: new Uint8Array(),
+            alt: "",
+        }));
+};
+
+const mockPosts: StringKeyObject<PostTypes> = {
+    "0": createPost("0", "0", { text: sampleTextGenerator(), images: createPostImages() }, null),
+    "1": createPost("1", "5", { text: sampleTextGenerator(), images: createPostImages() }, "0"),
+    "2": createPost("2", "8", { text: sampleTextGenerator(), images: createPostImages() }, null),
+    "3": createPost("3", "3", { text: sampleTextGenerator(), images: createPostImages() }, null),
+    "4": createPost("4", "2", { text: sampleTextGenerator(), images: createPostImages() }, "2"),
+    "5": createPost("5", "6", { text: sampleTextGenerator(), images: createPostImages() }, null),
+    "6": createPost("6", "8", { text: sampleTextGenerator(), images: createPostImages() }, "3"),
+    "7": createPost("7", "12", { text: sampleTextGenerator(), images: createPostImages() }, null),
+    "8": createPost("8", "17", { text: sampleTextGenerator(), images: createPostImages() }, "5"),
+    "9": createPost("9", "3", { text: sampleTextGenerator(), images: createPostImages() }, "5"),
+    "10": createPost("10", "19", { text: sampleTextGenerator(), images: createPostImages() }, null),
+    "11": createPost("11", "0", { text: sampleTextGenerator(), images: createPostImages() }, null),
+    "12": createPost("12", "1", { text: sampleTextGenerator(), images: createPostImages() }, "5"),
+    "13": createPost("13", "7", { text: sampleTextGenerator(), images: createPostImages() }, null),
+    "14": createPost("14", "15", { text: sampleTextGenerator(), images: createPostImages() }, "10"),
+    "15": createPost("15", "9", { text: sampleTextGenerator(), images: createPostImages() }, null),
+    "16": createPost("16", "11", { text: sampleTextGenerator(), images: createPostImages() }, "15"),
+    "17": createPost("17", "10", { text: sampleTextGenerator(), images: createPostImages() }, "15"),
+    "18": createPost("18", "6", { text: sampleTextGenerator(), images: createPostImages() }, null),
+    "19": createPost("19", "18", { text: sampleTextGenerator(), images: createPostImages() }, null),
+};
+
 export const messages = (quantity: number): ReactElement[] => {
     const quantityFloored = Math.floor(quantity);
     const messageElements: ReactElement[] = [];
@@ -48,8 +153,7 @@ export const messages = (quantity: number): ReactElement[] => {
             <Chat.Message
                 author={{
                     self: !(Math.random() < 0.5),
-                    displayName:
-                        randomNames[Math.floor(Math.random() * randomNames.length)].displayName,
+                    displayName: getRandomFromObject(mockUsers).displayName,
                 }}
                 content={{ text: sampleTextGenerator() }}
                 key={i}
@@ -64,18 +168,16 @@ export const chats = (quantity: number): ReactElement[] => {
     const quantityFloored = Math.floor(quantity);
     const chatElements: ReactElement[] = [];
     for (let i = 0; i < quantityFloored; i++) {
-        const participants = randomNames.filter(() => Math.random() < 0.5);
+        const participants = Object.keys(mockUsers).filter(() => Math.random() < 0.5);
         const chatNew = (
             <Chat.Option
-                name={
-                    Math.random() < 0.5
-                        ? randomNames[Math.floor(Math.random() * randomNames.length)].displayName
-                        : ""
-                }
-                participants={participants.map((participant) => participant.displayName)}
+                name={Math.random() < 0.5 ? getRandomFromObject(mockUsers).displayName : ""}
+                participants={participants.map(
+                    (participant) => mockUsers[participant].preferences.displayName,
+                )}
                 image={{ src: new Uint8Array([]), alt: "" }}
                 recentMessage={{
-                    author: randomNames[Math.floor(Math.random() * randomNames.length)].displayName,
+                    author: getRandomFromObject(mockUsers).displayName,
                     text: sampleTextGenerator(),
                 }}
                 key={i}
@@ -86,45 +188,32 @@ export const chats = (quantity: number): ReactElement[] => {
     return chatElements;
 };
 
-export const posts = (quantity: number, type: "post" | "reply" | "summary"): ReactElement[] => {
-    const quantityFloored = Math.floor(quantity);
-    const postElements: ReactElement[] = [];
-    for (let i = 0; i < quantityFloored; i++) {
-        const postNew = <Posts.Post type={type} liked={Math.random() < 0.5} key={i} />;
-        postElements.push(postNew);
-    }
-    return postElements;
+export const getUser = (_id: string): UserTypes | null => {
+    return mockUsers[_id] || null;
 };
 
-type UserTypes = {
-    _id: string;
-    accountTag: string;
-    preferences: {
-        displayName: string;
-        profileImage: { src: extendedTypes.TypedArray; alt: string };
-    };
-    status: Status;
+export const getUsers = (quantity: number): UserTypes[] => {
+    const quantityFloored = Math.floor(quantity);
+    const keys = Object.keys(mockUsers);
+    const userArr: UserTypes[] = [];
+    for (let i = 0; i < Math.min(quantityFloored, keys.length); i++) {
+        const key = keys.pop();
+        if (key) userArr.push(mockUsers[key]);
+    }
+    return userArr;
 };
 
-export const users = (quantity: number): UserTypes[] => {
+export const getPost = (_id: string): PostTypes | null => {
+    return mockPosts[_id] || null;
+};
+
+export const getPosts = (quantity: number): PostTypes[] => {
     const quantityFloored = Math.floor(quantity);
-    const userElements: UserTypes[] = [];
-    for (let i = 0; i < quantityFloored; i++) {
-        const names = randomNames[Math.floor(Math.random() * randomNames.length)];
-        const status: Status = statuses[Math.floor(Math.random() * statuses.length)];
-        const userNew = {
-            _id: uuidv4(),
-            accountTag: names.accountTag,
-            preferences: {
-                displayName: names.displayName,
-                profileImage: {
-                    src: new Uint8Array([]),
-                    alt: sampleTextGenerator(),
-                },
-            },
-            status,
-        };
-        userElements.push(userNew);
+    const keys = Object.keys(mockPosts);
+    const postArr: PostTypes[] = [];
+    for (let i = 0; i < Math.min(quantityFloored, keys.length); i++) {
+        const key = keys.pop();
+        if (key) postArr.push(mockPosts[key]);
     }
-    return userElements;
+    return postArr;
 };
