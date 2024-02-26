@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
 import Inputs from "@/components/inputs";
+import Images from "@/components/images";
 import * as modelTypes from "@/utils/modelTypes";
 import * as extendedTypes from "@/utils/extendedTypes";
 import * as mockData from "@/mockData";
+import { v4 as uuidv4 } from "uuid";
 import formatNumber from "@/utils/formatNumber";
 import Posts from "..";
 import styles from "./index.module.css";
@@ -93,7 +95,7 @@ function Post({
                 </div>
                 <div className={styles["row-two"]}>
                     <p
-                        className={styles["content"]}
+                        className={styles["text"]}
                         style={{
                             fontSize: sizes.contentFont,
                             lineHeight: sizes.contentLineHeight,
@@ -101,6 +103,25 @@ function Post({
                     >
                         {postData.content.text}
                     </p>
+                    {postData.content.images.length > 0 && (
+                        <ul
+                            className={styles["images"]}
+                            data-image-quantity={`${Math.min(4, postData.content.images.length)}`}
+                        >
+                            {postData.content.images.map((image, i) => {
+                                if (i >= 4) return null;
+                                return (
+                                    <li className={styles["image-container"]} key={uuidv4()}>
+                                        <Images.Basic
+                                            src={image.src}
+                                            alt={image.alt}
+                                            style={{ width: "100%", height: "100%" }}
+                                        />
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    )}
                 </div>
                 <div className={styles["row-three"]}>
                     <p className={styles["likes-count"]}>
