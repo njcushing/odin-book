@@ -7,14 +7,8 @@ function Basic({ src = new Uint8Array([]), alt = "", label = "image", style }: T
     if (src) imgSrc = objectURLFromTypedArray(src);
 
     return (
-        <div className={styles["container"]}>
-            <img
-                className={styles["image"]}
-                aria-label={label}
-                src={imgSrc}
-                alt={alt}
-                style={{ ...style }}
-            ></img>
+        <div className={styles["container"]} style={{ ...style }}>
+            <img className={styles["image"]} aria-label={label} src={imgSrc} alt={alt}></img>
         </div>
     );
 }
