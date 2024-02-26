@@ -15,7 +15,7 @@ export const routes = [
         errorElement: <div></div>,
     },
     {
-        path: ":accountTag",
+        path: "user/:accountTag",
         element: <Profile />,
         children: ProfileRoutes,
         errorElement: <div></div>,

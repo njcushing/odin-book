@@ -13,7 +13,7 @@ function Menu({ type }: MenuProps) {
     };
     const options = [
         { text: "Home", symbol: "home", link: "/" },
-        { text: "Profile", symbol: "person", link: "/profile" },
+        { text: "Profile", symbol: "person", link: "/user/username" },
         { text: "Chats", symbol: "message", link: "/chats" },
         { text: "Settings", symbol: "settings", link: "/settings" },
     ];
