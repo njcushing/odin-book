@@ -1,0 +1,8 @@
+.label {
+    align-self: start;
+
+    color: var(--text-primary);
+    font-family: Gabarito;
+
+    width: 100%;
+}
