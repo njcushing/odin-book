@@ -1,6 +1,9 @@
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import PubSub from "pubsub-js";
 import LayoutUI from "@/layouts";
 import Sidebar from "@/features/sidebar";
+import Modals from "@/components/modals";
 import Home, { routes as HomeRoutes } from "../Home";
 import Profile, { routes as ProfileRoutes } from "../Profile";
 import Chats, { routes as ChatsRoutes } from "../Chats";
@@ -35,6 +38,18 @@ export const routes = [
 ];
 
 function Root() {
+    const [modal, setModal] = useState<React.ReactNode | null>(null);
+
+    useEffect(() => {
+        PubSub.subscribe("create-new-post-button-click", () => {
+            setModal(<Modals.Basic onCloseClickHandler={() => setModal(null)} />);
+        });
+
+        return () => {
+            PubSub.unsubscribe("create-new-post-button-click");
+        };
+    }, []);
+
     const layout = (
         <LayoutUI.Spatial
             width="auto"
@@ -136,7 +151,10 @@ function Root() {
 
     return (
         <div className={styles["wrapper"]}>
-            <div className={styles["container"]}>{layout}</div>
+            <div className={styles["container"]}>
+                {layout}
+                {modal}
+            </div>
         </div>
     );
 }

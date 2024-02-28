@@ -1,5 +1,6 @@
 import LayoutUI from "@/layouts";
 import Buttons from "@/components/buttons";
+import PubSub from "pubsub-js";
 import Posts from "..";
 import styles from "./index.module.css";
 
@@ -30,6 +31,9 @@ function List() {
                 <Buttons.Basic
                     text="Create New Post"
                     symbol="stylus_note"
+                    onClickHandler={() => {
+                        PubSub.publish("create-new-post-button-click", null);
+                    }}
                     palette="blue"
                     otherStyles={{
                         fontSize: "1.25rem",
