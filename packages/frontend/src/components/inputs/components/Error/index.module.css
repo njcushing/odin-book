@@ -1,5 +1,5 @@
 .error {
     color: var(--text-error);
-    font-size: 0.7rem;
     font-family: Gabarito;
+    text-align: start;
 }
