@@ -1,0 +1,75 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    border-radius: 8px;
+    outline: 2px solid var(--outline-primary);
+
+    width: 400px;
+    padding: 0.6rem;
+}
+
+.title {
+    color: var(--text-primary);
+    font-family: Gabarito;
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.requirement-message {
+    color: var(--text-primary);
+    font-family: Rubik;
+    font-size: 0.8rem;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.requirement-message > strong {
+    font-weight: bold;
+}
+
+.section {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+
+    border-radius: 8px;
+    outline: 2px solid var(--outline-secondary);
+
+    width: calc(100%);
+    padding: 1.7rem 0.8rem 0.8rem 0.8rem; /* give enough room for the section titles */
+    margin: 1.2rem 0rem 0rem 0rem; /* give enough room for the section titles */
+}
+.section[data-title-present |= "false"] {
+    padding-top: 0.8rem;
+    margin-top: 0rem;
+}
+
+.section-title {
+    position: absolute;
+    top: -1.025rem; /* subtract half of the font size plus the padding-top */
+
+    color: var(--text-secondary);
+    font-family: Gabarito;
+    font-size: 1.25rem;
+    font-weight: bold;
+    border-radius: 8px;
+    background-color: var(--outline-secondary);
+
+    padding: 0.4rem 0.8rem;
+}
+
+.section-description {
+    color: var(--text-secondary);
+    font-family: Rubik;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.submit-section {
+    display: flex;
+    justify-content: center;
+}
