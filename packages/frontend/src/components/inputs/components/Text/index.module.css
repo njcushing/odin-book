@@ -16,8 +16,7 @@
     outline-width: 2px;
     outline-style: solid;
 
-    width: 100%;
-    max-width: 360px;
+    width: calc(100% - (2 * 0.2rem));
     padding: 0.2rem;
 
     transition: border-radius 0.25s ease-in-out 0s;
