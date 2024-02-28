@@ -1,5 +1,5 @@
 import Images from "@/components/images";
-import * as Types from "../types";
+import * as Types from "../../types";
 import styles from "./index.module.css";
 
 function ImageAndName({

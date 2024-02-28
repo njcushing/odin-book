@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-import Buttons from "..";
-import * as Types from "../types";
+import Buttons from "../..";
+import * as Types from "../../types";
 import styles from "./index.module.css";
 
 const buttonDefaultProps = {

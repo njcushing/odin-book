@@ -1,5 +1,5 @@
-import Basic from "./Basic";
-import Profile from "./Profile";
+import Basic from "./components/Basic";
+import Profile from "./components/Profile";
 import * as Types from "./types";
 
 const Images = {

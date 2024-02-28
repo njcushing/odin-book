@@ -1,5 +1,5 @@
 import objectURLFromTypedArray from "@/utils/objectURLFromTypedArray";
-import * as Types from "../types";
+import * as Types from "../../types";
 import styles from "./index.module.css";
 
 function Profile({

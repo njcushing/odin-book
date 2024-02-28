@@ -1,6 +1,6 @@
 import Buttons from "@/components/buttons";
-import User from "..";
-import * as Types from "../types";
+import User from "../..";
+import * as Types from "../../types";
 import styles from "./index.module.css";
 
 function Option({ user, following, onClickHandler = null }: Types.Option) {

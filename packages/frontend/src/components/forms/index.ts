@@ -1,4 +1,4 @@
-import Basic from "./Basic";
+import Basic from "./components/Basic";
 
 const Forms = {
     Basic,

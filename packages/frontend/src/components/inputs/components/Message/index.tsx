@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import Buttons from "@/components/buttons";
 import validateField from "@/utils/validateField";
 import formatBytes from "@/utils/formatBytes";
-import * as validation from "../utils/validation";
+import * as validation from "../../utils/validation";
 import styles from "./index.module.css";
 
 type Setter<T> = React.Dispatch<React.SetStateAction<T>>;

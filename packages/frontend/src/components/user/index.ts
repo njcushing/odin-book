@@ -1,6 +1,6 @@
-import ImageAndName from "./ImageAndName";
-import Option from "./Option";
-import Summary from "./Summary";
+import ImageAndName from "./components/ImageAndName";
+import Option from "./components/Option";
+import Summary from "./components/Summary";
 
 const User = {
     ImageAndName,
