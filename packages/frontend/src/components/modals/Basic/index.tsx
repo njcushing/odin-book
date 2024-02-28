@@ -3,14 +3,12 @@ import Buttons from "@/components/buttons";
 import styles from "./index.module.css";
 
 type BasicTypes = {
-    fill: "page" | "parent";
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     unblockPointerEvents?: boolean;
     style?: React.CSSProperties;
 };
 
 function Basic({
-    fill,
     onCloseClickHandler = null,
     unblockPointerEvents = false,
     style = {},
