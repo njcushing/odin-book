@@ -106,12 +106,8 @@ body > #root {
     display: flex;
     flex-direction: column;
 
-    min-width: var(--page-min-width);
-    min-height: var(--page-min-height);
     width: 100%;
     height: 100%;
-    max-width: var(--page-max-width);
-    max-height: var(--page-max-height);
     margin: auto;
 }
 
