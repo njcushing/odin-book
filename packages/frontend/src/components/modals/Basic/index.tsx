@@ -5,12 +5,21 @@ import styles from "./index.module.css";
 type BasicTypes = {
     fill: "page" | "parent";
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+    unblockPointerEvents?: boolean;
     style?: React.CSSProperties;
 };
 
-function Basic({ fill, onCloseClickHandler = null, style = {} }: BasicTypes) {
+function Basic({
+    fill,
+    onCloseClickHandler = null,
+    unblockPointerEvents = false,
+    style = {},
+}: BasicTypes) {
     return (
-        <div className={styles["container"]}>
+        <div
+            className={styles["container"]}
+            style={{ pointerEvents: unblockPointerEvents ? "none" : "all" }}
+        >
             <div className={styles["modal"]} style={{ ...style }}>
                 <div className={styles["close-button-container"]}>
                     <Buttons.Basic
