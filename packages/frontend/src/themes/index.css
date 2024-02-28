@@ -28,21 +28,26 @@
     --border-primary: rgb(255, 255, 255);
     --border-secondary: rgb(255, 255, 255);
     --outline-primary: rgb(180, 180, 180);
-    --outline-secondary: rgb(255, 255, 255);
+    --outline-secondary: rgb(150, 150, 150);
     --layout-outline: rgba(0, 0, 0, 0.5);
 
     /* Inputs */
-    --input-text: rgb(255, 255, 255);
-    --input-text-invalid: rgb(255, 255, 255);
-    --input-text-valid: rgb(255, 255, 255);
-    --input-text-disabled: rgb(255, 255, 255);
+    --input-text: rgb(0, 0, 0);
+    --input-text-invalid: rgb(139, 1, 1);
+    --input-text-valid: rgb(0, 126, 0);
+    --input-text-disabled: rgb(47, 47, 47);
     --input-background: rgb(255, 255, 255);
-    --input-background-invalid: rgb(255, 255, 255);
-    --input-background-valid: rgb(255, 255, 255);
-    --input-background-disabled: rgb(255, 255, 255);
-    --input-outline: rgb(255, 255, 255);
-    --input-outline-hover: rgb(255, 255, 255);
-    --input-outline-focus: rgb(255, 255, 255);
+    --input-background-invalid: rgb(255, 185, 185);
+    --input-background-valid: rgb(193, 255, 185);
+    --input-background-disabled: rgb(207, 207, 207);
+    --input-outline: rgb(0, 0, 0);
+    --input-outline-invalid: rgb(102, 0, 0);
+    --input-outline-valid: rgb(10, 87, 0);
+    --input-outline-disabled: rgb(66, 66, 66);
+    --input-placeholder: rgb(114, 114, 114);
+    --input-placeholder-invalid: rgb(77, 77, 77);
+    --input-placeholder-valid: rgb(77, 77, 77);
+    --input-placeholder-disabled: rgb(77, 77, 77);
 
     /* Scrollbar */
     --scrollbar-track: rgba(0, 0, 0, 0.16);
