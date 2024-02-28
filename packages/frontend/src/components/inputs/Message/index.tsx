@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import Buttons from "@/components/buttons";
 import validateField from "@/utils/validateField";
 import formatBytes from "@/utils/formatBytes";
+import * as validation from "../utils/validation";
 import styles from "./index.module.css";
 
 type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
@@ -13,18 +14,6 @@ type Images = {
         file: File;
     };
 };
-
-type Validator<T> = {
-    func: (
-        value: T,
-        messageType: "front" | "back",
-        ...args: unknown[]
-    ) => {
-        status: boolean;
-        message: string | null;
-    };
-    args?: unknown[];
-} | null;
 
 type Submitter<textT, imagesT> = {
     func: (
@@ -42,8 +31,8 @@ type Submitter<textT, imagesT> = {
 type MessageTypes = {
     text?: string;
     placeholder?: string;
-    textValidator?: Validator<string>;
-    imageValidator?: Validator<number[]>;
+    textValidator?: validation.Validator<string>;
+    imageValidator?: validation.Validator<number[]>;
     submitHandler?: Submitter<string, Images>;
     submissionErrors?: string[];
     sending?: boolean;
@@ -63,7 +52,7 @@ function Message({
     const [images, setImages]: [Images, Setter<Images>] = useState<Images>({});
     const [imageError, setImageError]: [string, Setter<string>] = useState<string>("");
 
-    const createImageButton = (key: string, file: { name: string }) => {
+    const createImageButton = (key: string, file: { name: string; size: number }) => {
         return (
             <li className={styles["image-button"]} aria-label="image to load" key={key}>
                 <div className={styles["file-info"]}>
@@ -164,7 +153,7 @@ function Message({
                     <Buttons.Basic
                         type="submit"
                         text="Send"
-                        onSubmitHandler={() => {
+                        onClickHandler={() => {
                             if (submitHandler) {
                                 submitHandler.func(textareaContent, images, submitHandler.args);
                             }
