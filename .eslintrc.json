@@ -27,6 +27,7 @@
     "no-use-before-define": ["error", { "variables": false }],
     "no-underscore-dangle": "off",
     "no-unused-vars": "off",
+    "no-control-regex": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "dot-notation": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
