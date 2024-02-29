@@ -4,6 +4,11 @@ import Page, { Routes } from "@/pages";
 function Router() {
     const browserRouter = createBrowserRouter([
         {
+            path: "/create-account",
+            element: <Page.CreateAccount />,
+            errorElement: <div></div>,
+        },
+        {
             path: "/login",
             element: <Page.Login />,
             errorElement: <div></div>,
