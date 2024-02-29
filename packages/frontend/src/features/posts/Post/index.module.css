@@ -126,6 +126,9 @@
 
 .likes-count,
 .replies-count {
+    display: flex;
+    gap: 0.3rem;
+
     color: var(--text-primary);
 }
 

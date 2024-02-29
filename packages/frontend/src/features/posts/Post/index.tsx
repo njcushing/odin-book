@@ -128,51 +128,39 @@ function Post({
                         <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
                             {formatNumber(postData.likesQuantity, 1)}
                         </strong>
-                        <button
-                            type="button"
-                            className={styles["view-likes-button"]}
-                            aria-label="view-likes"
-                            onClick={(e) => {
-                                e.currentTarget.blur();
-                                e.preventDefault();
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.blur();
-                            }}
-                            style={{
+                        <Buttons.Basic
+                            text="Likes"
+                            label="view likes"
+                            palette="bare"
+                            otherStyles={{
                                 fontSize: sizes.linksAndButtonsRegular,
+                                fontWeight: "normal",
+                                padding: "0rem",
                             }}
-                        >
-                            Likes
-                        </button>
+                        />
                     </p>
                     <p className={styles["replies-count"]}>
                         <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
                             {formatNumber(postData.repliesQuantity, 1)}
                         </strong>
-                        <button
-                            type="button"
-                            className={styles["view-replies-button"]}
-                            aria-label="view-replies"
-                            onClick={(e) => {
+                        <Buttons.Basic
+                            text="Replies"
+                            label="view replies"
+                            onClickHandler={() => {
                                 if (canToggleReplies) {
                                     if (viewing === "replies") setViewing("");
                                     if (viewing !== "replies") setViewing("replies");
                                 } else {
                                     // repliesClickHandler
                                 }
-                                e.currentTarget.blur();
-                                e.preventDefault();
                             }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.blur();
-                            }}
-                            style={{
+                            palette="bare"
+                            otherStyles={{
                                 fontSize: sizes.linksAndButtonsRegular,
+                                fontWeight: "normal",
+                                padding: "0rem",
                             }}
-                        >
-                            Replies
-                        </button>
+                        />
                     </p>
                     <div className={styles["row-three-buttons"]}>
                         <Buttons.Basic
