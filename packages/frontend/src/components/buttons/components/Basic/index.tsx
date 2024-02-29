@@ -8,6 +8,7 @@ function Basic({
     label = "",
     onClickHandler = null,
     disabled = false,
+    allowDefaultEventHandling = false,
     palette = "primary",
     animation = "rigid",
     style = {
@@ -25,9 +26,11 @@ function Basic({
             onClick={(e) => {
                 if (onClickHandler) onClickHandler(e);
                 e.currentTarget.blur();
+                if (!allowDefaultEventHandling) e.preventDefault();
             }}
             onMouseLeave={(e) => {
                 e.currentTarget.blur();
+                if (!allowDefaultEventHandling) e.preventDefault();
             }}
             style={{
                 borderRadius: style.shape === "sharp" ? "0px" : "9999px",
