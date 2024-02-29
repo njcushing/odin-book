@@ -20,20 +20,22 @@ function Basic({
             className={styles["container"]}
             style={{ pointerEvents: unblockPointerEvents ? "none" : "all" }}
         >
-            <div className={styles["modal"]} style={{ ...style }}>
-                <div className={styles["close-button-container"]}>
-                    <Buttons.Basic
-                        type="button"
-                        text=""
-                        symbol="close"
-                        label="close"
-                        onClickHandler={onCloseClickHandler}
-                        style={{ shape: "rounded" }}
-                        palette="primary"
-                        otherStyles={{ fontSize: "1.2rem", padding: "0.3rem" }}
-                    />
+            <div className={styles["wrapper"]}>
+                <div className={styles["modal"]} style={{ ...style }}>
+                    <div className={styles["close-button-container"]}>
+                        <Buttons.Basic
+                            type="button"
+                            text=""
+                            symbol="close"
+                            label="close"
+                            onClickHandler={onCloseClickHandler}
+                            style={{ shape: "rounded" }}
+                            palette="primary"
+                            otherStyles={{ fontSize: "1.2rem", padding: "0.3rem" }}
+                        />
+                    </div>
+                    {children}
                 </div>
-                {children}
             </div>
         </div>
     );
