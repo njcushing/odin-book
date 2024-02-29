@@ -44,7 +44,13 @@ function Login() {
                 <strong>Create one now</strong>
                 {` by clicking the button below.`}
             </p>
-            <Buttons.Basic text="Create Account" palette="gold" />
+            <Buttons.Basic
+                text="Create Account"
+                onClickHandler={() => {
+                    window.location.href = "/create-account";
+                }}
+                palette="gold"
+            />
         </div>
     );
 }
