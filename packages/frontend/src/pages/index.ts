@@ -1,4 +1,5 @@
 import Root, { routes as RootRoutes } from "./Root";
+import CreateAccount from "./CreateAccount";
 import Login from "./Login";
 import Home, { routes as HomeRoutes } from "./Home";
 import Profile, { routes as ProfileRoutes } from "./Profile";
@@ -7,6 +8,7 @@ import Settings, { routes as SettingsRoutes } from "./Settings";
 
 const Page = {
     Root,
+    CreateAccount,
     Login,
     Home,
     Profile,
