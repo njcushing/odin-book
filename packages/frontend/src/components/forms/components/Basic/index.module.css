@@ -39,7 +39,7 @@
     border-radius: 8px;
     outline: 2px solid var(--outline-secondary);
 
-    width: calc(100%);
+    width: calc(100% - (2 * 0.8rem));
     padding: 1.7rem 0.8rem 0.8rem 0.8rem; /* give enough room for the section titles */
     margin: 1.2rem 0rem 0rem 0rem; /* give enough room for the section titles */
 }
