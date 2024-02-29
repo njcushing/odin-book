@@ -9,7 +9,10 @@ export default defineConfig({
     plugins: [react()],
     root: resolve(__dirname, "./src"),
     resolve: {
-        alias: [{ find: "@", replacement: resolve(__dirname, "./src") }],
+        alias: [
+            { find: "@", replacement: resolve(__dirname, "./src") },
+            { find: "@shared", replacement: resolve(__dirname, "../shared/src") },
+        ],
     },
     test: {
         globals: true,

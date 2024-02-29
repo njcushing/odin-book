@@ -8,6 +8,7 @@
     ],
     "paths": {
         "@/*": ["./packages/frontend/src/*"],
+        "@shared/*": ["./packages/shared/src/*"],
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -26,6 +27,7 @@
   "include": [
     "packages/frontend/src",
     "packages/frontend/vite.config.js",
-    "packages/frontend/tests.config.js"
+    "packages/frontend/tests.config.js",
+    "packages/shared/src"
   ]
 }
