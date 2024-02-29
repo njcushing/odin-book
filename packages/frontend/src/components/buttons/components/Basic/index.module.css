@@ -19,8 +19,8 @@
     padding: 0.4rem 1.0rem;
 }
 
-.button:hover,
-.button:focus {
+.button:hover:not(:disabled),
+.button:focus:not(:disabled) {
     cursor: pointer;
 }
 
