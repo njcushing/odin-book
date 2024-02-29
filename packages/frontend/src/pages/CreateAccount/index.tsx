@@ -20,7 +20,8 @@ function CreateAccount() {
                                 required
                                 key={0}
                             />,
-                            <Inputs.Email
+                            <Inputs.Text
+                                type="email"
                                 labelText="Email"
                                 fieldId="email"
                                 fieldName="email"
@@ -28,7 +29,8 @@ function CreateAccount() {
                                 required
                                 key={1}
                             />,
-                            <Inputs.Password
+                            <Inputs.Text
+                                type="password"
                                 labelText="Password"
                                 fieldId="password"
                                 fieldName="password"
@@ -36,7 +38,8 @@ function CreateAccount() {
                                 required
                                 key={1}
                             />,
-                            <Inputs.Password
+                            <Inputs.Text
+                                type="password"
                                 labelText="Confirm Password"
                                 fieldId="confirmPassword"
                                 fieldName="confirmPassword"

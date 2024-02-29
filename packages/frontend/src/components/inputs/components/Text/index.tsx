@@ -6,7 +6,7 @@ import getSizes from "../../utils/getSizes";
 import Inputs from "../..";
 import styles from "./index.module.css";
 
-type Custom = { description?: string };
+type Custom = { type?: "text" | "email" | "password"; description?: string };
 
 type TextTypes = Types.Base &
     Types.Placeholder &
@@ -28,6 +28,7 @@ function Text({
     errorMessage = "",
     validator = null,
     size = "s",
+    type = "text",
     description = "",
 }: TextTypes) {
     const [value, setValue]: [string, extendedTypes.Setter<string>] = useState(initialValue || "");
@@ -48,7 +49,7 @@ function Text({
             <Inputs.Description text={description} size={size} />
             <input
                 className={styles[`input${currentErrorMessage.length > 0 ? "-error" : ""}`]}
-                type="text"
+                type={type}
                 id={fieldId}
                 name={fieldName}
                 defaultValue={value}

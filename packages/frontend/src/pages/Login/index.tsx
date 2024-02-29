@@ -17,7 +17,8 @@ function Login() {
                                 fieldName="username"
                                 key={0}
                             />,
-                            <Inputs.Password
+                            <Inputs.Text
+                                type="password"
                                 labelText="Password"
                                 fieldId="password"
                                 fieldName="password"
