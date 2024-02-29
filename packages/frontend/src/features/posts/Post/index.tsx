@@ -96,36 +96,40 @@ function Post({
                         size={sizes.imageAndName as "s" | "l"}
                     />
                 </div>
-                <div className={styles["row-two"]}>
-                    <p
-                        className={styles["text"]}
-                        style={{
-                            fontSize: sizes.contentFont,
-                            lineHeight: sizes.contentLineHeight,
-                        }}
-                    >
-                        {postData.content.text}
-                    </p>
-                    {postData.content.images.length > 0 && (
-                        <ul
-                            className={styles["images"]}
-                            data-image-quantity={`${Math.min(4, postData.content.images.length)}`}
-                        >
-                            {postData.content.images.map((image, i) => {
-                                if (i >= 4) return null;
-                                return (
-                                    <li className={styles["image-container"]} key={uuidv4()}>
-                                        <Images.Basic
-                                            src={image.src}
-                                            alt={image.alt}
-                                            style={{ width: "100%", height: "100%" }}
-                                        />
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    )}
-                </div>
+                {(postData.content.text.length > 0 || postData.content.images.length > 0) && (
+                    <div className={styles["row-two"]}>
+                        {postData.content.text.length > 0 && (
+                            <p
+                                className={styles["text"]}
+                                style={{
+                                    fontSize: sizes.contentFont,
+                                    lineHeight: sizes.contentLineHeight,
+                                }}
+                            >
+                                {postData.content.text}
+                            </p>
+                        )}
+                        {postData.content.images.length > 0 && (
+                            <ul
+                                className={styles["images"]}
+                                data-image-quantity={`${Math.min(4, postData.content.images.length)}`}
+                            >
+                                {postData.content.images.map((image, i) => {
+                                    if (i >= 4) return null;
+                                    return (
+                                        <li className={styles["image-container"]} key={uuidv4()}>
+                                            <Images.Basic
+                                                src={image.src}
+                                                alt={image.alt}
+                                                style={{ width: "100%", height: "100%" }}
+                                            />
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        )}
+                    </div>
+                )}
                 <div className={styles["row-three"]}>
                     <p className={styles["likes-count"]}>
                         <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
