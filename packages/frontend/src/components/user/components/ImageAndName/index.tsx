@@ -6,6 +6,7 @@ function ImageAndName({
     image = { src: new Uint8Array([]), alt: "" },
     displayName = "Display Name",
     accountTag = "@account_name",
+    disableLinks = false,
     size = "m",
 }: Types.ImageAndName) {
     const sizes = { image: 48, displayName: 1.0, accountTag: 0.8 };
@@ -55,6 +56,7 @@ function ImageAndName({
                         onMouseLeave={(e) => {
                             e.currentTarget.blur();
                         }}
+                        disabled={disableLinks}
                         style={{
                             fontSize: `${sizes.displayName}rem`,
                         }}
@@ -73,6 +75,7 @@ function ImageAndName({
                         onMouseLeave={(e) => {
                             e.currentTarget.blur();
                         }}
+                        disabled={disableLinks}
                         style={{
                             fontSize: `${sizes.accountTag}rem`,
                         }}

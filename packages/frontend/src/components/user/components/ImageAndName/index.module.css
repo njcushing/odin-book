@@ -46,10 +46,10 @@
     font-size: 0.9rem;
 }
 
-.display-name-button:hover,
-.display-name-button:focus,
-.account-tag-button:hover,
-.account-tag-button:focus {
+.display-name-button:hover:not(:disabled),
+.display-name-button:focus:not(:disabled),
+.account-tag-button:hover:not(:disabled),
+.account-tag-button:focus:not(:disabled) {
     cursor: pointer;
 
     text-decoration: underline;

@@ -9,6 +9,7 @@ export type ImageAndName = Sizes & {
     image: ImageTypes.Profile;
     displayName: string;
     accountTag: string;
+    disableLinks?: boolean;
 };
 
 export type Option = {
