@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Buttons from "@/components/buttons";
-import validateField from "@/utils/validateField";
 import formatBytes from "@/utils/formatBytes";
 import * as validation from "../../utils/validation";
 import styles from "./index.module.css";
@@ -88,7 +87,7 @@ function Message({
                             resize: "none",
                         }}
                         onChange={(e) => {
-                            const valid = validateField(
+                            const valid = validation.validate(
                                 e.target.value,
                                 textValidator || null,
                                 false,
@@ -131,7 +130,7 @@ function Message({
                                     const imgArray = Array.from(
                                         new Uint8Array(event.target.result),
                                     );
-                                    const valid = validateField(
+                                    const valid = validation.validate(
                                         imgArray,
                                         imageValidator || null,
                                         false,
