@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import Buttons from "@/components/buttons";
 import * as ButtonTypes from "@/components/buttons/types";
 import * as extendedTypes from "@/utils/extendedTypes";
-import { v4 as uuidv4 } from "uuid";
 import * as validation from "@/components/inputs/utils/validation";
 import styles from "./index.module.css";
 
@@ -29,12 +28,12 @@ type BasicTypes = {
     enableButtonOnInvalidFields?: boolean;
 };
 
-const createSection = (section: SectionTypes): React.ReactElement => {
+const createSection = (section: SectionTypes, i: number): React.ReactElement => {
     return (
         <section
             className={styles["section"]}
             data-title-present={!!(section.title && section.title.length > 0)}
-            key={section.title || uuidv4()}
+            key={section.title && section.title.length > 0 ? section.title : i || i}
         >
             {section.title && section.title.length > 0 ? (
                 <h4 className={styles["section-title"]}>{section.title}</h4>
@@ -43,7 +42,7 @@ const createSection = (section: SectionTypes): React.ReactElement => {
                 <p className={styles["section-description"]}>{section.description}</p>
             ) : null}
             {section.fields.map((field) => (
-                <div key={uuidv4()}>{field}</div>
+                <div key={field.props.fieldName}>{field}</div>
             ))}
         </section>
     );
@@ -142,7 +141,7 @@ function Basic({
                     All fields marked with <strong>*</strong> are <strong>required</strong>.
                 </h4>
             ) : null}
-            {sections.map((section) => createSection(section))}
+            {sections.map((section, i) => createSection(section, i))}
             <section className={styles["submit-section"]}>
                 <Buttons.Basic
                     type="submit"
