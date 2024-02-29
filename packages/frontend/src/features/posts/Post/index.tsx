@@ -20,6 +20,7 @@ type PostTypes = {
     overrideReplies?: extendedTypes.MongoDBObjectId[];
     canReply?: boolean;
     replyingOpen?: boolean;
+    previewMode?: boolean;
     size?: "s" | "l";
 };
 
@@ -32,12 +33,13 @@ function Post({
     overrideReplies = [],
     canReply = false,
     replyingOpen = false,
+    previewMode = false,
     size = "l",
 }: PostTypes) {
     const [postData, setPostData] = useState<modelTypes.Post | null>(null);
     const [liked, setLiked] = useState<boolean>(false);
-    const [viewing, setViewing] = useState<"" | "replies">(viewingDefault);
-    const [replying, setReplying] = useState<boolean>(replyingOpen);
+    const [viewing, setViewing] = useState<"" | "replies">(!previewMode ? viewingDefault : "");
+    const [replying, setReplying] = useState<boolean>(!previewMode ? replyingOpen : false);
 
     useEffect(() => {
         (async () => {
@@ -90,6 +92,7 @@ function Post({
                         }}
                         displayName={postData.author.preferences.displayName}
                         accountTag={postData.author.accountTag}
+                        disableLinks={previewMode}
                         size={sizes.imageAndName as "s" | "l"}
                     />
                 </div>
@@ -137,6 +140,7 @@ function Post({
                                 fontWeight: "normal",
                                 padding: "0rem",
                             }}
+                            disabled={previewMode}
                         />
                     </p>
                     <p className={styles["replies-count"]}>
@@ -160,6 +164,7 @@ function Post({
                                 fontWeight: "normal",
                                 padding: "0rem",
                             }}
+                            disabled={previewMode}
                         />
                     </p>
                     <div className={styles["row-three-buttons"]}>
@@ -168,6 +173,7 @@ function Post({
                             symbol="star"
                             palette={liked ? "gold" : "primary"}
                             otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+                            disabled={previewMode}
                         />
                         <Buttons.Basic
                             text="Reply"
@@ -176,11 +182,13 @@ function Post({
                                 if (canReply) setReplying(!replying);
                             }}
                             otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+                            disabled={previewMode}
                         />
                         <Buttons.Basic
                             text="Share"
                             symbol="share"
                             otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+                            disabled={previewMode}
                         />
                     </div>
                 </div>
