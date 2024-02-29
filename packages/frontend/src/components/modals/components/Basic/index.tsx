@@ -6,12 +6,14 @@ type BasicTypes = {
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     unblockPointerEvents?: boolean;
     style?: React.CSSProperties;
+    children?: React.ReactNode | null;
 };
 
 function Basic({
     onCloseClickHandler = null,
     unblockPointerEvents = false,
     style = {},
+    children = null,
 }: BasicTypes) {
     return (
         <div
@@ -31,6 +33,7 @@ function Basic({
                         otherStyles={{ fontSize: "1.2rem", padding: "0.3rem" }}
                     />
                 </div>
+                {children}
             </div>
         </div>
     );
