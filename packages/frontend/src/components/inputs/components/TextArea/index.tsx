@@ -9,7 +9,6 @@ import styles from "./index.module.css";
 const defaultStyles = {
     resize: "none",
 
-    width: "100%",
     height: "6rem",
 };
 
