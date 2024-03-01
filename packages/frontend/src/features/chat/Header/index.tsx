@@ -36,6 +36,7 @@ function Header({ name = "Chat Title", onEditNameHandler = null }: HeaderTypes) 
                             setChatName(e.target.value)
                         }
                         onBlur={() => setEditingName(false)}
+                        // eslint-disable-next-line jsx-a11y/no-autofocus
                         autoFocus
                     ></input>
                 )}
