@@ -28,6 +28,8 @@
     "packages/frontend/src",
     "packages/frontend/vite.config.js",
     "packages/frontend/tests.config.js",
-    "packages/shared/src"
+    "packages/shared/src",
+    "packages/shared/vite.config.js",
+    "packages/shared/tests.config.js"
   ]
 }
