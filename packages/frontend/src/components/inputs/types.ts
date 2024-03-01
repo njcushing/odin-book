@@ -24,6 +24,11 @@ export type Validator<T> = {
     validator?: validation.Validator<T>;
 };
 
+export type Length = {
+    minLength?: number;
+    maxLength?: number;
+};
+
 export type Sizes = {
     size?: "xs" | "s" | "m" | "l" | "xl";
 };
