@@ -1,11 +1,11 @@
 import * as extendedTypes from "@shared/utils/extendedTypes";
 
-type returnTypes = {
+type ReturnTypes = {
     status: boolean;
     message: string;
 };
 
-export const text = (value: string, messageType: "front" | "back"): returnTypes => {
+export const text = (value: string, messageType: "front" | "back"): ReturnTypes => {
     if (value.length > 500) {
         return {
             status: false,
@@ -24,7 +24,7 @@ export const text = (value: string, messageType: "front" | "back"): returnTypes 
 export const image = (
     value: extendedTypes.TypedArray,
     messageType: "front" | "back",
-): returnTypes => {
+): ReturnTypes => {
     if (!extendedTypes.isTypedArray(value)) {
         return {
             status: false,

@@ -1,9 +1,9 @@
-type returnTypes = {
+type ReturnTypes = {
     status: boolean;
     message: string;
 };
 
-export const username = (value: string, messageType: "front" | "back"): returnTypes => {
+export const username = (value: string, messageType: "front" | "back"): ReturnTypes => {
     const pattern = /^[a-zA-Z0-9]*$/;
     if (value.length === 0) {
         return {
@@ -38,7 +38,7 @@ export const username = (value: string, messageType: "front" | "back"): returnTy
     };
 };
 
-export const email = (value: string, messageType: "front" | "back"): returnTypes => {
+export const email = (value: string, messageType: "front" | "back"): ReturnTypes => {
     const pattern =
         /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
     if (value.length === 0) {
@@ -69,7 +69,7 @@ const passwordValidator = (
     value: string,
     messageType: "front" | "back",
     confirming: boolean = false,
-): returnTypes => {
+): ReturnTypes => {
     const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     if (value.length === 0) {
         return {
@@ -103,9 +103,9 @@ const passwordValidator = (
                 : `'${confirming ? "confirmP" : "p"}assword' field (String) is valid`,
     };
 };
-export const password = (value: string, messageType: "front" | "back"): returnTypes => {
+export const password = (value: string, messageType: "front" | "back"): ReturnTypes => {
     return passwordValidator(value, messageType, false);
 };
-export const confirmPassword = (value: string, messageType: "front" | "back"): returnTypes => {
+export const confirmPassword = (value: string, messageType: "front" | "back"): ReturnTypes => {
     return passwordValidator(value, messageType, true);
 };
