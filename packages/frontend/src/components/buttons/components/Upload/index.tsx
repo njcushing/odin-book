@@ -3,7 +3,7 @@ import Buttons from "../..";
 import * as Types from "../../types";
 import styles from "./index.module.css";
 
-const buttonDefaultProps = {
+const buttonDefaultProps: Types.Basic = {
     text: "",
     symbol: "",
     label: "",
