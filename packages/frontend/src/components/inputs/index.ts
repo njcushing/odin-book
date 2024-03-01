@@ -4,6 +4,7 @@ import Counter from "./components/Counter";
 import Error from "./components/Error";
 import Text from "./components/Text";
 import TextArea from "./components/TextArea";
+import File from "./components/File";
 import Message from "./components/Message";
 import FileButton from "./components/FileButton";
 
@@ -14,6 +15,7 @@ const Inputs = {
     Error,
     Text,
     TextArea,
+    File,
     Message,
     FileButton,
 };

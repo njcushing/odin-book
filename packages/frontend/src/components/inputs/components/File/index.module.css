@@ -1,0 +1,34 @@
+.wrapper {
+    container-type: inline-size;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    width: 100%;
+}
+
+.label-and-upload-button-container {
+    display: grid;
+    grid-template-columns: minmax(0, 100%) 1fr;
+    align-items: center;
+}
+
+.input-container {
+    width: 100%;
+}
+
+.file-buttons-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+.no-files-message {
+    color: var(--text-secondary);
+    font-family: Rubik;
+    font-size: 1.0rem;
+    font-style: italic;
+    text-align: left;
+}
