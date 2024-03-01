@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Buttons from "@/components/buttons";
-import formatBytes from "@/utils/formatBytes";
 import Inputs from "../..";
 import * as validation from "../../utils/validation";
 import styles from "./index.module.css";
