@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import * as extendedTypes from "@/utils/extendedTypes";
 import * as Types from "../../types";
 import * as validation from "../../utils/validation";
@@ -6,7 +6,20 @@ import getSizes from "../../utils/getSizes";
 import Inputs from "../..";
 import styles from "./index.module.css";
 
-type Custom = { description?: string; resizeHorizontal?: boolean; resizeVertical?: boolean };
+const defaultStyles = {
+    resize: "none",
+
+    width: "100%",
+    height: "6rem",
+};
+
+/* Overriding onChangeHandler's type in Types.Base; designed for HTMLInputElement */
+
+type Custom = {
+    onChangeHandler?: ((event: React.ChangeEvent<HTMLTextAreaElement>) => void) | null;
+    description?: string;
+    style?: React.CSSProperties;
+};
 
 type TextAreaTypes = Types.Base &
     Types.Placeholder &
@@ -29,8 +42,7 @@ function TextArea({
     validator = null,
     size = "s",
     description = "",
-    resizeHorizontal = false,
-    resizeVertical = false,
+    style = {},
 }: TextAreaTypes) {
     const [value, setValue]: [string, extendedTypes.Setter<string>] = useState(initialValue || "");
     const [error, setError]: [string, extendedTypes.Setter<string>] = useState("");
@@ -44,11 +56,6 @@ function TextArea({
         currentErrorMessage = error;
     }
 
-    let resize: "none" | "both" | "horizontal" | "vertical" = "none";
-    if (resizeHorizontal && resizeVertical) resize = "both";
-    else if (resizeHorizontal) resize = "horizontal";
-    else if (resizeVertical) resize = "vertical";
-
     return (
         <div className={styles["wrapper"]}>
             <Inputs.Label labelText={labelText} fieldId={fieldId} required={required} size={size} />
@@ -59,7 +66,8 @@ function TextArea({
                 name={fieldName}
                 defaultValue={value}
                 style={{
-                    resize,
+                    ...defaultStyles,
+                    ...style,
                     ...sizes,
                 }}
                 onChange={(e) => {
