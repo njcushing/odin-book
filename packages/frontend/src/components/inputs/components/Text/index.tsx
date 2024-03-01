@@ -13,6 +13,7 @@ type TextTypes = Types.Base &
     Types.Error &
     Types.Validator<string> &
     Types.Sizes &
+    Types.Length &
     Custom;
 
 function Text({
@@ -28,6 +29,8 @@ function Text({
     errorMessage = "",
     validator = null,
     size = "s",
+    minLength,
+    maxLength,
     type = "text",
     description = "",
 }: TextTypes) {
@@ -70,6 +73,8 @@ function Text({
                 disabled={disabled || false}
                 readOnly={readOnly}
                 placeholder={placeholder || ""}
+                minLength={minLength}
+                maxLength={maxLength}
             ></input>
             {!disabled && currentErrorMessage.length > 0 ? (
                 <Inputs.Error text={currentErrorMessage} size={size} />

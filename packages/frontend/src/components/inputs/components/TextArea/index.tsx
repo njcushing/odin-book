@@ -26,6 +26,7 @@ type TextAreaTypes = Types.Base &
     Types.Error &
     Types.Validator<string> &
     Types.Sizes &
+    Types.Length &
     Custom;
 
 function TextArea({
@@ -41,6 +42,8 @@ function TextArea({
     errorMessage = "",
     validator = null,
     size = "s",
+    minLength,
+    maxLength,
     description = "",
     style = {},
 }: TextAreaTypes) {
@@ -83,6 +86,8 @@ function TextArea({
                 disabled={disabled || false}
                 readOnly={readOnly}
                 placeholder={placeholder || ""}
+                minLength={minLength}
+                maxLength={maxLength}
             ></textarea>
             {!disabled && currentErrorMessage.length > 0 ? (
                 <Inputs.Error text={currentErrorMessage} size={size} />
