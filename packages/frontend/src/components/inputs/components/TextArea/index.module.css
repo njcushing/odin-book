@@ -68,6 +68,14 @@
     color: rgba(60, 60, 60, 1.0);
 }
 
+.counter {
+    color: var(--text-primary);
+    font-family: Rubik;
+    font-size: 0.9rem;
+    font-style: italic;
+    text-align: right;
+}
+
 .error {
     color: var(--text-error);
     font-size: 0.7rem;

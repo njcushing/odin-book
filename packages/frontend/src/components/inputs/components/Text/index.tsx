@@ -31,6 +31,7 @@ function Text({
     size = "s",
     minLength,
     maxLength,
+    counter = false,
     type = "text",
     description = "",
 }: TextTypes) {
@@ -45,6 +46,10 @@ function Text({
     } else if (error && error.length > 0) {
         currentErrorMessage = error;
     }
+
+    let counterString = "";
+    if (counter && maxLength) counterString = `${value.length}/${maxLength}`;
+    else counterString = `${value.length}`;
 
     return (
         <div className={styles["wrapper"]}>
@@ -76,6 +81,7 @@ function Text({
                 minLength={minLength}
                 maxLength={maxLength}
             ></input>
+            {counter && <p className={styles["counter"]}>{counterString}</p>}
             {!disabled && currentErrorMessage.length > 0 ? (
                 <Inputs.Error text={currentErrorMessage} size={size} />
             ) : null}

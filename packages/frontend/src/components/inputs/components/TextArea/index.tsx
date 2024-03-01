@@ -44,6 +44,7 @@ function TextArea({
     size = "s",
     minLength,
     maxLength,
+    counter = false,
     description = "",
     style = {},
 }: TextAreaTypes) {
@@ -58,6 +59,10 @@ function TextArea({
     } else if (error && error.length > 0) {
         currentErrorMessage = error;
     }
+
+    let counterString = "";
+    if (counter && maxLength) counterString = `${value.length}/${maxLength}`;
+    else counterString = `${value.length}`;
 
     return (
         <div className={styles["wrapper"]}>
@@ -89,6 +94,7 @@ function TextArea({
                 minLength={minLength}
                 maxLength={maxLength}
             ></textarea>
+            {counter && <p className={styles["counter"]}>{counterString}</p>}
             {!disabled && currentErrorMessage.length > 0 ? (
                 <Inputs.Error text={currentErrorMessage} size={size} />
             ) : null}
