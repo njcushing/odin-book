@@ -5,8 +5,6 @@ import formatBytes from "@/utils/formatBytes";
 import * as validation from "../../utils/validation";
 import styles from "./index.module.css";
 
-type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
-
 type Images = {
     [key: string]: {
         image: number[];
@@ -46,10 +44,10 @@ function Message({
     submissionErrors = [],
     sending = false,
 }: MessageTypes) {
-    const [textareaContent, setTextareaContent]: [string, Setter<string>] = useState<string>(text);
-    const [textError, setTextError]: [string, Setter<string>] = useState<string>("");
-    const [images, setImages]: [Images, Setter<Images>] = useState<Images>({});
-    const [imageError, setImageError]: [string, Setter<string>] = useState<string>("");
+    const [textareaContent, setTextareaContent] = useState<string>(text);
+    const [textError, setTextError] = useState<string>("");
+    const [images, setImages] = useState<Images>({});
+    const [imageError, setImageError] = useState<string>("");
 
     const createImageButton = (key: string, file: { name: string; size: number }) => {
         return (
