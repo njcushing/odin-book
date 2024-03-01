@@ -1,4 +1,4 @@
-import * as extendedTypes from "@/utils/extendedTypes";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 
 type Base = {
     src?: extendedTypes.TypedArray;

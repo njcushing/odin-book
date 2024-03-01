@@ -1,5 +1,5 @@
 import { useState } from "react";
-import * as extendedTypes from "@/utils/extendedTypes";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import * as Types from "../../types";
 import * as validation from "../../utils/validation";
 import getSizes from "../../utils/getSizes";

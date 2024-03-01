@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Buttons from "@/components/buttons";
 import * as ButtonTypes from "@/components/buttons/types";
-import * as extendedTypes from "@/utils/extendedTypes";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import * as validation from "@/components/inputs/utils/validation";
 import styles from "./index.module.css";
 

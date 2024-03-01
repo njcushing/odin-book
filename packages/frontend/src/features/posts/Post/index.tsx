@@ -4,7 +4,7 @@ import User from "@/components/user";
 import Inputs from "@/components/inputs";
 import Images from "@/components/images";
 import * as modelTypes from "@/utils/modelTypes";
-import * as extendedTypes from "@/utils/extendedTypes";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import * as mockData from "@/mockData";
 import { v4 as uuidv4 } from "uuid";
 import formatNumber from "@/utils/formatNumber";

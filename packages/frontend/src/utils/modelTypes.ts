@@ -1,4 +1,4 @@
-import * as extendedTypes from "@/utils/extendedTypes";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 
 export type Status = "online" | "away" | "busy" | "offline" | null;
 

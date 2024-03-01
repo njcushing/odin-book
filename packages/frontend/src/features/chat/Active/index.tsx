@@ -2,7 +2,7 @@ import { useState } from "react";
 import LayoutUI from "@/layouts";
 import Buttons from "@/components/buttons";
 import Inputs from "@/components/inputs";
-import * as extendedTypes from "@/utils/extendedTypes";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import * as mockData from "@/mockData";
 import Chat from "..";
 import styles from "./index.module.css";

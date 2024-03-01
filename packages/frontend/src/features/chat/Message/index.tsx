@@ -1,6 +1,6 @@
 import Buttons from "@/components/buttons";
 import Images from "@/components/images";
-import * as extendedTypes from "@/utils/extendedTypes";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import objectURLFromTypedArray from "@/utils/objectURLFromTypedArray";
 import formatDate from "@/utils/formatDate";
 import styles from "./index.module.css";

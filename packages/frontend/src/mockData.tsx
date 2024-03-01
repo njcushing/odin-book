@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import * as modelTypes from "@/utils/modelTypes";
-import * as extendedTypes from "@/utils/extendedTypes";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import Chat from "./features/chat";
 
 type ObjectType<T> = {
