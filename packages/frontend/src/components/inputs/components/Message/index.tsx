@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Buttons from "@/components/buttons";
 import formatBytes from "@/utils/formatBytes";
+import Inputs from "../..";
 import * as validation from "../../utils/validation";
 import styles from "./index.module.css";
 
@@ -49,22 +50,17 @@ function Message({
     const [images, setImages] = useState<Images>({});
     const [imageError, setImageError] = useState<string>("");
 
-    const createImageButton = (key: string, file: { name: string; size: number }) => {
+    const createImageButton = (key: string, file: File) => {
         return (
-            <li className={styles["image-button"]} aria-label="image to load" key={key}>
-                <div className={styles["file-info"]}>
-                    <p className={styles["image-file-name"]}>{file.name}</p>
-                    <p className={styles["image-file-size"]}>{formatBytes(file.size, 2)}</p>
-                </div>
-                <Buttons.Basic
-                    text=""
-                    symbol="cancel"
+            <li key={key}>
+                <Inputs.ImageButton
+                    file={file}
+                    label="image to load"
                     onClickHandler={() => {
                         const newImages = { ...images };
                         delete newImages[key];
                         setImages(newImages);
                     }}
-                    otherStyles={{ fontSize: "1.2rem", padding: "0.2rem" }}
                 />
             </li>
         );
