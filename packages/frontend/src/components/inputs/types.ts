@@ -27,6 +27,7 @@ export type Validator<T> = {
 export type Length = {
     minLength?: number;
     maxLength?: number;
+    counter?: boolean;
 };
 
 export type Sizes = {
