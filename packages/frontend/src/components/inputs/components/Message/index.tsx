@@ -52,7 +52,7 @@ function Message({
     const createImageButton = (key: string, file: File) => {
         return (
             <li key={key}>
-                <Inputs.ImageButton
+                <Inputs.FileButton
                     file={file}
                     label="image to load"
                     onClickHandler={() => {

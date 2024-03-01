@@ -99,44 +99,6 @@
     padding: 0.4rem;
 }
 
-.image-button {
-    place-self: start;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 0.3rem;
-
-    outline: 1px solid var(--outline-tertiary);
-    border-radius: 9999px;
-    background-color: var(--background-tertiary);
-
-    padding: 0.3rem 0.3rem 0.3rem 0.8rem;
-}
-
-.file-info {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 0.1rem;
-}
-
-.image-file-name {
-    color: var(--text-secondary);
-    font-family: Gabarito;
-    font-size: 1.0rem;
-    font-weight: bold;
-}
-
-.image-file-size {
-    color: var(--text-secondary);
-    font-family: Rubik;
-    font-size: 0.8rem;
-    font-weight: normal;
-    font-style: italic;
-}
-
 .send-options-container {
     grid-area: 1 / 2 / -1 / -1;
 

@@ -3,18 +3,18 @@ import formatBytes from "@/utils/formatBytes";
 import React from "react";
 import styles from "./index.module.css";
 
-type ImageButtonTypes = {
+type FileButtonTypes = {
     file: File;
     label?: string;
     onClickHandler: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
 };
 
-function ImageButton({ file, label = "image button", onClickHandler = null }: ImageButtonTypes) {
+function FileButton({ file, label = "file button", onClickHandler = null }: FileButtonTypes) {
     return (
         <div className={styles["container"]} aria-label={label}>
             <div className={styles["file-info"]}>
-                <p className={styles["image-file-name"]}>{file.name}</p>
-                <p className={styles["image-file-size"]}>{formatBytes(file.size, 2)}</p>
+                <p className={styles["file-name"]}>{file.name}</p>
+                <p className={styles["file-size"]}>{formatBytes(file.size, 2)}</p>
             </div>
             <Buttons.Basic
                 text=""
@@ -26,4 +26,4 @@ function ImageButton({ file, label = "image button", onClickHandler = null }: Im
     );
 }
 
-export default ImageButton;
+export default FileButton;

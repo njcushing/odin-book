@@ -21,14 +21,14 @@
     gap: 0.1rem;
 }
 
-.image-file-name {
+.file-name {
     color: var(--text-secondary);
     font-family: Gabarito;
     font-size: 1.0rem;
     font-weight: bold;
 }
 
-.image-file-size {
+.file-size {
     color: var(--text-secondary);
     font-family: Rubik;
     font-size: 0.8rem;

@@ -5,7 +5,7 @@ import Error from "./components/Error";
 import Text from "./components/Text";
 import TextArea from "./components/TextArea";
 import Message from "./components/Message";
-import ImageButton from "./components/ImageButton";
+import FileButton from "./components/FileButton";
 
 const Inputs = {
     Label,
@@ -15,7 +15,7 @@ const Inputs = {
     Text,
     TextArea,
     Message,
-    ImageButton,
+    FileButton,
 };
 
 export default Inputs;
