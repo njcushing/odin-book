@@ -1,8 +1,8 @@
 const getSizes = (
     size: "xs" | "s" | "m" | "l" | "xl",
-    element: "label" | "description" | "input" | "error",
+    element: "label" | "description" | "input" | "counter" | "error",
 ): { [key: string]: string } => {
-    let sizes = { label: {}, description: {}, input: {}, error: {} };
+    let sizes = { label: {}, description: {}, input: {}, counter: {}, error: {} };
     switch (size) {
         case "xs":
             sizes = {
@@ -14,6 +14,9 @@ const getSizes = (
                 },
                 input: {
                     fontSize: "0.9rem",
+                },
+                counter: {
+                    fontSize: "0.6rem",
                 },
                 error: {
                     fontSize: "0.6rem",
@@ -31,6 +34,9 @@ const getSizes = (
                 input: {
                     fontSize: "1.2rem",
                 },
+                counter: {
+                    fontSize: "0.8rem",
+                },
                 error: {
                     fontSize: "0.8rem",
                 },
@@ -46,6 +52,9 @@ const getSizes = (
                 },
                 input: {
                     fontSize: "1.8rem",
+                },
+                counter: {
+                    fontSize: "1.2rem",
                 },
                 error: {
                     fontSize: "1.2rem",
@@ -63,6 +72,9 @@ const getSizes = (
                 input: {
                     fontSize: "2.1rem",
                 },
+                counter: {
+                    fontSize: "1.4rem",
+                },
                 error: {
                     fontSize: "1.4rem",
                 },
@@ -79,6 +91,9 @@ const getSizes = (
                 },
                 input: {
                     fontSize: "1.5rem",
+                },
+                counter: {
+                    fontSize: "1.0rem",
                 },
                 error: {
                     fontSize: "1.0rem",

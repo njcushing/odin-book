@@ -1,0 +1,7 @@
+.counter {
+    color: var(--text-primary);
+    font-family: Rubik;
+    font-size: 0.9rem;
+    font-style: italic;
+    text-align: right;
+}

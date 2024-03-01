@@ -47,10 +47,6 @@ function Text({
         currentErrorMessage = error;
     }
 
-    let counterString = "";
-    if (counter && maxLength) counterString = `${value.length}/${maxLength}`;
-    else counterString = `${value.length}`;
-
     return (
         <div className={styles["wrapper"]}>
             <Inputs.Label labelText={labelText} fieldId={fieldId} required={required} size={size} />
@@ -81,7 +77,7 @@ function Text({
                 minLength={minLength}
                 maxLength={maxLength}
             ></input>
-            {counter && <p className={styles["counter"]}>{counterString}</p>}
+            {counter && <Inputs.Counter count={value.length} maxLength={maxLength} size={size} />}
             {!disabled && currentErrorMessage.length > 0 ? (
                 <Inputs.Error text={currentErrorMessage} size={size} />
             ) : null}
