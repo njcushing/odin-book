@@ -36,6 +36,7 @@ function Upload({
             symbol={button.symbol || buttonDefaultProps.symbol}
             label={button.label || buttonDefaultProps.label}
             disabled={button.disabled || buttonDefaultProps.disabled}
+            allowDefaultEventHandling
             palette={button.palette || buttonDefaultProps.palette}
             animation={button.animation || buttonDefaultProps.animation}
             style={button.style || buttonDefaultProps.style}
