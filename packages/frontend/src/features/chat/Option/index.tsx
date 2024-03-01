@@ -1,4 +1,5 @@
 import Images from "@/components/images";
+import * as ImageTypes from "@/components/images/types";
 import Buttons from "@/components/buttons";
 import combineParticipantNames from "../utils/combineParticipantNames";
 import styles from "./index.module.css";
@@ -11,7 +12,7 @@ type RecentMessageTypes = {
 type OptionTypes = {
     name?: string;
     participants?: string[];
-    image?: Images.Types.Profile;
+    image?: ImageTypes.Profile;
     recentMessage?: RecentMessageTypes;
     onDeleteClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
 };
