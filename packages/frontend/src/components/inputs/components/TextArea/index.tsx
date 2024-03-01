@@ -6,7 +6,7 @@ import getSizes from "../../utils/getSizes";
 import Inputs from "../..";
 import styles from "./index.module.css";
 
-const defaultStyles = {
+const defaultStyles: React.CSSProperties = {
     resize: "none",
 
     height: "6rem",
