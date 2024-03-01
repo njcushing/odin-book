@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import Buttons from "../..";
 import * as Types from "../../types";
 import styles from "./index.module.css";
@@ -15,6 +14,9 @@ const buttonDefaultProps: Types.Basic = {
 };
 
 type UploadTypes = {
+    labelText?: string;
+    fieldId?: string;
+    fieldName?: string;
     accept?: string;
     multiple?: boolean;
     button?: Types.Basic;
@@ -22,13 +24,14 @@ type UploadTypes = {
 };
 
 function Upload({
+    labelText,
+    fieldId,
+    fieldName,
     accept = "*",
     multiple = false,
     button = { ...buttonDefaultProps },
     onUploadHandler = null,
 }: UploadTypes) {
-    const associationId = uuidv4();
-
     return (
         <Buttons.Basic
             type="button"
@@ -44,17 +47,19 @@ function Upload({
         >
             <label
                 className={styles["label"]}
-                htmlFor={associationId}
+                htmlFor={fieldId}
                 aria-label="upload"
                 style={{
                     borderRadius: button.style && button.style.shape === "sharp" ? "0px" : "9999px",
                 }}
             >
+                {labelText}
                 <input
                     className={styles["upload-input"]}
                     aria-label="upload"
                     type="file"
-                    id={associationId}
+                    id={fieldId}
+                    name={fieldName}
                     accept={accept}
                     multiple={multiple}
                     disabled={button.disabled || buttonDefaultProps.disabled}
