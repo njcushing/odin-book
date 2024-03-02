@@ -11,6 +11,9 @@ function List() {
             <Buttons.Basic
                 text="New"
                 symbol="add"
+                onClickHandler={() => {
+                    PubSub.publish("create-new-chat-button-click", null);
+                }}
                 palette="green"
                 otherStyles={{
                     fontSize: "1.15rem",
