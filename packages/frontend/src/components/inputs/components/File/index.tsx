@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Buttons from "@/components/buttons";
 import { v4 as uuidv4 } from "uuid";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import Inputs from "../..";
 import * as Types from "../../types";
 import * as validation from "../../utils/validation";
@@ -9,7 +10,7 @@ import styles from "./index.module.css";
 
 type Files = {
     [key: string]: {
-        data: number[];
+        data: extendedTypes.TypedArray;
         file: File;
     };
 };
@@ -20,13 +21,18 @@ type Files = {
 type Custom = {
     accept?: string;
     multiple?: boolean;
+    maximumAmount?: number;
     description?: string;
     buttonSymbol?: string;
     initialValue?: Files;
     onChangeHandler?: ((files: Files) => void) | null;
 };
 
-type FileTypes = Types.Base & Types.Error & Types.Validator<number[]> & Types.Sizes & Custom;
+type FileTypes = Types.Base &
+    Types.Error &
+    Types.Validator<extendedTypes.TypedArray> &
+    Types.Sizes &
+    Custom;
 
 function File({
     labelText,
@@ -41,6 +47,7 @@ function File({
     size = "s",
     accept = "*",
     multiple = false,
+    maximumAmount,
     description = "",
     buttonSymbol = "attach_file",
 }: FileTypes) {
@@ -92,22 +99,27 @@ function File({
                     button={{
                         text: "",
                         symbol: buttonSymbol,
+                        disabled:
+                            (maximumAmount && Object.keys(files).length >= maximumAmount) ||
+                            disabled,
                         palette: "primary",
                         style: { shape: "rounded" },
                         otherStyles: { ...sizes, padding: "0.6rem" },
                     }}
                     onUploadHandler={(uploads: [ProgressEvent<FileReader>, File][]) => {
+                        const currentQuantity = Object.keys(files).length;
                         const newFiles: Files = {};
-                        uploads.forEach((upload) => {
-                            const [event, file] = upload;
-                            if (!file.type.match(accept)) return;
+                        for (let i = 0; i < uploads.length; i++) {
+                            if (maximumAmount && currentQuantity + i >= maximumAmount) break;
+                            const [event, file] = uploads[i];
+                            if (!file.type.match(accept)) break;
                             if (
                                 /* Ensure file being loaded is of type 'ArrayBufferLike' */
                                 event.target &&
                                 event.target.result &&
                                 typeof event.target.result !== "string"
                             ) {
-                                const fileArray = Array.from(new Uint8Array(event.target.result));
+                                const fileArray = new Uint8Array(event.target.result);
                                 const valid = validation.validate(
                                     fileArray,
                                     validator || null,
@@ -123,7 +135,7 @@ function File({
                                     };
                                 }
                             }
-                        });
+                        }
                         setFiles({ ...files, ...newFiles });
                         if (onChangeHandler) onChangeHandler({ ...files, ...newFiles });
                     }}
