@@ -49,6 +49,7 @@ function Upload({
                 className={styles["label"]}
                 htmlFor={fieldId}
                 aria-label="upload"
+                data-disabled={!!(button.disabled || buttonDefaultProps.disabled)}
                 style={{
                     borderRadius: button.style && button.style.shape === "sharp" ? "0px" : "9999px",
                 }}
