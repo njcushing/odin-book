@@ -15,15 +15,13 @@ type Files = {
     };
 };
 
-/* Overriding onChangeHandler's type in Types.Base; designed for HTMLInputElement */
-
 type Custom = {
     accept?: string;
     multiple?: boolean;
     maximumAmount?: number;
     description?: string;
     buttonSymbol?: string;
-    onChangeHandler?: ((files: Files) => void) | null;
+    onUpdateHandler?: ((files: Files) => void) | null;
 };
 
 type FileTypes = Types.Base<Files> &
@@ -37,7 +35,6 @@ function File({
     fieldId,
     fieldName,
     initialValue,
-    onChangeHandler = null,
     disabled = false,
     required = false,
     errorMessage = "",
@@ -48,6 +45,7 @@ function File({
     maximumAmount,
     description = "",
     buttonSymbol = "attach_file",
+    onUpdateHandler = null,
 }: FileTypes) {
     const [files, setFiles] = useState<Files>(initialValue || {});
     const [error, setError] = useState<string>("");
@@ -65,6 +63,7 @@ function File({
                         const newFiles = { ...files };
                         delete newFiles[key];
                         setFiles(newFiles);
+                        if (onUpdateHandler) onUpdateHandler(newFiles);
                     }}
                     size={size}
                 />
@@ -135,7 +134,7 @@ function File({
                             }
                         }
                         setFiles({ ...files, ...newFiles });
-                        if (onChangeHandler) onChangeHandler({ ...files, ...newFiles });
+                        if (onUpdateHandler) onUpdateHandler({ ...files, ...newFiles });
                     }}
                 />
             </div>
