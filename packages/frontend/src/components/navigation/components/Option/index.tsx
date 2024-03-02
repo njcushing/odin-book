@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import React from "react";
 import * as Types from "../../types";
 import styles from "./index.module.css";
 
@@ -24,7 +23,7 @@ function Option({ text, symbol, onClickHandler, link, highlighted, style }: Type
                     e.currentTarget.blur();
                 }}
                 data-highlighted={highlighted || false}
-                style={style && { ...style }}
+                style={{ ...style }}
             >
                 {symbolElement}
                 {textElement}
