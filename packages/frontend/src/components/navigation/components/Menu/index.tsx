@@ -1,22 +1,18 @@
 import LayoutUI from "@/layouts";
-import Navigation from "@/features/navigation";
+import Navigation from "../..";
+import * as Types from "../../types";
 import styles from "./index.module.css";
 
 type MenuProps = {
     type: "wide" | "thin";
+    options: Types.Option[];
 };
 
-function Menu({ type }: MenuProps) {
+function Menu({ type, options }: MenuProps) {
     const optionStyles = {
         gap: "1rem",
         width: type === "wide" ? "100%" : "auto",
     };
-    const options = [
-        { text: "Home", symbol: "home", link: "/" },
-        { text: "Profile", symbol: "person", link: "/user/username" },
-        { text: "Chats", symbol: "message", link: "/chats" },
-        { text: "Settings", symbol: "settings", link: "/settings" },
-    ];
 
     return (
         <nav className={styles["nav"]}>
@@ -28,8 +24,10 @@ function Menu({ type }: MenuProps) {
                         <Navigation.Option
                             text={type === "wide" ? option.text : ""}
                             symbol={option.symbol}
+                            onClickHandler={option.onClickHandler}
                             link={option.link}
-                            style={optionStyles}
+                            style={{ ...optionStyles, ...option.style }}
+                            highlighted={option.highlighted}
                             key={option.text}
                         />
                     );

@@ -1,17 +1,9 @@
 import { Link } from "react-router-dom";
 import React from "react";
+import * as Types from "../../types";
 import styles from "./index.module.css";
 
-type OptionTypes = {
-    text?: string;
-    symbol?: string;
-    onClickHandler?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
-    link?: string;
-    highlighted?: boolean;
-    style?: React.CSSProperties;
-};
-
-function Option({ text, symbol, onClickHandler, link, highlighted, style }: OptionTypes) {
+function Option({ text, symbol, onClickHandler, link, highlighted, style }: Types.Option) {
     const symbolElement =
         symbol && symbol.length > 0 ? (
             <p className={`material-symbols-rounded ${styles["symbol"]}`}>{symbol}</p>
