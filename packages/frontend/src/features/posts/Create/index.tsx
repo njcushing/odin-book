@@ -28,7 +28,7 @@ type Submitter<textT, imagesT> = {
     args?: unknown[];
 } | null;
 
-type MessageTypes = {
+type CreateTypes = {
     defaultText?: string;
     placeholder?: string;
     defaultImages?: Images;
@@ -44,7 +44,7 @@ function Create({
     submitHandler = null,
     submissionErrors = [],
     onCloseClickHandler = null,
-}: MessageTypes) {
+}: CreateTypes) {
     const [text, setText] = useState<string>(defaultText);
     const [images, setImages] = useState<Images>(defaultImages);
 
@@ -52,7 +52,7 @@ function Create({
         <Modals.Basic onCloseClickHandler={onCloseClickHandler}>
             <div className={styles["container"]}>
                 <h2 className={styles["title"]}>Create a New Post</h2>
-                <div className={styles["message-box"]} aria-label="message-box">
+                <div>
                     <div className={styles["input-container"]}>
                         <Inputs.TextArea
                             labelText="Text"
