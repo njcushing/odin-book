@@ -3,7 +3,6 @@
     justify-content: center;
 
     width: 100%;
-    min-height: 2.30rem;
 }
 
 .link {
@@ -23,9 +22,8 @@
     outline-color: var(--navigation-option-primary-outline);
     background-color: var(--navigation-option-primary);
     
-    width: 100%;
-    height: auto;
-    padding: 6px;
+    width: calc(100% - (2 * 0.4rem));
+    padding: 0.6rem 0.4rem;
     margin: 0px;
 
     transition: border-radius 0.3s ease-in-out 0s,
@@ -70,8 +68,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    padding: 0.2rem;
 }
 
 .text {
