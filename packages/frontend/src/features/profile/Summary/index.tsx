@@ -1,4 +1,5 @@
 import Images from "@/components/images";
+import Buttons from "@/components/buttons";
 import styles from "./index.module.css";
 
 function Summary() {
@@ -23,6 +24,13 @@ function Summary() {
                         <h3 className={`truncate-ellipsis ${styles["account-tag"]}`}>
                             @JohnSmith84
                         </h3>
+                        <Buttons.Basic
+                            text="Edit Profile"
+                            onClickHandler={() => {
+                                window.location.href = "/settings/profile";
+                            }}
+                            palette="blue"
+                        />
                     </div>
                 </div>
                 <div className={styles["row-two"]}>
