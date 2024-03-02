@@ -117,7 +117,10 @@ function Post({
                                 {postData.content.images.map((image, i) => {
                                     if (i >= 4) return null;
                                     return (
-                                        <li className={styles["image-container"]} key={uuidv4()}>
+                                        <li
+                                            className={styles["image-container"]}
+                                            key={image.key || uuidv4()}
+                                        >
                                             <Images.Basic
                                                 src={image.src}
                                                 alt={image.alt}

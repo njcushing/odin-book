@@ -119,6 +119,7 @@ function Create({
                                     return {
                                         src: images[key].data,
                                         alt: "",
+                                        key,
                                     };
                                 }),
                             },

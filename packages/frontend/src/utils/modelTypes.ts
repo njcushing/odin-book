@@ -15,7 +15,10 @@ export type User = {
 export type Post = {
     _id: string;
     author: User;
-    content: { text: string; images: { src: extendedTypes.TypedArray; alt: string }[] };
+    content: {
+        text: string;
+        images: { src: extendedTypes.TypedArray; alt: string; key?: React.Key }[];
+    };
     likes: string[];
     likesQuantity: number;
     replies: string[];
