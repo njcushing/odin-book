@@ -1,10 +1,10 @@
 import * as validation from "./utils/validation";
 
-export type Base = {
+export type Base<T> = {
     labelText: string;
     fieldId: string;
     fieldName: string;
-    initialValue?: string | null;
+    initialValue?: T | null;
     onChangeHandler?: ((event: React.ChangeEvent<HTMLInputElement>) => void) | null;
     disabled?: boolean;
     readOnly?: boolean;

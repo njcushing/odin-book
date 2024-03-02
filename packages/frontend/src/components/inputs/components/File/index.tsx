@@ -15,7 +15,6 @@ type Files = {
     };
 };
 
-/* Overriding initialValue's type in Types.Base; designed for string */
 /* Overriding onChangeHandler's type in Types.Base; designed for HTMLInputElement */
 
 type Custom = {
@@ -24,11 +23,10 @@ type Custom = {
     maximumAmount?: number;
     description?: string;
     buttonSymbol?: string;
-    initialValue?: Files;
     onChangeHandler?: ((files: Files) => void) | null;
 };
 
-type FileTypes = Types.Base &
+type FileTypes = Types.Base<Files> &
     Types.Error &
     Types.Validator<extendedTypes.TypedArray> &
     Types.Sizes &

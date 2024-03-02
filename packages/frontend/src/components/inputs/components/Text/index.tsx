@@ -8,7 +8,7 @@ import styles from "./index.module.css";
 
 type Custom = { type?: "text" | "email" | "password"; description?: string };
 
-type TextTypes = Types.Base &
+type TextTypes = Types.Base<string> &
     Types.Placeholder &
     Types.Error &
     Types.Validator<string> &
