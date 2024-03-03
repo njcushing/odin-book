@@ -3,7 +3,8 @@ import { Outlet } from "react-router-dom";
 import PubSub from "pubsub-js";
 import LayoutUI from "@/layouts";
 import Sidebar from "@/features/sidebar";
-import Modals from "@/components/modals";
+import Posts from "@/features/posts";
+import Chat from "@/features/chat";
 import Home, { routes as HomeRoutes } from "../Home";
 import Profile, { routes as ProfileRoutes } from "../Profile";
 import Chats, { routes as ChatsRoutes } from "../Chats";
@@ -42,11 +43,19 @@ function Root() {
 
     useEffect(() => {
         PubSub.subscribe("create-new-post-button-click", () => {
-            setModal(<Modals.Basic onCloseClickHandler={() => setModal(null)} />);
+            setModal(<Posts.Create onCloseClickHandler={() => setModal(null)} />);
+        });
+        PubSub.subscribe("create-new-chat-button-click", () => {
+            setModal(<Chat.Create onCloseClickHandler={() => setModal(null)} />);
+        });
+        PubSub.subscribe("add-users-to-chat-button-click", () => {
+            setModal(<Chat.AddUsers onCloseClickHandler={() => setModal(null)} />);
         });
 
         return () => {
             PubSub.unsubscribe("create-new-post-button-click");
+            PubSub.unsubscribe("create-new-chat-button-click");
+            PubSub.unsubscribe("add-users-to-chat-button-click");
         };
     }, []);
 
