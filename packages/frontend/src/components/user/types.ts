@@ -1,4 +1,5 @@
 import * as ImageTypes from "@/components/images/types";
+import * as ButtonTypes from "@/components/buttons/types";
 import React from "react";
 
 export type Sizes = {
@@ -16,4 +17,9 @@ export type Option = {
     user: ImageAndName;
     following: boolean;
     onClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+};
+
+export type Finder = {
+    placeholder?: string;
+    button?: ButtonTypes.Basic;
 };

@@ -1,17 +1,11 @@
 import { useState } from "react";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
-import * as ButtonTypes from "@/components/buttons/types";
 import * as Types from "../../types";
 import User from "../..";
 import styles from "./index.module.css";
 
-type FinderTypes = {
-    placeholder?: string;
-    button?: ButtonTypes.Basic;
-};
-
-function Finder({ placeholder, button }: FinderTypes) {
+function Finder({ placeholder, button }: Types.Finder) {
     const [user, setUser] = useState<Types.ImageAndName | null>(null);
 
     return (
