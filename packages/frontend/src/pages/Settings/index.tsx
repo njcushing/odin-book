@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
-import SettingsComponents from "@/features/settings";
+import SettingsComponents, { Routes } from "@/features/settings";
 import Infobar from "@/features/infobar";
 import styles from "./index.module.css";
 
@@ -8,6 +8,7 @@ export const routes = [
     {
         path: "",
         element: <SettingsComponents.Main />,
+        children: Routes.Main,
         errorElement: <div></div>,
     },
 ];
