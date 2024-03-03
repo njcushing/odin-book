@@ -3,7 +3,7 @@ import Buttons from "@/components/buttons";
 import * as ButtonTypes from "@/components/buttons/types";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 import * as validation from "@/components/inputs/utils/validation";
-import styles from "./index.module.css";
+import styles from "./styles";
 
 type CurrentFormDataType = { [k: string]: FormDataEntryValue };
 
@@ -26,20 +26,25 @@ type BasicTypes = {
     onSubmitHandler?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     button?: ButtonTypes.Basic;
     enableButtonOnInvalidFields?: boolean;
+    appearance?: "plain" | "1";
 };
 
-const createSection = (section: SectionTypes, i: number): React.ReactElement => {
+const createSection = (
+    section: SectionTypes,
+    i: number,
+    activeStyles: { [key: string]: string | undefined },
+): React.ReactElement => {
     return (
         <section
-            className={styles["section"]}
+            className={activeStyles["section"]}
             data-title-present={!!(section.title && section.title.length > 0)}
             key={section.title && section.title.length > 0 ? section.title : i || i}
         >
             {section.title && section.title.length > 0 ? (
-                <h4 className={styles["section-title"]}>{section.title}</h4>
+                <h4 className={activeStyles["section-title"]}>{section.title}</h4>
             ) : null}
             {section.description && section.description.length > 0 ? (
-                <p className={styles["section-description"]}>{section.description}</p>
+                <p className={activeStyles["section-description"]}>{section.description}</p>
             ) : null}
             {section.fields.map((field) => (
                 <div key={field.props.fieldName}>{field}</div>
@@ -55,11 +60,20 @@ function Basic({
     onSubmitHandler,
     button,
     enableButtonOnInvalidFields = false,
+    appearance = "1",
 }: BasicTypes): React.ReactElement {
     const [requirementMessage, setRequirementMessage]: [boolean, extendedTypes.Setter<boolean>] =
         useState(false);
     const [disabledButton, setDisabledButton]: [boolean, extendedTypes.Setter<boolean>] =
         useState(false);
+
+    let activeStyles = styles.plain;
+    switch (appearance) {
+        case "1":
+            activeStyles = styles.style1;
+            break;
+        default:
+    }
 
     // warn of duplicate fieldName prop values in inputs
     useEffect(() => {
@@ -124,7 +138,7 @@ function Basic({
 
     return (
         <form
-            className={styles["form"]}
+            className={activeStyles["form"]}
             onChange={(e: React.ChangeEvent<HTMLFormElement>) => {
                 const formData = new FormData(e.currentTarget);
                 const formFields = Object.fromEntries(formData);
@@ -135,14 +149,14 @@ function Basic({
             }}
             ref={formRef}
         >
-            <h3 className={styles["title"]}>{title}</h3>
+            <h3 className={activeStyles["title"]}>{title}</h3>
             {requirementMessage ? (
-                <h4 className={styles["requirement-message"]}>
+                <h4 className={activeStyles["requirement-message"]}>
                     All fields marked with <strong>*</strong> are <strong>required</strong>.
                 </h4>
             ) : null}
-            {sections.map((section, i) => createSection(section, i))}
-            <section className={styles["submit-section"]}>
+            {sections.map((section, i) => createSection(section, i, activeStyles))}
+            <section className={activeStyles["submit-section"]}>
                 <Buttons.Basic
                     type="submit"
                     text={(button && button.text) || "Submit"}
