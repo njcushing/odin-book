@@ -5,6 +5,7 @@ import Option from "./Option";
 import Active from "./Active";
 import Message from "./Message";
 import Create from "./Create";
+import AddUsers from "./AddUsers";
 
 const Chat = {
     Panel,
@@ -14,6 +15,7 @@ const Chat = {
     Active,
     Message,
     Create,
+    AddUsers,
 };
 
 export default Chat;
