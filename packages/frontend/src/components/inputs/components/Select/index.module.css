@@ -1,0 +1,96 @@
+.wrapper {
+    container-type: inline-size;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    width: 100%;
+}
+
+.select,
+.select-error {
+    color: rgba(0, 0, 0, 1.0);
+    font-size: 1.0rem;
+    font-family: Gabarito;
+    text-transform: capitalize;
+    border: none;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    outline-width: 2px;
+    outline-style: solid;
+    outline-color: var(--color-outline-input);
+    text-align: center;
+
+    width: 100%;
+    height: 2.0rem;
+
+    transition: border-top-left-radius 0.25s ease-in-out 0s,
+                border-top-right-radius 0.25s ease-in-out 0s;
+}
+
+.select {
+    color: var(--input-text);
+    outline-color: var(--input-outline);
+    background-color: var(--input-background);
+}
+
+.select-error {
+    color: var(--input-text-invalid);
+    outline-color: var(--input-outline-invalid);
+    background-color: var(--input-background-invalid);
+}
+
+.select-option {
+    font-family: Gabarito;
+}
+
+.select-option:nth-child(2n-1) {
+    background-color: rgba(255, 255, 255, 1.0);
+}
+
+.select-option:nth-child(2n) {
+    background-color: rgb(230, 253, 255);
+}
+
+.select:hover:not(:disabled),
+.select-error:hover:not(:disabled) {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.select:focus,
+.select-error:focus {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.select:disabled,
+.select-error:disabled {
+    color: var(--input-text-disabled);
+    outline-color: var(--input-outline-disabled);
+    background-color: rgba(200, 200, 200, 1.0);
+}
+
+.select::placeholder {
+    color: var(--input-placeholder);
+}
+
+.select-error::placeholder {
+    color: var(--input-placeholder-invalid);
+}
+
+.select:disabled::placeholder,
+.select-error:disabled::placeholder {
+    color: var(--input-placeholder-disabled);
+}
+
+.select:disabled::placeholder {
+    color: rgba(60, 60, 60, 1.0);
+}
+
+.error {
+    color: var(--text-error);
+    font-size: 0.7rem;
+    font-family: Gabarito;
+}
