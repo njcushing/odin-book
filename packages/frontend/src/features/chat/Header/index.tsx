@@ -55,6 +55,9 @@ function Header({ name = "Chat Title", onEditNameHandler = null }: HeaderTypes) 
                     text=""
                     symbol="person_add"
                     label="add people"
+                    onClickHandler={() => {
+                        PubSub.publish("add-users-to-chat-button-click", null);
+                    }}
                     palette="blue"
                     otherStyles={{ ...buttonStyles }}
                 />
