@@ -2,29 +2,44 @@ import { useState } from "react";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
 import * as Types from "../../types";
+import findUser, { User as UserTypes } from "./utils/findUserFromTag";
 import User from "../..";
 import styles from "./index.module.css";
 
-function Finder({ placeholder, button }: Types.Finder) {
-    const [user, setUser] = useState<Types.ImageAndName | null>(null);
+type FinderTypes = Types.Finder & { onClickHandler?: ((user: UserTypes) => void) | null };
+
+function Finder({ placeholder, button, onClickHandler, clearFindOnClick }: FinderTypes) {
+    const [user, setUser] = useState<UserTypes | null>(null);
 
     return (
         <div className={styles["container"]}>
             <Inputs.Search
                 onSearchHandler={() => {
-                    /* find user */
+                    const userNew = findUser("");
+                    setUser(userNew);
                 }}
                 placeholder={placeholder}
             />
             {user && (
                 <div className={styles["found-user"]}>
                     <User.ImageAndName
-                        image={{ src: user.image.src, alt: user.image.alt }}
-                        displayName={user.displayName}
+                        image={{
+                            src: user.preferences.profileImage.src,
+                            alt: user.preferences.profileImage.alt,
+                        }}
+                        displayName={user.preferences.displayName}
                         accountTag={user.accountTag}
                         size="m"
                     />
-                    {button && <Buttons.Basic {...button} />}
+                    {button && (
+                        <Buttons.Basic
+                            {...button}
+                            onClickHandler={() => {
+                                if (onClickHandler) onClickHandler(user);
+                                if (clearFindOnClick) setUser(null);
+                            }}
+                        />
+                    )}
                 </div>
             )}
         </div>

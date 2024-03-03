@@ -22,4 +22,5 @@ export type Option = {
 export type Finder = {
     placeholder?: string;
     button?: ButtonTypes.Basic;
+    clearFindOnClick?: boolean;
 };
