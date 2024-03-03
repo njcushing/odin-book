@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Buttons from "@/components/buttons";
 import * as ButtonTypes from "@/components/buttons/types";
 import * as ModelTypes from "@/utils/modelTypes";
@@ -13,7 +13,11 @@ type Users = {
     [key: string]: UserTypesPicked;
 };
 
-function Selector() {
+type SelectorTypes = {
+    onChangeHandler?: ((selectedUsers: Users) => void) | null;
+};
+
+function Selector({ onChangeHandler }: SelectorTypes) {
     const [selectedUsers, setSelectedUsers] = useState<Users>({});
 
     const addButton: ButtonTypes.Basic = {
@@ -39,6 +43,7 @@ function Selector() {
                         },
                     };
                     setSelectedUsers({ ...selectedUsers, ...newSelectedUsers });
+                    if (onChangeHandler) onChangeHandler({ ...selectedUsers, ...newSelectedUsers });
                 }}
                 clearFindOnClick
             />
@@ -61,6 +66,7 @@ function Selector() {
                                         const newSelectedUsers = { ...selectedUsers };
                                         delete newSelectedUsers[key];
                                         setSelectedUsers(newSelectedUsers);
+                                        if (onChangeHandler) onChangeHandler(newSelectedUsers);
                                     }}
                                     palette="red"
                                     otherStyles={{ fontSize: "1.0rem", padding: "0.2rem" }}
