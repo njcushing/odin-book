@@ -3,7 +3,8 @@
     flex-direction: column;
     gap: 0.8rem;
 
-    width: 400px;
+    width: 100%;
+    height: max-content;
 }
 
 .title {

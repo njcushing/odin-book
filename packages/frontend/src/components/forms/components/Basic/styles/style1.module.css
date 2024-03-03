@@ -6,7 +6,8 @@
     border-radius: 8px;
     outline: 2px solid var(--outline-primary);
 
-    width: 400px;
+    width: calc(100% - (2 * 0.6rem));
+    height: max-content;
     padding: 0.6rem;
 }
 
