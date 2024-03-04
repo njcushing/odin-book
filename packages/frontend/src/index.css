@@ -120,7 +120,6 @@ body > #root {
 }
 
 ::-webkit-scrollbar-track {
-    border-radius: 9999px;
     background-color: var(--scrollbar-track);
 }
 
@@ -131,7 +130,6 @@ body > #root {
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 9999px;
     background-color: var(--scrollbar-thumb);
 }
 
