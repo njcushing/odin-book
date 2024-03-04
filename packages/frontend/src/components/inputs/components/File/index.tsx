@@ -55,19 +55,18 @@ function File({
 
     const createFileButton = (key: string, file: File) => {
         return (
-            <li key={key}>
-                <Inputs.FileButton
-                    file={file}
-                    label="file button"
-                    onClickHandler={() => {
-                        const newFiles = { ...files };
-                        delete newFiles[key];
-                        setFiles(newFiles);
-                        if (onUpdateHandler) onUpdateHandler(newFiles);
-                    }}
-                    size={size}
-                />
-            </li>
+            <Inputs.FileButton
+                file={file}
+                label="file button"
+                onClickHandler={() => {
+                    const newFiles = { ...files };
+                    delete newFiles[key];
+                    setFiles(newFiles);
+                    if (onUpdateHandler) onUpdateHandler(newFiles);
+                }}
+                size={size}
+                key={key}
+            />
         );
     };
 

@@ -6,7 +6,7 @@
 
 .message-box {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 100%) auto;
     grid-template-rows: repeat(2, auto);
     gap: 0.4rem;
 

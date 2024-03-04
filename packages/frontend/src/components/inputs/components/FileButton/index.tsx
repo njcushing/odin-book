@@ -23,10 +23,16 @@ function FileButton({
     return (
         <div className={styles["container"]} aria-label={label}>
             <div className={styles["file-info"]}>
-                <p className={styles["file-name"]} style={{ ...fileNameSizes }}>
+                <p
+                    className={`truncate-ellipsis ${styles["file-name"]}`}
+                    style={{ ...fileNameSizes }}
+                >
                     {file.name}
                 </p>
-                <p className={styles["file-size"]} style={{ ...fileSizeSizes }}>
+                <p
+                    className={`truncate-ellipsis ${styles["file-size"]}`}
+                    style={{ ...fileSizeSizes }}
+                >
                     {formatBytes(file.size, 2)}
                 </p>
             </div>

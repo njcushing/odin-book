@@ -1,10 +1,9 @@
 .container {
     place-self: start;
 
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: minmax(0, 100%) auto;
     align-items: center;
-    flex-wrap: nowrap;
     gap: 0.3rem;
 
     outline: 1px solid var(--outline-tertiary);
@@ -12,12 +11,14 @@
     background-color: var(--background-tertiary);
 
     width: max-content;
+    max-width: calc(100% - (2 * 0.3rem));
     padding: 0.3rem 0.3rem 0.3rem 0.8rem;
 }
 
 .file-info {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: minmax(0, 100%);
     align-items: start;
     gap: 0.1rem;
 }
@@ -26,6 +27,7 @@
     color: var(--text-secondary);
     font-family: Gabarito;
     font-weight: bold;
+    text-align: left;
 }
 
 .file-size {
@@ -33,4 +35,5 @@
     font-family: Rubik;
     font-weight: normal;
     font-style: italic;
+    text-align: left;
 }

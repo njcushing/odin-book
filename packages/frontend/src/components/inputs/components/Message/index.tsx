@@ -51,17 +51,16 @@ function Message({
 
     const createImageButton = (key: string, file: File) => {
         return (
-            <li key={key}>
-                <Inputs.FileButton
-                    file={file}
-                    label="image to load"
-                    onClickHandler={() => {
-                        const newImages = { ...images };
-                        delete newImages[key];
-                        setImages(newImages);
-                    }}
-                />
-            </li>
+            <Inputs.FileButton
+                file={file}
+                label="image to load"
+                onClickHandler={() => {
+                    const newImages = { ...images };
+                    delete newImages[key];
+                    setImages(newImages);
+                }}
+                key={key}
+            />
         );
     };
 
