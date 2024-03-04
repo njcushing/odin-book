@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import LayoutUI from "@/layouts";
 import Navigation from "@/components/navigation";
 import Sections from "../utils/Sections";
@@ -7,7 +7,7 @@ import styles from "./index.module.css";
 export const routes = [
     {
         path: "",
-        element: <div></div>,
+        element: <Navigate to="account" />,
         errorElement: <div></div>,
     },
     {
