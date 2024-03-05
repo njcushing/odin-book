@@ -15,13 +15,15 @@
 }
 
 .list {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
 
     width: 100%;
-    height: 100%;
 }
 
 .option {
+    flex-grow: 1;
+
     display: grid;
     grid-template-rows: 1fr auto;
     justify-items: center;
@@ -98,34 +100,4 @@
 
 .option:disabled .highlight-bar {
     opacity: 0%;
-}
-
-.menu-button {
-    justify-content: end;
-
-    height: 100%;
-}
-
-.menu-button-false-render {
-    position: absolute;
-    opacity: 0%;
-}
-
-.menu {
-    position: absolute;
-    z-index: 1000;
-
-    display: flex;
-    flex-direction: column;
-
-    border-radius: 4px;
-    outline: 1px solid var(--outline-primary);
-
-    width: min-content;
-
-    animation: menuZoom 0.12s ease-in-out forwards;
-}
-
-.menu .option {
-    border-radius: 0px;
 }
