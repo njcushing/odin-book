@@ -102,58 +102,26 @@ function Main() {
     if (path[path.length - 1] === "following") selected = "Following";
 
     const navigation = (
-        <div className={styles["navigation-container"]} key={0}>
+        <div className={styles["navigation-container"]} key={1}>
             <Navigation.Horizontal options={navigationOptions} selected={selected} />
         </div>
     );
 
     return (
         <div className={styles["container"]}>
-            <LayoutUI.Spatial
-                width="100%"
-                height="100%"
-                arrangements={[
-                    {
-                        type: "rows",
-                        minWidth: 0,
-                        maxWidth: 999999,
-                        minHeight: 0,
-                        maxHeight: 999999,
-                        areas: [
-                            { size: "auto", children: [<Profile.Summary key={0} />] },
-                            { size: "auto", children: [navigation] },
-                            {
-                                size: "1fr",
-                                children: [
-                                    <LayoutUI.List
-                                        label="navigation"
-                                        ordered={false}
-                                        listItems={[<Outlet key={0} />]}
-                                        scrollable
-                                        listStyles={{
-                                            flexDirection: "column",
-                                            justifyContent: "flex-start",
-                                            alignItems: "center",
-                                            flexWrap: "nowrap",
-                                            gap: "0rem",
-                                            width: "100%",
-                                            height: "auto",
-                                            margin: "0rem",
-                                        }}
-                                        key={0}
-                                    />,
-                                ],
-                            },
-                        ],
-                        style: {
-                            justifySelf: "flex-start",
-                            alignSelf: "center",
-                            width: "100%",
-                            height: "100%",
-                            padding: "0rem",
-                        },
-                    },
-                ]}
+            <LayoutUI.List
+                label="navigation"
+                ordered={false}
+                listItems={[<Profile.Summary key={0} />, navigation, <Outlet key={2} />]}
+                scrollable
+                listStyles={{
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "auto",
+                    gap: "0px",
+                }}
+                key={0}
             />
         </div>
     );

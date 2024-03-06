@@ -10,4 +10,6 @@
 
 .navigation-container {
     border-bottom: 1px solid var(--outline-primary);
+
+    width: 100%;
 }
