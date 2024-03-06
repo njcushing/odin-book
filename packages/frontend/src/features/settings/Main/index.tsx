@@ -61,13 +61,40 @@ function Main() {
                         minHeight: 0,
                         maxHeight: 999999,
                         areas: [
-                            { size: "40%", children: [navigation] },
+                            {
+                                size: "40%",
+                                children: [
+                                    <LayoutUI.List
+                                        label="settings"
+                                        ordered={false}
+                                        listItems={[navigation]}
+                                        scrollable
+                                        listStyles={{
+                                            width: "100%",
+                                            height: "100%",
+                                        }}
+                                        key={0}
+                                    />,
+                                ],
+                            },
                             {
                                 size: "60%",
                                 children: [
-                                    <div className={styles["right-panel"]} key={0}>
-                                        <Outlet />
-                                    </div>,
+                                    <LayoutUI.List
+                                        label="settings"
+                                        ordered={false}
+                                        listItems={[
+                                            <div className={styles["right-panel"]} key={0}>
+                                                <Outlet />
+                                            </div>,
+                                        ]}
+                                        scrollable
+                                        listStyles={{
+                                            width: "100%",
+                                            height: "max-content",
+                                        }}
+                                        key={0}
+                                    />,
                                 ],
                             },
                         ],
