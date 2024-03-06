@@ -145,7 +145,6 @@
     border-bottom: 1px solid var(--outline-primary);
 
     width: 100%;
-    padding-bottom: 0.6rem;
 }
 
 .replies {
@@ -155,7 +154,7 @@
     padding: 0rem 0rem 0.6rem 1.6rem;
 }
 
-.reply{
+.reply {
     outline: none;
     border-left: 1px solid var(--outline-primary);
 }
