@@ -16,3 +16,13 @@ export type Basic = {
     otherStyles?: React.CSSProperties;
     children?: React.ReactElement | null;
 };
+
+export type Upload = {
+    labelText?: string;
+    fieldId?: string;
+    fieldName?: string;
+    accept?: string;
+    multiple?: boolean;
+    button?: Basic;
+    onUploadHandler?: ((uploads: [ProgressEvent<FileReader>, File][]) => void) | null;
+};
