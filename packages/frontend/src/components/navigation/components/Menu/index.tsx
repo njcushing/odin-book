@@ -4,17 +4,18 @@ import styles from "./index.module.css";
 
 type MenuProps = {
     type: "wide" | "thin";
+    label?: string;
     options: Types.Option[];
 };
 
-function Menu({ type, options }: MenuProps) {
+function Menu({ type, label = "", options }: MenuProps) {
     const optionStyles = {
         gap: "1rem",
         width: type === "wide" ? "100%" : "auto",
     };
 
     return (
-        <nav className={styles["nav"]}>
+        <nav className={styles["nav"]} aria-label={label}>
             {options.map((option) => {
                 return (
                     <Navigation.Option
