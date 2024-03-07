@@ -5,7 +5,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router-dom";
-import NavigationButton from ".";
+import Option from ".";
 
 const renderComponent = (
     text: string = "",
@@ -16,7 +16,7 @@ const renderComponent = (
 ) => {
     return render(
         <BrowserRouter>
-            <NavigationButton
+            <Option
                 text={text}
                 symbol={symbol}
                 onClickHandler={onClickHandler}
