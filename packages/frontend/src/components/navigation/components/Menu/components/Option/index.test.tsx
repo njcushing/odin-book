@@ -41,8 +41,8 @@ describe("UI/DOM Testing...", () => {
             renderComponent("test", "symbol", callback);
             const link = screen.getByRole("link", { name: "navigation-option" });
 
-            await user.click(link);
             fireEvent.mouseLeave(link);
+            await user.click(link);
 
             expect(callback).toHaveBeenCalled();
         });
