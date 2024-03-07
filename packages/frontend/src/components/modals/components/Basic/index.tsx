@@ -16,10 +16,7 @@ function Basic({
     children = null,
 }: BasicTypes) {
     return (
-        <div
-            className={styles["wrapper"]}
-            style={{ pointerEvents: unblockPointerEvents ? "none" : "all" }}
-        >
+        <div className={styles["wrapper"]} data-unblock-pointer-events={!!unblockPointerEvents}>
             <div className={styles["container"]}>
                 <div className={styles["modal"]} style={{ ...style }}>
                     <div className={styles["close-button-container"]}>

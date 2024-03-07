@@ -29,6 +29,9 @@
     animation: backgroundFadeIn 0.4s ease-out forwards;
 }
 
+.wrapper[data-unblock-pointer-events |= "true"] { pointer-events: none; }
+.wrapper[data-unblock-pointer-events |= "false"] { pointer-events: all; }
+
 .container {
     position: sticky;
     top: 0px;
