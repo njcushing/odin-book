@@ -1,76 +1,26 @@
-import LayoutUI from "@/layouts";
+import { useState, useEffect, useRef } from "react";
 import PeopleYouMayKnow from "../PeopleYouMayKnow";
 import styles from "./index.module.css";
 
 function Home() {
+    const [wrapperHeight, setWrapperHeight] = useState<number>(0);
+
+    const wrapperRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (wrapperRef.current) setWrapperHeight(wrapperRef.current.clientHeight);
+        else setWrapperHeight(0);
+    }, [wrapperRef]);
+
+    const wrapperTop = `min(0px, calc(100vh - ${wrapperHeight}px))`;
+
     return (
-        <div className={styles["wrapper"]}>
-            <LayoutUI.Spatial
-                width="100%"
-                height="100%"
-                arrangements={[
-                    {
-                        type: "rows",
-                        minWidth: 0,
-                        maxWidth: 999999,
-                        minHeight: 820,
-                        maxHeight: 999999,
-                        areas: [
-                            { size: "auto", children: [<PeopleYouMayKnow key={0} />] },
-                            { size: "auto", children: [<PeopleYouMayKnow key={0} />] },
-                            { size: "auto", children: [<PeopleYouMayKnow key={0} />] },
-                            { size: "1fr", children: [] },
-                        ],
-                        style: {
-                            justifySelf: "flex-start",
-                            alignSelf: "flex-start",
-                            gap: "10px",
-                            width: "100%",
-                            height: "100%",
-                            padding: "0rem",
-                        },
-                    },
-                    {
-                        type: "rows",
-                        minWidth: 0,
-                        maxWidth: 999999,
-                        minHeight: 544,
-                        maxHeight: 820,
-                        areas: [
-                            { size: "auto", children: [<PeopleYouMayKnow key={0} />] },
-                            { size: "auto", children: [<PeopleYouMayKnow key={0} />] },
-                            { size: "1fr", children: [] },
-                        ],
-                        style: {
-                            justifySelf: "flex-start",
-                            alignSelf: "flex-start",
-                            gap: "10px",
-                            width: "100%",
-                            height: "100%",
-                            padding: "0rem",
-                        },
-                    },
-                    {
-                        type: "rows",
-                        minWidth: 0,
-                        maxWidth: 999999,
-                        minHeight: 0,
-                        maxHeight: 544,
-                        areas: [
-                            { size: "auto", children: [<PeopleYouMayKnow key={0} />] },
-                            { size: "1fr", children: [] },
-                        ],
-                        style: {
-                            justifySelf: "flex-start",
-                            alignSelf: "flex-start",
-                            gap: "10px",
-                            width: "100%",
-                            height: "100%",
-                            padding: "0rem",
-                        },
-                    },
-                ]}
-            />
+        <div className={styles["wrapper"]} style={{ top: wrapperTop }} ref={wrapperRef}>
+            <div className={styles["container"]}>
+                <PeopleYouMayKnow />
+                <PeopleYouMayKnow />
+                <PeopleYouMayKnow />
+            </div>
         </div>
     );
 }

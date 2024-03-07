@@ -16,7 +16,7 @@ function Home() {
     const layout = (
         <LayoutUI.Spatial
             width="100%"
-            height="100%"
+            height="auto"
             arrangements={[
                 {
                     type: "columns",
@@ -32,7 +32,7 @@ function Home() {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
                         width: "1200px",
-                        height: "100%",
+                        height: "auto",
                         padding: "0rem",
                     },
                 },
@@ -47,7 +47,7 @@ function Home() {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
                         width: "660px",
-                        height: "100%",
+                        height: "auto",
                         padding: "0rem",
                     },
                 },
@@ -62,7 +62,7 @@ function Home() {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
                         width: "360px",
-                        height: "100%",
+                        height: "auto",
                         padding: "0rem",
                     },
                 },
@@ -77,7 +77,7 @@ function Home() {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
                         width: "100%",
-                        height: "100%",
+                        height: "auto",
                         padding: "0rem",
                     },
                 },

@@ -17,10 +17,10 @@ function Basic({
 }: BasicTypes) {
     return (
         <div
-            className={styles["container"]}
+            className={styles["wrapper"]}
             style={{ pointerEvents: unblockPointerEvents ? "none" : "all" }}
         >
-            <div className={styles["wrapper"]}>
+            <div className={styles["container"]}>
                 <div className={styles["modal"]} style={{ ...style }}>
                     <div className={styles["close-button-container"]}>
                         <Buttons.Basic

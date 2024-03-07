@@ -62,7 +62,7 @@ function Root() {
     const layout = (
         <LayoutUI.Spatial
             width="auto"
-            height="100%"
+            height="auto"
             arrangements={[
                 {
                     type: "columns",
@@ -78,7 +78,7 @@ function Root() {
                         justifySelf: "flex-start",
                         alignSelf: "center",
                         width: "1200px",
-                        height: "100%",
+                        height: "auto",
                         padding: "0rem",
                     },
                 },
@@ -96,7 +96,7 @@ function Root() {
                         justifySelf: "flex-start",
                         alignSelf: "center",
                         width: "980px",
-                        height: "100%",
+                        height: "auto",
                         padding: "0rem",
                     },
                 },
@@ -114,7 +114,7 @@ function Root() {
                         justifySelf: "flex-start",
                         alignSelf: "center",
                         width: "660px",
-                        height: "100%",
+                        height: "auto",
                         padding: "0rem",
                     },
                 },
@@ -132,7 +132,7 @@ function Root() {
                         justifySelf: "flex-start",
                         alignSelf: "center",
                         width: "360px",
-                        height: "100%",
+                        height: "auto",
                         padding: "0rem",
                     },
                 },
@@ -150,7 +150,7 @@ function Root() {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
                         width: "100%",
-                        height: "100%",
+                        height: "auto",
                         padding: "0rem",
                     },
                 },

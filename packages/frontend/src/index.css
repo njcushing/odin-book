@@ -63,8 +63,6 @@ table {
 /* Container Setup */
 
 :root {
-    display: flex;
-
     font-family: Spectral, 'DM Serif Display', Gabarito, Rubik, Roboto, Nunito, Jost, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
@@ -74,8 +72,8 @@ table {
 
     min-width: 100vw;
     min-height: 100vh;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     padding: 0rem;
     margin: 0rem;
   
@@ -92,10 +90,8 @@ table {
 }
 
 body,
-body > #root {
-    display: flex;
-    flex-direction: column;
-
+body > #root,
+.app {
     width: 100%;
     height: 100%;
     padding: 0rem;
@@ -103,12 +99,12 @@ body > #root {
 }
 
 .app {
-    display: flex;
-    flex-direction: column;
+    /* Prevent horizontal scrollbar (viewport overflow) when vertical scrollbar is present */
+    position: absolute;
+    overflow-x: auto;
 
-    width: 100%;
-    height: 100%;
-    margin: auto;
+    /* Prevent element 'shifting' as scrollbar is calculated when rendering new content */
+    overflow-y: scroll;
 }
 
 /* Custom Scrollbar */

@@ -10,7 +10,7 @@ function Option({ text, symbol, onClickHandler, link, highlighted, style }: Type
     const textElement = text && text.length > 0 ? <p className={styles["text"]}>{text}</p> : null;
 
     return (
-        <div className={styles["wrapper"]}>
+        <li className={styles["wrapper"]}>
             <Link
                 to={link || ""}
                 className={styles["link"]}
@@ -28,7 +28,7 @@ function Option({ text, symbol, onClickHandler, link, highlighted, style }: Type
                 {symbolElement}
                 {textElement}
             </Link>
-        </div>
+        </li>
     );
 }
 

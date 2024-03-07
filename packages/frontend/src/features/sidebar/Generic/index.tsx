@@ -14,23 +14,14 @@ function Generic({ type }: GenericTypes) {
         { text: "Settings", symbol: "settings", link: "/settings" },
     ];
 
-    if (type === "wide") {
-        return (
+    return (
+        <div className={styles["wrapper"]}>
             <div className={styles["container"]}>
-                <Profile.Sidebar type="wide" />
-                <Navigation.Menu type="wide" options={navMenuOptions} />
+                <Profile.Sidebar type={type} />
+                <Navigation.Menu type={type} options={navMenuOptions} />
             </div>
-        );
-    }
-
-    if (type === "thin") {
-        return (
-            <div className={styles["container"]}>
-                <Profile.Sidebar type="thin" />
-                <Navigation.Menu type="thin" options={navMenuOptions} />
-            </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default Generic;

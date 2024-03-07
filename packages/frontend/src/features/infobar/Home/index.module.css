@@ -1,5 +1,14 @@
 .wrapper {
-    width: calc(100% - (2 * 0.4rem));
-    height: calc(100% - (2 * 0.4rem));
-    padding: 0.4rem;
+    position: sticky;
+
+    height: max-content;
+    padding: 0.6rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.0rem;
+
+    width: 100%;
 }

@@ -63,38 +63,14 @@ function Main() {
                         areas: [
                             {
                                 size: "40%",
-                                children: [
-                                    <LayoutUI.List
-                                        label="settings"
-                                        ordered={false}
-                                        listItems={[navigation]}
-                                        scrollable
-                                        listStyles={{
-                                            width: "100%",
-                                            height: "100%",
-                                        }}
-                                        key={0}
-                                    />,
-                                ],
+                                children: [navigation],
                             },
                             {
                                 size: "60%",
                                 children: [
-                                    <LayoutUI.List
-                                        label="settings"
-                                        ordered={false}
-                                        listItems={[
-                                            <div className={styles["right-panel"]} key={0}>
-                                                <Outlet />
-                                            </div>,
-                                        ]}
-                                        scrollable
-                                        listStyles={{
-                                            width: "100%",
-                                            height: "max-content",
-                                        }}
-                                        key={0}
-                                    />,
+                                    <div className={styles["right-panel"]} key={0}>
+                                        <Outlet />
+                                    </div>,
                                 ],
                             },
                         ],

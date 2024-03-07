@@ -1,9 +1,17 @@
+.wrapper {
+    position: sticky;
+    top: 0px;
+
+    overflow-y: auto;
+
+    height: calc(100vh - (2 * 0.6rem));
+    padding: 0.6rem;
+}
+
 .container {
     display: flex;
     flex-direction: column;
     gap: 1.0rem;
 
-    width: calc(100% - (2 * 0.6rem));
-    height: calc(100% - (2 * 0.6rem));
-    padding: 0.6rem;
+    width: 100%;
 }

@@ -109,20 +109,9 @@ function Main() {
 
     return (
         <div className={styles["container"]}>
-            <LayoutUI.List
-                label="navigation"
-                ordered={false}
-                listItems={[<Profile.Summary key={0} />, navigation, <Outlet key={2} />]}
-                scrollable
-                listStyles={{
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    width: "100%",
-                    height: "auto",
-                    gap: "0px",
-                }}
-                key={0}
-            />
+            <Profile.Summary key={0} />
+            {navigation}
+            <Outlet key={2} />
         </div>
     );
 }
