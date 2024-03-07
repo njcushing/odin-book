@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import * as Types from "../../types";
+import * as Types from "./types";
 import styles from "./index.module.css";
 
 function Option({ text, symbol, onClickHandler, link, highlighted, style }: Types.Option) {

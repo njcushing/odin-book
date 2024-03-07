@@ -1,11 +1,11 @@
-import Navigation from "../..";
-import * as Types from "../../types";
+import Option from "./components/Option";
+import * as OptionTypes from "./components/Option/types";
 import styles from "./index.module.css";
 
 type MenuTypes = {
     type: "wide" | "thin";
     label?: string;
-    options: Types.Option[];
+    options: OptionTypes.Option[];
 };
 
 function Menu({ type, label = "", options }: MenuTypes) {
@@ -18,7 +18,7 @@ function Menu({ type, label = "", options }: MenuTypes) {
         <nav className={styles["nav"]} aria-label={label}>
             {options.map((option) => {
                 return (
-                    <Navigation.Option
+                    <Option
                         text={type === "wide" ? option.text : ""}
                         symbol={option.symbol}
                         onClickHandler={option.onClickHandler}

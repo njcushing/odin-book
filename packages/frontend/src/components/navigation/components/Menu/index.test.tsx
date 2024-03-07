@@ -3,13 +3,13 @@
 import { vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import * as Types from "../../types";
+import * as OptionTypes from "./components/Option/types";
 import Menu from ".";
 
 type MenuTypes = {
     type: "wide" | "thin";
     label?: string;
-    options: Types.Option[];
+    options: OptionTypes.Option[];
 };
 
 const defaultArgs: MenuTypes = {
@@ -22,8 +22,8 @@ const renderComponent = (args: MenuTypes = defaultArgs) => {
     return render(<Menu type={args.type} label={args.label} options={args.options} />);
 };
 
-vi.mock("@/components/navigation/components/Option", () => ({
-    default: ({ text }: Types.Option) => {
+vi.mock("./components/Option", () => ({
+    default: ({ text }: OptionTypes.Option) => {
         return <div>{text}</div>;
     },
 }));
