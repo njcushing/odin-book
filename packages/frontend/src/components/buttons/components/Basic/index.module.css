@@ -19,6 +19,9 @@
     padding: 0.4rem 1.0rem;
 }
 
+.button[data-shape |= "sharp"] { border-radius: 0px; }
+.button[data-shape |= "rounded"] { border-radius: 9999px; }
+
 .button:hover:not(:disabled),
 .button:focus:not(:disabled) {
     cursor: pointer;

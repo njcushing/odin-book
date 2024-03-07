@@ -32,11 +32,8 @@ function Basic({
                 e.currentTarget.blur();
                 if (!allowDefaultEventHandling) e.preventDefault();
             }}
-            style={{
-                borderRadius: style.shape === "sharp" ? "0px" : "9999px",
-
-                ...otherStyles,
-            }}
+            style={{ ...otherStyles }}
+            data-shape={style.shape}
             disabled={disabled}
             data-palette={palette}
             data-animation={animation}
