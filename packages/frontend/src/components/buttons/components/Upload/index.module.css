@@ -7,6 +7,9 @@
     height: 100%;
 }
 
+.label[data-shape |= "sharp"] { border-radius: 0px; }
+.label[data-shape |= "rounded"] { border-radius: 9999px; }
+
 .label:hover[data-disabled |= "false"],
 .label:focus[data-disabled |= "false"] {
     cursor: pointer;

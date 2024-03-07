@@ -3,24 +3,16 @@ import * as Types from "../../types";
 import styles from "./index.module.css";
 
 const buttonDefaultProps: Types.Basic = {
+    type: "button",
     text: "",
     symbol: "",
     label: "",
     disabled: false,
+    allowDefaultEventHandling: true,
     palette: "primary",
     animation: "rigid",
     style: { shape: "sharp" },
     otherStyles: { fontSize: "1.25rem" },
-};
-
-type UploadTypes = {
-    labelText?: string;
-    fieldId?: string;
-    fieldName?: string;
-    accept?: string;
-    multiple?: boolean;
-    button?: Types.Basic;
-    onUploadHandler?: ((uploads: [ProgressEvent<FileReader>, File][]) => void) | null;
 };
 
 function Upload({
@@ -31,28 +23,17 @@ function Upload({
     multiple = false,
     button = { ...buttonDefaultProps },
     onUploadHandler = null,
-}: UploadTypes) {
+}: Types.Upload) {
+    const buttonProps = { ...buttonDefaultProps, ...button };
+
     return (
-        <Buttons.Basic
-            type="button"
-            text={button.text || buttonDefaultProps.text}
-            symbol={button.symbol || buttonDefaultProps.symbol}
-            label={button.label || buttonDefaultProps.label}
-            disabled={button.disabled || buttonDefaultProps.disabled}
-            allowDefaultEventHandling
-            palette={button.palette || buttonDefaultProps.palette}
-            animation={button.animation || buttonDefaultProps.animation}
-            style={button.style || buttonDefaultProps.style}
-            otherStyles={button.otherStyles || buttonDefaultProps.otherStyles}
-        >
+        <Buttons.Basic {...buttonProps}>
             <label
                 className={styles["label"]}
                 htmlFor={fieldId}
                 aria-label="upload"
                 data-disabled={!!(button.disabled || buttonDefaultProps.disabled)}
-                style={{
-                    borderRadius: button.style && button.style.shape === "sharp" ? "0px" : "9999px",
-                }}
+                data-shape={buttonProps.style && buttonProps.style.shape}
             >
                 {labelText}
                 <input
