@@ -1,15 +1,10 @@
-import React, { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import Option from "./components/Option";
+import * as OptionTypes from "./components/Option/types";
 import styles from "./index.module.css";
 
-type Option = {
-    text: string;
-    link?: string;
-    disabled?: boolean;
-};
-
 type HorizontalTypes = {
-    options: Option[];
+    options: OptionTypes.Option[];
     selected: string | null;
     label?: string;
     minPaddingPx?: number;
@@ -27,43 +22,24 @@ function Horizontal({
 }: HorizontalTypes) {
     const [optionSelected, setOptionSelected] = useState<string | null>(selected);
 
-    const listRef = useRef<HTMLUListElement>(null);
-    const fontSize = style.fontSize || "1.1rem";
-
     return (
         <nav className={styles["container"]} aria-label={label} style={{ ...style }}>
-            <ul className={styles["list"]} ref={listRef}>
-                {options.map((option) => {
-                    return (
-                        <Link
-                            to={option.link || ""}
-                            className={styles["option"]}
-                            data-highlighted={!!(optionSelected === option.text)}
-                            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                                setOptionSelected(option.text);
-                                if (onSelectHandler) onSelectHandler(e);
-                                e.currentTarget.blur();
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.blur();
-                            }}
-                            key={option.text}
-                        >
-                            <div
-                                className={styles["text"]}
-                                style={{
-                                    fontSize,
-                                    paddingLeft: minPaddingPx,
-                                    paddingRight: minPaddingPx,
-                                }}
-                            >
-                                {option.text}
-                            </div>
-                            <div className={styles["highlight-bar"]}></div>
-                        </Link>
-                    );
-                })}
-            </ul>
+            {options.map((option) => {
+                return (
+                    <Option
+                        text={option.text}
+                        link={option.link}
+                        selected={optionSelected === option.text}
+                        onClickHandler={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                            setOptionSelected(option.text);
+                            if (onSelectHandler) onSelectHandler(e);
+                        }}
+                        minPaddingPx={minPaddingPx}
+                        style={option.style || {}}
+                        key={option.text}
+                    />
+                );
+            })}
         </nav>
     );
 }
