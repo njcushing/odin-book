@@ -2,13 +2,13 @@ import Navigation from "../..";
 import * as Types from "../../types";
 import styles from "./index.module.css";
 
-type MenuProps = {
+type MenuTypes = {
     type: "wide" | "thin";
     label?: string;
     options: Types.Option[];
 };
 
-function Menu({ type, label = "", options }: MenuProps) {
+function Menu({ type, label = "", options }: MenuTypes) {
     const optionStyles = {
         gap: "1rem",
         width: type === "wide" ? "100%" : "auto",

@@ -6,19 +6,19 @@ import "@testing-library/jest-dom";
 import * as Types from "../../types";
 import Menu from ".";
 
-type MenuProps = {
+type MenuTypes = {
     type: "wide" | "thin";
     label?: string;
     options: Types.Option[];
 };
 
-const defaultArgs: MenuProps = {
+const defaultArgs: MenuTypes = {
     type: "wide",
     label: "navigation menu",
     options: [],
 };
 
-const renderComponent = (args = defaultArgs) => {
+const renderComponent = (args: MenuTypes = defaultArgs) => {
     return render(<Menu type={args.type} label={args.label} options={args.options} />);
 };
 
