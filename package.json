@@ -5,7 +5,7 @@
     "start:front": "vite ./packages/frontend",
     "build:front": "vite build ./packages/frontend",
     "test:front": "vitest watch --root ./packages/frontend",
-    "coverage:front": "vitest watch ./packages/frontend --coverage",
+    "coverage:front": "vitest --root ./packages/frontend --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
