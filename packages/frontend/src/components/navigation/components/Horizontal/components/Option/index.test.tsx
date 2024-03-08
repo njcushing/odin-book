@@ -5,24 +5,18 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router-dom";
-import Option from ".";
+import Option, { OptionTypes } from ".";
 
-const renderComponent = (
-    text: string = "",
-    symbol: string = "",
-    onClickHandler = () => {},
-    link: string = "",
-    style = {},
-) => {
+const defaultArgs: OptionTypes = {
+    text: "",
+    link: "",
+    onClickHandler: () => {},
+};
+
+const renderComponent = (args: OptionTypes = defaultArgs) => {
     return render(
         <BrowserRouter>
-            <Option
-                text={text}
-                symbol={symbol}
-                onClickHandler={onClickHandler}
-                link={link}
-                style={style}
-            />
+            <Option text={args.text} link={args.link} onClickHandler={args.onClickHandler} />
         </BrowserRouter>,
     );
 };
@@ -38,7 +32,7 @@ describe("UI/DOM Testing...", () => {
             const user = userEvent.setup();
             const callback = vi.fn();
 
-            renderComponent("test", "symbol", callback);
+            renderComponent({ ...defaultArgs, onClickHandler: callback });
             const link = screen.getByRole("link", { name: "navigation-option" });
 
             fireEvent.mouseLeave(link);
@@ -50,7 +44,7 @@ describe("UI/DOM Testing...", () => {
     describe("The paragraph element for the text...", () => {
         test(`Should be present in the document only if the supplied 'text' prop has a string
          value with length greater than 0`, () => {
-            renderComponent("test");
+            renderComponent({ ...defaultArgs, text: "test" });
             const text = screen.getByText("test");
             expect(text).toBeInTheDocument();
         });
