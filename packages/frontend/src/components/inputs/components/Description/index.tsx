@@ -14,7 +14,7 @@ function Description({ text, style = {}, size = "m" }: DescriptionTypes) {
     return text && text.length > 0 ? (
         <h3
             className={styles["description"]}
-            aria-label="input-field-description"
+            aria-label="input field description"
             style={{ ...sizes, ...style }}
         >
             {text}
