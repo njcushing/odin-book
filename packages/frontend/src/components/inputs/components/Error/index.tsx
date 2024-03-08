@@ -11,15 +11,15 @@ export type ErrorTypes = {
 function Error({ text, style = {}, size = "m" }: ErrorTypes) {
     const sizes = getSizes(size, "error");
 
-    return (
+    return text && text.length > 0 ? (
         <h3
             className={styles["error"]}
-            aria-label="text-input-error"
+            aria-label="input field error"
             style={style && { ...style, ...sizes }}
         >
             {text}
         </h3>
-    );
+    ) : null;
 }
 
 export default Error;
