@@ -4,6 +4,7 @@ import { BasicTypes as ButtonBasicTypes } from "@/components/buttons/components/
 import * as ModelTypes from "@/utils/modelTypes";
 import User from "../..";
 import styles from "./index.module.css";
+import Option from "./components/Option";
 
 type UserTypesPicked = Pick<ModelTypes.User, "_id" | "accountTag"> & {
     preferences: Pick<ModelTypes.User["preferences"], "displayName">;
@@ -52,26 +53,21 @@ function Selector({ onChangeHandler }: SelectorTypes) {
                     {Object.keys(selectedUsers).map((key) => {
                         const user = selectedUsers[key];
                         return (
-                            <li className={styles["user"]} key={user._id}>
-                                <div className={styles["user-info"]}>
-                                    <p className={styles["display-name"]}>
-                                        {user.preferences.displayName}
-                                    </p>
-                                    <p className={styles["account-tag"]}>@{user.accountTag}</p>
-                                </div>
-                                <Buttons.Basic
-                                    text=""
-                                    symbol="remove"
-                                    onClickHandler={() => {
-                                        const newSelectedUsers = { ...selectedUsers };
-                                        delete newSelectedUsers[key];
-                                        setSelectedUsers(newSelectedUsers);
-                                        if (onChangeHandler) onChangeHandler(newSelectedUsers);
-                                    }}
-                                    palette="red"
-                                    otherStyles={{ fontSize: "1.0rem", padding: "0.2rem" }}
-                                />
-                            </li>
+                            <Option
+                                user={{
+                                    accountTag: user.accountTag,
+                                    preferences: {
+                                        displayName: user.preferences.displayName,
+                                    },
+                                }}
+                                onClickHandler={() => {
+                                    const newSelectedUsers = { ...selectedUsers };
+                                    delete newSelectedUsers[key];
+                                    setSelectedUsers(newSelectedUsers);
+                                    if (onChangeHandler) onChangeHandler(newSelectedUsers);
+                                }}
+                                key={user._id}
+                            />
                         );
                     })}
                 </ul>

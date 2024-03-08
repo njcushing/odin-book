@@ -21,39 +21,3 @@
     height: max-content;
     padding: 0.4rem;
 }
-
-.user {
-    place-self: start;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 0.7rem;
-
-    outline: 1px solid var(--outline-primary);
-    border-radius: 9999px;
-    background-color: var(--background-primary);
-
-    width: max-content;
-    padding: 0.3rem 0.3rem 0.3rem 0.8rem;
-}
-
-.user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 0.1rem;
-}
-
-.display-name {
-    color: var(--text-secondary);
-    font-family: Gabarito;
-    font-weight: bold;
-}
-
-.account-tag {
-    color: var(--text-secondary);
-    font-family: Gabarito;
-    font-weight: normal;
-}
