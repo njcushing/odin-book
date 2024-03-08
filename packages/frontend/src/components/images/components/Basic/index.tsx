@@ -2,7 +2,9 @@ import objectURLFromTypedArray from "@/utils/objectURLFromTypedArray";
 import * as Types from "../../types";
 import styles from "./index.module.css";
 
-function Basic({ src = new Uint8Array([]), alt = "", label = "image", style }: Types.Basic) {
+export type BasicTypes = Types.Base;
+
+function Basic({ src = new Uint8Array([]), alt = "", label = "image", style }: BasicTypes) {
     let imgSrc = "";
     if (src) imgSrc = objectURLFromTypedArray(src);
 

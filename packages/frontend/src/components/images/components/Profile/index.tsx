@@ -2,6 +2,11 @@ import objectURLFromTypedArray from "@/utils/objectURLFromTypedArray";
 import * as Types from "../../types";
 import styles from "./index.module.css";
 
+export type ProfileTypes = Types.Base & {
+    status?: "online" | "away" | "busy" | "offline" | null;
+    sizePx?: number;
+};
+
 function Profile({
     src = new Uint8Array([]),
     alt = "",
@@ -9,7 +14,7 @@ function Profile({
     status = null,
     sizePx = 50,
     style,
-}: Types.Profile) {
+}: ProfileTypes) {
     let imgSrc = "";
     if (src) imgSrc = objectURLFromTypedArray(src);
 
