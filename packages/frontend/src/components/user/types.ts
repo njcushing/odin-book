@@ -1,13 +1,12 @@
-import * as ImageTypes from "@/components/images/types";
-import * as ButtonTypes from "@/components/buttons/types";
-import React from "react";
+import { BasicTypes as ButtonBasicTypes } from "@/components/buttons/components/Basic";
+import { ProfileTypes } from "@/components/images/components/Profile";
 
 export type Sizes = {
     size?: "xs" | "s" | "m" | "l" | "xl";
 };
 
 export type ImageAndName = Sizes & {
-    image: ImageTypes.Profile;
+    image: ProfileTypes;
     displayName: string;
     accountTag: string;
     disableLinks?: boolean;
@@ -21,6 +20,6 @@ export type Option = {
 
 export type Finder = {
     placeholder?: string;
-    button?: ButtonTypes.Basic;
+    button?: ButtonBasicTypes;
     clearFindOnClick?: boolean;
 };
