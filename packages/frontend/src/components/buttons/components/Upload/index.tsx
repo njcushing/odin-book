@@ -1,8 +1,17 @@
-import Buttons from "../..";
-import * as Types from "../../types";
+import Basic, { BasicTypes } from "../Basic";
 import styles from "./index.module.css";
 
-const buttonDefaultProps: Types.Basic = {
+export type UploadTypes = {
+    labelText?: string;
+    fieldId?: string;
+    fieldName?: string;
+    accept?: string;
+    multiple?: boolean;
+    button?: BasicTypes;
+    onUploadHandler?: ((uploads: [ProgressEvent<FileReader>, File][]) => void) | null;
+};
+
+const buttonDefaultProps: BasicTypes = {
     type: "button",
     text: "",
     symbol: "",
@@ -23,11 +32,11 @@ function Upload({
     multiple = false,
     button = { ...buttonDefaultProps },
     onUploadHandler = null,
-}: Types.Upload) {
+}: UploadTypes) {
     const buttonProps = { ...buttonDefaultProps, ...button };
 
     return (
-        <Buttons.Basic {...buttonProps}>
+        <Basic {...buttonProps}>
             <label
                 className={styles["label"]}
                 htmlFor={fieldId}
@@ -66,7 +75,7 @@ function Upload({
                     }}
                 ></input>
             </label>
-        </Buttons.Basic>
+        </Basic>
     );
 }
 

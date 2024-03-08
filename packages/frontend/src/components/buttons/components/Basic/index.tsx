@@ -1,5 +1,21 @@
-import * as Types from "../../types";
 import styles from "./index.module.css";
+
+export type BasicTypes = {
+    type?: "button" | "reset" | "submit";
+    text?: string;
+    symbol?: string;
+    label?: string;
+    onClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+    disabled?: boolean;
+    allowDefaultEventHandling?: boolean;
+    palette?: "primary" | "secondary" | "bare" | "red" | "orange" | "gold" | "green" | "blue";
+    animation?: "rigid" | "squishy";
+    style?: {
+        shape?: "sharp" | "rounded";
+    };
+    otherStyles?: React.CSSProperties;
+    children?: React.ReactElement | null;
+};
 
 function Basic({
     type = "button",
@@ -16,7 +32,7 @@ function Basic({
     },
     otherStyles = {},
     children = null,
-}: Types.Basic) {
+}: BasicTypes) {
     return (
         <button
             // eslint-disable-next-line react/button-has-type
