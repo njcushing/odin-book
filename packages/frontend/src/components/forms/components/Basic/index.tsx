@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import Buttons from "@/components/buttons";
-import * as ButtonTypes from "@/components/buttons/types";
+import ButtonBasic, { BasicTypes as ButtonBasicTypes } from "@/components/buttons/components/Basic";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 import * as validation from "@/components/inputs/utils/validation";
 import styles from "./styles";
@@ -24,7 +23,7 @@ export type BasicTypes = {
     sections?: SectionTypes[];
     onChangeHandler?: (event: React.FormEvent<HTMLFormElement>, currentlyValid: boolean) => void;
     onSubmitHandler?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    button?: ButtonTypes.Basic;
+    button?: ButtonBasicTypes;
     enableButtonOnInvalidFields?: boolean;
     appearance?: "plain" | "1";
 };
@@ -157,7 +156,7 @@ function Basic({
             ) : null}
             {sections.map((section, i) => createSection(section, i, activeStyles))}
             <section className={activeStyles["submit-section"]}>
-                <Buttons.Basic
+                <ButtonBasic
                     type="submit"
                     text={(button && button.text) || "Submit"}
                     label={(button && button.label) || "submit form"}
