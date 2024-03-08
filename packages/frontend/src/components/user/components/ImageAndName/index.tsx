@@ -13,7 +13,7 @@ export type ImageAndNameTypes = Types.Sizes & {
 function ImageAndName({
     image = { src: new Uint8Array([]), alt: "" },
     displayName = "Display Name",
-    accountTag = "@account_name",
+    accountTag = "account_name",
     disableLinks = false,
     size = "m",
 }: ImageAndNameTypes) {
@@ -54,42 +54,46 @@ function ImageAndName({
             </div>
             <div className={styles["row-one-right"]}>
                 {displayName.length > 0 ? (
-                    <button
-                        type="button"
-                        className={`truncate-ellipsis ${styles["display-name-button"]}`}
-                        onClick={(e) => {
-                            e.currentTarget.blur();
-                            e.preventDefault();
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.blur();
-                        }}
-                        disabled={disableLinks}
-                        style={{
-                            fontSize: `${sizes.displayName}rem`,
-                        }}
-                    >
-                        {displayName}
-                    </button>
-                ) : null}
-                {displayName.length > 0 ? (
-                    <button
-                        type="button"
-                        className={`truncate-ellipsis ${styles["account-tag-button"]}`}
-                        onClick={(e) => {
-                            e.currentTarget.blur();
-                            e.preventDefault();
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.blur();
-                        }}
-                        disabled={disableLinks}
-                        style={{
-                            fontSize: `${sizes.accountTag}rem`,
-                        }}
-                    >
-                        @{accountTag}
-                    </button>
+                    <>
+                        <button
+                            type="button"
+                            className={`truncate-ellipsis ${styles["display-name-button"]}`}
+                            aria-label="display name"
+                            onClick={(e) => {
+                                window.location.href = `/user/${accountTag}`;
+                                e.currentTarget.blur();
+                                e.preventDefault();
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.blur();
+                            }}
+                            disabled={disableLinks}
+                            style={{
+                                fontSize: `${sizes.displayName}rem`,
+                            }}
+                        >
+                            {displayName}
+                        </button>
+                        <button
+                            type="button"
+                            className={`truncate-ellipsis ${styles["account-tag-button"]}`}
+                            aria-label="account tag"
+                            onClick={(e) => {
+                                window.location.href = `/user/${accountTag}`;
+                                e.currentTarget.blur();
+                                e.preventDefault();
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.blur();
+                            }}
+                            disabled={disableLinks}
+                            style={{
+                                fontSize: `${sizes.accountTag}rem`,
+                            }}
+                        >
+                            @{accountTag}
+                        </button>
+                    </>
                 ) : null}
             </div>
         </div>
