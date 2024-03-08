@@ -3,10 +3,9 @@
 import { vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import * as Types from "../../types";
-import Basic from ".";
+import Basic, { BasicTypes } from ".";
 
-const defaultArgs: Types.Basic = {
+const defaultArgs: BasicTypes = {
     src: new Uint8Array([]),
     alt: "image alt",
     label: "basic image",
