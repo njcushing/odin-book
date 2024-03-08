@@ -18,5 +18,8 @@ export default defineConfig({
         globals: true,
         environment: "jsdom",
         setupFilesAfterEnv: "./tests.config.js",
+        coverage: {
+            exclude: ["**/types.ts", "**/*.config.*/**", "**/index.ts"],
+        },
     },
 });
