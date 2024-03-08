@@ -26,15 +26,16 @@ const renderComponent = (args: FinderTypes = defaultArgs) => {
     );
 };
 
+const mockUserData = {
+    _id: "1",
+    accountTag: "JohnSmith84",
+    preferences: {
+        displayName: "John Smith",
+        profileImage: { src: new Uint8Array([]), alt: "" },
+    },
+};
 vi.mock("./utils/findUserFromTag", () => ({
-    default: () => ({
-        _id: "1",
-        accountTag: "JohnSmith84",
-        preferences: {
-            displayName: "John Smith",
-            profileImage: { src: new Uint8Array([]), alt: "" },
-        },
-    }),
+    default: () => mockUserData,
 }));
 
 vi.mock("@/components/inputs", () => ({
@@ -134,6 +135,19 @@ describe("UI/DOM Testing...", () => {
             await user.click(basic);
 
             expect(callback).toHaveBeenCalledTimes(1);
+        });
+        test(`With an argument of the current user's data`, async () => {
+            const user = userEvent.setup();
+            const callback = vi.fn();
+
+            renderComponent({ ...defaultArgs, onClickHandler: callback });
+            const search = screen.getByRole("button", { name: "search bar" });
+            await user.click(search);
+
+            const basic = screen.getByRole("button", { name: "basic button" });
+            await user.click(basic);
+
+            expect(callback).toHaveBeenCalledWith(mockUserData);
         });
         test(`When clicked, should set the current user data to null if the 'clearFindOnClick' prop
          is set to 'true'`, async () => {
