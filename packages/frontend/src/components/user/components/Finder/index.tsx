@@ -1,12 +1,17 @@
 import { useState } from "react";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
-import * as Types from "../../types";
+import { BasicTypes as ButtonBasicTypes } from "@/components/buttons/components/Basic";
 import findUser, { User as UserTypes } from "./utils/findUserFromTag";
 import User from "../..";
 import styles from "./index.module.css";
 
-export type FinderTypes = Types.Finder & { onClickHandler?: ((user: UserTypes) => void) | null };
+export type FinderTypes = {
+    placeholder?: string;
+    button?: ButtonBasicTypes;
+    clearFindOnClick?: boolean;
+    onClickHandler?: ((user: UserTypes) => void) | null;
+};
 
 function Finder({ placeholder, button, onClickHandler, clearFindOnClick }: FinderTypes) {
     const [user, setUser] = useState<UserTypes | null>(null);

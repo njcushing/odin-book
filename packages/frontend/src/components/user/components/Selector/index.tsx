@@ -13,7 +13,7 @@ type Users = {
     [key: string]: UserTypesPicked;
 };
 
-type SelectorTypes = {
+export type SelectorTypes = {
     onChangeHandler?: ((selectedUsers: Users) => void) | null;
 };
 

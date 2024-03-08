@@ -1,6 +1,14 @@
 import Images from "@/components/images";
+import { ProfileTypes } from "@/components/images/components/Profile";
 import * as Types from "../../types";
 import styles from "./index.module.css";
+
+export type ImageAndNameTypes = Types.Sizes & {
+    image: ProfileTypes;
+    displayName: string;
+    accountTag: string;
+    disableLinks?: boolean;
+};
 
 function ImageAndName({
     image = { src: new Uint8Array([]), alt: "" },
@@ -8,7 +16,7 @@ function ImageAndName({
     accountTag = "@account_name",
     disableLinks = false,
     size = "m",
-}: Types.ImageAndName) {
+}: ImageAndNameTypes) {
     const sizes = { image: 48, displayName: 1.0, accountTag: 0.8 };
     switch (size) {
         case "xs":

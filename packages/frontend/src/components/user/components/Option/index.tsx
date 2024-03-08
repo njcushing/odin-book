@@ -1,9 +1,15 @@
 import Buttons from "@/components/buttons";
 import User from "../..";
-import * as Types from "../../types";
+import { ImageAndNameTypes } from "../ImageAndName";
 import styles from "./index.module.css";
 
-function Option({ user, following, onClickHandler = null }: Types.Option) {
+export type OptionTypes = {
+    user: ImageAndNameTypes;
+    following: boolean;
+    onClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+};
+
+function Option({ user, following, onClickHandler = null }: OptionTypes) {
     return (
         <div className={styles["container"]}>
             <User.ImageAndName
