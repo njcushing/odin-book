@@ -4,10 +4,9 @@ import { vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import * as Types from "../../types";
-import Basic from ".";
+import Basic, { BasicTypes } from ".";
 
-const defaultArgs: Types.Basic = {
+const defaultArgs: BasicTypes = {
     type: "button",
     text: "Button Text",
     symbol: "",
