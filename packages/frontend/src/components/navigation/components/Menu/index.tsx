@@ -1,11 +1,10 @@
-import Option from "./components/Option";
-import * as OptionTypes from "./components/Option/types";
+import Option, { OptionTypes } from "./components/Option";
 import styles from "./index.module.css";
 
 type MenuTypes = {
     type: "wide" | "thin";
     label?: string;
-    options: OptionTypes.Option[];
+    options: OptionTypes[];
 };
 
 function Menu({ type, label = "", options }: MenuTypes) {
