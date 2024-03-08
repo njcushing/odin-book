@@ -3,7 +3,7 @@ import * as Types from "../../types";
 import getSizes from "../../utils/getSizes";
 import styles from "./index.module.css";
 
-type LabelTypes = {
+export type LabelTypes = {
     labelText: string;
     fieldId: string;
     required?: boolean;

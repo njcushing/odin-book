@@ -3,7 +3,7 @@ import * as Types from "../../types";
 import getSizes from "../../utils/getSizes";
 import styles from "./index.module.css";
 
-type CounterTypes = {
+export type CounterTypes = {
     count: number;
     maxLength?: number;
     style?: React.CSSProperties;

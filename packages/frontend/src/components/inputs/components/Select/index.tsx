@@ -14,7 +14,7 @@ type Custom = {
     description?: string;
 };
 
-type SelectTypes = Types.Base<string> &
+export type SelectTypes = Types.Base<string> &
     Types.Error &
     Types.Validator<string> &
     Types.Sizes &

@@ -24,7 +24,7 @@ type Custom = {
     onUpdateHandler?: ((files: Files) => void) | null;
 };
 
-type FileTypes = Types.Base<Files> &
+export type FileTypes = Types.Base<Files> &
     Types.Error &
     Types.Validator<extendedTypes.TypedArray> &
     Types.Sizes &

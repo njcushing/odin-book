@@ -3,7 +3,7 @@ import * as Types from "../../types";
 import getSizes from "../../utils/getSizes";
 import styles from "./index.module.css";
 
-type DescriptionTypes = {
+export type DescriptionTypes = {
     text: string;
     style?: React.CSSProperties;
 } & Types.Sizes;

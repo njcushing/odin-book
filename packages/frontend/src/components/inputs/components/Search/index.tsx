@@ -8,7 +8,11 @@ type BaseLite = Omit<Types.Base<string>, "labelText" | "fieldId" | "fieldName">;
 
 type Custom = { onSearchHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null };
 
-type SearchTypes = BaseLite & Types.Placeholder & Types.Validator<string> & Types.Sizes & Custom;
+export type SearchTypes = BaseLite &
+    Types.Placeholder &
+    Types.Validator<string> &
+    Types.Sizes &
+    Custom;
 
 function Search({
     initialValue = "",

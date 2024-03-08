@@ -5,7 +5,7 @@ import * as Types from "../../types";
 import getSizes from "../../utils/getSizes";
 import styles from "./index.module.css";
 
-type FileButtonTypes = Types.Sizes & {
+export type FileButtonTypes = Types.Sizes & {
     file: File;
     label?: string;
     onClickHandler: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;

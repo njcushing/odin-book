@@ -20,7 +20,7 @@ type Custom = {
     style?: React.CSSProperties;
 };
 
-type TextAreaTypes = Types.Base<string> &
+export type TextAreaTypes = Types.Base<string> &
     Types.Placeholder &
     Types.Error &
     Types.Validator<string> &

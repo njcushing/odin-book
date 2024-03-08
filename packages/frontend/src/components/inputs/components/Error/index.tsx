@@ -3,7 +3,7 @@ import * as Types from "../../types";
 import getSizes from "../../utils/getSizes";
 import styles from "./index.module.css";
 
-type ErrorTypes = {
+export type ErrorTypes = {
     text: string;
     style?: React.CSSProperties;
 } & Types.Sizes;

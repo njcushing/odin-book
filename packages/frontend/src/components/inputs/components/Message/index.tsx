@@ -25,7 +25,7 @@ type Submitter<textT, imagesT> = {
     args?: unknown[];
 } | null;
 
-type MessageTypes = {
+export type MessageTypes = {
     text?: string;
     placeholder?: string;
     textValidator?: validation.Validator<string>;
