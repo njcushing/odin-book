@@ -1,7 +1,7 @@
 import Option, { OptionTypes } from "./components/Option";
 import styles from "./index.module.css";
 
-type MenuTypes = {
+export type MenuTypes = {
     type: "wide" | "thin";
     label?: string;
     options: OptionTypes[];
