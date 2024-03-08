@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import Option from "./components/Option";
-import * as OptionTypes from "./components/Option/types";
+import Option, { OptionTypes } from "./components/Option";
 import styles from "./index.module.css";
 
-type HorizontalTypes = {
-    options: OptionTypes.Option[];
+export type HorizontalTypes = {
+    options: OptionTypes[];
     selected: string | null;
     label?: string;
     minPaddingPx?: number;

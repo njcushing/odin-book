@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
 import React from "react";
-import * as Types from "./types";
 import styles from "./index.module.css";
 
 const defaultStyles: React.CSSProperties = {
     fontSize: "1.1rem",
+};
+
+export type OptionTypes = {
+    text: string;
+    link?: string;
+    selected?: boolean;
+    onClickHandler?: ((event: React.MouseEvent<HTMLAnchorElement>) => void) | null;
+    minPaddingPx?: number;
+    style?: React.CSSProperties;
 };
 
 function Option({
@@ -14,7 +22,7 @@ function Option({
     onClickHandler = null,
     minPaddingPx = 16,
     style = {},
-}: Types.Option) {
+}: OptionTypes) {
     return (
         <li className={styles["wrapper"]}>
             <Link
@@ -23,7 +31,7 @@ function Option({
                 aria-label="navigation-option"
                 data-highlighted={!!selected}
                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                    if (onClickHandler) onClickHandler();
+                    if (onClickHandler) onClickHandler(e);
                     e.currentTarget.blur();
                 }}
                 onMouseLeave={(e) => {
