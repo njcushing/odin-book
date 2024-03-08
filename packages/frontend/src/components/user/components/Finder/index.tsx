@@ -6,7 +6,7 @@ import findUser, { User as UserTypes } from "./utils/findUserFromTag";
 import User from "../..";
 import styles from "./index.module.css";
 
-type FinderTypes = Types.Finder & { onClickHandler?: ((user: UserTypes) => void) | null };
+export type FinderTypes = Types.Finder & { onClickHandler?: ((user: UserTypes) => void) | null };
 
 function Finder({ placeholder, button, onClickHandler, clearFindOnClick }: FinderTypes) {
     const [user, setUser] = useState<UserTypes | null>(null);
