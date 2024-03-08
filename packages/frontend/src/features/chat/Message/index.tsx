@@ -1,6 +1,6 @@
 import Buttons from "@/components/buttons";
 import Images from "@/components/images";
-import * as ImageTypes from "@/components/images/types";
+import { ProfileTypes } from "@/components/images/components/Profile";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 import objectURLFromTypedArray from "@/utils/objectURLFromTypedArray";
 import formatDate from "@/utils/formatDate";
@@ -20,7 +20,7 @@ type ReplyingToTypes = {
 type AuthorTypes = {
     self: boolean;
     displayName?: string;
-    image?: ImageTypes.Profile;
+    image?: ProfileTypes;
     status?: "online" | "away" | "busy" | "offline" | null;
 };
 
