@@ -3,10 +3,9 @@
 import { vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import * as Types from "../../types";
-import Profile from ".";
+import Profile, { ProfileTypes } from ".";
 
-const defaultArgs: Types.Profile = {
+const defaultArgs: ProfileTypes = {
     src: new Uint8Array([]),
     alt: "image alt",
     label: "profile image",
@@ -14,7 +13,7 @@ const defaultArgs: Types.Profile = {
     sizePx: 50,
 };
 
-const renderComponent = (args = defaultArgs) => {
+const renderComponent = (args: ProfileTypes = defaultArgs) => {
     return render(
         <Profile
             src={args.src}
