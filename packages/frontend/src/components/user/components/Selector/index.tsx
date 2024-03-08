@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Buttons from "@/components/buttons";
-import * as ButtonTypes from "@/components/buttons/types";
+import { BasicTypes as ButtonBasicTypes } from "@/components/buttons/components/Basic";
 import * as ModelTypes from "@/utils/modelTypes";
 import User from "../..";
 import styles from "./index.module.css";
@@ -20,7 +20,7 @@ type SelectorTypes = {
 function Selector({ onChangeHandler }: SelectorTypes) {
     const [selectedUsers, setSelectedUsers] = useState<Users>({});
 
-    const addButton: ButtonTypes.Basic = {
+    const addButton: ButtonBasicTypes = {
         text: "",
         symbol: "add",
         palette: "green",
