@@ -2,7 +2,7 @@ import React from "react";
 import Buttons from "@/components/buttons";
 import styles from "./index.module.css";
 
-type BasicTypes = {
+export type BasicTypes = {
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     unblockPointerEvents?: boolean;
     style?: React.CSSProperties;
