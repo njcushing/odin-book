@@ -19,7 +19,7 @@ type SectionTypes = {
     fields: React.ReactElement<FieldTypes>[];
 };
 
-type BasicTypes = {
+export type BasicTypes = {
     title?: string;
     sections?: SectionTypes[];
     onChangeHandler?: (event: React.FormEvent<HTMLFormElement>, currentlyValid: boolean) => void;
