@@ -5,23 +5,8 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import React from "react";
-import * as OptionTypes from "./components/Option/types";
-import Horizontal from ".";
-
-type Option = {
-    text: string;
-    link?: string;
-    disabled?: boolean;
-};
-
-type HorizontalTypes = {
-    options: Option[];
-    selected: string | null;
-    label?: string;
-    minPaddingPx?: number;
-    onSelectHandler?: ((event: React.MouseEvent<HTMLAnchorElement>) => void) | null;
-    style?: React.CSSProperties;
-};
+import Horizontal, { HorizontalTypes } from ".";
+import { OptionTypes } from "./components/Option";
 
 const defaultArgs: HorizontalTypes = {
     options: [],
@@ -42,7 +27,7 @@ const renderComponent = (args: HorizontalTypes = defaultArgs) => {
 };
 
 vi.mock("./components/Option", () => ({
-    default: ({ text, link, onClickHandler }: OptionTypes.Option) => {
+    default: ({ text, link, onClickHandler }: OptionTypes) => {
         return (
             <a
                 href={link}
