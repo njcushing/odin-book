@@ -22,6 +22,7 @@ type Custom = {
     description?: string;
     buttonSymbol?: string;
     onUpdateHandler?: ((files: Files) => void) | null;
+    displayNoFilesSelectedMessage?: boolean;
 };
 
 export type FileTypes = Types.Base<Files> &
@@ -46,6 +47,7 @@ function File({
     description = "",
     buttonSymbol = "attach_file",
     onUpdateHandler = null,
+    displayNoFilesSelectedMessage = false,
 }: FileTypes) {
     const [files, setFiles] = useState<Files>(initialValue || {});
     const [error, setError] = useState<string>("");
@@ -149,9 +151,11 @@ function File({
                     ) : null}
                 </div>
             ) : (
-                <p className={styles["no-files-message"]} style={{ ...noMessageSizes }}>
-                    No files selected.
-                </p>
+                displayNoFilesSelectedMessage && (
+                    <p className={styles["no-files-message"]} style={{ ...noMessageSizes }}>
+                        No files selected.
+                    </p>
+                )
             )}
             {!disabled && currentErrorMessage.length > 0 ? (
                 <Inputs.Error text={currentErrorMessage} size={size} />
