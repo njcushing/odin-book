@@ -30,7 +30,17 @@
     transition: border-radius 0.1s ease-in-out 0s,
 }
 
-.message-textarea {
+.input-container label {
+    position: absolute;
+    opacity: 0%;
+}
+
+.input-container h3 {
+    width: calc(100% - (2 * 0.2rem));
+    padding: 0.2rem;
+}
+
+.textarea-container textarea {
     color: var(--text-primary);
     font-size: 1.1rem;
     font-family: Gabarito;
@@ -40,9 +50,9 @@
     border-radius: 0px;
 
     width: calc(100% - (2 * 0.6rem));
-    height: calc(100% - (2 * 0.6rem));
-    min-height: calc(5rem - (2 * 0.6rem));
-    max-height: calc(7rem - (2 * 0.6rem));
+    height: 4rem;
+    min-height: calc(4rem - (2 * 0.6rem));
+    max-height: calc(10rem - (2 * 0.6rem));
     padding: 0.6rem;
 
     transition: background-color 0.15s ease-in-out 0s,
@@ -55,27 +65,27 @@
         border-radius: 4px;
     }
 
-    .message-textarea:hover {
+    .textarea-container textarea:hover {
         background-color: rgba(255, 255, 255, 0.04);
 
         cursor: pointer;
     }
 }
 
-.message-textarea:focus {
+.textarea-container textarea:focus {
     background-color: rgba(255, 255, 255, 0.04);
 
-    min-height: 7rem;
+    min-height: calc(10rem - (2 * 0.6rem));
     
     cursor: pointer;
 }
 
-.message-textarea::placeholder {
+.textarea-container textarea::placeholder {
     font-family: Gabarito;
 }
 
-.message-textarea:disabled,
-.message-textarea:disabled::placeholder {
+.textarea-container textarea:disabled,
+.textarea-container textarea:disabled::placeholder {
     color: rgba(128, 128, 128, 0.5);
     outline-width: 1px;
     border-radius: 1px;
@@ -84,18 +94,32 @@
     cursor: default;
 }
 
-.message-textarea:focus::placeholder {
+.textarea-container textarea:focus::placeholder {
     opacity: 0%;
 }
 
-.image-buttons-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.3rem;
+.file-container,
+.file-container > div,
+.file-container > div > div {
+    gap: 0rem;
 
+    width: 100%;
+}
+
+.file-container button {
+    position: relative;
+
+    justify-self: end;
+
+    padding: 0.4rem 0.2rem;
+    margin-right: 0.2rem;
+    margin-bottom: 0.2rem;
+}
+
+.file-container ul {
     border-top: 1px solid var(--outline-primary);
 
+    width: calc(100% - (2 * 0.4rem));
     padding: 0.4rem;
 }
 
@@ -109,6 +133,13 @@
     gap: 0.44rem;
 }
 
+.submission-errors-title {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-family: Gabarito;
+    font-weight: normal;
+}
+
 .errors-list {
     display: flex;
     flex-direction: column;
@@ -119,22 +150,7 @@
     margin: 0rem;
 }
 
-.submission-errors {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2rem;
-}
-
-.submission-errors-title {
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    font-family: Gabarito;
-    font-weight: normal;
-}
-
-.error,
-.submission-error {
+.error {
     color: var(--text-error);
     font-size: 0.9rem;
     font-family: Gabarito;
