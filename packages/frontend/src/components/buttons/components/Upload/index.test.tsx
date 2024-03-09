@@ -2,13 +2,11 @@
 
 import { vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { userEvent } from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import React from "react";
-import * as Types from "../../types";
-import Upload from ".";
+import Upload, { UploadTypes } from ".";
 
-const defaultArgs: Types.Upload = {
+const defaultArgs: UploadTypes = {
     labelText: "label",
     fieldId: "fieldId",
     fieldName: "fieldName",
