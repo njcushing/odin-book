@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Buttons from "@/components/buttons";
 import { v4 as uuidv4 } from "uuid";
 import * as extendedTypes from "@shared/utils/extendedTypes";
@@ -13,19 +13,6 @@ type Images = {
     };
 };
 
-type Submitter<textT, imagesT> = {
-    func: (
-        text: textT,
-        images: imagesT,
-        ...args: unknown[]
-    ) => {
-        status: boolean;
-        message: string | null;
-        data: object | null;
-    };
-    args?: unknown[];
-} | null;
-
 export type MessageTypes = {
     initialText?: string;
     textFieldId: string;
@@ -36,7 +23,7 @@ export type MessageTypes = {
     imageFieldName: string;
     textValidator?: validation.Validator<string>;
     imageValidator?: validation.Validator<extendedTypes.TypedArray>;
-    submitHandler?: Submitter<string, Images>;
+    onSendHandler?: ((text: string, images: Images) => void) | null;
     submissionErrors?: string[];
     sending?: boolean;
 };
@@ -51,11 +38,11 @@ function Message({
     imageFieldName,
     textValidator = null,
     imageValidator = null,
-    submitHandler = null,
+    onSendHandler = null,
     submissionErrors = [],
     sending = false,
 }: MessageTypes) {
-    const [textareaContent, setTextareaContent] = useState<string>(initialText);
+    const [text, setText] = useState<string>(initialText);
     const [images, setImages] = useState<Images>(initialImages);
 
     return (
@@ -64,12 +51,13 @@ function Message({
                 <div className={styles["input-container"]}>
                     <div className={styles["textarea-container"]}>
                         <Inputs.TextArea
-                            labelText="Text"
+                            labelText=""
                             fieldId={textFieldId}
                             fieldName={textFieldName}
+                            initialValue={text}
                             validator={textValidator}
                             onChangeHandler={(e) => {
-                                setTextareaContent(e.target.value);
+                                setText(e.target.value);
                             }}
                             maxLength={500}
                             placeholder={placeholder}
@@ -77,9 +65,10 @@ function Message({
                     </div>
                     <div className={styles["file-container"]}>
                         <Inputs.File
-                            labelText="Images"
+                            labelText=""
                             fieldId={imageFieldId}
                             fieldName={imageFieldName}
+                            initialValue={images}
                             onUpdateHandler={(data) => setImages(data)}
                             validator={imageValidator}
                             maximumAmount={4}
@@ -94,9 +83,7 @@ function Message({
                         type="submit"
                         text="Send"
                         onClickHandler={() => {
-                            if (submitHandler) {
-                                submitHandler.func(textareaContent, images, submitHandler.args);
-                            }
+                            if (onSendHandler) onSendHandler(text, images);
                         }}
                         palette="blue"
                         disabled={sending}
@@ -106,12 +93,12 @@ function Message({
             {submissionErrors.length > 0 ? (
                 <>
                     <p className={styles["submission-errors-title"]}>Submission Errors:</p>
-                    <ul className={styles["errors-list"]} aria-label="message-submission-errors">
+                    <ul className={styles["errors-list"]} aria-label="message submission errors">
                         {submissionErrors.map((error) => {
                             return (
                                 <li
                                     className={styles["error"]}
-                                    aria-label="message-submission-error"
+                                    aria-label="message submission error"
                                     key={uuidv4()}
                                 >
                                     {error}
