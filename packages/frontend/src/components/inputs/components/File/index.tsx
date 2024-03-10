@@ -4,15 +4,17 @@ import { v4 as uuidv4 } from "uuid";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 import Inputs from "../..";
 import * as Types from "../../types";
-import * as validation from "../../utils/validation";
+import validateUploadedFile from "./utils/validateUploadedFile";
 import getSizes from "../../utils/getSizes";
 import styles from "./index.module.css";
 
+export type FileInfoTypes = {
+    data: extendedTypes.TypedArray;
+    file: File;
+};
+
 type Files = {
-    [key: string]: {
-        data: extendedTypes.TypedArray;
-        file: File;
-    };
+    [key: string]: FileInfoTypes;
 };
 
 type Custom = {
@@ -109,29 +111,16 @@ function File({
                         const newFiles: Files = {};
                         for (let i = 0; i < uploads.length; i++) {
                             if (maximumAmount && currentQuantity + i >= maximumAmount) break;
-                            const [event, file] = uploads[i];
-                            if (!file.type.match(accept)) break;
-                            if (
-                                /* Ensure file being loaded is of type 'ArrayBufferLike' */
-                                event.target &&
-                                event.target.result &&
-                                typeof event.target.result !== "string"
-                            ) {
-                                const fileArray = new Uint8Array(event.target.result);
-                                const valid = validation.validate(
-                                    fileArray,
-                                    validator || null,
-                                    false,
-                                );
-                                if (!valid.status) {
-                                    setError(valid.message || "Something went wrong.");
-                                } else {
-                                    const key = uuidv4();
-                                    newFiles[key] = {
-                                        data: fileArray,
-                                        file,
-                                    };
-                                }
+                            const [status, message, data] = validateUploadedFile(
+                                uploads[i],
+                                accept,
+                                validator,
+                            );
+                            if (!status) {
+                                setError(message);
+                            } else if (data) {
+                                const key = uuidv4();
+                                newFiles[key] = data;
                             }
                         }
                         setFiles({ ...files, ...newFiles });
