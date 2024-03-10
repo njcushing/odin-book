@@ -7,6 +7,7 @@ export type UploadTypes = {
     fieldName?: string;
     accept?: string;
     multiple?: boolean;
+    disabled?: boolean;
     button?: BasicTypes;
     onUploadHandler?: ((uploads: [ProgressEvent<FileReader>, File][]) => void) | null;
 };
@@ -16,7 +17,6 @@ const buttonDefaultProps: BasicTypes = {
     text: "",
     symbol: "",
     label: "",
-    disabled: false,
     allowDefaultEventHandling: true,
     palette: "primary",
     animation: "rigid",
@@ -30,13 +30,14 @@ function Upload({
     fieldName,
     accept = "*",
     multiple = false,
+    disabled = false,
     button = { ...buttonDefaultProps },
     onUploadHandler = null,
 }: UploadTypes) {
     const buttonProps = { ...buttonDefaultProps, ...button };
 
     return (
-        <Basic {...buttonProps}>
+        <Basic {...buttonProps} disabled={disabled}>
             <label
                 className={styles["label"]}
                 htmlFor={fieldId}
@@ -53,7 +54,7 @@ function Upload({
                     name={fieldName}
                     accept={accept}
                     multiple={multiple}
-                    disabled={button.disabled || buttonDefaultProps.disabled}
+                    disabled={disabled}
                     onChange={async (changeEvent) => {
                         const uploads: [ProgressEvent<FileReader>, File][] = [];
                         if (changeEvent.target.files && changeEvent.target.files.length > 0) {
