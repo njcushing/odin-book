@@ -37,7 +37,7 @@ function File({
     labelText,
     fieldId,
     fieldName,
-    initialValue,
+    initialValue = {},
     disabled = false,
     required = false,
     errorMessage = "",
@@ -51,13 +51,14 @@ function File({
     onUpdateHandler = null,
     displayNoFilesSelectedMessage = false,
 }: FileTypes) {
-    const [files, setFiles] = useState<Files>(initialValue || {});
+    const [files, setFiles] = useState<Files>(initialValue);
     const [error, setError] = useState<string>("");
 
     const sizes = getSizes(size, "input");
     const noMessageSizes = getSizes(size, "text");
 
-    const createFileButton = (key: string, file: File) => {
+    const createFileButton = (key: string) => {
+        const { file } = files[key];
         return (
             <Inputs.FileButton
                 file={file}
@@ -96,12 +97,12 @@ function File({
                     fieldName={fieldName}
                     accept={accept}
                     multiple={multiple}
+                    disabled={
+                        (maximumAmount && Object.keys(files).length >= maximumAmount) || disabled
+                    }
                     button={{
                         text: "",
                         symbol: buttonSymbol,
-                        disabled:
-                            (maximumAmount && Object.keys(files).length >= maximumAmount) ||
-                            disabled,
                         palette: "primary",
                         style: { shape: "rounded" },
                         otherStyles: { ...sizes, padding: "0.6rem" },
@@ -131,13 +132,9 @@ function File({
             <Inputs.Description text={description} size={size} />
             {Object.keys(files).length > 0 ? (
                 <div className={styles["input-container"]}>
-                    {Object.keys(files).length > 0 ? (
-                        <ul className={styles["file-buttons-list"]}>
-                            {Object.keys(files).map((key) =>
-                                createFileButton(key, files[key].file),
-                            )}
-                        </ul>
-                    ) : null}
+                    <ul className={styles["file-buttons-list"]}>
+                        {Object.keys(files).map((key) => createFileButton(key))}
+                    </ul>
                 </div>
             ) : (
                 displayNoFilesSelectedMessage && (
