@@ -4,7 +4,7 @@ export type Base<T> = {
     labelText: string;
     fieldId: string;
     fieldName: string;
-    initialValue?: T | null;
+    initialValue?: T;
     onChangeHandler?: ((event: React.ChangeEvent<HTMLInputElement>) => void) | null;
     disabled?: boolean;
     readOnly?: boolean;
