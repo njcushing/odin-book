@@ -1,4 +1,4 @@
-const createMultilineTextTruncateStyles = (lineCount: number): object => {
+const createMultilineTextTruncateStyles = (lineCount: number): React.CSSProperties => {
     const lines = Math.floor(lineCount);
 
     return {
