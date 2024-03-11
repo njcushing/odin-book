@@ -16,16 +16,11 @@ const validateUploadedFile = (
     if (!acceptRegExp.test(file.type)) {
         return [false, "File type mismatch with specified string.", null];
     }
-    if (
-        /* Ensure file being loaded is of type 'ArrayBufferLike' */
-        event.target &&
-        event.target.result &&
-        typeof event.target.result !== "string"
-    ) {
+    if (event.target && event.target.result && event.target.result instanceof ArrayBuffer) {
         const fileArray = new Uint8Array(event.target.result);
         const valid = validation.validate(fileArray, validator || null, false);
         if (!valid.status) {
-            return [false, valid.message || "Something went wrong.", null];
+            return [false, valid.message || "Validation failed.", null];
         }
         return [
             true,
