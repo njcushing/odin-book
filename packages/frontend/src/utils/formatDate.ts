@@ -5,7 +5,7 @@ const isDate = (date: string) => {
 };
 
 const formatDate = (date: string) => {
-    if (date && isDate(date)) {
+    if (date && isDate(date) && date.length > 0) {
         return DateTime.fromJSDate(new Date(date)).toLocaleString(
             DateTime.DATETIME_SHORT_WITH_SECONDS,
         );
