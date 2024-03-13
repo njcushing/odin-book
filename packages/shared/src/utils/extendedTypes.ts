@@ -1,17 +1,5 @@
 import mongoose from "mongoose";
 
-export type API = {
-    func: (
-        data: { [key: string | number]: unknown },
-        ...args: unknown[]
-    ) => {
-        status: boolean;
-        message: string | null;
-        data: object | null;
-    };
-    args?: unknown[];
-} | null;
-
 export type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
 
 export type Validator<T> = {
