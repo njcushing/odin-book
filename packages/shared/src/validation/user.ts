@@ -109,3 +109,48 @@ export const password = (value: string, messageType: "front" | "back"): ReturnTy
 export const confirmPassword = (value: string, messageType: "front" | "back"): ReturnTypes => {
     return passwordValidator(value, messageType, true);
 };
+
+export const displayName = (value: string, messageType: "front" | "back"): ReturnTypes => {
+    const pattern = /^[a-zA-Z0-9]*$/;
+    if (!value.match(pattern)) {
+        return {
+            status: false,
+            message:
+                messageType === "front"
+                    ? "Display Name must only contain alphanumeric characters."
+                    : "'displayName' field (String) must only contain alphanumeric characters",
+        };
+    }
+    if (value.length > 50) {
+        return {
+            status: false,
+            message:
+                messageType === "front"
+                    ? "Display Name must be at most 50 characters in length."
+                    : "'displayName' field (String) must be at most 50 characters in length",
+        };
+    }
+    return {
+        status: true,
+        message:
+            messageType === "front"
+                ? "Valid Display Name."
+                : "'displayName' field (String) is valid",
+    };
+};
+
+export const bio = (value: string, messageType: "front" | "back"): ReturnTypes => {
+    if (value.length > 500) {
+        return {
+            status: false,
+            message:
+                messageType === "front"
+                    ? "Bio must be at most 500 characters in length."
+                    : "'bio' field (String) must be at most 500 characters in length",
+        };
+    }
+    return {
+        status: true,
+        message: messageType === "front" ? "Valid Bio." : "'bio' field (String) is valid",
+    };
+};
