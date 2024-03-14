@@ -19,3 +19,13 @@
     min-height: 100%;
     max-width: 460px;
 }
+
+.create-account-message {
+    color: var(--text-primary);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+}
+
+.create-account-message > strong {
+    font-weight: bold;
+}
