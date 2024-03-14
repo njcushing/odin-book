@@ -58,6 +58,7 @@
       "alias": {
         "map": [
           ["@", "./packages/frontend/src"],
+          ["@", "./packages/backend/src"],
           ["@shared", "./packages/shared/src"]
         ],
         "extensions": [".ts", ".tsx"]

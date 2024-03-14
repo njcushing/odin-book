@@ -7,7 +7,7 @@
       "esnext"
     ],
     "paths": {
-        "@/*": ["./packages/frontend/src/*"],
+        "@/*": ["./packages/frontend/src/*", "./packages/backend/src/*"],
         "@shared/*": ["./packages/shared/src/*"],
     },
     "allowJs": true,
@@ -28,6 +28,9 @@
     "packages/frontend/src",
     "packages/frontend/vite.config.js",
     "packages/frontend/tests.config.js",
+    "packages/backend/src",
+    "packages/backend/vite.config.js",
+    "packages/backend/tests.config.js",
     "packages/shared/src",
     "packages/shared/vite.config.js",
     "packages/shared/tests.config.js"
