@@ -20,8 +20,9 @@ export function validate<T>(
         validator && validator.func
             ? validator.func(fieldValue, "front", args)
             : { status: true, message: null };
-    if (!required && (!fieldValue || fieldValue === "")) {
-        validValue.status = true;
+    if (required) {
+        if (!fieldValue) validValue.status = false;
+        if (fieldValue === "") validValue.status = false;
     }
     return validValue;
 }
