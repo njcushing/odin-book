@@ -6,8 +6,8 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import ImageAndName, { ImageAndNameTypes } from ".";
 
-const assignMock = vi.fn(); // Use jest.fn() instead of vi.fn()
-window.location = { ...window.location, assign: assignMock }; // Assign a new object with the assign method mocked
+const assignMock = vi.fn();
+window.location = { ...window.location, assign: assignMock };
 window.location.href = "/";
 afterEach(() => {
     assignMock.mockClear();
