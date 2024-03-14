@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import ButtonBasic, { BasicTypes as ButtonBasicTypes } from "@/components/buttons/components/Basic";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 import * as validation from "@/components/inputs/utils/validation";
-import styles from "./styles";
+import { getStyles } from "./styles";
 
 type CurrentFormDataType = { [k: string]: FormDataEntryValue };
 
@@ -37,13 +37,18 @@ const createSection = (
         <section
             className={activeStyles["section"]}
             data-title-present={!!(section.title && section.title.length > 0)}
+            aria-label="form section"
             key={section.title && section.title.length > 0 ? section.title : i || i}
         >
             {section.title && section.title.length > 0 ? (
-                <h4 className={activeStyles["section-title"]}>{section.title}</h4>
+                <h4 className={activeStyles["section-title"]} aria-label="section title">
+                    {section.title}
+                </h4>
             ) : null}
             {section.description && section.description.length > 0 ? (
-                <p className={activeStyles["section-description"]}>{section.description}</p>
+                <p className={activeStyles["section-description"]} aria-label="section description">
+                    {section.description}
+                </p>
             ) : null}
             {section.fields.map((field) => (
                 <div key={field.props.fieldName}>{field}</div>
@@ -66,13 +71,7 @@ function Basic({
     const [disabledButton, setDisabledButton]: [boolean, extendedTypes.Setter<boolean>] =
         useState(false);
 
-    let activeStyles = styles.plain;
-    switch (appearance) {
-        case "1":
-            activeStyles = styles.style1;
-            break;
-        default:
-    }
+    const activeStyles = getStyles(appearance);
 
     // warn of duplicate fieldName prop values in inputs
     useEffect(() => {
@@ -115,12 +114,11 @@ function Basic({
                 }),
             );
 
-            if (!valid && !enableButtonOnInvalidFields) setDisabledButton(true);
-            else if (disabledButton) setDisabledButton(false);
+            setDisabledButton(!valid && !enableButtonOnInvalidFields);
 
             return valid;
         },
-        [sections, enableButtonOnInvalidFields, disabledButton],
+        [sections, enableButtonOnInvalidFields],
     );
 
     // initialise & update currentFormData state
@@ -150,7 +148,10 @@ function Basic({
         >
             <h3 className={activeStyles["title"]}>{title}</h3>
             {requirementMessage ? (
-                <h4 className={activeStyles["requirement-message"]}>
+                <h4
+                    className={activeStyles["requirement-message"]}
+                    aria-label="requirement message"
+                >
                     All fields marked with <strong>*</strong> are <strong>required</strong>.
                 </h4>
             ) : null}
