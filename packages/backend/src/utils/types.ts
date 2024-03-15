@@ -16,3 +16,9 @@ interface SystemError extends Error {
 }
 
 export type { SystemError };
+
+interface ResponseError extends Error {
+    status: number;
+}
+
+export type { ResponseError };
