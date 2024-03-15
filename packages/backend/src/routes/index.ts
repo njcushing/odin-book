@@ -2,8 +2,12 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+const index = router.get("/", (req, res) => {
     res.send("");
 });
 
-export { router as index };
+const routes = {
+    index,
+};
+
+export default routes;

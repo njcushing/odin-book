@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import User from "@/models/user.js";
+import User from "@b/models/user";
 import * as Types from "./types";
 
 const validateCredentialsFromToken = async (payload: Types.Token) => {
@@ -15,7 +15,7 @@ const validateCredentialsFromToken = async (payload: Types.Token) => {
         // for an account tag + password login, both need to be verified
         user = await User.findOne({ accountTag }, { _id: 1, accountTag: 1, password: 1 }).exec();
         if (!user) return [false, null, "Incorrect account tag."];
-        const match = await bcrypt.compare(password, user.password);
+        const match = bcrypt.compare(password, user.password as string);
         if (!match) return [false, null, "Incorrect password."];
         user.password = password; // Ensure password returned is not the hashed version
     } else {
