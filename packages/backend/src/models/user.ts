@@ -37,7 +37,6 @@ const UserSchema = new Schema(
             type: String,
             trim: true,
             // Not including validator here because the password is hashed
-            required: [true, "'password' field required"],
         },
         admin: {
             type: Boolean,
