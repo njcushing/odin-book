@@ -3,15 +3,15 @@ type ReturnTypes = {
     message: string;
 };
 
-export const username = (value: string, messageType: "front" | "back"): ReturnTypes => {
+export const accountTag = (value: string, messageType: "front" | "back"): ReturnTypes => {
     const pattern = /^[a-zA-Z0-9]*$/;
     if (value.length === 0) {
         return {
             status: false,
             message:
                 messageType === "front"
-                    ? "Username must not be empty."
-                    : "'username' field (String) be at least 5 characters in length",
+                    ? "Account Tag must not be empty."
+                    : "'accountTag' field (String) be at least 5 characters in length",
         };
     }
     if (!value.match(pattern)) {
@@ -19,8 +19,8 @@ export const username = (value: string, messageType: "front" | "back"): ReturnTy
             status: false,
             message:
                 messageType === "front"
-                    ? "Username must only contain alphanumeric characters."
-                    : "'username' field (String) must only contain alphanumeric characters",
+                    ? "Account Tag must only contain alphanumeric characters."
+                    : "'accountTag' field (String) must only contain alphanumeric characters",
         };
     }
     if (value.length < 5) {
@@ -28,13 +28,14 @@ export const username = (value: string, messageType: "front" | "back"): ReturnTy
             status: false,
             message:
                 messageType === "front"
-                    ? "Username must be at least 5 characters in length."
-                    : "'username' field (String) must be at least 5 characters in length",
+                    ? "Account Tag must be at least 5 characters in length."
+                    : "'accountTag' field (String) must be at least 5 characters in length",
         };
     }
     return {
         status: true,
-        message: messageType === "front" ? "Valid Username." : "'username' field (String) is valid",
+        message:
+            messageType === "front" ? "Valid Account Tag." : "'accountTag' field (String) is valid",
     };
 };
 

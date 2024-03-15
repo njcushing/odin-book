@@ -5,17 +5,21 @@ const { Schema } = mongoose;
 
 const UserSchema = new Schema(
     {
-        username: {
+        accountTag: {
             type: String,
             trim: true,
             unique: true,
             validate: {
                 validator(value: string) {
-                    return validateUser.username(value, "back").status;
+                    return validateUser.accountTag(value, "back").status;
                 },
-                message: (props) => validateUser.username(props.value, "back").message,
+                message: (props) => validateUser.accountTag(props.value, "back").message,
             },
-            required: [true, "'username' field required"],
+            required: [true, "'accountTag' field required"],
+        },
+        githubId: {
+            type: String,
+            unique: true,
         },
         email: {
             type: String,
