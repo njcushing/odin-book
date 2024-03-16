@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import * as validateUser from "@shared/validation/user";
-import { string } from "prop-types";
 
 const { Schema } = mongoose;
 
