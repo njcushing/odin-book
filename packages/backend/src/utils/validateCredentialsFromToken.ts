@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import User from "@b/models/user";
+import User from "@/models/user";
 import * as Types from "./types";
 
 const validateCredentialsFromToken = async (payload: Types.Token) => {

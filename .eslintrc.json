@@ -56,11 +56,6 @@
     "import/resolver": {
       "typescript": {},
       "alias": {
-        "map": [
-          ["@", "./packages/frontend/src"],
-          ["@b", "./packages/backend/src"],
-          ["@shared", "./packages/shared/src"]
-        ],
         "extensions": [".ts", ".tsx"]
       }
     },

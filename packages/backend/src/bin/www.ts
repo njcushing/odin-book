@@ -2,8 +2,8 @@
 
 import debug from "debug";
 import http from "http";
-import app from "@b/app";
-import * as Types from "@b/utils/types";
+import app from "@/app";
+import * as Types from "@/utils/types";
 
 debug("odin-messaging-app:server");
 
