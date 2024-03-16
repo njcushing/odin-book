@@ -5,6 +5,7 @@
   "scripts": {
     "start:front": "vite ./packages/frontend",
     "build:front": "vite build ./packages/frontend",
+    "start:front:build": "vite ./packages/frontend/dist",
     "test:front": "vitest watch --root ./packages/frontend",
     "coverage:front": "vitest --root ./packages/frontend --coverage",
     "start:back": "node ./packages/backend/src/bin/www.ts",

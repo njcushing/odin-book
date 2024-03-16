@@ -1,0 +1,21 @@
+{
+  "extends": "../../.eslintrc.json",
+  "overrides": [{
+    "files": "**/*",
+    "settings": {
+      "import/resolver": {
+      "typescript": {},
+      "alias": {
+        "map": [
+          ["@", "./packages/backend/src"],
+          ["@shared", "./packages/shared/src"]
+        ],
+        "extensions": [".ts", ".tsx"]
+      }
+      },
+      "react": {
+      "version": "detect"
+      }
+    }
+  }]
+}

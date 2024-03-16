@@ -10,11 +10,11 @@ import logger from "morgan";
 import RateLimit from "express-rate-limit";
 import compression from "compression";
 import dotenv from "dotenv";
-import dbConfig from "@/utils/dbConfig";
 import routes from "@/routes";
+import mongoose from "mongoose";
+import dbConfig from "@/utils/dbConfig";
 import sendResponse from "@/utils/sendResponse";
 import User from "@/models/user";
-import mongoose from "mongoose";
 import validateCredentialsFromToken from "@/utils/validateCredentialsFromToken";
 import * as Types from "@/utils/types";
 

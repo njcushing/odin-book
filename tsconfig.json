@@ -6,11 +6,6 @@
       "dom.iterable",
       "esnext"
     ],
-    "paths": {
-        "@/*": ["./packages/frontend/src/*"],
-        "@b/*": ["./packages/backend/src/*"],
-        "@shared/*": ["./packages/shared/src/*"],
-    },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
