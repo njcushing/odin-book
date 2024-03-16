@@ -1,6 +1,7 @@
 {
   "name": "odin-book",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "start:front": "vite ./packages/frontend",
     "build:front": "vite build ./packages/frontend",
