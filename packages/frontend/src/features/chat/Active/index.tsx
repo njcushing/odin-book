@@ -51,7 +51,13 @@ function Active() {
 
     const messageBox = (
         <div className={styles["message-box-container"]} key={0}>
-            <Inputs.Message placeholder="Type your message..." />
+            <Inputs.Message
+                textFieldId="message-text"
+                textFieldName="messageText"
+                placeholder="Type your message..."
+                imageFieldId="message-images"
+                imageFieldName="messageImages"
+            />
         </div>
     );
 

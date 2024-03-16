@@ -22,7 +22,7 @@ export function validate<T>(
             : { status: true, message: null };
     if (required) {
         if (!fieldValue) validValue.status = false;
-        if (fieldValue === "") validValue.status = false;
+        if (typeof fieldValue === "string" && fieldValue === "") validValue.status = false;
     }
     return validValue;
 }

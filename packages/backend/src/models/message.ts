@@ -17,7 +17,8 @@ const MessageSchema = new Schema(
                 validator(value: string) {
                     return validateMessage.text(value, "back").status;
                 },
-                message: (props) => validateMessage.status(props.value, "back").message,
+                message: (props: { value: string }) =>
+                    validateMessage.text(props.value, "back").message,
             },
         },
         images: {

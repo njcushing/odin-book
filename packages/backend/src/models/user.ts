@@ -13,7 +13,8 @@ const UserSchema = new Schema(
                 validator(value: string) {
                     return validateUser.accountTag(value, "back").status;
                 },
-                message: (props) => validateUser.accountTag(props.value, "back").message,
+                message: (props: { value: string }) =>
+                    validateUser.accountTag(props.value, "back").message,
             },
             required: [true, "'accountTag' field required"],
         },
@@ -31,7 +32,8 @@ const UserSchema = new Schema(
                 validator(value: string) {
                     return validateUser.email(value, "back").status;
                 },
-                message: (props) => validateUser.email(props.value, "back").message,
+                message: (props: { value: string }) =>
+                    validateUser.email(props.value, "back").message,
             },
             required: [true, "'email' field required"],
         },
@@ -80,7 +82,8 @@ const UserSchema = new Schema(
                     validator(value: string) {
                         return validateUser.displayName(value, "back").status;
                     },
-                    message: (props) => validateUser.displayName(props.value, "back").message,
+                    message: (props: { value: string }) =>
+                        validateUser.displayName(props.value, "back").message,
                 },
                 default: "",
             },
@@ -91,7 +94,8 @@ const UserSchema = new Schema(
                     validator(value: string) {
                         return validateUser.bio(value, "back").status;
                     },
-                    message: (props) => validateUser.bio(props.value, "back").message,
+                    message: (props: { value: string }) =>
+                        validateUser.bio(props.value, "back").message,
                 },
                 default: "",
             },

@@ -45,7 +45,7 @@ function onError(error: Types.SystemError) {
 // Event listener for HTTP server "listening" event
 function onListening() {
     const addr = server.address();
-    const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
+    const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr && addr.port}`;
     debug(`Listening on ${bind}`);
 }
 

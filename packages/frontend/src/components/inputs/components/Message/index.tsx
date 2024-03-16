@@ -18,7 +18,7 @@ export type MessageTypes = {
     textFieldId: string;
     textFieldName: string;
     placeholder?: string;
-    initialImages: Images;
+    initialImages?: Images;
     imageFieldId: string;
     imageFieldName: string;
     textValidator?: validation.Validator<string>;

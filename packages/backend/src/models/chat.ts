@@ -33,7 +33,8 @@ const ChatSchema = new Schema(
                 validator(value: string) {
                     return validateChat.name(value, "back").status;
                 },
-                message: (props) => validateChat.name(props.value, "back").message,
+                message: (props: { value: string }) =>
+                    validateChat.name(props.value, "back").message,
             },
             default: "",
         },

@@ -1,11 +1,12 @@
 import { Response } from "express";
+import * as Types from "./types";
 
 const sendResponse = (
     res: Response,
     status: number = 500,
     message: string = "",
     data = null,
-    err: Error | null = null,
+    err: Types.ResponseError | null = null,
 ) => {
     if (process.env.NODE_ENV === "development") {
         let statusValue = 500;

@@ -201,7 +201,13 @@ function Post({
                 </div>
                 {replying ? (
                     <div className={styles["row-four"]}>
-                        <Inputs.Message placeholder="Type your reply..." />
+                        <Inputs.Message
+                            textFieldId="reply-text"
+                            textFieldName="replyText"
+                            placeholder="Type your reply..."
+                            imageFieldId="reply-images"
+                            imageFieldName="replyImages"
+                        />
                     </div>
                 ) : null}
             </div>

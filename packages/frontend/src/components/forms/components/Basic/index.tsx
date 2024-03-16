@@ -66,10 +66,8 @@ function Basic({
     enableButtonOnInvalidFields = false,
     appearance = "1",
 }: BasicTypes): React.ReactElement {
-    const [requirementMessage, setRequirementMessage]: [boolean, extendedTypes.Setter<boolean>] =
-        useState(false);
-    const [disabledButton, setDisabledButton]: [boolean, extendedTypes.Setter<boolean>] =
-        useState(false);
+    const [requirementMessage, setRequirementMessage] = useState<boolean>(false);
+    const [disabledButton, setDisabledButton] = useState<boolean>(false);
 
     const activeStyles = getStyles(appearance);
 

@@ -11,9 +11,9 @@ type HeaderTypes = {
 };
 
 function Header({ name = "Chat Title", onEditNameHandler = null }: HeaderTypes) {
-    const [editingName, setEditingName]: [boolean, extendedTypes.Setter<boolean>] = useState(false);
-    const [chatName, setChatName]: [string, extendedTypes.Setter<string>] = useState(name);
-    const [nameStored, setNameStored]: [string, extendedTypes.Setter<string>] = useState(name);
+    const [editingName, setEditingName] = useState<boolean>(false);
+    const [chatName, setChatName] = useState<string>(name);
+    const [nameStored, setNameStored] = useState<string>(name);
 
     useEffect(() => {
         if (!editingName && onEditNameHandler && chatName !== nameStored) {

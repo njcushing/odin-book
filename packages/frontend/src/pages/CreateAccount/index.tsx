@@ -17,7 +17,7 @@ function CreateAccount() {
                                     labelText="Username"
                                     fieldId="username"
                                     fieldName="username"
-                                    validator={{ func: validation.user.username }}
+                                    validator={{ func: validation.user.accountTag }}
                                     required
                                     key={0}
                                 />,
