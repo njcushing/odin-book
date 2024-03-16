@@ -6,6 +6,10 @@
     "build:front": "vite build ./packages/frontend",
     "test:front": "vitest watch --root ./packages/frontend",
     "coverage:front": "vitest --root ./packages/frontend --coverage",
+    "start:back": "node ./packages/backend/src/bin/www.ts",
+    "start:back:dev": "nodemon ./packages/backend/src/bin/www.ts",
+    "test:back": "vitest watch --root ./packages/backend",
+    "coverage:back": "vitest run --root ./packages/backend --coverage",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
