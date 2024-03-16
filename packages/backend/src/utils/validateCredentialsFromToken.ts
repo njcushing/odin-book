@@ -4,13 +4,26 @@ import * as Types from "./types";
 
 const validateCredentialsFromToken = async (payload: Types.Token) => {
     const { accountTag, password } = payload;
-    const { githubId } = payload.providerIds || { githubId: null };
+    const providedBy = payload.providedBy || { provider: null, providerId: null };
 
     let user;
-    if (githubId) {
-        // for a github login, only the githubId needs to be verified
-        user = await User.findOne({ githubId }, { _id: 1, githubId: 1 }).exec();
-        if (!user) return [false, null, "Incorrect githubId."];
+    if (providedBy) {
+        // for a provider login, only the providerId needs to be verified
+        const { provider, providerId } = providedBy;
+        if (!provider || provider.length === 0) {
+            return [false, null, "Provider name not specified."];
+        }
+        if (!providerId || provider.length === 0) {
+            return [false, null, "Provider id not specified."];
+        }
+        let error;
+        user = await User.findOne({ providers: { $elemMatch: { provider, providerId } } }).catch(
+            (err) => {
+                error = [false, null, `${err.message}`];
+            },
+        );
+        if (error) return error;
+        if (!user) return [false, null, `User with provided credentials not found.`];
     } else if (accountTag && password) {
         // for an account tag + password login, both need to be verified
         user = await User.findOne({ accountTag }, { _id: 1, accountTag: 1, password: 1 }).exec();
