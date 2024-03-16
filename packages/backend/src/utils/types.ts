@@ -1,7 +1,7 @@
 export type Token = {
     accountTag?: string;
     password?: string;
-    providerIds?: { githubId: string };
+    providedBy?: { provider: string; providerId: string };
 };
 
 interface SystemError extends Error {
