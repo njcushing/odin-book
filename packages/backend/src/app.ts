@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import path from "path";
 import logger from "morgan";
 import RateLimit from "express-rate-limit";
+import helmet from "helmet";
 import compression from "compression";
 import dotenv from "dotenv";
 import routes from "@/routes";
@@ -29,8 +30,7 @@ const limiter = RateLimit({
 });
 app.use(limiter);
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-app.use(require("helmet"));
+app.use(helmet());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
