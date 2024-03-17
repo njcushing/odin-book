@@ -1,9 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./dist",
     "paths": {
-        "@/*": ["./src/*"],
+      "@shared/*": ["./src/*"],
     },
+    "noEmit": false,
   },
   "include": ["src", "*.js"]
 }

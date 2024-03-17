@@ -7,7 +7,7 @@
       "typescript": {},
       "alias": {
         "map": [
-          ["@", "./packages/shared/src"]
+          ["@shared", "./packages/shared/src"]
         ],
         "extensions": [".ts", ".tsx"]
       }
