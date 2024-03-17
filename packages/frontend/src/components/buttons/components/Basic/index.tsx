@@ -8,7 +8,16 @@ export type BasicTypes = {
     onClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     disabled?: boolean;
     allowDefaultEventHandling?: boolean;
-    palette?: "primary" | "secondary" | "bare" | "red" | "orange" | "gold" | "green" | "blue";
+    palette?:
+        | "primary"
+        | "secondary"
+        | "bare"
+        | "red"
+        | "orange"
+        | "gold"
+        | "green"
+        | "blue"
+        | "black";
     animation?: "rigid" | "squishy";
     style?: {
         shape?: "sharp" | "rounded";
