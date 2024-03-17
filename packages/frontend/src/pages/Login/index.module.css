@@ -20,10 +20,32 @@
     max-width: 460px;
 }
 
+.alternate-login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.alternate-login-message,
 .create-account-message {
     color: var(--text-primary);
     font-family: Gabarito;
     font-size: 1.1rem;
+}
+
+.alternate-login-options {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+
+    width: 100%;
+}
+
+.option-icon, .option-icon svg {
+    width: 2.4rem;
+    height: 2.4rem;
 }
 
 .create-account-message > strong {
