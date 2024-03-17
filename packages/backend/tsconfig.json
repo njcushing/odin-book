@@ -1,10 +1,22 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "rootDir": "../",
+    "outDir": "./dist",
     "paths": {
-        "@/*": ["./src/*"],
-        "@shared/*": ["../shared/src/*"],
+      "@/*": ["./src/*"],
+      "@shared/*": ["../shared/src/*"],
     },
+    "noEmit": false,
   },
-  "include": ["src", "*.js"]
+  "tsc-alias": {
+    "verbose": false,
+    "resolveFullPaths": true,
+    "fileExtensions": {
+      "inputGlob": "{js,jsx,mjs}",
+      "outputCheck": ["js", "json", "jsx", "mjs"]
+    }
+  },
+  "include": ["../backend/src", "../shared/src"],
+  "exclude": ["**/*.test.*"]
 }
