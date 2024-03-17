@@ -8,9 +8,9 @@
     "start:front:built": "vite ./packages/frontend/dist",
     "test:front": "vitest watch --root ./packages/frontend",
     "coverage:front": "vitest --root ./packages/frontend --coverage",
-    "start:back": "node ./packages/backend/dist/backend/src/bin/www.js",
-    "start:back:dev": "nodemon ./packages/backend/dist/backend/src/bin/www.js",
-    "build:back": "tsc --project ./packages/backend/tsconfig.json && tsc-alias -p ./packages/backend/tsconfig.json",
+    "start:back": "tsc-watch -p ./packages/backend/tsconfig.json --onSuccess 'npm run start:back:resolveandrun'",
+    "start:back:resolveandrun": "tsc-alias -p ./packages/backend/tsconfig.json && node ./packages/backend/dist/backend/src/bin/www.js",
+    "build:back": "tsc --project ./packages/backend/tsconfig.json --watch && tsc-alias -p ./packages/backend/tsconfig.json",
     "test:back": "vitest watch --root ./packages/backend",
     "coverage:back": "vitest run --root ./packages/backend --coverage",
     "lint": "eslint .",
@@ -109,6 +109,7 @@
     "jsdom": "^24.0.0",
     "prettier": "^3.2.4",
     "tsc-alias": "^1.8.8",
+    "tsc-watch": "^6.0.4",
     "vitest": "^1.2.2"
   }
 }
