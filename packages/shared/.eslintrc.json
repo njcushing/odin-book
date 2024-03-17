@@ -4,16 +4,16 @@
     "files": "**/*",
     "settings": {
       "import/resolver": {
-      "typescript": {},
-      "alias": {
-        "map": [
-          ["@shared", "./packages/shared/src"]
-        ],
-        "extensions": [".ts", ".tsx"]
-      }
+        "typescript": {},
+        "alias": {
+          "map": [
+            ["@shared", "./packages/shared/src"]
+          ],
+          "extensions": [".ts", ".tsx"]
+        }
       },
       "react": {
-      "version": "detect"
+        "version": "detect"
       }
     }
   }]

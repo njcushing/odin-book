@@ -4,17 +4,17 @@
     "files": "**/*",
     "settings": {
       "import/resolver": {
-      "typescript": {},
-      "alias": {
-        "map": [
-          ["@", "./packages/frontend/src"],
-          ["@shared", "./packages/shared/src"]
-        ],
-        "extensions": [".ts", ".tsx"]
-      }
+        "typescript": {},
+        "alias": {
+          "map": [
+            ["@", "./packages/frontend/src"],
+            ["@shared", "./packages/shared/src"]
+          ],
+          "extensions": [".ts", ".tsx"]
+        }
       },
       "react": {
-      "version": "detect"
+        "version": "detect"
       }
     }
   }]
