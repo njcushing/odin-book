@@ -5,11 +5,12 @@
   "scripts": {
     "start:front": "vite ./packages/frontend",
     "build:front": "vite build ./packages/frontend",
-    "start:front:build": "vite ./packages/frontend/dist",
+    "start:front:built": "vite ./packages/frontend/dist",
     "test:front": "vitest watch --root ./packages/frontend",
     "coverage:front": "vitest --root ./packages/frontend --coverage",
-    "start:back": "node ./packages/backend/src/bin/www.ts",
-    "start:back:dev": "nodemon ./packages/backend/src/bin/www.ts",
+    "start:back": "node ./packages/backend/dist/backend/src/bin/www.js",
+    "start:back:dev": "nodemon ./packages/backend/dist/backend/src/bin/www.js",
+    "build:back": "tsc --project ./packages/backend/tsconfig.json && tsc-alias -p ./packages/backend/tsconfig.json",
     "test:back": "vitest watch --root ./packages/backend",
     "coverage:back": "vitest run --root ./packages/backend --coverage",
     "lint": "eslint .",
@@ -107,6 +108,7 @@
     "jest": "^29.7.0",
     "jsdom": "^24.0.0",
     "prettier": "^3.2.4",
+    "tsc-alias": "^1.8.8",
     "vitest": "^1.2.2"
   }
 }
