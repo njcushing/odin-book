@@ -1,7 +1,6 @@
 import Forms from "@/components/forms";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
-import { Link } from "react-router-dom";
 import styles from "./index.module.css";
 
 function Login() {
@@ -45,7 +44,7 @@ function Login() {
                 <div className={styles["alternate-login-container"]}>
                     <p className={styles["alternate-login-message"]}>Or, log in another way</p>
                     <div className={styles["alternate-login-options"]}>
-                        <Link to="/auth/github">
+                        <a href="http://localhost:3000/auth/github">
                             <div className={styles["option-icon"]}>
                                 <svg fill="black" viewBox="0 0 128 128" aria-labelledby="title">
                                     <g>
@@ -55,7 +54,7 @@ function Login() {
                                     <desc>GitHub</desc>
                                 </svg>
                             </div>
-                        </Link>
+                        </a>
                     </div>
                 </div>
                 <p className={styles["create-account-message"]}>

@@ -41,9 +41,9 @@ passport.use(
     "github",
     new GitHubStrategy(
         {
-            clientID: process.env.GITHUB_CLIENT_ID as string,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-            callbackURL: process.env.GITHUB_CALLBACK_URL as string,
+            clientID: process.env.GITHUB_CLIENT_ID || "",
+            clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+            callbackURL: process.env.GITHUB_CALLBACK_URL || "",
         },
         async (
             accessToken: string | undefined,
@@ -115,10 +115,11 @@ const getCorsOpts = (
     }
     callback(null, corsOpts);
 };
+app.use("*", cors(getCorsOpts));
 
 // Routes
-app.use("*", cors(getCorsOpts));
 app.use("/", routes.index);
+app.use("/auth", routes.auth);
 
 // Catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {
