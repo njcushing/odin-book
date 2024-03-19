@@ -55,7 +55,7 @@ passport.use(
             const user = await User.findOne({
                 providers: { $elemMatch: { provider: "github", providerId: profile.id } },
             }).catch((err) => {
-                error = [false, null, `${err.message}`];
+                error = err;
             });
             if (error) return done(error, null);
             if (!user) {
