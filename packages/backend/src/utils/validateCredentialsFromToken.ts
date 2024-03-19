@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import User from "@/models/user";
-import * as Types from "./types";
+import { Params as TokenParams } from "./generateToken";
 
-const validateCredentialsFromToken = async (payload: Types.Token) => {
+const validateCredentialsFromToken = async (payload: TokenParams) => {
     const { accountTag, password } = payload;
     const providedBy = payload.providedBy || { provider: null, providerId: null };
 

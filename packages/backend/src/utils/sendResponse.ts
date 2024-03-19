@@ -5,7 +5,7 @@ const sendResponse = (
     res: Response,
     status: number = 500,
     message: string = "",
-    data = null,
+    data: object | null = null,
     err: Types.ResponseError | null = null,
 ) => {
     if (process.env.NODE_ENV === "development") {

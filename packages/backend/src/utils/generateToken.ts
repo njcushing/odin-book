@@ -1,12 +1,17 @@
 import jwt from "jsonwebtoken";
-import * as Types from "./types";
 
-const generateToken = async (fields: Types.Token) => {
+export type Params = {
+    accountTag?: string;
+    password?: string;
+    providedBy?: { provider: string; providerId: string };
+};
+
+const generateToken = async (fields: Params) => {
     return new Promise((resolve, reject) => {
         try {
             jwt.sign(
                 { ...fields },
-                process.env.AUTH_SECRET_KEY as string,
+                process.env.AUTH_CLIENT_SECRET as string,
                 { expiresIn: "7d" },
                 (err, token) => {
                     resolve(err ? null : `Bearer ${token}`);
