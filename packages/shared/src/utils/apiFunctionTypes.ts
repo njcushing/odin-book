@@ -13,7 +13,7 @@ export type GET<T> = (
 export type POST = (
     data?: {
         params?: { [key: string | number]: unknown };
-        json?: JSON;
+        body?: object;
     },
     abortController?: AbortController | null,
     ...args: unknown[]
