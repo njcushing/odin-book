@@ -16,7 +16,7 @@ export function GET<T>(
     React.Dispatch<React.SetStateAction<boolean>>,
 ] {
     const [params, setParams] = useState<Parameters<apiFunctionTypes.GET<T>> | undefined>(
-        undefined,
+        functionInfo.parameters,
     );
     const [value, setValue] = useState<T | null>(initialValue);
     const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
@@ -72,7 +72,9 @@ export function POST(
     React.Dispatch<React.SetStateAction<Parameters<apiFunctionTypes.POST> | undefined>>,
     React.Dispatch<React.SetStateAction<boolean>>,
 ] {
-    const [params, setParams] = useState<Parameters<apiFunctionTypes.POST> | undefined>(undefined);
+    const [params, setParams] = useState<Parameters<apiFunctionTypes.POST> | undefined>(
+        functionInfo.parameters,
+    );
     const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
         ReturnType<apiFunctionTypes.POST>
     > | null>(null);
