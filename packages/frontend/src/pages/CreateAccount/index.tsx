@@ -1,11 +1,24 @@
+import { useState, useEffect } from "react";
 import Forms from "@/components/forms";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
 import validation from "@shared/validation";
+import * as useAsync from "@/hooks/useAsync";
 import styles from "./index.module.css";
 import createAccountPOST from "./utils/createAccount";
 
 function CreateAccount() {
+    const [response, setParams, setAttempting] = useAsync.POST({ func: createAccountPOST }, false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
+    if (response && response.status < 400) window.location.assign("/");
+
+    useEffect(() => {
+        if (response && response.status >= 400 && response.message && response.message.length > 0) {
+            setErrorMessage(response.message);
+        }
+    }, [response]);
+
     return (
         <div className={styles["wrapper"]}>
             <div className={styles["container"]}>
@@ -62,10 +75,9 @@ function CreateAccount() {
                                 password: string;
                                 confirmPassword: string;
                             };
-                            const apiResponse = await createAccountPOST({ body: formFields });
-                            if (apiResponse.status <= 400) {
-                                window.location.assign("/");
-                            }
+                            setErrorMessage("");
+                            setParams([{ body: formFields }, null]);
+                            setAttempting(true);
                         }
                     }}
                     button={{
@@ -74,6 +86,9 @@ function CreateAccount() {
                     }}
                     key={0}
                 />
+                {errorMessage.length > 0 ? (
+                    <p className={styles["error-message"]}>{errorMessage}</p>
+                ) : null}
                 <Buttons.Basic
                     text="Return to Login"
                     onClickHandler={() => {
