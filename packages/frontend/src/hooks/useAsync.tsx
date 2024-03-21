@@ -30,7 +30,9 @@ export function GET<T>(
 
     useEffect(() => {
         if (attempting) {
-            if (abortController) abortController.abort();
+            if (abortController) {
+                abortController.abort({ status: 400, message: "Client cancelled request" });
+            }
             const abortControllerNew = new AbortController();
             setAbortController(abortControllerNew);
             (async () => {
@@ -45,12 +47,14 @@ export function GET<T>(
                 );
                 setResponse(asyncResponse);
                 setAbortController(null);
-                setAttempting(false);
             })();
+            setAttempting(false);
         }
 
         return () => {
-            if (abortController) abortController.abort();
+            if (abortController) {
+                abortController.abort({ status: 400, message: "Client cancelled request" });
+            }
         };
     }, [params, abortController, attempting, functionInfo]);
 
@@ -85,7 +89,9 @@ export function POST(
 
     useEffect(() => {
         if (attempting) {
-            if (abortController) abortController.abort();
+            if (abortController) {
+                abortController.abort({ status: 400, message: "Client cancelled request" });
+            }
             const abortControllerNew = new AbortController();
             setAbortController(abortControllerNew);
             (async () => {
@@ -100,12 +106,14 @@ export function POST(
                 );
                 setResponse(asyncResponse);
                 setAbortController(null);
-                setAttempting(false);
             })();
+            setAttempting(false);
         }
 
         return () => {
-            if (abortController) abortController.abort();
+            if (abortController) {
+                abortController.abort({ status: 400, message: "Client cancelled request" });
+            }
         };
     }, [params, abortController, attempting, functionInfo]);
 
