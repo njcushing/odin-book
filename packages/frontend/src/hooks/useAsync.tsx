@@ -3,14 +3,12 @@ import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 
 export function GET<T>(
-    initialValue: T,
     functionInfo: {
         func: apiFunctionTypes.GET<T>;
         parameters?: Parameters<apiFunctionTypes.GET<T>>;
     },
     attemptOnMount?: boolean,
 ): [
-    T | null,
     extendedTypes.UnwrapPromise<ReturnType<apiFunctionTypes.GET<T>>> | null,
     React.Dispatch<React.SetStateAction<Parameters<apiFunctionTypes.GET<T>> | undefined>>,
     React.Dispatch<React.SetStateAction<boolean>>,
@@ -18,7 +16,6 @@ export function GET<T>(
     const [params, setParams] = useState<Parameters<apiFunctionTypes.GET<T>> | undefined>(
         functionInfo.parameters,
     );
-    const [value, setValue] = useState<T | null>(initialValue);
     const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
         ReturnType<apiFunctionTypes.GET<T>>
     > | null>(null);
@@ -46,7 +43,6 @@ export function GET<T>(
                     abortController,
                     args,
                 );
-                setValue(asyncResponse.data || null);
                 setResponse(asyncResponse);
                 setAbortController(null);
                 setAttempting(false);
@@ -58,7 +54,7 @@ export function GET<T>(
         };
     }, [params, abortController, attempting, functionInfo]);
 
-    return [value, response, setParams, setAttempting];
+    return [response, setParams, setAttempting];
 }
 
 export function POST(

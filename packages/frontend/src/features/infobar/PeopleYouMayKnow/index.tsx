@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import User from "@/components/user";
 import Buttons from "@/components/buttons";
 import * as modelTypes from "@/utils/modelTypes";
@@ -6,7 +7,13 @@ import getRelatedUsers from "./utils/getRelatedUsers";
 import styles from "./index.module.css";
 
 function PeopleYouMayKnow() {
-    const [users] = useAsync.GET<modelTypes.User[]>([], { func: getRelatedUsers }, true);
+    const [users, setUsers] = useState<modelTypes.User[]>([]);
+    const [response] = useAsync.GET<modelTypes.User[]>({ func: getRelatedUsers }, true);
+
+    useEffect(() => {
+        const newUsers = response ? response.data : [];
+        setUsers(newUsers || []);
+    }, [response]);
 
     return (
         <div className={styles["container"]}>
