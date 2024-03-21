@@ -3,6 +3,7 @@ import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
 import validation from "@shared/validation";
 import styles from "./index.module.css";
+import createAccountPOST from "./utils/createAccount";
 
 function CreateAccount() {
     return (
@@ -14,9 +15,9 @@ function CreateAccount() {
                         {
                             fields: [
                                 <Inputs.Text
-                                    labelText="Username"
-                                    fieldId="username"
-                                    fieldName="username"
+                                    labelText="Account Tag"
+                                    fieldId="accountTag"
+                                    fieldName="accountTag"
                                     validator={{ func: validation.user.accountTag }}
                                     required
                                     key={0}
@@ -51,11 +52,20 @@ function CreateAccount() {
                             ],
                         },
                     ]}
-                    onSubmitHandler={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    onSubmitHandler={async (e: React.MouseEvent<HTMLButtonElement>) => {
                         const target = e.target as HTMLButtonElement;
                         if (target.form) {
                             const formData = new FormData(target.form);
-                            const formFields = Object.fromEntries(formData);
+                            const formFields = Object.fromEntries(formData) as {
+                                accountTag: string;
+                                email: string;
+                                password: string;
+                                confirmPassword: string;
+                            };
+                            const apiResponse = await createAccountPOST({ body: formFields });
+                            if (apiResponse.status <= 400) {
+                                window.location.assign("/");
+                            }
                         }
                     }}
                     button={{
