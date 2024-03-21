@@ -18,12 +18,7 @@ const UserSchema = new Schema(
             },
             required: [true, "'accountTag' field required"],
         },
-        providers: [
-            {
-                provider: { type: String, required: true },
-                providerId: { type: String, required: true },
-            },
-        ],
+        githubId: { type: String, unique: true },
         email: {
             type: String,
             trim: true,
@@ -117,7 +112,5 @@ const UserSchema = new Schema(
 
 UserSchema.set("toObject", { virtuals: true });
 UserSchema.set("toJSON", { virtuals: true });
-
-UserSchema.index({ "providers.provider": 1, "providers.providerId": 1 }, { unique: true });
 
 export default mongoose.model("User", UserSchema);

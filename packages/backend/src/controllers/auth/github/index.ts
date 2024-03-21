@@ -14,7 +14,7 @@ export const callback = [
             { session: false },
             async (
                 err: Types.ResponseError | null,
-                user: { providers: { provider: string; providerId: string }[] } | null,
+                user: { githubId: string } | null,
                 info?: { message?: string },
             ) => {
                 if (err) {
@@ -27,8 +27,7 @@ export const callback = [
                     );
                 }
                 if (user) {
-                    const provider = user.providers.find((prov) => prov.providerId === "github");
-                    const token = await generateToken({ providedBy: provider });
+                    const token = await generateToken({ githubId: user.githubId });
                     return sendResponse(res, 200, "Successful login with GitHub", { token });
                 }
                 return sendResponse(res, 500, "Something went wrong", null);

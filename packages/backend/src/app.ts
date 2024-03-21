@@ -52,16 +52,14 @@ passport.use(
             done: (err: Error | null, user: object | null, info?: { message?: string }) => void,
         ) => {
             let error;
-            const user = await User.findOne({
-                providers: { $elemMatch: { provider: "github", providerId: profile.id } },
-            }).catch((err) => {
+            const user = await User.findOne({ githubId: profile.id }).catch((err) => {
                 error = err;
             });
             if (error) return done(error, null);
             if (!user) {
                 const newUser = new User({
                     accountTag: new mongoose.Types.ObjectId(),
-                    providers: [{ provider: "github", providerId: profile.id }],
+                    githubId: profile.id,
                 });
                 if (newUser) return done(null, newUser, { message: "New account created." });
                 return done(new Error("Could not create new user."), null);

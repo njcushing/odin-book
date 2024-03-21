@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 export type Params = {
     accountTag?: string;
     password?: string;
-    providedBy?: { provider: string; providerId: string };
+    githubId?: string;
 };
 
 const generateToken = async (fields: Params) => {
