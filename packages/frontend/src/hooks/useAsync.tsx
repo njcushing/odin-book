@@ -37,10 +37,10 @@ export function GET<T>(
             setAbortController(abortControllerNew);
             (async () => {
                 let data = {};
+                let redundantAbortController;
                 let args;
-                if (params && "data" in params)
-                    data = params.data as Parameters<apiFunctionTypes.GET<T>>[0];
-                if (params && "args" in params) args = params.args;
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                if (params) [data, redundantAbortController, ...args] = params;
                 const asyncResponse = await functionInfo.func(data, abortController, args);
                 setResponse(asyncResponse);
                 setAbortController(null);
@@ -93,10 +93,10 @@ export function POST(
             setAbortController(abortControllerNew);
             (async () => {
                 let data = {};
+                let redundantAbortController;
                 let args;
-                if (params && "data" in params)
-                    data = params.data as Parameters<apiFunctionTypes.POST>[0];
-                if (params && "args" in params) args = params.args;
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                if (params) [data, redundantAbortController, ...args] = params;
                 const asyncResponse = await functionInfo.func(data, abortController, args);
                 setResponse(asyncResponse);
                 setAbortController(null);
