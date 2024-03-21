@@ -1,16 +1,10 @@
+import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
-export type Types = (
-    data: {
-        body: { accountTag: string; email: string; password: string; confirmPassword: string };
-    },
-    abortController?: AbortController | null,
-) => Promise<{
-    status: number;
-    message: string | null;
-}>;
+const createAccount: apiFunctionTypes.POST = async (data, abortController = null) => {
+    let body;
+    if (data && data.body) body = data.body;
 
-const createAccount: Types = async (data, abortController) => {
     const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/user/create-account`, {
         signal: abortController ? abortController.signal : null,
         method: "POST",
@@ -18,7 +12,7 @@ const createAccount: Types = async (data, abortController) => {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(data.body),
+        body: JSON.stringify(body),
     })
         .then(async (response) => {
             const responseJSON = await response.json();
