@@ -5,7 +5,7 @@ export type GET<T> = (
     abortController?: AbortController | null,
     ...args: unknown[]
 ) => Promise<{
-    status: boolean;
+    status: number;
     message: string | null;
     data: T | null;
 }>;
@@ -18,6 +18,6 @@ export type POST = (
     abortController?: AbortController | null,
     ...args: unknown[]
 ) => Promise<{
-    status: boolean;
+    status: number;
     message: string | null;
 }>;
