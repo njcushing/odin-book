@@ -1,8 +1,8 @@
 export type GET<T> = (
-    data?: {
+    data: {
         params?: { [key: string | number]: unknown };
     },
-    abortController?: AbortController | null,
+    abortController: AbortController | null,
     ...args: unknown[]
 ) => Promise<{
     status: number;
@@ -11,11 +11,11 @@ export type GET<T> = (
 }>;
 
 export type POST = (
-    data?: {
+    data: {
         params?: { [key: string | number]: unknown };
         body?: object;
     },
-    abortController?: AbortController | null,
+    abortController: AbortController | null,
     ...args: unknown[]
 ) => Promise<{
     status: number;

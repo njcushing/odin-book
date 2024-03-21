@@ -36,15 +36,12 @@ export function GET<T>(
             const abortControllerNew = new AbortController();
             setAbortController(abortControllerNew);
             (async () => {
-                let data;
+                let data = {};
                 let args;
-                if (params && "data" in params) data = params.data;
+                if (params && "data" in params)
+                    data = params.data as Parameters<apiFunctionTypes.GET<T>>[0];
                 if (params && "args" in params) args = params.args;
-                const asyncResponse = await functionInfo.func(
-                    data || undefined,
-                    abortController,
-                    args,
-                );
+                const asyncResponse = await functionInfo.func(data, abortController, args);
                 setResponse(asyncResponse);
                 setAbortController(null);
             })();
@@ -95,15 +92,12 @@ export function POST(
             const abortControllerNew = new AbortController();
             setAbortController(abortControllerNew);
             (async () => {
-                let data;
+                let data = {};
                 let args;
-                if (params && "data" in params) data = params.data;
+                if (params && "data" in params)
+                    data = params.data as Parameters<apiFunctionTypes.POST>[0];
                 if (params && "args" in params) args = params.args;
-                const asyncResponse = await functionInfo.func(
-                    data || undefined,
-                    abortController,
-                    args,
-                );
+                const asyncResponse = await functionInfo.func(data, abortController, args);
                 setResponse(asyncResponse);
                 setAbortController(null);
             })();
