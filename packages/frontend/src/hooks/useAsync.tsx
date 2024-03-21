@@ -19,9 +19,7 @@ export function GET<T>(
     const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
         ReturnType<apiFunctionTypes.GET<T>>
     > | null>(null);
-    const [abortController, setAbortController] = useState<AbortController | null>(
-        new AbortController(),
-    );
+    const [abortController, setAbortController] = useState<AbortController | null>(null);
     const [attempting, setAttempting] = useState<boolean>(false);
 
     useEffect(() => {
@@ -75,9 +73,7 @@ export function POST(
     const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
         ReturnType<apiFunctionTypes.POST>
     > | null>(null);
-    const [abortController, setAbortController] = useState<AbortController | null>(
-        new AbortController(),
-    );
+    const [abortController, setAbortController] = useState<AbortController | null>(null);
     const [attempting, setAttempting] = useState<boolean>(false);
 
     useEffect(() => {
