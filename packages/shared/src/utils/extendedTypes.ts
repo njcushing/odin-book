@@ -49,3 +49,5 @@ export type MongoDBObjectId =
     | mongoose.mongo.BSON.ObjectId
     | mongoose.mongo.BSON.ObjectIdLike
     | Uint8Array;
+
+export type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
