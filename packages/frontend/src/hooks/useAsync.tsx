@@ -12,8 +12,12 @@ export function GET<T>(
 ): [
     T | null,
     extendedTypes.UnwrapPromise<ReturnType<apiFunctionTypes.GET<T>>> | null,
+    React.Dispatch<React.SetStateAction<Parameters<apiFunctionTypes.GET<T>> | undefined>>,
     React.Dispatch<React.SetStateAction<boolean>>,
 ] {
+    const [params, setParams] = useState<Parameters<apiFunctionTypes.GET<T>> | undefined>(
+        undefined,
+    );
     const [value, setValue] = useState<T | null>(initialValue);
     const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
         ReturnType<apiFunctionTypes.GET<T>>
@@ -33,7 +37,6 @@ export function GET<T>(
             const abortControllerNew = new AbortController();
             setAbortController(abortControllerNew);
             (async () => {
-                const params = functionInfo.parameters;
                 let data;
                 let args;
                 if (params && "data" in params) data = params.data;
@@ -53,9 +56,9 @@ export function GET<T>(
         return () => {
             if (abortController) abortController.abort();
         };
-    }, [abortController, attempting, functionInfo]);
+    }, [params, abortController, attempting, functionInfo]);
 
-    return [value, response, setAttempting];
+    return [value, response, setParams, setAttempting];
 }
 
 export function POST(
@@ -66,8 +69,10 @@ export function POST(
     attemptOnMount?: boolean,
 ): [
     extendedTypes.UnwrapPromise<ReturnType<apiFunctionTypes.POST>> | null,
+    React.Dispatch<React.SetStateAction<Parameters<apiFunctionTypes.POST> | undefined>>,
     React.Dispatch<React.SetStateAction<boolean>>,
 ] {
+    const [params, setParams] = useState<Parameters<apiFunctionTypes.POST> | undefined>(undefined);
     const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
         ReturnType<apiFunctionTypes.POST>
     > | null>(null);
@@ -86,7 +91,6 @@ export function POST(
             const abortControllerNew = new AbortController();
             setAbortController(abortControllerNew);
             (async () => {
-                const params = functionInfo.parameters;
                 let data;
                 let args;
                 if (params && "data" in params) data = params.data;
@@ -105,7 +109,7 @@ export function POST(
         return () => {
             if (abortController) abortController.abort();
         };
-    }, [abortController, attempting, functionInfo]);
+    }, [params, abortController, attempting, functionInfo]);
 
-    return [response, setAttempting];
+    return [response, setParams, setAttempting];
 }
