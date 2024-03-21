@@ -1,9 +1,23 @@
+import { useState, useEffect } from "react";
 import Forms from "@/components/forms";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
+import * as useAsync from "@/hooks/useAsync";
 import styles from "./index.module.css";
+import loginPOST from "./utils/login";
 
 function Login() {
+    const [response, setParams, setAttempting] = useAsync.POST({ func: loginPOST }, false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
+    if (response && response.status < 400) window.location.assign("/");
+
+    useEffect(() => {
+        if (response && response.status >= 400 && response.message && response.message.length > 0) {
+            setErrorMessage(response.message);
+        }
+    }, [response]);
+
     return (
         <div className={styles["wrapper"]}>
             <div className={styles["container"]}>
@@ -13,9 +27,10 @@ function Login() {
                         {
                             fields: [
                                 <Inputs.Text
-                                    labelText="Username"
-                                    fieldId="username"
-                                    fieldName="username"
+                                    labelText="Account Tag"
+                                    fieldId="accountTag"
+                                    fieldName="accountTag"
+                                    required
                                     key={0}
                                 />,
                                 <Inputs.Text
@@ -23,6 +38,7 @@ function Login() {
                                     labelText="Password"
                                     fieldId="password"
                                     fieldName="password"
+                                    required
                                     key={1}
                                 />,
                             ],
@@ -32,7 +48,13 @@ function Login() {
                         const target = e.target as HTMLButtonElement;
                         if (target.form) {
                             const formData = new FormData(target.form);
-                            const formFields = Object.fromEntries(formData);
+                            const formFields = Object.fromEntries(formData) as {
+                                accountTag: string;
+                                password: string;
+                            };
+                            setErrorMessage("");
+                            setParams([{ body: formFields }, null]);
+                            setAttempting(true);
                         }
                     }}
                     button={{
@@ -41,6 +63,9 @@ function Login() {
                     }}
                     key={0}
                 />
+                {errorMessage.length > 0 ? (
+                    <p className={styles["error-message"]}>{errorMessage}</p>
+                ) : null}
                 <div className={styles["alternate-login-container"]}>
                     <p className={styles["alternate-login-message"]}>Or, log in another way</p>
                     <div className={styles["alternate-login-options"]}>
