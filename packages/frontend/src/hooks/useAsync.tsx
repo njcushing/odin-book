@@ -1,23 +1,27 @@
 import { useState, useEffect } from "react";
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 
 export function GET<T>(
     initialValue: T,
     functionInfo: {
         func: apiFunctionTypes.GET<T>;
-        data?: {
-            params?: { [key: string | number]: unknown };
-        };
-        args?: unknown[];
+        parameters?: Parameters<apiFunctionTypes.GET<T>>;
     },
     attemptOnMount?: boolean,
-): [T | null, string, React.Dispatch<React.SetStateAction<boolean>>] {
+): [
+    T | null,
+    extendedTypes.UnwrapPromise<ReturnType<apiFunctionTypes.GET<T>>> | null,
+    React.Dispatch<React.SetStateAction<boolean>>,
+] {
     const [value, setValue] = useState<T | null>(initialValue);
+    const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
+        ReturnType<apiFunctionTypes.GET<T>>
+    > | null>(null);
     const [abortController, setAbortController] = useState<AbortController | null>(
         new AbortController(),
     );
     const [attempting, setAttempting] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
         if (attemptOnMount) setAttempting(true);
@@ -29,18 +33,18 @@ export function GET<T>(
             const abortControllerNew = new AbortController();
             setAbortController(abortControllerNew);
             (async () => {
-                const { status, message, data } = await functionInfo.func(
-                    functionInfo.data,
+                const params = functionInfo.parameters;
+                let data;
+                let args;
+                if (params && "data" in params) data = params.data;
+                if (params && "args" in params) args = params.args;
+                const asyncResponse = await functionInfo.func(
+                    data || undefined,
                     abortController,
-                    functionInfo.args,
+                    args,
                 );
-                if (status) {
-                    setValue(data || null);
-                    setErrorMessage("");
-                } else {
-                    setValue(null);
-                    setErrorMessage(message || "");
-                }
+                setValue(asyncResponse.data || null);
+                setResponse(asyncResponse);
                 setAbortController(null);
                 setAttempting(false);
             })();
@@ -51,27 +55,26 @@ export function GET<T>(
         };
     }, [abortController, attempting, functionInfo]);
 
-    return [value, errorMessage, setAttempting];
+    return [value, response, setAttempting];
 }
 
-export function POST<T>(
-    initialValue: T,
+export function POST(
     functionInfo: {
-        func: apiFunctionTypes.GET<T>;
-        data?: {
-            params?: { [key: string | number]: unknown };
-            body?: object;
-        };
-        args?: unknown[];
+        func: apiFunctionTypes.POST;
+        parameters?: Parameters<apiFunctionTypes.POST>;
     },
     attemptOnMount?: boolean,
-): [T | null, string, React.Dispatch<React.SetStateAction<boolean>>] {
-    const [value, setValue] = useState<T | null>(initialValue);
+): [
+    extendedTypes.UnwrapPromise<ReturnType<apiFunctionTypes.POST>> | null,
+    React.Dispatch<React.SetStateAction<boolean>>,
+] {
+    const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
+        ReturnType<apiFunctionTypes.POST>
+    > | null>(null);
     const [abortController, setAbortController] = useState<AbortController | null>(
         new AbortController(),
     );
     const [attempting, setAttempting] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
         if (attemptOnMount) setAttempting(true);
@@ -83,18 +86,17 @@ export function POST<T>(
             const abortControllerNew = new AbortController();
             setAbortController(abortControllerNew);
             (async () => {
-                const { status, message, data } = await functionInfo.func(
-                    functionInfo.data,
+                const params = functionInfo.parameters;
+                let data;
+                let args;
+                if (params && "data" in params) data = params.data;
+                if (params && "args" in params) args = params.args;
+                const asyncResponse = await functionInfo.func(
+                    data || undefined,
                     abortController,
-                    functionInfo.args,
+                    args,
                 );
-                if (status) {
-                    setValue(data || null);
-                    setErrorMessage("");
-                } else {
-                    setValue(null);
-                    setErrorMessage(message || "");
-                }
+                setResponse(asyncResponse);
                 setAbortController(null);
                 setAttempting(false);
             })();
@@ -105,5 +107,5 @@ export function POST<T>(
         };
     }, [abortController, attempting, functionInfo]);
 
-    return [value, errorMessage, setAttempting];
+    return [response, setAttempting];
 }
