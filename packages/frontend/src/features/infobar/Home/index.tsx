@@ -10,12 +10,26 @@ function Home() {
     useEffect(() => {
         if (wrapperRef.current) setWrapperHeight(wrapperRef.current.clientHeight);
         else setWrapperHeight(0);
-    }, [wrapperRef]);
+    }, [wrapperRef, wrapperHeight]);
+
+    useEffect(() => {
+        let wrapperRefCurrent: Element;
+        const observer = new ResizeObserver((entries) => {
+            setWrapperHeight(entries[0].contentRect.height);
+        });
+        if (wrapperRef.current) {
+            wrapperRefCurrent = wrapperRef.current;
+            observer.observe(wrapperRef.current);
+        }
+        return () => {
+            if (wrapperRefCurrent instanceof Element) observer.unobserve(wrapperRefCurrent);
+        };
+    }, []);
 
     const wrapperTop = `min(0px, calc(100vh - ${wrapperHeight}px))`;
 
     return (
-        <div className={styles["wrapper"]} style={{ top: wrapperTop }} ref={wrapperRef}>
+        <div className={styles["wrapper"]} ref={wrapperRef} style={{ top: wrapperTop }}>
             <div className={styles["container"]}>
                 <PeopleYouMayKnow />
                 <PeopleYouMayKnow />
