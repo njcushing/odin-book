@@ -82,11 +82,6 @@ table {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
-
-    --page-max-width: 1440px;
-    --page-min-width: 0px;
-    --page-max-height: 100%;
-    --page-min-height: 480px;
 }
 
 body,
@@ -105,6 +100,10 @@ body > #root,
 
     /* Prevent element 'shifting' as scrollbar is calculated when rendering new content */
     overflow-y: scroll;
+    
+    display: flex;
+
+    height: 100%;
 }
 
 /* Custom Scrollbar */
