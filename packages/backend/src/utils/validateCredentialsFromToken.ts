@@ -11,7 +11,7 @@ const validateCredentialsFromToken = async (
     if (githubId) {
         // for a provider login, only the id needs to be verified
         let error;
-        user = await User.findOne({ githubId }).catch((err) => {
+        user = await User.findOne({ githubId }, { _id: 1, githubId: 1 }).catch((err) => {
             error = [false, null, `${err.message}`];
         });
         if (error) return error;
