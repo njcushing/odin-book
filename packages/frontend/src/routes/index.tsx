@@ -14,6 +14,12 @@ function Router() {
             errorElement: <div></div>,
         },
         {
+            path: "/auth",
+            element: <Page.Auth />,
+            children: Routes.Auth,
+            errorElement: <div></div>,
+        },
+        {
             path: "/",
             element: <Page.Root />,
             children: Routes.Root,

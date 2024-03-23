@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+
+    width: 100%;
+    height: max-content;
+    max-width: 460px;
+    min-height: 100vh;
+}
+
+.error-message-large {
+    color: var(--text-error);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.error-message-small {
+    color: var(--text-primary);
+    font-family: Gabarito;
+    font-size: 0.9rem;
+}

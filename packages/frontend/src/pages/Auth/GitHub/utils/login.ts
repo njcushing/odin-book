@@ -3,7 +3,7 @@ import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Types = apiFunctionTypes.GET<string>;
 
-const getToken: Types = async (data, abortController = null) => {
+const login: Types = async (data, abortController = null) => {
     if (!data || !data.params || !("code" in data.params)) {
         return {
             status: 400,
@@ -13,7 +13,7 @@ const getToken: Types = async (data, abortController = null) => {
     }
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/auth/github/token?code=${data.params.code}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/auth/github/login?code=${data.params.code}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",
@@ -40,4 +40,4 @@ const getToken: Types = async (data, abortController = null) => {
     return result;
 };
 
-export default getToken;
+export default login;
