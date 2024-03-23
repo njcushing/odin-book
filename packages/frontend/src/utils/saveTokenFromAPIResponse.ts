@@ -5,7 +5,7 @@ const saveTokenFromAPIResponse = async (response: { data?: { token?: string } })
         "token" in response.data &&
         typeof response.data.token === "string"
     ) {
-        localStorage.setItem("odin-book--auth-token", response.data.token);
+        localStorage.setItem("odin-book-auth-token", response.data.token);
     }
 };
 
