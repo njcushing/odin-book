@@ -3,7 +3,6 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import passport from "passport";
 import passportJWT from "passport-jwt";
-import passportGitHub2 from "passport-github2";
 import { fileURLToPath } from "url";
 import path from "path";
 import logger from "morgan";
@@ -12,10 +11,8 @@ import helmet from "helmet";
 import compression from "compression";
 import dotenv from "dotenv";
 import routes from "@/routes";
-import mongoose from "mongoose";
 import dbConfig from "@/utils/dbConfig";
 import sendResponse from "@/utils/sendResponse";
-import User from "@/models/user";
 import validateCredentialsFromToken from "@/utils/validateCredentialsFromToken";
 import * as Types from "@/utils/types";
 
@@ -35,41 +32,7 @@ app.use(helmet());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// For GitHub account creation & login
-const GitHubStrategy = passportGitHub2.Strategy;
-passport.use(
-    "github",
-    new GitHubStrategy(
-        {
-            clientID: process.env.GITHUB_CLIENT_ID || "",
-            clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
-            callbackURL: process.env.GITHUB_CALLBACK_URL || "",
-        },
-        async (
-            accessToken: string | undefined,
-            refreshToken: string | undefined,
-            profile: { id: string },
-            done: (err: Error | null, user: object | null, info?: { message?: string }) => void,
-        ) => {
-            let error;
-            const user = await User.findOne({ githubId: profile.id }).catch((err) => {
-                error = err;
-            });
-            if (error) return done(error, null);
-            if (!user) {
-                const newUser = new User({
-                    accountTag: new mongoose.Types.ObjectId(),
-                    githubId: profile.id,
-                });
-                if (newUser) return done(null, newUser, { message: "New account created." });
-                return done(new Error("Could not create new user."), null);
-            }
-            return done(null, user);
-        },
-    ),
-);
-
-// For all token-based login
+// For all jwt-based login
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 passport.use(
