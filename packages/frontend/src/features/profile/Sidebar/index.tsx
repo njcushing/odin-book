@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { UserContext } from "@/context/user";
 import createMultilineTextTruncateStyles from "@/utils/createMultilineTextTruncateStyles";
 import Images from "@/components/images";
 import User from "@/components/user";
@@ -8,6 +10,8 @@ type SidebarTypes = {
 };
 
 function Sidebar({ type }: SidebarTypes) {
+    const { extract } = useContext(UserContext);
+
     if (type === "thin") {
         return (
             <div className={styles["container"]}>
@@ -20,23 +24,24 @@ function Sidebar({ type }: SidebarTypes) {
             <div className={styles["row-one"]}>
                 <User.ImageAndName
                     image={{ src: new Uint8Array([]), alt: "" }}
-                    displayName="John Smith"
-                    accountTag="JohnSmith84"
+                    displayName={extract("preferences.displayName") as string}
+                    accountTag={extract("preferences.accountTag") as string}
                     size="m"
                 />
             </div>
             <div className={styles["row-two"]}>
                 <p className={styles["bio"]} style={{ ...createMultilineTextTruncateStyles(4) }}>
-                    Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text Sample
-                    Text Sample Text Sample Text
+                    {extract("preferences.bio") as string}
                 </p>
             </div>
             <div className={styles["row-three"]}>
                 <p className={styles["following-count"]}>
-                    <strong>300</strong> Following
+                    <strong>{(extract("following.users") as Array<string>).length}</strong>{" "}
+                    Following
                 </p>
                 <p className={styles["followers-count"]}>
-                    <strong>192</strong> Followers
+                    <strong>{(extract("followers.users") as Array<string>).length}</strong>{" "}
+                    Followers
                 </p>
                 <p className={styles["likes-count"]}>
                     <strong>3892</strong> Likes
