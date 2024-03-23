@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import PubSub from "pubsub-js";
 import LayoutUI from "@/layouts";
+import UserContextProvider from "@/context/user";
 import Sidebar from "@/features/sidebar";
 import Posts from "@/features/posts";
 import Chat from "@/features/chat";
@@ -159,12 +160,14 @@ function Root() {
     );
 
     return (
-        <div className={styles["wrapper"]}>
-            <div className={styles["container"]}>
-                {layout}
-                {modal}
+        <UserContextProvider>
+            <div className={styles["wrapper"]}>
+                <div className={styles["container"]}>
+                    {layout}
+                    {modal}
+                </div>
             </div>
-        </div>
+        </UserContextProvider>
     );
 }
 
