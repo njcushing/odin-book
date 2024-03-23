@@ -30,7 +30,6 @@ const UserSchema = new Schema(
                 message: (props: { value: string }) =>
                     validateUser.email(props.value, "back").message,
             },
-            required: [true, "'email' field required"],
         },
         password: {
             type: String,
