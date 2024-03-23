@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useCallback, useMemo } from "react";
 import * as useAsync from "@/hooks/useAsync";
 import getActiveUser from "./utils/getActiveUser";
+import extractUserProperty from "./utils/extractUserProperty";
 
 export interface UserTypes {
     _id?: string;
@@ -25,6 +26,7 @@ export interface UserState {
     user?: UserTypes;
     updateUser: () => void;
     awaitingResponse: boolean;
+    extract: (property: string) => unknown;
 }
 
 export const defaultUser: UserTypes = {
@@ -44,6 +46,9 @@ const defaultState: UserState = {
     user: defaultUser,
     updateUser: () => {},
     awaitingResponse: false,
+    extract: (property: string) => {
+        return extractUserProperty(defaultUser, property);
+    },
 };
 
 export const UserContext = createContext<UserState>(defaultState);
@@ -73,11 +78,18 @@ function UserContextProvider({ children }: UserContextProviderTypes) {
         })();
     }, [state]);
 
+    const extract = useCallback(
+        (property: string) => {
+            return extractUserProperty(state, property);
+        },
+        [state],
+    );
+
     return (
         <UserContext.Provider
             value={useMemo(
-                () => ({ user: defaultUser, updateUser, awaitingResponse }),
-                [updateUser, awaitingResponse],
+                () => ({ user: state, updateUser, awaitingResponse, extract }),
+                [state, updateUser, awaitingResponse, extract],
             )}
         >
             {children}
