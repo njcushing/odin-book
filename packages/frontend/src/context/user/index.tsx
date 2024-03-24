@@ -4,20 +4,6 @@ import * as extendedTypes from "@shared/utils/extendedTypes";
 import getActiveUser from "./utils/getActiveUser";
 import extractUserProperty from "./utils/extractUserProperty";
 
-/*
-    _id: new ObjectId('66001dbf3ba48d213f445504'),
-    accountTag: '66001dbf3ba48d213f445503',
-    githubId: '129661299',
-    preferences: { displayName: '', bio: '', theme: 'default', profileImage: null },
-    followingCount: 0,
-    followingRequestCount: 0,
-    followersCount: 0,
-    followersRequestCount: 0,
-    postCount: 0,
-    likesCount: 0,
-    repliesCount: 0
-*/
-
 export interface UserTypes {
     _id: extendedTypes.MongoDBObjectId | null;
     accountTag: string;
@@ -39,6 +25,7 @@ export interface UserTypes {
         } | null;
         theme: string;
     };
+    creationDate: string;
 }
 
 export interface UserState {
@@ -64,6 +51,7 @@ export const defaultUser: UserTypes = {
         profileImage: null,
         theme: "default",
     },
+    creationDate: "1900-01-01T00:00:00.000Z",
 };
 
 const defaultState: UserState = {

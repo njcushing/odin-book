@@ -39,6 +39,7 @@ export const active = [
                                 },
                             },
                         },
+                        creationDate: "$createdAt",
                     },
                 },
                 // find profileImage if possible
