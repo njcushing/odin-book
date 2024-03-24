@@ -47,54 +47,54 @@ function ImageAndName({
             break;
     }
 
+    let name = "User";
+    if (displayName.length > 0) name = displayName;
+    else if (displayName.length === 0 && accountTag.length > 0) name = accountTag;
+
     return (
         <div className={styles["container"]}>
             <div className={styles["row-one-left"]}>
                 <Images.Profile src={image.src} alt={image.alt} sizePx={sizes.image} />
             </div>
             <div className={styles["row-one-right"]}>
-                {displayName.length > 0 ? (
-                    <>
-                        <button
-                            type="button"
-                            className={`truncate-ellipsis ${styles["display-name-button"]}`}
-                            aria-label="display name"
-                            onClick={(e) => {
-                                window.location.href = `/user/${accountTag}`;
-                                e.currentTarget.blur();
-                                e.preventDefault();
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.blur();
-                            }}
-                            disabled={disableLinks}
-                            style={{
-                                fontSize: `${sizes.displayName}rem`,
-                            }}
-                        >
-                            {displayName}
-                        </button>
-                        <button
-                            type="button"
-                            className={`truncate-ellipsis ${styles["account-tag-button"]}`}
-                            aria-label="account tag"
-                            onClick={(e) => {
-                                window.location.href = `/user/${accountTag}`;
-                                e.currentTarget.blur();
-                                e.preventDefault();
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.blur();
-                            }}
-                            disabled={disableLinks}
-                            style={{
-                                fontSize: `${sizes.accountTag}rem`,
-                            }}
-                        >
-                            @{accountTag}
-                        </button>
-                    </>
-                ) : null}
+                <button
+                    type="button"
+                    className={`truncate-ellipsis ${styles["display-name-button"]}`}
+                    aria-label="display name"
+                    onClick={(e) => {
+                        window.location.href = `/user/${accountTag}`;
+                        e.currentTarget.blur();
+                        e.preventDefault();
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.blur();
+                    }}
+                    disabled={disableLinks}
+                    style={{
+                        fontSize: `${sizes.displayName}rem`,
+                    }}
+                >
+                    {name}
+                </button>
+                <button
+                    type="button"
+                    className={`truncate-ellipsis ${styles["account-tag-button"]}`}
+                    aria-label="account tag"
+                    onClick={(e) => {
+                        window.location.href = `/user/${accountTag}`;
+                        e.currentTarget.blur();
+                        e.preventDefault();
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.blur();
+                    }}
+                    disabled={disableLinks}
+                    style={{
+                        fontSize: `${sizes.accountTag}rem`,
+                    }}
+                >
+                    @{accountTag.length > 0 ? accountTag : "user"}
+                </button>
             </div>
         </div>
     );
