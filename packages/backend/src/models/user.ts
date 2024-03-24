@@ -67,6 +67,7 @@ const UserSchema = new Schema(
             requests: [{ type: Schema.Types.ObjectId, ref: "User" }],
         },
         posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+        likes: [{ type: Schema.Types.ObjectId, ref: "Post" }],
         chats: [{ type: Schema.Types.ObjectId, ref: "Chat" }],
         preferences: {
             displayName: {
@@ -111,5 +112,35 @@ const UserSchema = new Schema(
 
 UserSchema.set("toObject", { virtuals: true });
 UserSchema.set("toJSON", { virtuals: true });
+
+/* eslint-disable func-names */
+UserSchema.virtual("followingCount").get(function () {
+    if (!this.following || !("users" in this.following)) return 0;
+    return this.following.users.length;
+});
+
+UserSchema.virtual("followingRequestCount").get(function () {
+    if (!this.following || !("requests" in this.following)) return 0;
+    return this.following.requests.length;
+});
+
+UserSchema.virtual("followersCount").get(function () {
+    if (!this.followers || !("users" in this.followers)) return 0;
+    return this.followers.users.length;
+});
+
+UserSchema.virtual("followersRequestCount").get(function () {
+    if (!this.followers || !("requests" in this.followers)) return 0;
+    return this.followers.requests.length;
+});
+
+UserSchema.virtual("postCount").get(function () {
+    return this.posts.length;
+});
+
+UserSchema.virtual("likeCount").get(function () {
+    return this.likes.length;
+});
+/* eslint-enable func-names */
 
 export default mongoose.model("User", UserSchema);
