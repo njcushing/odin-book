@@ -4,6 +4,7 @@ import createMultilineTextTruncateStyles from "@/utils/createMultilineTextTrunca
 import Images from "@/components/images";
 import User from "@/components/user";
 import styles from "./index.module.css";
+import formatCreationDate from "./utils/formatCreationDate";
 
 type SidebarTypes = {
     type: "wide" | "thin";
@@ -52,7 +53,9 @@ function Sidebar({ type }: SidebarTypes) {
                 </p>
             </div>
             <div className={styles["row-four"]}>
-                <p className={styles["account-creation-date"]}>Joined February 2024</p>
+                <p className={styles["account-creation-date"]}>
+                    {formatCreationDate(`${extract("creationDate")}`)}
+                </p>
             </div>
         </div>
     );
