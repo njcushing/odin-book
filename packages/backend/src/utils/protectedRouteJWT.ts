@@ -14,7 +14,7 @@ const protectedRouteJWT = (req: Request, res: Response, next: NextFunction) => {
                 );
             }
             if (user) {
-                req.user = user;
+                res.locals.user = user;
                 return next();
             }
             return next(sendResponse(res, 500, (info && info.message) || "Something went wrong"));
