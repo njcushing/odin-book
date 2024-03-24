@@ -18,7 +18,7 @@ const getActiveUser: apiFunctionTypes.GET<UserTypes> = async (data, abortControl
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data,
+                data: responseJSON.data.user,
             };
         })
         .catch((error) => {
