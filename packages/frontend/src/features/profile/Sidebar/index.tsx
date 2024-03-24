@@ -3,8 +3,8 @@ import { UserContext } from "@/context/user";
 import createMultilineTextTruncateStyles from "@/utils/createMultilineTextTruncateStyles";
 import Images from "@/components/images";
 import User from "@/components/user";
+import formatCreationDate from "@/utils/formatCreationDate";
 import styles from "./index.module.css";
-import formatCreationDate from "./utils/formatCreationDate";
 
 type SidebarTypes = {
     type: "wide" | "thin";
