@@ -1,8 +1,13 @@
+import { useContext } from "react";
+import { UserContext } from "@/context/user";
 import Images from "@/components/images";
 import Buttons from "@/components/buttons";
+import formatCreationDate from "@/utils/formatCreationDate";
 import styles from "./index.module.css";
 
 function Summary() {
+    const { extract } = useContext(UserContext);
+
     return (
         <div className={styles["container"]}>
             <div className={styles["banner-image"]}>
@@ -19,10 +24,12 @@ function Summary() {
                     </div>
                     <div className={styles["row-one-right"]}>
                         <h2 className={`truncate-ellipsis ${styles["display-name"]}`}>
-                            John Smith
+                            {`${extract("preferences.displayName")}`.length > 0
+                                ? `${extract("preferences.displayName")}`
+                                : `${extract("accountTag")}`}
                         </h2>
                         <h3 className={`truncate-ellipsis ${styles["account-tag"]}`}>
-                            @JohnSmith84
+                            @{`${extract("accountTag")}`}
                         </h3>
                         <Buttons.Basic
                             text="Edit Profile"
@@ -33,24 +40,25 @@ function Summary() {
                         />
                     </div>
                 </div>
-                <div className={styles["row-two"]}>
-                    <p className={styles["bio"]}>
-                        Sample Text Sample Text Sample Text Sample Text Sample Text Sample Text
-                        Sample Text Sample Text Sample Text
-                    </p>
-                </div>
+                {`${extract("preferences.bio")}`.length > 0 ? (
+                    <div className={styles["row-two"]}>
+                        <p className={styles["bio"]}>{`${extract("preferences.bio")}`}</p>
+                    </div>
+                ) : null}
                 <div className={styles["row-three"]}>
-                    <p className={styles["account-creation-date"]}>Joined February 2024</p>
+                    <p className={styles["account-creation-date"]}>
+                        {formatCreationDate(`${extract("creationDate")}`)}
+                    </p>
                 </div>
                 <div className={styles["row-four"]}>
                     <p className={styles["following-count"]}>
-                        <strong>300</strong> Following
+                        <strong>{`${extract("followingCount")}`}</strong> Following
                     </p>
                     <p className={styles["followers-count"]}>
-                        <strong>192</strong> Followers
+                        <strong>{`${extract("followersCount")}`}</strong> Followers
                     </p>
                     <p className={styles["likes-count"]}>
-                        <strong>3892</strong> Likes
+                        <strong>{`${extract("likesCount")}`}</strong> Likes
                     </p>
                 </div>
             </div>
