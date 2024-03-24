@@ -4,6 +4,7 @@ export type Params = {
     accountTag?: string;
     password?: string;
     githubId?: string;
+    [key: string]: unknown;
 };
 
 const generateToken = async (fields: Params) => {
