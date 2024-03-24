@@ -85,6 +85,7 @@ function UserContextProvider({ children }: UserContextProviderTypes) {
         setAwaitingResponse(true);
         (async () => {
             const newState = await getActiveUser({}, null);
+            if (newState.status >= 400) window.location.assign("/login");
             setState({ ...state, ...newState });
             setAwaitingResponse(false);
         })();
