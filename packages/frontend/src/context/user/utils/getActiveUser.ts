@@ -7,6 +7,9 @@ const getActiveUser: apiFunctionTypes.GET<UserTypes> = async (data, abortControl
         signal: abortController ? abortController.signal : null,
         method: "GET",
         mode: "cors",
+        headers: {
+            Authorization: localStorage.getItem("odin-book-auth-token") || "",
+        },
     })
         .then(async (response) => {
             const responseJSON = await response.json();
