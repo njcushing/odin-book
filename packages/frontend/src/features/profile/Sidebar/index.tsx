@@ -24,8 +24,8 @@ function Sidebar({ type }: SidebarTypes) {
             <div className={styles["row-one"]}>
                 <User.ImageAndName
                     image={{ src: new Uint8Array([]), alt: "" }}
-                    displayName={extract("preferences.displayName") as string}
-                    accountTag={extract("preferences.accountTag") as string}
+                    displayName={`${extract("preferences.displayName")}`}
+                    accountTag={`${extract("accountTag")}`}
                     size="m"
                 />
             </div>
@@ -36,15 +36,13 @@ function Sidebar({ type }: SidebarTypes) {
             </div>
             <div className={styles["row-three"]}>
                 <p className={styles["following-count"]}>
-                    <strong>{(extract("following.users") as Array<string>).length}</strong>{" "}
-                    Following
+                    <strong>{`${extract("followingCount")}`}</strong> Following
                 </p>
                 <p className={styles["followers-count"]}>
-                    <strong>{(extract("followers.users") as Array<string>).length}</strong>{" "}
-                    Followers
+                    <strong>{`${extract("followersCount")}`}</strong> Followers
                 </p>
                 <p className={styles["likes-count"]}>
-                    <strong>3892</strong> Likes
+                    <strong>{`${extract("likesCount")}`}</strong> Likes
                 </p>
             </div>
             <div className={styles["row-four"]}>

@@ -1,24 +1,43 @@
 import React, { createContext, useState, useEffect, useCallback, useMemo } from "react";
 import * as useAsync from "@/hooks/useAsync";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import getActiveUser from "./utils/getActiveUser";
 import extractUserProperty from "./utils/extractUserProperty";
 
+/*
+    _id: new ObjectId('66001dbf3ba48d213f445504'),
+    accountTag: '66001dbf3ba48d213f445503',
+    githubId: '129661299',
+    preferences: { displayName: '', bio: '', theme: 'default', profileImage: null },
+    followingCount: 0,
+    followingRequestCount: 0,
+    followersCount: 0,
+    followersRequestCount: 0,
+    postCount: 0,
+    likesCount: 0,
+    repliesCount: 0
+*/
+
 export interface UserTypes {
-    _id?: string;
-    accountTag?: string;
+    _id: extendedTypes.MongoDBObjectId | null;
+    accountTag: string;
     githubId?: string;
     email?: string;
-    password?: string;
-    admin?: boolean;
-    following?: { users: string[]; requests: string[] };
-    followers?: { users: string[]; requests: string[] };
-    posts?: string[];
-    chats?: string[];
-    preferences?: {
-        displayName?: string;
-        bio?: string;
-        profileImage?: string;
-        theme?: string;
+    followingCount: number;
+    followingRequestCount: number;
+    followersCount: number;
+    followersRequestCount: number;
+    postCount: number;
+    likesCount: number;
+    repliesCount: number;
+    preferences: {
+        displayName: string;
+        bio: string;
+        profileImage: {
+            _id: extendedTypes.MongoDBObjectId;
+            url: string;
+        } | null;
+        theme: string;
     };
 }
 
@@ -30,14 +49,19 @@ export interface UserState {
 }
 
 export const defaultUser: UserTypes = {
-    admin: false,
-    following: { users: [], requests: [] },
-    followers: { users: [], requests: [] },
-    posts: [],
-    chats: [],
+    _id: null,
+    accountTag: "",
+    followingCount: 0,
+    followingRequestCount: 0,
+    followersCount: 0,
+    followersRequestCount: 0,
+    postCount: 0,
+    likesCount: 0,
+    repliesCount: 0,
     preferences: {
         displayName: "",
         bio: "",
+        profileImage: null,
         theme: "default",
     },
 };
