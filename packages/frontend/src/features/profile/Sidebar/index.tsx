@@ -19,6 +19,7 @@ function Sidebar({ type }: SidebarTypes) {
             </div>
         );
     }
+
     return (
         <div className={styles["container"]}>
             <div className={styles["row-one"]}>
@@ -29,11 +30,16 @@ function Sidebar({ type }: SidebarTypes) {
                     size="m"
                 />
             </div>
-            <div className={styles["row-two"]}>
-                <p className={styles["bio"]} style={{ ...createMultilineTextTruncateStyles(4) }}>
-                    {extract("preferences.bio") as string}
-                </p>
-            </div>
+            {`${extract("preferences.bio")}`.length > 0 ? (
+                <div className={styles["row-two"]}>
+                    <p
+                        className={styles["bio"]}
+                        style={{ ...createMultilineTextTruncateStyles(4) }}
+                    >
+                        {`${extract("preferences.bio")}`}
+                    </p>
+                </div>
+            ) : null}
             <div className={styles["row-three"]}>
                 <p className={styles["following-count"]}>
                     <strong>{`${extract("followingCount")}`}</strong> Following
