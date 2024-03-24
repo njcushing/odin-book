@@ -1,5 +1,4 @@
 import { useParams, useLocation, Outlet } from "react-router-dom";
-import LayoutUI from "@/layouts";
 import Navigation from "@/components/navigation";
 import User from "@/components/user";
 import * as mockData from "@/mockData";
