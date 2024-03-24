@@ -7,8 +7,14 @@ export type Params = {
 };
 
 const generateToken = async (fields: Params) => {
+    const { accountTag, password, githubId } = fields;
+    let include: object | null = null;
+    if (githubId) include = { githubId };
+    else if (accountTag && password) include = { accountTag, password };
+
     return new Promise((resolve, reject) => {
         try {
+            if (!include) throw new Error("No credentials provided for token generation");
             jwt.sign(
                 { ...fields },
                 process.env.AUTH_CLIENT_SECRET as string,
