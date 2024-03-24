@@ -71,7 +71,7 @@ export const login = async (req: Request, res: Response) => {
             }).save();
         }
 
-        const token = await generateToken({ githubId: user.githubId });
+        const token = await generateToken({ githubId: existingUser.githubId || "" });
 
         sendResponse(res, 200, "Successful login with GitHub", { token });
     } catch (err: unknown) {
