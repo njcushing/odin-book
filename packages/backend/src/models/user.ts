@@ -50,7 +50,7 @@ const UserSchema: Schema = new Schema(
             },
             required: [true, "'accountTag' field required"],
         },
-        githubId: { type: String, unique: true },
+        githubId: { type: String, unique: true, sparse: true },
         email: {
             type: String,
             trim: true,
