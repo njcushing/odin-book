@@ -1,9 +1,19 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import * as validatePost from "@shared/validation/post";
 
-const { Schema } = mongoose;
+export type TPost = {
+    text?: string;
+    images?: string[];
+    replyingTo?: mongoose.Types.ObjectId;
+    likes?: mongoose.Types.ObjectId[];
+    replies?: mongoose.Types.ObjectId[];
+    createdAt?: Date;
+    updatedAt?: Date;
+};
 
-const PostSchema = new Schema(
+export interface IPost extends TPost, Document {}
+
+const PostSchema: Schema = new Schema(
     {
         text: {
             type: String,
@@ -56,4 +66,4 @@ const PostSchema = new Schema(
 PostSchema.set("toObject", { virtuals: true });
 PostSchema.set("toJSON", { virtuals: true });
 
-export default mongoose.model("Post", PostSchema);
+export default mongoose.model<IPost>("Post", PostSchema);

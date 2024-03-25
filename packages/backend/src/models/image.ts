@@ -1,8 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-const { Schema } = mongoose;
+export type TImage = {
+    url: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+};
 
-const ImageSchema = new Schema(
+export interface IImage extends TImage, Document {}
+
+const ImageSchema: Schema = new Schema(
     {
         url: {
             type: String,
@@ -18,4 +24,4 @@ const ImageSchema = new Schema(
 ImageSchema.set("toObject", { virtuals: true });
 ImageSchema.set("toJSON", { virtuals: true });
 
-export default mongoose.model("Image", ImageSchema);
+export default mongoose.model<IImage>("Image", ImageSchema);

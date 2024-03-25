@@ -1,9 +1,19 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import * as validateMessage from "@shared/validation/message";
 
-const { Schema } = mongoose;
+export type TMessage = {
+    author: mongoose.Types.ObjectId;
+    text?: string;
+    images?: string[];
+    replyingTo?: mongoose.Types.ObjectId;
+    deleted?: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
+};
 
-const MessageSchema = new Schema(
+export interface IMessage extends TMessage, Document {}
+
+const MessageSchema: Schema = new Schema(
     {
         author: {
             type: Schema.Types.ObjectId,
@@ -47,4 +57,4 @@ const MessageSchema = new Schema(
 MessageSchema.set("toObject", { virtuals: true });
 MessageSchema.set("toJSON", { virtuals: true });
 
-export default mongoose.model("Message", MessageSchema);
+export default mongoose.model<IMessage>("Message", MessageSchema);

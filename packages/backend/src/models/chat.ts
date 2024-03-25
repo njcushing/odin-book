@@ -1,9 +1,26 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import * as validateChat from "@shared/validation/chat";
 
-const { Schema } = mongoose;
+export type TChat = {
+    type: "individual" | "group";
+    participants: {
+        user: mongoose.Types.ObjectId;
+        nickname?: string;
+        role?: "admin" | "moderator" | "guest";
+        muted?: boolean;
+    }[];
+    name?: string;
+    image?: {
+        type?: string;
+    };
+    messages?: mongoose.Types.ObjectId[];
+    createdAt?: Date;
+    updatedAt?: Date;
+};
 
-const ChatSchema = new Schema(
+export interface IChat extends TChat, Document {}
+
+const ChatSchema: Schema = new Schema(
     {
         type: {
             type: String,
@@ -55,4 +72,4 @@ const ChatSchema = new Schema(
 ChatSchema.set("toObject", { virtuals: true });
 ChatSchema.set("toJSON", { virtuals: true });
 
-export default mongoose.model("Chat", ChatSchema);
+export default mongoose.model<IChat>("Chat", ChatSchema);
