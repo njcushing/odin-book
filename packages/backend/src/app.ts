@@ -12,12 +12,14 @@ import compression from "compression";
 import dotenv from "dotenv";
 import routes from "@/routes";
 import dbConfig from "@/utils/dbConfig";
+import cloudinaryConfig from "@/utils/cloudinaryConfig";
 import sendResponse from "@/utils/sendResponse";
 import validateCredentialsFromToken from "@/utils/validateCredentialsFromToken";
 import * as Types from "@/utils/types";
 
 dotenv.config();
 dbConfig();
+cloudinaryConfig();
 
 const app = express();
 
