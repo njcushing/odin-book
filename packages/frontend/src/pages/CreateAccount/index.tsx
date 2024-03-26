@@ -5,10 +5,13 @@ import Buttons from "@/components/buttons";
 import validation from "@shared/validation";
 import * as useAsync from "@/hooks/useAsync";
 import styles from "./index.module.css";
-import createAccountPOST from "./utils/createAccount";
+import createAccountPOST, { Body, Response } from "./utils/createAccount";
 
 function CreateAccount() {
-    const [response, setParams, setAttempting] = useAsync.POST({ func: createAccountPOST }, false);
+    const [response, setParams, setAttempting] = useAsync.POST<Body, Response>(
+        { func: createAccountPOST },
+        false,
+    );
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     if (response && response.status < 400) window.location.assign("/");
@@ -69,12 +72,7 @@ function CreateAccount() {
                         const target = e.target as HTMLButtonElement;
                         if (target.form) {
                             const formData = new FormData(target.form);
-                            const formFields = Object.fromEntries(formData) as {
-                                accountTag: string;
-                                email: string;
-                                password: string;
-                                confirmPassword: string;
-                            };
+                            const formFields = Object.fromEntries(formData) as Body;
                             setErrorMessage("");
                             setParams([{ body: formFields }, null]);
                             setAttempting(true);

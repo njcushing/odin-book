@@ -1,7 +1,19 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
-const createAccount: apiFunctionTypes.POST = async (data, abortController = null) => {
+export type Body = {
+    accountTag: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+};
+
+export type Response = undefined;
+
+const createAccount: apiFunctionTypes.POST<Body, Response> = async (
+    data,
+    abortController = null,
+) => {
     let body;
     if (data && data.body) body = data.body;
 

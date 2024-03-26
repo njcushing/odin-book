@@ -2,22 +2,22 @@ import { useState, useEffect } from "react";
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 
-export function GET<T>(
+export function GET<Response>(
     functionInfo: {
-        func: apiFunctionTypes.GET<T>;
-        parameters?: Parameters<apiFunctionTypes.GET<T>>;
+        func: apiFunctionTypes.GET<Response>;
+        parameters?: Parameters<apiFunctionTypes.GET<Response>>;
     },
     attemptOnMount?: boolean,
 ): [
-    extendedTypes.UnwrapPromise<ReturnType<apiFunctionTypes.GET<T>>> | null,
-    React.Dispatch<React.SetStateAction<Parameters<apiFunctionTypes.GET<T>> | undefined>>,
+    extendedTypes.UnwrapPromise<ReturnType<apiFunctionTypes.GET<Response>>> | null,
+    React.Dispatch<React.SetStateAction<Parameters<apiFunctionTypes.GET<Response>> | undefined>>,
     React.Dispatch<React.SetStateAction<boolean>>,
 ] {
-    const [params, setParams] = useState<Parameters<apiFunctionTypes.GET<T>> | undefined>(
+    const [params, setParams] = useState<Parameters<apiFunctionTypes.GET<Response>> | undefined>(
         functionInfo.parameters,
     );
     const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
-        ReturnType<apiFunctionTypes.GET<T>>
+        ReturnType<apiFunctionTypes.GET<Response>>
     > | null>(null);
     const [abortController, setAbortController] = useState<AbortController | null>(null);
     const [attempting, setAttempting] = useState<boolean>(false);
@@ -56,22 +56,24 @@ export function GET<T>(
     return [response, setParams, setAttempting];
 }
 
-export function POST(
+export function POST<Body, Response>(
     functionInfo: {
-        func: apiFunctionTypes.POST;
-        parameters?: Parameters<apiFunctionTypes.POST>;
+        func: apiFunctionTypes.POST<Body, Response>;
+        parameters?: Parameters<apiFunctionTypes.POST<Body, Response>>;
     },
     attemptOnMount?: boolean,
 ): [
-    extendedTypes.UnwrapPromise<ReturnType<apiFunctionTypes.POST>> | null,
-    React.Dispatch<React.SetStateAction<Parameters<apiFunctionTypes.POST> | undefined>>,
+    extendedTypes.UnwrapPromise<ReturnType<apiFunctionTypes.POST<Body, Response>>> | null,
+    React.Dispatch<
+        React.SetStateAction<Parameters<apiFunctionTypes.POST<Body, Response>> | undefined>
+    >,
     React.Dispatch<React.SetStateAction<boolean>>,
 ] {
-    const [params, setParams] = useState<Parameters<apiFunctionTypes.POST> | undefined>(
-        functionInfo.parameters,
-    );
+    const [params, setParams] = useState<
+        Parameters<apiFunctionTypes.POST<Body, Response>> | undefined
+    >(functionInfo.parameters);
     const [response, setResponse] = useState<extendedTypes.UnwrapPromise<
-        ReturnType<apiFunctionTypes.POST>
+        ReturnType<apiFunctionTypes.POST<Body, Response>>
     > | null>(null);
     const [abortController, setAbortController] = useState<AbortController | null>(null);
     const [attempting, setAttempting] = useState<boolean>(false);
