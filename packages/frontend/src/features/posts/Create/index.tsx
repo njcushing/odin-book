@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modals from "@/components/modals";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 import validate from "@shared/validation";
 import { v4 as uuidv4 } from "uuid";
+import * as useAsync from "@/hooks/useAsync";
+import createPost, { Body, Response } from "./utils/createPost";
 import Posts from "..";
 import styles from "./index.module.css";
 
@@ -15,24 +17,10 @@ type Images = {
     };
 };
 
-type Submitter<textT, imagesT> = {
-    func: (
-        text: textT,
-        images: imagesT,
-        ...args: unknown[]
-    ) => {
-        status: boolean;
-        message: string | null;
-        data: object | null;
-    };
-    args?: unknown[];
-} | null;
-
 type CreateTypes = {
     defaultText?: string;
     placeholder?: string;
     defaultImages?: Images;
-    submitHandler?: Submitter<string, Images>;
     submissionErrors?: string[];
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
 };
@@ -41,12 +29,25 @@ function Create({
     defaultText = "",
     placeholder = "",
     defaultImages = {},
-    submitHandler = null,
     submissionErrors = [],
     onCloseClickHandler = null,
 }: CreateTypes) {
     const [text, setText] = useState<string>(defaultText);
     const [images, setImages] = useState<Images>(defaultImages);
+
+    const [response, setParams, setAttempting] = useAsync.POST<Body, Response>(
+        { func: createPost },
+        false,
+    );
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
+    if (response && response.status === 401) window.location.assign("/");
+
+    useEffect(() => {
+        if (response && response.status >= 400 && response.message && response.message.length > 0) {
+            setErrorMessage(response.message);
+        }
+    }, [response]);
 
     return (
         <Modals.Basic onCloseClickHandler={onCloseClickHandler}>
@@ -100,6 +101,9 @@ function Create({
                         </div>
                     ) : null}
                 </div>
+                {errorMessage.length > 0 ? (
+                    <p className={styles["error-message"]}>{errorMessage}</p>
+                ) : null}
                 <div className={styles["content-container"]}>
                     <Posts.Post
                         overridePostData={{
@@ -137,9 +141,16 @@ function Create({
                         text="Post"
                         palette="green"
                         onClickHandler={() => {
-                            if (submitHandler) {
-                                submitHandler.func(text, images, submitHandler.args);
-                            }
+                            setParams([
+                                {
+                                    body: {
+                                        text,
+                                        images: Object.keys(images).map((key) => images[key].data),
+                                    },
+                                },
+                                null,
+                            ]);
+                            setAttempting(true);
                         }}
                         otherStyles={{ fontSize: "1.2rem" }}
                     />
