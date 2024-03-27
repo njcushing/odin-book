@@ -1,10 +1,10 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
-import convertTypedArrayToBase64 from "@/utils/convertTypedArrayToBase64";
+import convertArrayBufferToBase64 from "@/utils/convertArrayBufferToBase64";
 
 export type Body = {
     text: string;
-    images: number[][];
+    images: ArrayBuffer[];
 };
 
 export type Response = string | null;
@@ -14,7 +14,7 @@ const createPost: apiFunctionTypes.POST<Body, Response> = async (data, abortCont
     if (data && data.body) body = data.body;
 
     if (body) {
-        body.images.map((image) => convertTypedArrayToBase64(image));
+        body.images.map((image) => convertArrayBufferToBase64(image));
     }
 
     const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/post/create`, {
