@@ -13,8 +13,17 @@ const createPost: apiFunctionTypes.POST<Body, Response> = async (data, abortCont
     let body;
     if (data && data.body) body = data.body;
 
+    let text = "";
+    let images: string[] = [];
     if (body) {
-        body.images.map((image) => convertArrayBufferToBase64(image));
+        text = body.text;
+        const promises = body.images.map(async (image) => {
+            const base64 = await convertArrayBufferToBase64(image);
+            return base64;
+        });
+        await Promise.all(promises).then((base64Images) => {
+            images = base64Images;
+        });
     }
 
     const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/post/create`, {
@@ -25,7 +34,7 @@ const createPost: apiFunctionTypes.POST<Body, Response> = async (data, abortCont
             "Content-Type": "application/json",
             Authorization: localStorage.getItem("odin-book-auth-token") || "",
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ text, images }),
     })
         .then(async (response) => {
             const responseJSON = await response.json();
