@@ -19,7 +19,7 @@ const createPost: apiFunctionTypes.POST<Body, Response> = async (data, abortCont
 
     const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/post/create`, {
         signal: abortController ? abortController.signal : null,
-        method: "GET",
+        method: "POST",
         mode: "cors",
         headers: {
             "Content-Type": "application/json",
@@ -44,6 +44,9 @@ const createPost: apiFunctionTypes.POST<Body, Response> = async (data, abortCont
                 data: null,
             };
         });
+
+    if (result.status === 401) window.location.href = "/";
+
     return result;
 };
 
