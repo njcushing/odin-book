@@ -1,5 +1,6 @@
-import { body } from "express-validator";
+import { body, query } from "express-validator";
 import validation from "@shared/validation";
+import mongoose from "mongoose";
 
 const validators = {
     body: {
@@ -21,6 +22,19 @@ const validators = {
                     if (!valid.status) throw new Error(valid.message);
                 }
                 return true;
+            }),
+    },
+    query: {
+        id: query("id")
+            .trim()
+            .custom((value) => {
+                if (!mongoose.Types.ObjectId.isValid(value)) {
+                    throw new Error(
+                        "The provided id in the request query parameters is not a valid MongoDB ObjectId",
+                    );
+                } else {
+                    return true;
+                }
             }),
     },
 };
