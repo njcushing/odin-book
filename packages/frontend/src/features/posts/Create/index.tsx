@@ -115,17 +115,25 @@ function Create({
                         text="Post"
                         palette="green"
                         onClickHandler={() => {
-                            setErrorMessage("");
-                            setParams([
-                                {
-                                    body: {
-                                        text,
-                                        images: Object.keys(images).map((key) => images[key].data),
+                            if (text.length === 0 && Object.keys(images).length === 0) {
+                                setErrorMessage(
+                                    "Your post must not be empty; there must either be some text, or images.",
+                                );
+                            } else {
+                                setErrorMessage("");
+                                setParams([
+                                    {
+                                        body: {
+                                            text,
+                                            images: Object.keys(images).map(
+                                                (key) => images[key].data,
+                                            ),
+                                        },
                                     },
-                                },
-                                null,
-                            ]);
-                            setAttempting(true);
+                                    null,
+                                ]);
+                                setAttempting(true);
+                            }
                         }}
                         otherStyles={{ fontSize: "1.2rem" }}
                     />
