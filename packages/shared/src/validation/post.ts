@@ -1,4 +1,7 @@
 import * as extendedTypes from "@shared/utils/extendedTypes";
+import isStringBase64 from "@shared/utils/isStringBase64";
+
+const maximumImageSize = 0;
 
 type ReturnTypes = {
     status: boolean;
@@ -21,7 +24,7 @@ export const text = (value: string, messageType: "front" | "back"): ReturnTypes 
     };
 };
 
-export const image = (
+export const imageArray = (
     value: extendedTypes.TypedArray,
     messageType: "front" | "back",
 ): ReturnTypes => {
@@ -46,5 +49,32 @@ export const image = (
     return {
         status: true,
         message: messageType === "front" ? `Valid post image.` : `'image' field (Array) is valid`,
+    };
+};
+
+export const imageBase64 = (value: string, messageType: "front" | "back"): ReturnTypes => {
+    if (!isStringBase64(value)) {
+        return {
+            status: false,
+            message:
+                messageType === "front"
+                    ? `Post image must be a base64-encoded string.`
+                    : `'image' field must be a base64-encoded string.`,
+        };
+    }
+    const binary = atob(value);
+    const fileSize = binary.length;
+    if (fileSize > 2000000) {
+        return {
+            status: false,
+            message:
+                messageType === "front"
+                    ? `Post image must be smaller than 2MB.`
+                    : `'image' field (Array) must be smaller than 2MB.`,
+        };
+    }
+    return {
+        status: true,
+        message: messageType === "front" ? `Valid post image.` : `'image' field (string) is valid`,
     };
 };

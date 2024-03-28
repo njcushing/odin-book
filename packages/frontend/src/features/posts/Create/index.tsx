@@ -67,7 +67,7 @@ function Create({
                             fieldId="test"
                             fieldName="test"
                             onUpdateHandler={(data) => setImages(data)}
-                            validator={{ func: validate.post.image }}
+                            validator={{ func: validate.post.imageArray }}
                             maximumAmount={4}
                             accept="image.*"
                             multiple
