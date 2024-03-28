@@ -1,7 +1,7 @@
 import * as extendedTypes from "@shared/utils/extendedTypes";
 import isStringBase64 from "@shared/utils/isStringBase64";
 
-const maximumImageSize = 0;
+const maximumImageSize = 2000000;
 
 type ReturnTypes = {
     status: boolean;
@@ -37,7 +37,7 @@ export const imageArray = (
                     : `'image' field must be a Typed Array.`,
         };
     }
-    if (value.length > 2000000) {
+    if (value.length > maximumImageSize) {
         return {
             status: false,
             message:
@@ -53,7 +53,8 @@ export const imageArray = (
 };
 
 export const imageBase64 = (value: string, messageType: "front" | "back"): ReturnTypes => {
-    if (!isStringBase64(value)) {
+    const metadataRemoved = value.slice(value.indexOf(",") + 1);
+    if (!isStringBase64(metadataRemoved)) {
         return {
             status: false,
             message:
@@ -62,9 +63,9 @@ export const imageBase64 = (value: string, messageType: "front" | "back"): Retur
                     : `'image' field must be a base64-encoded string.`,
         };
     }
-    const binary = atob(value);
+    const binary = atob(metadataRemoved);
     const fileSize = binary.length;
-    if (fileSize > 2000000) {
+    if (fileSize > maximumImageSize) {
         return {
             status: false,
             message:

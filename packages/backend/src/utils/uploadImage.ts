@@ -26,7 +26,7 @@ export const single = async (
     opts: UploadApiOptions = options,
 ): Promise<string | Error> => {
     return new Promise((resolve, reject) => {
-        cloudinary.uploader.upload(`data:image/jpeg;base64,${image}`, opts, (error, result) => {
+        cloudinary.uploader.upload(image, opts, (error, result) => {
             if (result && result.secure_url) {
                 return resolve(result.secure_url);
             }

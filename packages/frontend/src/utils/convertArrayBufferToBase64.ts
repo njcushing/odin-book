@@ -5,7 +5,7 @@ const convertArrayBufferToBase64 = async (buffer: ArrayBuffer): Promise<string> 
         fileReader.onload = () => resolve(fileReader.result as string);
         fileReader.onerror = (error) => reject(error);
     });
-    return base64url.slice(base64url.indexOf(",") + 1); // trim `data:...;base64,` from start
+    return base64url;
 };
 
 export default convertArrayBufferToBase64;
