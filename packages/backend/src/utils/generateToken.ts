@@ -17,7 +17,7 @@ const generateToken = async (fields: Params) => {
         try {
             if (!include) throw new Error("No credentials provided for token generation");
             jwt.sign(
-                { ...fields },
+                include,
                 process.env.AUTH_CLIENT_SECRET as string,
                 { expiresIn: "7d" },
                 (err, token) => {
