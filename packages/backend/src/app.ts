@@ -84,6 +84,7 @@ app.use("*", cors(getCorsOpts));
 app.use("/", routes.index);
 app.use("/auth", routes.auth);
 app.use("/user", routes.user);
+app.use("/post", routes.post);
 
 // Catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {
