@@ -9,12 +9,24 @@ import User from "@/models/user";
 import Post from "@/models/post";
 import Image from "@/models/image";
 import * as types from "@/utils/types";
+import { body } from "express-validator";
+import checkRequestValidationError from "@/utils/checkRequestValidationError";
 import validators from "../validators";
 
 export const regular = [
     protectedRouteJWT,
     validators.body.text,
     validators.body.images,
+    body("text").custom((value, { req }) => {
+        if (req.body.text.length === 0 && req.body.images.length === 0) {
+            throw new Error(
+                "Your post must not be empty; there must either be some text, or images.",
+            );
+        } else {
+            return true;
+        }
+    }),
+    checkRequestValidationError,
     asyncHandler(async (req: Request, res: Response) => {
         // find user
         const user = await User.findById(res.locals.user._id);
