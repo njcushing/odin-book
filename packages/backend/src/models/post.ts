@@ -15,6 +15,11 @@ export interface IPost extends TPost, Document {}
 
 const PostSchema: Schema = new Schema(
     {
+        owner: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
         text: {
             type: String,
             trim: true,
