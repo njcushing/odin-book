@@ -10,10 +10,10 @@ import validators from "../validators";
 
 export const regular = [
     protectedRouteJWT,
-    validators.query.id,
+    validators.param.id,
     checkRequestValidationError,
     asyncHandler(async (req: Request, res: Response) => {
-        const { postId } = req.query;
+        const { postId } = req.params;
         // find user
         const user = await User.findOne({ _id: res.locals.user._id, posts: postId });
         if (!user) {

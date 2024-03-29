@@ -4,7 +4,7 @@ import * as remove from "./remove";
 
 const router = express.Router();
 
-router.post("/create", create.regular);
-router.delete("/delete", remove.regular);
+router.post("/", create.regular);
+router.delete("/:postId", remove.regular);
 
 export default router;

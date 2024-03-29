@@ -26,7 +26,7 @@ const createPost: apiFunctionTypes.POST<Body, Response> = async (data, abortCont
         });
     }
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/post/create`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/post`, {
         signal: abortController ? abortController.signal : null,
         method: "POST",
         mode: "cors",
