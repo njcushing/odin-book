@@ -62,6 +62,7 @@ export const regular = [
 
                     // create post
                     const post = new Post({
+                        owner: user._id,
                         text: req.body.text,
                         images: images.map((image) => image._id),
                     });
