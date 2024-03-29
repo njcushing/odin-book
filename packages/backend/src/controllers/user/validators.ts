@@ -97,6 +97,10 @@ const validators = {
                     return true;
                 }
             }),
+        repliesOnly: query("repliesOnly")
+            .optional()
+            .isBoolean()
+            .withMessage("The provided 'repliesOnly' query parameter is not a valid boolean value"),
     },
 };
 
