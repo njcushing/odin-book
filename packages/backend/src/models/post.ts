@@ -61,6 +61,10 @@ const PostSchema: Schema = new Schema(
                 ref: "Post",
             },
         ],
+        deleted: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         getters: true,
