@@ -26,7 +26,7 @@ export const regular = [
             } else {
                 await generateToken(res.locals.user)
                     .then((token) => {
-                        sendResponse(res, 201, "Post deleted successfully", { token });
+                        sendResponse(res, 200, "Post deleted successfully", { token });
                     })
                     .catch((tokenErr) => {
                         sendResponse(
