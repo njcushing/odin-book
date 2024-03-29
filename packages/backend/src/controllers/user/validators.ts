@@ -1,5 +1,6 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import validation from "@shared/validation";
+import mongoose from "mongoose";
 
 const validators = {
     body: {
@@ -47,6 +48,19 @@ const validators = {
             .custom((value, { req }) => {
                 if (value !== req.body.password) {
                     throw new Error("Passwords don't match");
+                } else {
+                    return true;
+                }
+            }),
+    },
+    param: {
+        userId: param("userId")
+            .trim()
+            .custom((value) => {
+                if (!mongoose.Types.ObjectId.isValid(value)) {
+                    throw new Error(
+                        "The provided post id in the route path is not a valid MongoDB ObjectId",
+                    );
                 } else {
                     return true;
                 }
