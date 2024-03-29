@@ -1,11 +1,10 @@
 import express from "express";
-import * as information from "./information";
-import * as createAccount from "./create-account";
+import * as get from "./get";
+import * as create from "./create";
 
 const router = express.Router();
 
-router.get("/active", information.active);
-
-router.post("/create-account", createAccount.post);
+router.get("/active", get.active);
+router.post("/", create.regular);
 
 export default router;

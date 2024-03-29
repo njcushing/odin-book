@@ -7,7 +7,7 @@ import sendResponse from "@/utils/sendResponse";
 import User from "@/models/user";
 import validators from "../validators";
 
-export const post = [
+export const regular = [
     validators.body.accountTag,
     validators.body.email,
     validators.body.password,
