@@ -25,12 +25,12 @@ const validators = {
             }),
     },
     param: {
-        id: param("id")
+        postId: param("postId")
             .trim()
             .custom((value) => {
                 if (!mongoose.Types.ObjectId.isValid(value)) {
                     throw new Error(
-                        "The provided id in the request parameters is not a valid MongoDB ObjectId",
+                        "The provided post id in the route path is not a valid MongoDB ObjectId",
                     );
                 } else {
                     return true;

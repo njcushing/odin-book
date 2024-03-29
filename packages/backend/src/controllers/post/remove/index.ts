@@ -10,7 +10,7 @@ import validators from "../validators";
 
 export const regular = [
     protectedRouteJWT,
-    validators.param.id,
+    validators.param.postId,
     checkRequestValidationError,
     asyncHandler(async (req: Request, res: Response) => {
         const { postId } = req.params;
