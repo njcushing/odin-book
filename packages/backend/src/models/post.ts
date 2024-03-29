@@ -2,11 +2,13 @@ import mongoose, { Schema, Document } from "mongoose";
 import * as validatePost from "@shared/validation/post";
 
 export type TPost = {
+    owner: mongoose.Types.ObjectId;
     text?: string;
     images?: string[];
     replyingTo?: mongoose.Types.ObjectId;
     likes?: mongoose.Types.ObjectId[];
     replies?: mongoose.Types.ObjectId[];
+    deleted: boolean;
     createdAt?: Date;
     updatedAt?: Date;
 };
