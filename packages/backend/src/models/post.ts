@@ -50,6 +50,7 @@ const PostSchema: Schema = new Schema(
         replyingTo: {
             type: Schema.Types.ObjectId,
             ref: "Post",
+            default: null,
         },
         likes: [
             {
