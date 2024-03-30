@@ -264,6 +264,7 @@ export const posts = [
                         owner: 1,
                         text: 1,
                         images: 1,
+                        replyingTo: 1,
                         createdAt: 1,
                         updatedAt: 1,
                         likesCount: 1,
