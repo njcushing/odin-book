@@ -13,9 +13,9 @@ export const idFromTag = [
     validators.query.accountTag,
     checkRequestValidationError,
     asyncHandler(async (req: Request, res: Response) => {
-        const { accountTag } = req.params;
+        const { accountTag } = req.query;
         // find user
-        const user = await User.findOne({ accountTag }, { _id: 1 });
+        const user = await User.findOne({ accountTag }, { _id: 1 }).lean({ virtuals: false });
         if (!user) {
             sendResponse(res, 404, "User not found in database");
         } else {
