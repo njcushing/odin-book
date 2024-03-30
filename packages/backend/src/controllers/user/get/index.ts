@@ -151,14 +151,6 @@ export const posts = [
         const { userId } = req.params;
         const { limit, after, repliesOnly } = req.query;
 
-        /*
-         *  When requesting a post at the top-level, the following fields should be returned:
-         *  - '_id', 'text', 'createdAt', 'replyingTo' as normal
-         *  - 'images' documents populated
-         *  - 'likesCount' and 'repliesCount' - size of 'likes' and 'replies' arrays, respectively
-         *  - 'likedByUser' - boolean value identifying whether the active user has liked the post
-         */
-
         /// create aggregation pipeline
         const aggregation: mongoose.PipelineStage[] = [];
         // match user, unwind & populate posts
@@ -222,54 +214,12 @@ export const posts = [
                     },
                 },
             );
-            // add new fields: 'likesCount', 'repliesCount' and 'likedByUser' to all posts
-            aggregation.push({
-                $addFields: {
-                    posts: {
-                        $map: {
-                            input: "$posts",
-                            as: "post",
-                            in: {
-                                $mergeObjects: [
-                                    "$$post",
-                                    {
-                                        likesCount: { $size: "$$post.likes" },
-                                        repliesCount: { $size: "$$post.replies" },
-                                        likedByUser: {
-                                            $cond: {
-                                                if: {
-                                                    $in: [
-                                                        new mongoose.Types.ObjectId(
-                                                            res.locals.user.id as string,
-                                                        ),
-                                                        "$$post.likes",
-                                                    ],
-                                                },
-                                                then: true,
-                                                else: false,
-                                            },
-                                        },
-                                    },
-                                ],
-                            },
-                        },
-                    },
-                },
-            });
             // final projection
             aggregation.push({
                 $project: {
                     posts: {
                         _id: 1,
-                        owner: 1,
-                        text: 1,
-                        images: 1,
                         replyingTo: 1,
-                        createdAt: 1,
-                        updatedAt: 1,
-                        likesCount: 1,
-                        repliesCount: 1,
-                        likedByUser: 1,
                     },
                 },
             });

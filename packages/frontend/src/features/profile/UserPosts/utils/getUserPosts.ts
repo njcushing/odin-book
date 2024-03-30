@@ -10,14 +10,7 @@ export type Params = {
 export type Response =
     | {
           _id: extendedTypes.MongoDBObjectId;
-          owner: extendedTypes.MongoDBObjectId;
-          text: string;
-          images: extendedTypes.MongoDBObjectId[];
-          createdAt: string;
-          updatedAt: string;
-          likesCount: number;
-          repliesCount: number;
-          likedByUser: boolean;
+          replyingTo: extendedTypes.MongoDBObjectId | null;
       }[]
     | null;
 
