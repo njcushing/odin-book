@@ -4,6 +4,7 @@ import * as extendedTypes from "@shared/utils/extendedTypes";
 import { ProfileContext } from "@/features/profile/Main";
 import Posts from "@/features/posts";
 import getUserPosts, { Params, Response } from "./utils/getUserPosts";
+import styles from "./index.module.css";
 
 function UserPosts() {
     const { _id } = useContext(ProfileContext);
@@ -36,11 +37,18 @@ function UserPosts() {
         }
     }, [response]);
 
-    return posts
-        ? posts.map((post) => {
-              return <Posts.Post _id={post._id} key={`post-self-${post._id}`} />;
-          })
-        : null;
+    return (
+        <>
+            {errorMessage.length > 0 ? (
+                <p className={styles["error-message"]}>{errorMessage}</p>
+            ) : null}
+            {posts
+                ? posts.map((post) => {
+                      return <Posts.Post _id={post._id} key={`post-self-${post._id}`} />;
+                  })
+                : null}
+        </>
+    );
 }
 
 export default UserPosts;
