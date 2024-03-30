@@ -67,6 +67,16 @@ const validators = {
             }),
     },
     query: {
+        accountTag: query("accountTag")
+            .trim()
+            .custom((value) => {
+                const valid = validation.user.accountTag(value, "front");
+                if (!valid.status) {
+                    throw new Error(valid.message);
+                } else {
+                    return true;
+                }
+            }),
         limit: query("limit")
             .trim()
             .optional()
