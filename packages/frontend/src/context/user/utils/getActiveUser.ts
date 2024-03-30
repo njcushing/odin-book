@@ -2,7 +2,10 @@ import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 import { UserTypes } from "..";
 
-const getActiveUser: apiFunctionTypes.GET<UserTypes> = async (data, abortController = null) => {
+const getActiveUser: apiFunctionTypes.GET<null, UserTypes> = async (
+    data,
+    abortController = null,
+) => {
     const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/user/active`, {
         signal: abortController ? abortController.signal : null,
         method: "GET",

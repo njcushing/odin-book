@@ -1,6 +1,6 @@
-export type GET<Response> = (
+export type GET<Params, Response> = (
     data: {
-        params?: { [key: string | number]: unknown };
+        params?: Params;
     },
     abortController: AbortController | null,
     ...args: unknown[]
@@ -10,9 +10,9 @@ export type GET<Response> = (
     data: Response | null;
 }>;
 
-export type POST<Body, Response> = (
+export type POST<Params, Body, Response> = (
     data: {
-        params?: { [key: string | number]: unknown };
+        params?: Params;
         body?: Body;
     },
     abortController: AbortController | null,

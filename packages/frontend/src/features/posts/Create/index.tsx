@@ -32,7 +32,7 @@ function Create({
     const [text, setText] = useState<string>(defaultText);
     const [images, setImages] = useState<Images>(defaultImages);
 
-    const [response, setParams, setAttempting] = useAsync.POST<Body, Response>(
+    const [response, setParams, setAttempting] = useAsync.POST<null, Body, Response>(
         { func: createPost },
         false,
     );

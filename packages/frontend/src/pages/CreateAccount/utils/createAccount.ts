@@ -10,7 +10,7 @@ export type Body = {
 
 export type Response = undefined;
 
-const createAccount: apiFunctionTypes.POST<Body, Response> = async (
+const createAccount: apiFunctionTypes.POST<null, Body, Response> = async (
     data,
     abortController = null,
 ) => {

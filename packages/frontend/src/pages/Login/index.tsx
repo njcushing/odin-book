@@ -4,7 +4,7 @@ import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
 import * as useAsync from "@/hooks/useAsync";
 import styles from "./index.module.css";
-import loginPOST from "./utils/login";
+import loginPOST, { Body } from "./utils/login";
 
 function Login() {
     const [response, setParams, setAttempting] = useAsync.POST({ func: loginPOST }, false);
@@ -48,10 +48,7 @@ function Login() {
                         const target = e.target as HTMLButtonElement;
                         if (target.form) {
                             const formData = new FormData(target.form);
-                            const formFields = Object.fromEntries(formData) as {
-                                accountTag: string;
-                                password: string;
-                            };
+                            const formFields = Object.fromEntries(formData) as Body;
                             setErrorMessage("");
                             setParams([{ body: formFields }, null]);
                             setAttempting(true);

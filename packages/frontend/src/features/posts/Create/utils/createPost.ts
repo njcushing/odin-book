@@ -9,7 +9,10 @@ export type Body = {
 
 export type Response = string | null;
 
-const createPost: apiFunctionTypes.POST<Body, Response> = async (data, abortController = null) => {
+const createPost: apiFunctionTypes.POST<null, Body, Response> = async (
+    data,
+    abortController = null,
+) => {
     let body;
     if (data && data.body) body = data.body;
 

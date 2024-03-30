@@ -71,7 +71,7 @@ type UserContextProviderTypes = {
 
 function UserContextProvider({ children }: UserContextProviderTypes) {
     const [state, setState] = useState<UserTypes>(defaultUser);
-    const [response, setParams, setAttempting] = useAsync.GET<UserTypes>(
+    const [response, setParams, setAttempting] = useAsync.GET<null, UserTypes>(
         { func: getActiveUser },
         true,
     );
