@@ -9,6 +9,33 @@ import Post from "@/models/post";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
 import validators from "../validators";
 
+export const idFromTag = [
+    validators.query.accountTag,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { accountTag } = req.params;
+        // find user
+        const user = await User.findOne({ accountTag }, { _id: 1 });
+        if (!user) {
+            sendResponse(res, 404, "User not found in database");
+        } else {
+            await generateToken(res.locals.user)
+                .then((token) => {
+                    sendResponse(res, 200, "User found", { token, _id: user._id });
+                })
+                .catch((tokenErr) => {
+                    sendResponse(
+                        res,
+                        500,
+                        tokenErr.message || `User found, but token creation failed`,
+                        { _id: user._id },
+                        tokenErr,
+                    );
+                });
+        }
+    }),
+];
+
 export const active = [
     protectedRouteJWT,
     async (req: Request, res: Response) => {
