@@ -18,7 +18,7 @@ const validators = {
             .trim()
             .custom((value) => {
                 for (let i = 0; i < value.length; i++) {
-                    const valid = validation.post.imageBase64(value, "front");
+                    const valid = validation.post.imageBase64(value[i], "front");
                     if (!valid.status) throw new Error(valid.message);
                 }
                 return true;
