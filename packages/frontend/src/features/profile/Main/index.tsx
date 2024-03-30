@@ -1,17 +1,20 @@
+import { createContext, useState, useEffect, useMemo } from "react";
 import { useParams, useLocation, Outlet } from "react-router-dom";
 import Navigation from "@/components/navigation";
 import User from "@/components/user";
 import * as mockData from "@/mockData";
+import * as extendedTypes from "@shared/utils/extendedTypes";
+import * as useAsync from "@/hooks/useAsync";
 import Posts from "@/features/posts";
+import getIdFromTag, { Params, Response } from "@/utils/getIdFromTag";
 import Profile from "..";
+import UserPosts from "../UserPosts";
 import styles from "./index.module.css";
 
 export const routes = [
     {
         path: "",
-        element: ["1", "2", "3", "4", "5"].map((_id) => {
-            return <Posts.Post _id={_id} key={`post-self-${_id}`} />;
-        }),
+        element: <UserPosts />,
         errorElement: <div></div>,
     },
     {
@@ -81,8 +84,35 @@ export const routes = [
     },
 ];
 
+interface ProfileState {
+    _id?: extendedTypes.MongoDBObjectId | null;
+    awaitingResponse: boolean;
+}
+
+const defaultState: ProfileState = {
+    _id: null,
+    awaitingResponse: true,
+};
+
+export const ProfileContext = createContext<ProfileState>(defaultState);
+
 function Main() {
     const { accountTag } = useParams();
+
+    const [state, setState] = useState<extendedTypes.MongoDBObjectId | null>(null);
+    const [response] = useAsync.GET<Params, Response>(
+        { func: getIdFromTag, parameters: [{ params: { accountTag: accountTag || "" } }, null] },
+        true,
+    );
+    const [awaitingResponse, setAwaitingResponse] = useState<boolean>(
+        defaultState.awaitingResponse,
+    );
+
+    useEffect(() => {
+        const newState = response ? response.data : null;
+        setState(newState || null);
+        setAwaitingResponse(false);
+    }, [response]);
 
     const location = useLocation();
     const path = location.pathname.split("/");
@@ -107,11 +137,15 @@ function Main() {
     );
 
     return (
-        <div className={styles["container"]}>
-            <Profile.Summary key={0} />
-            {navigation}
-            <Outlet key={2} />
-        </div>
+        <ProfileContext.Provider
+            value={useMemo(() => ({ _id: state, awaitingResponse }), [state, awaitingResponse])}
+        >
+            <div className={styles["container"]}>
+                <Profile.Summary key={0} />
+                {navigation}
+                <Outlet key={2} />
+            </div>
+        </ProfileContext.Provider>
     );
 }
 
