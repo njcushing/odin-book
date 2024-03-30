@@ -10,6 +10,7 @@ import checkRequestValidationError from "@/utils/checkRequestValidationError";
 import validators from "../validators";
 
 export const idFromTag = [
+    protectedRouteJWT,
     validators.query.accountTag,
     checkRequestValidationError,
     asyncHandler(async (req: Request, res: Response) => {
