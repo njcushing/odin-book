@@ -11,7 +11,7 @@ export type ImageAndNameTypes = Types.Sizes & {
 };
 
 function ImageAndName({
-    image = { src: new Uint8Array([]), alt: "" },
+    image = { src: "", alt: "" },
     displayName = "Display Name",
     accountTag = "account_name",
     disableLinks = false,

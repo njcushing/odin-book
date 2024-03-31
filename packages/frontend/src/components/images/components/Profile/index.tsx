@@ -8,7 +8,7 @@ export type ProfileTypes = Types.Base & {
 };
 
 function Profile({
-    src = new Uint8Array([]),
+    src = "",
     alt = "",
     label = "profile image",
     status = null,
@@ -16,7 +16,13 @@ function Profile({
     style,
 }: ProfileTypes) {
     let imgSrc = "";
-    if (src) imgSrc = objectURLFromTypedArray(src);
+    if (src) {
+        if (typeof src === "string") {
+            imgSrc = src;
+        } else {
+            imgSrc = objectURLFromTypedArray(src);
+        }
+    }
 
     return (
         <div className={styles["container"]} style={{ ...style }}>

@@ -4,9 +4,15 @@ import styles from "./index.module.css";
 
 export type BasicTypes = Types.Base;
 
-function Basic({ src = new Uint8Array([]), alt = "", label = "image", style }: BasicTypes) {
+function Basic({ src = "", alt = "", label = "image", style }: BasicTypes) {
     let imgSrc = "";
-    if (src) imgSrc = objectURLFromTypedArray(src);
+    if (src) {
+        if (typeof src === "string") {
+            imgSrc = src;
+        } else {
+            imgSrc = objectURLFromTypedArray(src);
+        }
+    }
 
     return (
         <div className={styles["container"]} style={{ ...style }}>
