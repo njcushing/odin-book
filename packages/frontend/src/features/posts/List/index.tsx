@@ -4,7 +4,7 @@ import Posts from "..";
 import styles from "./index.module.css";
 
 function List() {
-    const posts = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    const posts = [];
 
     return (
         <div className={styles["container"]}>

@@ -3,21 +3,20 @@ import Buttons from "@/components/buttons";
 import User from "@/components/user";
 import Inputs from "@/components/inputs";
 import Images from "@/components/images";
-import * as modelTypes from "@/utils/modelTypes";
-import * as extendedTypes from "@shared/utils/extendedTypes";
-import * as mockData from "@/mockData";
-import { v4 as uuidv4 } from "uuid";
 import formatNumber from "@/utils/formatNumber";
+import * as useAsync from "@/hooks/useAsync";
+import mongoose from "mongoose";
 import Posts from "..";
+import getPost, { Params, Response } from "./utils/getPost";
 import styles from "./index.module.css";
 
 type PostTypes = {
-    _id?: extendedTypes.MongoDBObjectId;
-    overridePostData?: modelTypes.Post;
+    _id?: mongoose.Types.ObjectId;
+    overridePostData?: Response;
     viewingDefault?: "" | "replies";
     canToggleReplies?: boolean;
     maxRepliesToDisplay?: number;
-    overrideReplies?: extendedTypes.MongoDBObjectId[];
+    overrideReplies?: mongoose.Types.ObjectId[];
     canReply?: boolean;
     replyingOpen?: boolean;
     previewMode?: boolean;
@@ -36,23 +35,42 @@ function Post({
     previewMode = false,
     size = "l",
 }: PostTypes) {
-    const [postData, setPostData] = useState<modelTypes.Post | null>(null);
-    const [liked, setLiked] = useState<boolean>(false);
+    const [postData, setPostData] = useState<Response>(null);
     const [viewing, setViewing] = useState<"" | "replies">(!previewMode ? viewingDefault : "");
     const [replying, setReplying] = useState<boolean>(!previewMode ? replyingOpen : false);
 
+    const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
+        {
+            func: getPost,
+            parameters: [{ params: { postId: _id } }, null],
+        },
+        !overridePostData,
+    );
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
     useEffect(() => {
-        (async () => {
-            if (overridePostData) {
-                setPostData(overridePostData);
-            } else {
-                // fetch post data
-                let data = null;
-                if (_id) data = mockData.getPost(_id);
-                setPostData(data);
-            }
-        })();
-    }, [_id, overridePostData]);
+        if (overridePostData) {
+            setPostData(overridePostData);
+        } else {
+            setPostData(null);
+            setAttempting(true);
+        }
+    }, [overridePostData, setAttempting]);
+
+    useEffect(() => {
+        if (!overridePostData) {
+            const newState = response ? response.data : null;
+            setPostData(newState || null);
+        }
+    }, [overridePostData, response]);
+
+    if (response && response.status === 401) window.location.assign("/");
+
+    useEffect(() => {
+        if (response && response.status >= 400 && response.message && response.message.length > 0) {
+            setErrorMessage(response.message);
+        }
+    }, [response]);
 
     let sizes = {
         imageAndName: "l",
@@ -76,29 +94,36 @@ function Post({
             break;
     }
 
-    let replies: extendedTypes.MongoDBObjectId[] = [];
+    let replies: mongoose.Types.ObjectId[] = [];
     if (overrideReplies.length > 0) {
         replies = overrideReplies;
     }
+
+    const errorElement =
+        errorMessage.length > 0 ? <p className={styles["error-message"]}>{errorMessage}</p> : null;
 
     return postData ? (
         <>
             <div className={styles["container"]} style={{ gap: sizes.rowGap }}>
                 <div className={styles["row-one"]}>
                     <User.ImageAndName
-                        image={{
-                            src: postData.author.preferences.profileImage.src,
-                            alt: postData.author.preferences.profileImage.alt,
-                        }}
+                        image={
+                            postData.author.preferences.profileImage
+                                ? {
+                                      src: postData.author.preferences.profileImage.url,
+                                      alt: postData.author.preferences.profileImage.alt,
+                                  }
+                                : { src: "", alt: "" }
+                        }
                         displayName={postData.author.preferences.displayName}
                         accountTag={postData.author.accountTag}
                         disableLinks={previewMode}
                         size={sizes.imageAndName as "s" | "l"}
                     />
                 </div>
-                {(postData.content.text.length > 0 || postData.content.images.length > 0) && (
+                {(postData.text.length > 0 || postData.images.length > 0) && (
                     <div className={styles["row-two"]}>
-                        {postData.content.text.length > 0 && (
+                        {postData.text.length > 0 && (
                             <p
                                 className={styles["text"]}
                                 style={{
@@ -106,23 +131,23 @@ function Post({
                                     lineHeight: sizes.contentLineHeight,
                                 }}
                             >
-                                {postData.content.text}
+                                {postData.text}
                             </p>
                         )}
-                        {postData.content.images.length > 0 && (
+                        {postData.images.length > 0 && (
                             <ul
                                 className={styles["images"]}
-                                data-image-quantity={`${Math.min(4, postData.content.images.length)}`}
+                                data-image-quantity={`${Math.min(4, postData.images.length)}`}
                             >
-                                {postData.content.images.map((image, i) => {
+                                {postData.images.map((image, i) => {
                                     if (i >= 4) return null;
                                     return (
                                         <li
                                             className={styles["image-container"]}
-                                            key={image.key || uuidv4()}
+                                            key={`${image._id}`}
                                         >
                                             <Images.Basic
-                                                src={image.src}
+                                                src={image.url}
                                                 alt={image.alt}
                                                 style={{ width: "100%", height: "100%" }}
                                             />
@@ -136,7 +161,7 @@ function Post({
                 <div className={styles["row-three"]}>
                     <p className={styles["likes-count"]}>
                         <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
-                            {formatNumber(postData.likesQuantity, 1)}
+                            {formatNumber(postData.likesCount, 1)}
                         </strong>
                         <Buttons.Basic
                             text="Likes"
@@ -152,7 +177,7 @@ function Post({
                     </p>
                     <p className={styles["replies-count"]}>
                         <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
-                            {formatNumber(postData.repliesQuantity, 1)}
+                            {formatNumber(postData.repliesCount, 1)}
                         </strong>
                         <Buttons.Basic
                             text="Replies"
@@ -176,9 +201,9 @@ function Post({
                     </p>
                     <div className={styles["row-three-buttons"]}>
                         <Buttons.Basic
-                            text={liked ? "" : "Like"}
+                            text={postData.likedByUser ? "" : "Like"}
                             symbol="star"
-                            palette={liked ? "gold" : "primary"}
+                            palette={postData.likedByUser ? "gold" : "primary"}
                             otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
                             disabled={previewMode}
                         />
@@ -229,7 +254,9 @@ function Post({
                 </div>
             ) : null}
         </>
-    ) : null;
+    ) : (
+        errorElement
+    );
 }
 
 export default Post;

@@ -5,6 +5,7 @@ import Buttons from "@/components/buttons";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 import validate from "@shared/validation";
 import * as useAsync from "@/hooks/useAsync";
+import mongoose from "mongoose";
 import createPost, { Body, Response } from "./utils/createPost";
 import Posts from "..";
 import styles from "./index.module.css";
@@ -81,33 +82,34 @@ function Create({
                 <div className={styles["content-container"]}>
                     <Posts.Post
                         overridePostData={{
-                            _id: "",
+                            _id: new mongoose.Types.ObjectId(),
                             author: {
-                                _id: "",
+                                _id: new mongoose.Types.ObjectId(),
                                 accountTag: "JohnSmith84",
                                 preferences: {
                                     displayName: "John Smith",
-                                    profileImage: { src: new Uint8Array([]), alt: "" },
-                                },
-                                status: null,
-                            },
-                            content: {
-                                text,
-                                images: Object.keys(images).map((key) => {
-                                    return {
-                                        src: images[key].data,
+                                    profileImage: {
+                                        _id: new mongoose.Types.ObjectId(),
+                                        url: new Uint8Array([]),
                                         alt: "",
-                                        key,
-                                    };
-                                }),
+                                    },
+                                },
                             },
-                            likes: [],
-                            likesQuantity: 0,
-                            replies: [],
-                            repliesQuantity: 0,
+                            text,
+                            images: Object.keys(images).map((key) => {
+                                return {
+                                    _id: new mongoose.Types.ObjectId(),
+                                    url: images[key].data,
+                                    alt: "",
+                                };
+                            }),
+                            replyingTo: null,
+                            createdAt: Date.now().toString(),
+                            likesCount: 0,
+                            repliesCount: 0,
+                            likedByUser: false,
                         }}
                         previewMode
-                        canReply
                     />
                 </div>
                 <div className={styles["post-button-container"]}>
