@@ -16,7 +16,7 @@ export type Response = {
             displayName: string;
             profileImage: {
                 _id: mongoose.Types.ObjectId;
-                url: string;
+                url: extendedTypes.TypedArray | string;
                 alt: string;
             } | null;
         };
@@ -24,7 +24,7 @@ export type Response = {
     text: string;
     images: {
         _id: mongoose.Types.ObjectId;
-        url: string;
+        url: extendedTypes.TypedArray | string;
         alt: string;
     }[];
     replyingTo: mongoose.Types.ObjectId | null;
