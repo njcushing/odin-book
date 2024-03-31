@@ -10,7 +10,7 @@ export interface IImage extends TImage, Document {}
 
 const ImageSchema: Schema = new Schema(
     {
-        url: { type: String, default: null },
+        url: { type: String, required: true },
         alt: { type: String, default: "" },
     },
     {
