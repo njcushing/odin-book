@@ -7,34 +7,32 @@ export type Params = {
     postId: extendedTypes.MongoDBObjectId | null | undefined;
 };
 
-export type Response =
-    | {
-          _id: mongoose.Types.ObjectId;
-          author: {
-              _id: mongoose.Types.ObjectId;
-              accountTag: string;
-              preferences: {
-                  displayName: string;
-                  profileImage: {
-                      _id: mongoose.Types.ObjectId;
-                      url: string;
-                      alt: string;
-                  } | null;
-              };
-          };
-          text: string;
-          images: {
-              _id: mongoose.Types.ObjectId;
-              url: string;
-              alt: string;
-          }[];
-          replyingTo: mongoose.Types.ObjectId | null;
-          createdAt: string;
-          likesCount: number;
-          repliesCount: number;
-          likedByUser: boolean;
-      }[]
-    | null;
+export type Response = {
+    _id: mongoose.Types.ObjectId;
+    author: {
+        _id: mongoose.Types.ObjectId;
+        accountTag: string;
+        preferences: {
+            displayName: string;
+            profileImage: {
+                _id: mongoose.Types.ObjectId;
+                url: string;
+                alt: string;
+            } | null;
+        };
+    };
+    text: string;
+    images: {
+        _id: mongoose.Types.ObjectId;
+        url: string;
+        alt: string;
+    }[];
+    replyingTo: mongoose.Types.ObjectId | null;
+    createdAt: string;
+    likesCount: number;
+    repliesCount: number;
+    likedByUser: boolean;
+} | null;
 
 const getPost: apiFunctionTypes.GET<Params, Response> = async (data, abortController = null) => {
     const { postId } = data.params as Params;
