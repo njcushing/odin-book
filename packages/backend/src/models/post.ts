@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 import * as validatePost from "@shared/validation/post";
 
 export type TPost = {
-    owner: mongoose.Types.ObjectId;
+    author: mongoose.Types.ObjectId;
     text?: string;
     images?: string[];
     replyingTo?: mongoose.Types.ObjectId;
@@ -17,7 +17,7 @@ export interface IPost extends TPost, Document {}
 
 const PostSchema: Schema = new Schema(
     {
-        owner: {
+        author: {
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true,

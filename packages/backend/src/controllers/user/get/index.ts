@@ -173,7 +173,7 @@ export const posts = [
             if (!afterPost) {
                 sendResponse(res, 404, "Specified 'after' post not found in the database");
                 responding = true;
-            } else if (afterPost.owner.toString() !== userId) {
+            } else if (afterPost.author.toString() !== userId) {
                 sendResponse(
                     res,
                     400,
