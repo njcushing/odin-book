@@ -129,6 +129,7 @@ const UserSchema: Schema = new Schema(
             profileImage: {
                 type: Schema.Types.ObjectId,
                 ref: "Image",
+                default: null,
             },
             theme: {
                 type: String,
