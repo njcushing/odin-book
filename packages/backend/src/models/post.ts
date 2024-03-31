@@ -36,8 +36,8 @@ const PostSchema: Schema = new Schema(
         images: {
             type: [
                 {
-                    type: String,
-                    trim: true,
+                    type: Schema.Types.ObjectId,
+                    ref: "Image",
                 },
             ],
             validate: [
