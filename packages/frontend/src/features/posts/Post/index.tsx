@@ -188,7 +188,7 @@ function Post({
                                 {formatNumber(postData.likesCount, 1)}
                             </strong>
                             <Buttons.Basic
-                                text="Likes"
+                                text={`Like${postData.likesCount === 1 ? "" : "s"}`}
                                 label="view likes"
                                 palette="bare"
                                 otherStyles={{
@@ -204,7 +204,7 @@ function Post({
                                 {formatNumber(postData.repliesCount, 1)}
                             </strong>
                             <Buttons.Basic
-                                text="Replies"
+                                text={`Repl${postData.repliesCount === 1 ? "y" : "ies"}`}
                                 label="view replies"
                                 onClickHandler={() => {
                                     if (canToggleReplies) {
