@@ -90,6 +90,13 @@
     gap: 0.2rem;
 }
 
+.row-three-left {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0rem 1.2rem;
+}
+
 .view-likes-button,
 .view-replies-button {
     color: var(--text-primary);

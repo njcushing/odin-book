@@ -7,12 +7,13 @@ import formatNumber from "@/utils/formatNumber";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
 import Posts from "..";
-import getPost, { Params, Response } from "./utils/getPost";
+import getPost, { Params as GetPostParams, Response as GetPostResponse } from "./utils/getPost";
+import likePost, { Params as LikePostParams } from "./utils/likePost";
 import styles from "./index.module.css";
 
 type PostTypes = {
     _id?: mongoose.Types.ObjectId;
-    overridePostData?: Response;
+    overridePostData?: GetPostResponse;
     viewingDefault?: "" | "replies";
     canToggleReplies?: boolean;
     maxRepliesToDisplay?: number;
@@ -35,42 +36,64 @@ function Post({
     previewMode = false,
     size = "l",
 }: PostTypes) {
-    const [postData, setPostData] = useState<Response>(null);
+    const [postData, setPostData] = useState<GetPostResponse>(null);
     const [viewing, setViewing] = useState<"" | "replies">(!previewMode ? viewingDefault : "");
     const [replying, setReplying] = useState<boolean>(!previewMode ? replyingOpen : false);
 
-    const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
+    // get post api handling
+    const [getPostResponse, setGetPostParams, getPostAgain] = useAsync.GET<
+        GetPostParams,
+        GetPostResponse
+    >(
         {
             func: getPost,
             parameters: [{ params: { postId: _id } }, null],
         },
         !overridePostData,
     );
-    const [errorMessage, setErrorMessage] = useState<string>("");
+    useEffect(() => {
+        if (!overridePostData) {
+            const newState = getPostResponse ? getPostResponse.data : null;
+            setPostData(newState);
+        }
+    }, [overridePostData, getPostResponse]);
 
+    // like post api handling
+    const [likePostResponse, setLikePostParams, likePostAgain] = useAsync.PUT<
+        LikePostParams,
+        null,
+        null
+    >(
+        {
+            func: likePost,
+            parameters: [{ params: { postId: _id } }, null],
+        },
+        false,
+    );
+
+    // error message handling
+    const [errorMessage, setErrorMessage] = useState<string>("");
+    useEffect(() => {
+        if (
+            getPostResponse &&
+            getPostResponse.status >= 400 &&
+            getPostResponse.message &&
+            getPostResponse.message.length > 0
+        ) {
+            setErrorMessage(getPostResponse.message);
+        }
+    }, [getPostResponse]);
+
+    // fetch post again
     useEffect(() => {
         if (overridePostData) {
             setPostData(overridePostData);
         } else {
-            setPostData(null);
-            setAttempting(true);
+            getPostAgain(true);
         }
-    }, [overridePostData, setAttempting]);
+    }, [overridePostData, getPostAgain, likePostResponse]);
 
-    useEffect(() => {
-        if (!overridePostData) {
-            const newState = response ? response.data : null;
-            setPostData(newState || null);
-        }
-    }, [overridePostData, response]);
-
-    if (response && response.status === 401) window.location.assign("/");
-
-    useEffect(() => {
-        if (response && response.status >= 400 && response.message && response.message.length > 0) {
-            setErrorMessage(response.message);
-        }
-    }, [response]);
+    if (getPostResponse && getPostResponse.status === 401) window.location.assign("/");
 
     let sizes = {
         imageAndName: "l",
@@ -159,50 +182,55 @@ function Post({
                     </div>
                 )}
                 <div className={styles["row-three"]}>
-                    <p className={styles["likes-count"]}>
-                        <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
-                            {formatNumber(postData.likesCount, 1)}
-                        </strong>
-                        <Buttons.Basic
-                            text="Likes"
-                            label="view likes"
-                            palette="bare"
-                            otherStyles={{
-                                fontSize: sizes.linksAndButtonsRegular,
-                                fontWeight: "normal",
-                                padding: "0rem",
-                            }}
-                            disabled={previewMode}
-                        />
-                    </p>
-                    <p className={styles["replies-count"]}>
-                        <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
-                            {formatNumber(postData.repliesCount, 1)}
-                        </strong>
-                        <Buttons.Basic
-                            text="Replies"
-                            label="view replies"
-                            onClickHandler={() => {
-                                if (canToggleReplies) {
-                                    if (viewing === "replies") setViewing("");
-                                    if (viewing !== "replies") setViewing("replies");
-                                } else {
-                                    // repliesClickHandler
-                                }
-                            }}
-                            palette="bare"
-                            otherStyles={{
-                                fontSize: sizes.linksAndButtonsRegular,
-                                fontWeight: "normal",
-                                padding: "0rem",
-                            }}
-                            disabled={previewMode}
-                        />
-                    </p>
+                    <div className={styles["row-three-left"]}>
+                        <p className={styles["likes-count"]}>
+                            <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
+                                {formatNumber(postData.likesCount, 1)}
+                            </strong>
+                            <Buttons.Basic
+                                text="Likes"
+                                label="view likes"
+                                palette="bare"
+                                otherStyles={{
+                                    fontSize: sizes.linksAndButtonsRegular,
+                                    fontWeight: "normal",
+                                    padding: "0rem",
+                                }}
+                                disabled={previewMode}
+                            />
+                        </p>
+                        <p className={styles["replies-count"]}>
+                            <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
+                                {formatNumber(postData.repliesCount, 1)}
+                            </strong>
+                            <Buttons.Basic
+                                text="Replies"
+                                label="view replies"
+                                onClickHandler={() => {
+                                    if (canToggleReplies) {
+                                        if (viewing === "replies") setViewing("");
+                                        if (viewing !== "replies") setViewing("replies");
+                                    } else {
+                                        // repliesClickHandler
+                                    }
+                                }}
+                                palette="bare"
+                                otherStyles={{
+                                    fontSize: sizes.linksAndButtonsRegular,
+                                    fontWeight: "normal",
+                                    padding: "0rem",
+                                }}
+                                disabled={previewMode}
+                            />
+                        </p>
+                    </div>
                     <div className={styles["row-three-buttons"]}>
                         <Buttons.Basic
                             text={postData.likedByUser ? "" : "Like"}
                             symbol="star"
+                            onClickHandler={() => {
+                                if (!overridePostData && postData !== null) likePostAgain(true);
+                            }}
                             palette={postData.likedByUser ? "gold" : "primary"}
                             otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
                             disabled={previewMode}
