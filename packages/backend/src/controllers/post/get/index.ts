@@ -96,7 +96,9 @@ export const regular = [
                 createdAt: 1,
                 likesCount: { $size: "$likes" },
                 repliesCount: { $size: "$replies" },
-                likedByUser: { $in: [res.locals.user.id, "$likes"] },
+                likedByUser: {
+                    $in: [new mongoose.Types.ObjectId(`${res.locals.user.id}`), "$likes"],
+                },
             },
         });
         // execute aggregation
