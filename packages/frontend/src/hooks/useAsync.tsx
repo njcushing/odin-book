@@ -113,3 +113,13 @@ export function POST<Params, Body, Response>(
 
     return [response, setParams, setAttempting];
 }
+
+export function PUT<Params, Body, Response>(
+    functionInfo: {
+        func: apiFunctionTypes.POST<Params, Body, Response>;
+        parameters?: Parameters<apiFunctionTypes.POST<Params, Body, Response>>;
+    },
+    attemptOnMount?: boolean,
+) {
+    return POST<Params, Body, Response>(functionInfo, attemptOnMount);
+}

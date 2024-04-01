@@ -22,3 +22,5 @@ export type POST<Params, Body, Response> = (
     message: string | null;
     data?: Response;
 }>;
+
+export type PUT<Params, Body, Response> = POST<Params, Body, Response>;
