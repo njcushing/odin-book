@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    postId: extendedTypes.MongoDBObjectId | null | undefined;
+    postId: mongoose.Types.ObjectId | null | undefined;
 };
 
 export type Response = {
