@@ -10,6 +10,29 @@
     padding: 0.6rem;
 }
 
+.replying-to {
+    align-self: start;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.1rem;
+
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.replying-to:hover > .replying-to-text,
+.replying-to:focus > .replying-to-text {
+    text-decoration: underline;
+}
+
+.replying-to-arrow {
+    font-size: 120%;
+}
+
 .row-one {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);

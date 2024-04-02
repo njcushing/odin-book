@@ -21,6 +21,7 @@ type PostTypes = {
     canReply?: boolean;
     replyingOpen?: boolean;
     removeSeeMoreRepliesButton?: boolean;
+    removeLinkToReply?: boolean;
     previewMode?: boolean;
     size?: "s" | "l";
 };
@@ -35,6 +36,7 @@ function Post({
     canReply = false,
     replyingOpen = false,
     removeSeeMoreRepliesButton = false,
+    removeLinkToReply = false,
     previewMode = false,
     size = "l",
 }: PostTypes) {
@@ -130,6 +132,14 @@ function Post({
     return postData ? (
         <>
             <div className={styles["container"]} style={{ gap: sizes.rowGap }}>
+                {!removeLinkToReply && postData.replyingTo ? (
+                    <a className={styles["replying-to"]} href={`/post/${postData.replyingTo}`}>
+                        <p className={`material-symbols-rounded ${styles["replying-to-arrow"]}`}>
+                            arrow_back
+                        </p>
+                        <p className={styles["replying-to-text"]}>Replying To...</p>
+                    </a>
+                ) : null}
                 <div className={styles["row-one"]}>
                     <User.ImageAndName
                         image={
@@ -273,7 +283,7 @@ function Post({
                             if (i >= maxRepliesToDisplay) return null;
                             return (
                                 <li className={styles["reply"]} key={reply.toString()}>
-                                    <Posts.Post _id={reply} size="s" />
+                                    <Posts.Post _id={reply} removeLinkToReply size="s" />
                                 </li>
                             );
                         })}
