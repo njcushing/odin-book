@@ -20,6 +20,7 @@ type PostTypes = {
     overrideReplies?: mongoose.Types.ObjectId[];
     canReply?: boolean;
     replyingOpen?: boolean;
+    removeSeeMoreRepliesButton?: boolean;
     previewMode?: boolean;
     size?: "s" | "l";
 };
@@ -33,6 +34,7 @@ function Post({
     overrideReplies = [],
     canReply = false,
     replyingOpen = false,
+    removeSeeMoreRepliesButton = false,
     previewMode = false,
     size = "l",
 }: PostTypes) {
@@ -276,9 +278,11 @@ function Post({
                             );
                         })}
                     </ul>
-                    <div className={styles["see-more-replies-button-wrapper"]}>
-                        <Buttons.Basic text="See More" otherStyles={{ fontSize: "1.1rem" }} />
-                    </div>
+                    {!removeSeeMoreRepliesButton ? (
+                        <div className={styles["see-more-replies-button-wrapper"]}>
+                            <Buttons.Basic text="See More" otherStyles={{ fontSize: "1.1rem" }} />
+                        </div>
+                    ) : null}
                 </div>
             ) : null}
         </>

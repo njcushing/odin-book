@@ -158,12 +158,16 @@
     color: var(--text-tertiary);
     font-size: 1.1rem;
 
-    padding: 0rem 0rem 0.6rem 1.6rem;
+    padding: 0rem 0rem 0rem 1.6rem;
 }
 
 .reply {
     outline: none;
     border-left: 1px solid var(--outline-primary);
+}
+
+.see-more-replies-button-wrapper {
+    padding: 0.6rem 0rem;
 }
 
 .error-message {
