@@ -9,7 +9,6 @@ import styles from "./index.module.css";
 function UserLikes() {
     const { _id } = useContext(ProfileContext);
 
-    const [userId, setUserId] = useState<mongoose.Types.ObjectId | null | undefined>(_id);
     const [likes, setLikes] = useState<Response>([]);
     const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
         {
@@ -27,7 +26,9 @@ function UserLikes() {
 
     useEffect(() => {
         setAttempting(true);
-    }, [userId, setAttempting]);
+        setErrorMessage("");
+        setParams([{ params: { userId: _id, after: null } }, null]);
+    }, [_id, setParams, setAttempting]);
 
     if (response && response.status === 401) window.location.assign("/");
 

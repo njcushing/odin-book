@@ -13,7 +13,6 @@ export type UserPostsTypes = {
 function UserPosts({ repliesOnly = false }: UserPostsTypes) {
     const { _id } = useContext(ProfileContext);
 
-    const [userId, setUserId] = useState<mongoose.Types.ObjectId | null | undefined>(_id);
     const [posts, setPosts] = useState<Response>([]);
     const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
         {
@@ -31,7 +30,9 @@ function UserPosts({ repliesOnly = false }: UserPostsTypes) {
 
     useEffect(() => {
         setAttempting(true);
-    }, [userId, setAttempting]);
+        setErrorMessage("");
+        setParams([{ params: { userId: _id, after: null, repliesOnly } }, null]);
+    }, [_id, repliesOnly, setParams, setAttempting]);
 
     if (response && response.status === 401) window.location.assign("/");
 
