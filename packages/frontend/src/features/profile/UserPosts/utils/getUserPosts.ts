@@ -29,7 +29,6 @@ const getUserPosts: apiFunctionTypes.GET<Params, Response> = async (
         };
     }
 
-    console.log(repliesOnly);
     const queryObject = { limit: "10", after, repliesOnly: repliesOnly ? `${repliesOnly}` : "" };
     const urlParams = new URLSearchParams();
     Object.entries(queryObject).forEach(([key, value]) => {
