@@ -6,7 +6,11 @@ import Posts from "@/features/posts";
 import getUserPosts, { Params, Response } from "./utils/getUserPosts";
 import styles from "./index.module.css";
 
-function UserPosts() {
+export type UserPostsTypes = {
+    repliesOnly?: boolean;
+};
+
+function UserPosts({ repliesOnly = false }: UserPostsTypes) {
     const { _id } = useContext(ProfileContext);
 
     const [userId, setUserId] = useState<mongoose.Types.ObjectId | null | undefined>(_id);
@@ -14,7 +18,7 @@ function UserPosts() {
     const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
         {
             func: getUserPosts,
-            parameters: [{ params: { userId: _id, after: null } }, null],
+            parameters: [{ params: { userId: _id, after: null, repliesOnly } }, null],
         },
         true,
     );

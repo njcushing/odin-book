@@ -5,31 +5,23 @@ import User from "@/components/user";
 import * as mockData from "@/mockData";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
-import Posts from "@/features/posts";
 import getIdFromTag, { Params, Response } from "@/utils/getIdFromTag";
 import Profile from "..";
 import UserPosts from "../UserPosts";
 import UserLikes from "../UserLikes";
 import styles from "./index.module.css";
 
+// I have to use keys for the "" and "replies" routes to force a rerender of the UserPosts component
+
 export const routes = [
     {
         path: "",
-        element: <UserPosts />,
+        element: <UserPosts key="user-posts" />,
         errorElement: <div></div>,
     },
     {
         path: "replies",
-        element: ["1", "2", "3", "4", "5"].map((_id) => {
-            return (
-                <Posts.Post
-                    _id={_id}
-                    overrideReplies={["6"]}
-                    viewingDefault="replies"
-                    key={`reply-self-${_id}`}
-                />
-            );
-        }),
+        element: <UserPosts repliesOnly key="user-replies" />,
         errorElement: <div></div>,
     },
     {

@@ -5,6 +5,7 @@ import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 export type Params = {
     userId: mongoose.Types.ObjectId | null | undefined;
     after: string | null;
+    repliesOnly: boolean;
 };
 
 export type Response =
@@ -18,7 +19,7 @@ const getUserPosts: apiFunctionTypes.GET<Params, Response> = async (
     data,
     abortController = null,
 ) => {
-    const { userId, after } = data.params as Params;
+    const { userId, after, repliesOnly } = data.params as Params;
 
     if (!userId) {
         return {
@@ -28,7 +29,8 @@ const getUserPosts: apiFunctionTypes.GET<Params, Response> = async (
         };
     }
 
-    const queryObject = { limit: "10", after };
+    console.log(repliesOnly);
+    const queryObject = { limit: "10", after, repliesOnly: repliesOnly ? `${repliesOnly}` : "" };
     const urlParams = new URLSearchParams();
     Object.entries(queryObject).forEach(([key, value]) => {
         if (value !== "" && value !== undefined && value !== null) {
