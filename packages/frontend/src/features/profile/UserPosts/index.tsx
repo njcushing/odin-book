@@ -48,7 +48,15 @@ function UserPosts({ repliesOnly = false }: UserPostsTypes) {
             ) : null}
             {posts
                 ? posts.map((post) => {
-                      return <Posts.Post _id={post._id} key={`post-self-${post._id}`} />;
+                      return (
+                          <Posts.Post
+                              _id={repliesOnly && post.replyingTo ? post.replyingTo : post._id}
+                              overrideReplies={repliesOnly ? [post._id] : []}
+                              viewingDefault={repliesOnly ? "replies" : ""}
+                              removeSeeMoreRepliesButton={repliesOnly}
+                              key={`post-self-${post._id}`}
+                          />
+                      );
                   })
                 : null}
         </>
