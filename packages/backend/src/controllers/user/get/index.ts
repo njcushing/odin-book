@@ -156,7 +156,19 @@ export const posts = [
         // match user, unwind & populate posts
         aggregation.push(
             { $match: { _id: new mongoose.Types.ObjectId(userId) } },
-            { $unwind: "$posts" },
+            { $unwind: { path: "$posts", preserveNullAndEmptyArrays: true } },
+            // if the 'posts' array is empty, it will not be present on the document at this stage
+            {
+                $addFields: {
+                    posts: {
+                        $cond: {
+                            if: { $eq: [{ $type: "$posts" }, "missing"] },
+                            then: [],
+                            else: "$posts",
+                        },
+                    },
+                },
+            },
             {
                 $lookup: {
                     from: "posts",
@@ -206,7 +218,7 @@ export const posts = [
             if (limit) aggregation.push({ $limit: Number(limit) });
             // group results back into posts array
             aggregation.push(
-                { $unwind: "$populatedPosts" },
+                { $unwind: { path: "$populatedPosts", preserveNullAndEmptyArrays: true } },
                 {
                     $group: {
                         _id: "$_id",
@@ -239,6 +251,110 @@ export const posts = [
                             500,
                             tokenErr.message || `Posts found, but token creation failed`,
                             { posts: userPosts },
+                            tokenErr,
+                        );
+                    });
+            }
+        }
+    }),
+];
+
+export const likes = [
+    protectedRouteJWT,
+    validators.param.userId,
+    validators.query.limit,
+    validators.query.after,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const { limit, after } = req.query;
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        // match user, unwind & populate likes
+        aggregation.push(
+            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
+            { $unwind: { path: "$likes", preserveNullAndEmptyArrays: true } },
+            // if the 'likes' array is empty, it will not be present on the document at this stage
+            {
+                $addFields: {
+                    likes: {
+                        $cond: {
+                            if: { $eq: [{ $type: "$likes" }, "missing"] },
+                            then: [],
+                            else: "$likes",
+                        },
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "likes",
+                    foreignField: "_id",
+                    as: "populatedLikes",
+                },
+            },
+        );
+        // if 'after' query parameter is specified, check post exists
+        let responding = false;
+        if (after) {
+            const afterPost = await Post.findById(after);
+            if (!afterPost) {
+                sendResponse(res, 404, "Specified 'after' post not found in the database");
+                responding = true;
+            } else {
+                // if so, check post is within likes array
+                aggregation.push({
+                    $match: { populatedLikes: { $elemMatch: { _id: afterPost._id } } },
+                });
+                // and filter likes based on their creation date being after the 'after' post
+                aggregation.push({
+                    $match: {
+                        "populatedLikes.createdAt": { $lt: afterPost.createdAt },
+                    },
+                });
+            }
+        }
+        if (!responding) {
+            // sort & limit likes
+            aggregation.push({ $sort: { "populatedLikes.createdAt": -1 } });
+            if (limit) aggregation.push({ $limit: Number(limit) });
+            // group results back into likes array
+            aggregation.push(
+                { $unwind: { path: "$populatedLikes", preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: "$_id",
+                        likes: { $push: "$populatedLikes" },
+                    },
+                },
+            );
+            // final projection
+            aggregation.push({
+                $project: {
+                    likes: {
+                        _id: 1,
+                        replyingTo: 1,
+                    },
+                },
+            });
+            // execute aggregation
+            const aggregationResult = await User.aggregate(aggregation).exec();
+            if (aggregationResult.length === 0) {
+                sendResponse(res, 404, "Could not find likes");
+            } else {
+                const userLikes = aggregationResult[0].likes;
+                await generateToken(res.locals.user)
+                    .then((token) => {
+                        sendResponse(res, 200, "Likes found", { token, likes: userLikes });
+                    })
+                    .catch((tokenErr) => {
+                        sendResponse(
+                            res,
+                            500,
+                            tokenErr.message || `Likes found, but token creation failed`,
+                            { likes: userLikes },
                             tokenErr,
                         );
                     });

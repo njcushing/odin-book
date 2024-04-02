@@ -5,6 +5,7 @@ import * as create from "./create";
 const router = express.Router();
 
 router.get("/:userId/posts", get.posts);
+router.get("/:userId/likes", get.likes);
 router.get("/id", get.idFromTag);
 router.get("/active", get.active);
 router.post("/", create.regular);
