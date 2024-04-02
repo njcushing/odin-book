@@ -1,16 +1,16 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import * as extendedTypes from "@shared/utils/extendedTypes";
+import mongoose from "mongoose";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    userId: extendedTypes.MongoDBObjectId | null | undefined;
+    userId: mongoose.Types.ObjectId | null | undefined;
     after: string | null;
 };
 
 export type Response =
     | {
-          _id: extendedTypes.MongoDBObjectId;
-          replyingTo: extendedTypes.MongoDBObjectId | null;
+          _id: mongoose.Types.ObjectId;
+          replyingTo: mongoose.Types.ObjectId | null;
       }[]
     | null;
 

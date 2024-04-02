@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
+import mongoose from "mongoose";
 import * as useAsync from "@/hooks/useAsync";
-import * as extendedTypes from "@shared/utils/extendedTypes";
 import { ProfileContext } from "@/features/profile/Main";
 import Posts from "@/features/posts";
 import getUserPosts, { Params, Response } from "./utils/getUserPosts";
@@ -9,7 +9,7 @@ import styles from "./index.module.css";
 function UserPosts() {
     const { _id } = useContext(ProfileContext);
 
-    const [userId, setUserId] = useState<extendedTypes.MongoDBObjectId | null | undefined>(_id);
+    const [userId, setUserId] = useState<mongoose.Types.ObjectId | null | undefined>(_id);
     const [posts, setPosts] = useState<Response>([]);
     const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
         {

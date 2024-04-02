@@ -1,12 +1,12 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import * as extendedTypes from "@shared/utils/extendedTypes";
+import mongoose from "mongoose";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
     accountTag: string;
 };
 
-export type Response = extendedTypes.MongoDBObjectId | null;
+export type Response = mongoose.Types.ObjectId | null | undefined;
 
 const getIdFromTag: apiFunctionTypes.GET<Params, Response> = async (
     data,
