@@ -1,0 +1,22 @@
+.error-message {
+    color: var(--text-error);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.followers {
+    padding: 0.4rem;
+}
+
+.empty-message {
+    color: var(--text-inactive);
+    font-family: Gabarito;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.error-message,
+.empty-message {
+    padding: 0.8rem 0.2rem;
+}

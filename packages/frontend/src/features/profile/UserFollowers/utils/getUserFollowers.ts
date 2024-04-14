@@ -9,7 +9,7 @@ export type Params = {
 
 export type Response = mongoose.Types.ObjectId[] | null;
 
-const getUserFollowing: apiFunctionTypes.GET<Params, Response> = async (
+const getUserFollowers: apiFunctionTypes.GET<Params, Response> = async (
     data,
     abortController = null,
 ) => {
@@ -32,7 +32,7 @@ const getUserFollowing: apiFunctionTypes.GET<Params, Response> = async (
     });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/user/${userId}/following?${urlParams}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/user/${userId}/followers/users?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",
@@ -49,7 +49,7 @@ const getUserFollowing: apiFunctionTypes.GET<Params, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.posts,
+                data: responseJSON.data.followers,
             };
         })
         .catch((error) => {
@@ -62,4 +62,4 @@ const getUserFollowing: apiFunctionTypes.GET<Params, Response> = async (
     return result;
 };
 
-export default getUserFollowing;
+export default getUserFollowers;
