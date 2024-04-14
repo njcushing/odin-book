@@ -423,3 +423,103 @@ export const option = [
         }
     }),
 ];
+
+export const followers = [
+    protectedRouteJWT,
+    validators.param.userId,
+    validators.query.limit,
+    validators.query.after,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const { limit, after } = req.query;
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        // match user, unwind & populate followers.users
+        aggregation.push(
+            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
+            { $unwind: { path: "$followers.users", preserveNullAndEmptyArrays: true } },
+            // if the 'followers.users' array is empty, it will not be present on the document at this stage
+            {
+                $addFields: {
+                    userFollowers: {
+                        $cond: {
+                            if: { $eq: [{ $type: "$followers.users" }, "missing"] },
+                            then: [],
+                            else: "$followers.users",
+                        },
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userFollowers",
+                    foreignField: "_id",
+                    as: "populatedFollowers",
+                },
+            },
+        );
+        // if 'after' query parameter is specified, check user exists
+        let responding = false;
+        if (after) {
+            const afterUser = await User.findById(after);
+            if (!afterUser) {
+                sendResponse(res, 404, "Specified 'after' user not found in the database");
+                responding = true;
+            } else {
+                // if so, check user is within followers.users array
+                aggregation.push({
+                    $match: { populatedFollowers: { $elemMatch: { _id: afterUser._id } } },
+                });
+                // and filter users based on their creation date being after the 'after' user
+                aggregation.push({
+                    $match: {
+                        "populatedFollowers.createdAt": { $lt: afterUser.createdAt },
+                    },
+                });
+            }
+        }
+        if (!responding) {
+            // sort & limit users
+            aggregation.push({ $sort: { "populatedFollowers.createdAt": -1 } });
+            if (limit) aggregation.push({ $limit: Number(limit) });
+            // group results back into userFollowers array
+            aggregation.push(
+                { $unwind: { path: "$populatedFollowers", preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: "$_id",
+                        userFollowers: { $push: "$populatedFollowers" },
+                    },
+                },
+            );
+            // final projection
+            aggregation.push({ $project: { _id: 0, userFollowers: "$userFollowers._id" } });
+            // execute aggregation
+            const aggregationResult = await User.aggregate(aggregation).exec();
+            if (aggregationResult.length === 0) {
+                sendResponse(res, 404, "Could not find likes");
+            } else {
+                const { userFollowers } = aggregationResult[0];
+                await generateToken(res.locals.user)
+                    .then((token) => {
+                        sendResponse(res, 200, "Followers found", {
+                            token,
+                            followers: userFollowers,
+                        });
+                    })
+                    .catch((tokenErr) => {
+                        sendResponse(
+                            res,
+                            500,
+                            tokenErr.message || `Followers found, but token creation failed`,
+                            { followers: userFollowers },
+                            tokenErr,
+                        );
+                    });
+            }
+        }
+    }),
+];
