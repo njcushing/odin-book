@@ -34,3 +34,22 @@
     width: 100%;
     height: calc(100vh - 20px);
 }
+
+.error-message {
+    color: var(--text-error);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.empty-message {
+    color: var(--text-inactive);
+    font-family: Gabarito;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.error-message,
+.empty-message {
+    padding: 0.8rem 0.2rem;
+}
