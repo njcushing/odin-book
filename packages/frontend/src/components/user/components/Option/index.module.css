@@ -1,4 +1,9 @@
-.container {
+.wrapper {
+    width: 100%;
+    height: auto;
+}
+
+.option-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -6,4 +11,12 @@
 
     width: 100%;
     height: auto;
+}
+
+.error-message {
+    color: var(--text-error);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: left;
 }
