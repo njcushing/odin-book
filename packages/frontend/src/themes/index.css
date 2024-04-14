@@ -12,7 +12,7 @@
     --text-tertiary-hover: rgb(255, 255, 255);
     --text-tertiary-focus: rgb(255, 255, 255);
     --text-active: rgb(255, 255, 255);
-    --text-inactive: rgb(255, 255, 255);
+    --text-inactive: rgb(128, 128, 128);
     --text-link: rgb(255, 255, 255);
     --text-visited: rgb(255, 255, 255);
     --text-error: rgb(235, 2, 2);
