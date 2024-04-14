@@ -1,5 +1,7 @@
 import { useContext } from "react";
+import { useParams } from "react-router-dom";
 import { UserContext } from "@/context/user";
+import { ProfileContext } from "@/features/profile/Main";
 import Images from "@/components/images";
 import Buttons from "@/components/buttons";
 import formatCreationDate from "@/utils/formatCreationDate";
@@ -7,6 +9,8 @@ import styles from "./index.module.css";
 
 function Summary() {
     const { extract } = useContext(UserContext);
+
+    const { accountTag } = useParams();
 
     return (
         <div className={styles["container"]}>
@@ -31,13 +35,15 @@ function Summary() {
                         <h3 className={`truncate-ellipsis ${styles["account-tag"]}`}>
                             @{`${extract("accountTag")}`}
                         </h3>
-                        <Buttons.Basic
-                            text="Edit Profile"
-                            onClickHandler={() => {
-                                window.location.href = "/settings/profile";
-                            }}
-                            palette="blue"
-                        />
+                        {extract("accountTag") === accountTag ? (
+                            <Buttons.Basic
+                                text="Edit Profile"
+                                onClickHandler={() => {
+                                    window.location.href = "/settings/profile";
+                                }}
+                                palette="blue"
+                            />
+                        ) : null}
                     </div>
                 </div>
                 {`${extract("preferences.bio")}`.length > 0 ? (
