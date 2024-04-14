@@ -362,3 +362,64 @@ export const likes = [
         }
     }),
 ];
+
+export const option = [
+    protectedRouteJWT,
+    validators.param.userId,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { userId } = req.params;
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        // match user, unwind & populate likes
+        aggregation.push(
+            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
+            {
+                $project: {
+                    _id: 1,
+                    accountTag: 1,
+                    preferences: {
+                        displayName: "$preferences.displayName",
+                        // project profileImage even if it is not present in the document
+                        profileImage: {
+                            $cond: {
+                                if: {
+                                    $eq: [{ $type: "$preferences.profileImage" }, "missing"],
+                                },
+                                then: null,
+                                else: "$preferences.profileImage",
+                            },
+                        },
+                    },
+                    isFollowing: {
+                        $in: [
+                            new mongoose.Types.ObjectId(`${res.locals.user.id}`),
+                            "$followers.users",
+                        ],
+                    },
+                },
+            },
+        );
+        // execute aggregation
+        const aggregationResult = await User.aggregate(aggregation).exec();
+        if (aggregationResult.length === 0) {
+            sendResponse(res, 404, "Could not find user");
+        } else {
+            const user = aggregationResult[0];
+            await generateToken(res.locals.user)
+                .then((token) => {
+                    sendResponse(res, 200, "User found", { token, user });
+                })
+                .catch((tokenErr) => {
+                    sendResponse(
+                        res,
+                        500,
+                        tokenErr.message || `User found, but token creation failed`,
+                        { user },
+                        tokenErr,
+                    );
+                });
+        }
+    }),
+];
