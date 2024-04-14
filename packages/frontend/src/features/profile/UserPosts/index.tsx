@@ -47,19 +47,21 @@ function UserPosts({ repliesOnly = false }: UserPostsTypes) {
             {errorMessage.length > 0 ? (
                 <p className={styles["error-message"]}>{errorMessage}</p>
             ) : null}
-            {posts
-                ? posts.map((post) => {
-                      return (
-                          <Posts.Post
-                              _id={repliesOnly && post.replyingTo ? post.replyingTo : post._id}
-                              overrideReplies={repliesOnly ? [post._id] : []}
-                              viewingDefault={repliesOnly ? "replies" : ""}
-                              removeSeeMoreRepliesButton={repliesOnly}
-                              key={`post-self-${post._id}`}
-                          />
-                      );
-                  })
-                : null}
+            {posts && posts.length > 0 ? (
+                posts.map((post) => {
+                    return (
+                        <Posts.Post
+                            _id={repliesOnly && post.replyingTo ? post.replyingTo : post._id}
+                            overrideReplies={repliesOnly ? [post._id] : []}
+                            viewingDefault={repliesOnly ? "replies" : ""}
+                            removeSeeMoreRepliesButton={repliesOnly}
+                            key={`post-self-${post._id}`}
+                        />
+                    );
+                })
+            ) : (
+                <p className={styles["empty-message"]}>Nothing to see here!</p>
+            )}
         </>
     );
 }

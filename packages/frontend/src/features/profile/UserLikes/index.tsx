@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import mongoose from "mongoose";
 import * as useAsync from "@/hooks/useAsync";
 import { ProfileContext } from "@/features/profile/Main";
 import Posts from "@/features/posts";
@@ -43,11 +42,13 @@ function UserLikes() {
             {errorMessage.length > 0 ? (
                 <p className={styles["error-message"]}>{errorMessage}</p>
             ) : null}
-            {likes
-                ? likes.map((like) => {
-                      return <Posts.Post _id={like._id} key={`post-like-${like._id}`} />;
-                  })
-                : null}
+            {likes && likes.length > 0 ? (
+                likes.map((like) => {
+                    return <Posts.Post _id={like._id} key={`post-like-${like._id}`} />;
+                })
+            ) : (
+                <p className={styles["empty-message"]}>Nothing to see here!</p>
+            )}
         </>
     );
 }
