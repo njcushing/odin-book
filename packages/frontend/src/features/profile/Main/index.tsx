@@ -1,14 +1,14 @@
 import { createContext, useState, useEffect, useMemo } from "react";
 import { useParams, useLocation, Outlet } from "react-router-dom";
 import Navigation from "@/components/navigation";
-import User from "@/components/user";
-import * as mockData from "@/mockData";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
 import getIdFromTag, { Params, Response } from "@/utils/getIdFromTag";
 import Profile from "..";
 import UserPosts from "../UserPosts";
 import UserLikes from "../UserLikes";
+import UserFollowers from "../UserFollowers";
+import UserFollowing from "../UserFollowing";
 import styles from "./index.module.css";
 
 // I have to use keys for the "" and "replies" routes to force a rerender of the UserPosts component
@@ -31,46 +31,12 @@ export const routes = [
     },
     {
         path: "followers",
-        element: mockData.getUsers(10).map((user) => {
-            return (
-                <User.Option
-                    user={{
-                        image: {
-                            src: user.preferences.profileImage.src,
-                            alt: user.preferences.profileImage.alt,
-                            status: user.status,
-                        },
-                        displayName: user.preferences.displayName,
-                        accountTag: user.accountTag,
-                        size: "s",
-                    }}
-                    following={Math.random() < 0.5}
-                    key={user._id}
-                />
-            );
-        }),
+        element: <UserFollowers />,
         errorElement: <div></div>,
     },
     {
         path: "following",
-        element: mockData.getUsers(10).map((user) => {
-            return (
-                <User.Option
-                    user={{
-                        image: {
-                            src: user.preferences.profileImage.src,
-                            alt: user.preferences.profileImage.alt,
-                            status: user.status,
-                        },
-                        displayName: user.preferences.displayName,
-                        accountTag: user.accountTag,
-                        size: "s",
-                    }}
-                    following
-                    key={user._id}
-                />
-            );
-        }),
+        element: <UserFollowing />,
         errorElement: <div></div>,
     },
 ];
