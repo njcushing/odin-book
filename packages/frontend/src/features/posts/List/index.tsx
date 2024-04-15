@@ -65,7 +65,7 @@ function List() {
             ) : null}
             {posts && posts.length > 0 ? (
                 posts.map((post) => {
-                    return <Posts.Post _id={post._id} key={`post-${post._id}`} />;
+                    return <Posts.Post _id={post._id} canReply key={`post-${post._id}`} />;
                 })
             ) : (
                 <p className={styles["empty-message"]}>Nothing to see here!</p>
