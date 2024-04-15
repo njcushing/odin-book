@@ -140,6 +140,109 @@ export const active = [
     },
 ];
 
+export const summary = [
+    protectedRouteJWT,
+    validators.param.userId,
+    checkRequestValidationError,
+    async (req: Request, res: Response) => {
+        const { userId } = req.params;
+
+        const aggregationResult = await User.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(`${userId}`) } },
+            {
+                $project: {
+                    accountTag: 1,
+                    githubId: 1,
+                    followingCount: { $size: "$following.users" },
+                    followersCount: { $size: "$followers.users" },
+                    postCount: { $size: "$posts" },
+                    likesCount: { $size: "$likes" },
+                    preferences: {
+                        displayName: "$preferences.displayName",
+                        bio: "$preferences.bio",
+                        // project profileImage even if it is not present in the document
+                        profileImage: {
+                            $cond: {
+                                if: {
+                                    $eq: [{ $type: "$preferences.profileImage" }, "missing"],
+                                },
+                                then: null,
+                                else: "$preferences.profileImage",
+                            },
+                        },
+                    },
+                    isFollowing: {
+                        $in: [
+                            new mongoose.Types.ObjectId(`${res.locals.user.id}`),
+                            "$followers.users",
+                        ],
+                    },
+                    creationDate: "$createdAt",
+                },
+            },
+            // find profileImage if possible
+            {
+                $lookup: {
+                    from: "images",
+                    localField: "preferences.profileImage",
+                    foreignField: "_id",
+                    as: "preferences.profileImage",
+                },
+            },
+            {
+                $addFields: {
+                    "preferences.profileImage": {
+                        $cond: {
+                            if: { $isArray: "$preferences.profileImage" },
+                            then: { $arrayElemAt: ["$profileImage", 0] },
+                            else: null,
+                        },
+                    },
+                },
+            },
+            // calculate the total number of replies
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "posts",
+                    foreignField: "_id",
+                    as: "userPosts",
+                },
+            },
+            {
+                $addFields: {
+                    repliesCount: {
+                        $cond: [
+                            { $gt: [{ $size: "$userPosts" }, 0] },
+                            {
+                                $sum: {
+                                    $map: {
+                                        input: "$userPosts",
+                                        as: "post",
+                                        in: {
+                                            $cond: [{ $ne: ["$$post.replyingTo", null] }, 1, 0],
+                                        },
+                                    },
+                                },
+                            },
+                            0,
+                        ],
+                    },
+                    userPosts: "$$REMOVE",
+                },
+            },
+        ]);
+
+        if (!aggregationResult || aggregationResult.length === 0) {
+            sendResponse(res, 404, "User not found in database");
+        } else {
+            const user = aggregationResult[0];
+            const token = await generateToken({ ...res.locals.user._doc });
+            sendResponse(res, 200, "User found", { user, token });
+        }
+    },
+];
+
 export const posts = [
     protectedRouteJWT,
     validators.param.userId,
