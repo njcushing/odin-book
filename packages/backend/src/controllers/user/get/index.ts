@@ -308,9 +308,15 @@ export const posts = [
         if (repliesOnly) {
             aggregation.push({
                 $match: {
-                    $and: [
-                        { "populatedPosts.replyingTo": { $exists: true } },
-                        { "populatedPosts.replyingTo": { $type: "objectId" } },
+                    $or: [
+                        {
+                            populatedPosts: {
+                                $elemMatch: {
+                                    replyingTo: { $ne: null, $type: "objectId" },
+                                },
+                            },
+                        },
+                        { populatedPosts: [] },
                     ],
                 },
             });
@@ -343,6 +349,7 @@ export const posts = [
             if (aggregationResult.length === 0) {
                 sendResponse(res, 404, "Could not find posts");
             } else {
+                console.log(aggregationResult[0]);
                 const userPosts = aggregationResult[0].posts;
                 await generateToken(res.locals.user)
                     .then((token) => {
