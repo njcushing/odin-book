@@ -308,9 +308,15 @@ export const posts = [
         if (repliesOnly) {
             aggregation.push({
                 $match: {
-                    $and: [
-                        { "populatedPosts.replyingTo": { $exists: true } },
-                        { "populatedPosts.replyingTo": { $type: "objectId" } },
+                    $or: [
+                        {
+                            populatedPosts: {
+                                $elemMatch: {
+                                    replyingTo: { $ne: null, $type: "objectId" },
+                                },
+                            },
+                        },
+                        { populatedPosts: [] },
                     ],
                 },
             });
