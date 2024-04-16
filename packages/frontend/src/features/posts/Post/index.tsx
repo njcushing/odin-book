@@ -249,7 +249,7 @@ function Post({
                                         if (viewing === "replies") setViewing("");
                                         if (viewing !== "replies") setViewing("replies");
                                     } else {
-                                        window.location.href = `/post/${!getIdFromURLParam ? _id : postId}/replies`;
+                                        window.location.href = `/post/${!getIdFromURLParam ? _id : postId}`;
                                     }
                                 }}
                                 palette="bare"
