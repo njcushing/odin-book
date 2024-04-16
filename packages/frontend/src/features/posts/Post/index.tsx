@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
 import Inputs from "@/components/inputs";
@@ -13,6 +14,7 @@ import styles from "./index.module.css";
 
 type PostTypes = {
     _id?: mongoose.Types.ObjectId;
+    getIdFromURLParam?: boolean;
     overridePostData?: GetPostResponse;
     viewingDefault?: "" | "replies";
     canToggleReplies?: boolean;
@@ -28,6 +30,7 @@ type PostTypes = {
 
 function Post({
     _id,
+    getIdFromURLParam = false,
     overridePostData,
     viewingDefault = "",
     canToggleReplies = false,
@@ -44,6 +47,8 @@ function Post({
     const [viewing, setViewing] = useState<"" | "replies">(!previewMode ? viewingDefault : "");
     const [replying, setReplying] = useState<boolean>(!previewMode ? replyingOpen : false);
 
+    const { postId } = useParams();
+
     // get post api handling
     const [getPostResponse, setGetPostParams, getPostAgain] = useAsync.GET<
         GetPostParams,
@@ -51,7 +56,16 @@ function Post({
     >(
         {
             func: getPost,
-            parameters: [{ params: { postId: _id } }, null],
+            parameters: [
+                {
+                    params: {
+                        postId: !getIdFromURLParam
+                            ? _id
+                            : (postId as unknown as mongoose.Types.ObjectId),
+                    },
+                },
+                null,
+            ],
         },
         !overridePostData,
     );
@@ -70,7 +84,16 @@ function Post({
     >(
         {
             func: likePost,
-            parameters: [{ params: { postId: _id } }, null],
+            parameters: [
+                {
+                    params: {
+                        postId: !getIdFromURLParam
+                            ? _id
+                            : (postId as unknown as mongoose.Types.ObjectId),
+                    },
+                },
+                null,
+            ],
         },
         false,
     );
@@ -203,6 +226,9 @@ function Post({
                                 text={`Like${postData.likesCount === 1 ? "" : "s"}`}
                                 label="view likes"
                                 palette="bare"
+                                onClickHandler={() => {
+                                    window.location.href = `/post/${!getIdFromURLParam ? _id : postId}/likes`;
+                                }}
                                 otherStyles={{
                                     fontSize: sizes.linksAndButtonsRegular,
                                     fontWeight: "normal",
@@ -223,7 +249,7 @@ function Post({
                                         if (viewing === "replies") setViewing("");
                                         if (viewing !== "replies") setViewing("replies");
                                     } else {
-                                        // repliesClickHandler
+                                        window.location.href = `/post/${!getIdFromURLParam ? _id : postId}/replies`;
                                     }
                                 }}
                                 palette="bare"
