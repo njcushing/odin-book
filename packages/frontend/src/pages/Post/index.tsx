@@ -9,7 +9,12 @@ export const routes = [
         path: ":postId",
         element: (
             <div className={styles["post-container"]}>
-                <Posts.Post getIdFromURLParam canReply viewingDefault="replies" />
+                <Posts.Post
+                    getIdFromURLParam
+                    viewingDefault="replies"
+                    canReply
+                    disableRepliesLink
+                />
             </div>
         ),
         errorElement: <div></div>,
