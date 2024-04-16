@@ -6,6 +6,7 @@ import UserContextProvider from "@/context/user";
 import Sidebar from "@/features/sidebar";
 import Posts from "@/features/posts";
 import Chat from "@/features/chat";
+import mongoose from "mongoose";
 import Home, { routes as HomeRoutes } from "../Home";
 import Profile, { routes as ProfileRoutes } from "../Profile";
 import Chats, { routes as ChatsRoutes } from "../Chats";
@@ -53,6 +54,14 @@ function Root() {
         PubSub.subscribe("create-new-post-button-click", () => {
             setModal(<Posts.Create onCloseClickHandler={() => setModal(null)} />);
         });
+        PubSub.subscribe("create-new-reply-button-click", (msg, data) => {
+            setModal(
+                <Posts.Create
+                    replyingTo={data as unknown as mongoose.Types.ObjectId}
+                    onCloseClickHandler={() => setModal(null)}
+                />,
+            );
+        });
         PubSub.subscribe("create-new-chat-button-click", () => {
             setModal(<Chat.Create onCloseClickHandler={() => setModal(null)} />);
         });
@@ -62,6 +71,7 @@ function Root() {
 
         return () => {
             PubSub.unsubscribe("create-new-post-button-click");
+            PubSub.unsubscribe("create-new-reply-button-click");
             PubSub.unsubscribe("create-new-chat-button-click");
             PubSub.unsubscribe("add-users-to-chat-button-click");
         };

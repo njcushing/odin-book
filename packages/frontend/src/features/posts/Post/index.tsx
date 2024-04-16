@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import PubSub from "pubsub-js";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
-import Inputs from "@/components/inputs";
 import Images from "@/components/images";
 import formatNumber from "@/utils/formatNumber";
 import * as useAsync from "@/hooks/useAsync";
@@ -21,7 +21,6 @@ type PostTypes = {
     maxRepliesToDisplay?: number;
     overrideReplies?: mongoose.Types.ObjectId[];
     canReply?: boolean;
-    replyingOpen?: boolean;
     removeSeeMoreRepliesButton?: boolean;
     removeLinkToReply?: boolean;
     disableRepliesLink?: boolean;
@@ -39,7 +38,6 @@ function Post({
     maxRepliesToDisplay = 10,
     overrideReplies = [],
     canReply = false,
-    replyingOpen = false,
     removeSeeMoreRepliesButton = false,
     removeLinkToReply = false,
     disableRepliesLink = false,
@@ -49,7 +47,6 @@ function Post({
 }: PostTypes) {
     const [postData, setPostData] = useState<GetPostResponse>(null);
     const [viewing, setViewing] = useState<"" | "replies">(!previewMode ? viewingDefault : "");
-    const [replying, setReplying] = useState<boolean>(!previewMode ? replyingOpen : false);
 
     const { postId } = useParams();
 
@@ -285,7 +282,12 @@ function Post({
                             text="Reply"
                             symbol="reply"
                             onClickHandler={() => {
-                                if (canReply) setReplying(!replying);
+                                if (!overridePostData && canReply) {
+                                    PubSub.publish(
+                                        "create-new-reply-button-click",
+                                        !getIdFromURLParam ? _id : postId,
+                                    );
+                                }
                             }}
                             otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
                             disabled={previewMode}
@@ -298,20 +300,9 @@ function Post({
                         />
                     </div>
                 </div>
-                {replying ? (
-                    <div className={styles["row-four"]}>
-                        <Inputs.Message
-                            textFieldId="reply-text"
-                            textFieldName="replyText"
-                            placeholder="Type your reply..."
-                            imageFieldId="reply-images"
-                            imageFieldName="replyImages"
-                        />
-                    </div>
-                ) : null}
             </div>
             {viewing === "replies" ? (
-                <div className={styles["row-five"]}>
+                <div className={styles["row-four"]}>
                     <ul className={styles["replies"]}>
                         {replies.map((reply, i) => {
                             if (i >= maxRepliesToDisplay) return null;
