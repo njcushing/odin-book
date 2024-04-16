@@ -27,7 +27,7 @@ function Option({ _id, overrideOptionData }: OptionTypes) {
 
     // get option api handling
     const [optionData, setOptionData] = useState<GetOptionResponse>(null);
-    const [getOptionResponse, setGetOptionParams, getOptionAgain] = useAsync.GET<
+    const [getOptionResponse /* setGetOptionParams */, , getOptionAgain] = useAsync.GET<
         GetOptionParams,
         GetOptionResponse
     >(
@@ -45,7 +45,7 @@ function Option({ _id, overrideOptionData }: OptionTypes) {
     }, [overrideOptionData, getOptionResponse]);
 
     // follow user api handling
-    const [followUserResponse, setFollowUserParams, followUserAgain] = useAsync.PUT<
+    const [followUserResponse /* setFollowUserParams */, , followUserAgain] = useAsync.PUT<
         FollowUserParams,
         null,
         null

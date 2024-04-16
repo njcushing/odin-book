@@ -54,7 +54,7 @@ function Post({
     const { postId } = useParams();
 
     // get post api handling
-    const [getPostResponse, setGetPostParams, getPostAgain] = useAsync.GET<
+    const [getPostResponse /* setGetPostParams */, , getPostAgain] = useAsync.GET<
         GetPostParams,
         GetPostResponse
     >(
@@ -81,7 +81,7 @@ function Post({
     }, [overridePostData, getPostResponse]);
 
     // like post api handling
-    const [likePostResponse, setLikePostParams, likePostAgain] = useAsync.PUT<
+    const [likePostResponse /* setLikePostParams */, , likePostAgain] = useAsync.PUT<
         LikePostParams,
         null,
         null
