@@ -24,6 +24,8 @@ type PostTypes = {
     replyingOpen?: boolean;
     removeSeeMoreRepliesButton?: boolean;
     removeLinkToReply?: boolean;
+    disableRepliesLink?: boolean;
+    disableLikesLink?: boolean;
     previewMode?: boolean;
     size?: "s" | "l";
 };
@@ -40,6 +42,8 @@ function Post({
     replyingOpen = false,
     removeSeeMoreRepliesButton = false,
     removeLinkToReply = false,
+    disableRepliesLink = false,
+    disableLikesLink = false,
     previewMode = false,
     size = "l",
 }: PostTypes) {
@@ -227,14 +231,16 @@ function Post({
                                 label="view likes"
                                 palette="bare"
                                 onClickHandler={() => {
-                                    window.location.href = `/post/${!getIdFromURLParam ? _id : postId}/likes`;
+                                    if (disableLikesLink) {
+                                        window.location.href = `/post/${!getIdFromURLParam ? _id : postId}/likes`;
+                                    }
                                 }}
                                 otherStyles={{
                                     fontSize: sizes.linksAndButtonsRegular,
                                     fontWeight: "normal",
                                     padding: "0rem",
                                 }}
-                                disabled={previewMode}
+                                disabled={previewMode || disableLikesLink}
                             />
                         </p>
                         <p className={styles["replies-count"]}>
@@ -245,11 +251,13 @@ function Post({
                                 text={`Repl${postData.repliesCount === 1 ? "y" : "ies"}`}
                                 label="view replies"
                                 onClickHandler={() => {
-                                    if (canToggleReplies) {
-                                        if (viewing === "replies") setViewing("");
-                                        if (viewing !== "replies") setViewing("replies");
-                                    } else {
-                                        window.location.href = `/post/${!getIdFromURLParam ? _id : postId}`;
+                                    if (!disableRepliesLink) {
+                                        if (canToggleReplies) {
+                                            if (viewing === "replies") setViewing("");
+                                            if (viewing !== "replies") setViewing("replies");
+                                        } else {
+                                            window.location.href = `/post/${!getIdFromURLParam ? _id : postId}`;
+                                        }
                                     }
                                 }}
                                 palette="bare"
@@ -258,7 +266,7 @@ function Post({
                                     fontWeight: "normal",
                                     padding: "0rem",
                                 }}
-                                disabled={previewMode}
+                                disabled={previewMode || disableRepliesLink}
                             />
                         </p>
                     </div>
@@ -309,7 +317,7 @@ function Post({
                             if (i >= maxRepliesToDisplay) return null;
                             return (
                                 <li className={styles["reply"]} key={reply.toString()}>
-                                    <Posts.Post _id={reply} removeLinkToReply size="s" />
+                                    <Posts.Post _id={reply} size="s" />
                                 </li>
                             );
                         })}
