@@ -17,6 +17,7 @@ export const regular = [
     protectedRouteJWT,
     validators.body.text,
     validators.body.images,
+    validators.body.replyingTo,
     body("text").custom((value, { req }) => {
         if (req.body.text.length === 0 && req.body.images.length === 0) {
             throw new Error(
@@ -65,6 +66,7 @@ export const regular = [
                         author: user._id,
                         text: req.body.text,
                         images: images.map((image) => image._id),
+                        replyingTo: req.body.replyingTo ? req.body.replyingTo : null,
                     });
                     await post.save().catch((saveErr) => {
                         const error = new Error(saveErr);
@@ -80,8 +82,23 @@ export const regular = [
                         const error = new Error(
                             `Could not add post to user's posts.`,
                         ) as types.ResponseError;
-                        error.status = 401;
+                        error.status = 500;
                         throw error;
+                    }
+
+                    // add new post to 'replies' array of post being replied to (if applicable)
+                    if (req.body.replyingTo) {
+                        const updatedPost = await Post.updateOne(
+                            { _id: req.body.replyingTo },
+                            { $addToSet: { replies: post._id } },
+                        );
+                        if (!updatedPost.acknowledged) {
+                            const error = new Error(
+                                `Could not add post to existing post's replies.`,
+                            ) as types.ResponseError;
+                            error.status = 500;
+                            throw error;
+                        }
                     }
 
                     await session.commitTransaction();
