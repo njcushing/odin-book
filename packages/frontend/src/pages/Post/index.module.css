@@ -1,0 +1,29 @@
+.wrapper {
+    container-name: wrapper;
+    container-type: inline-size;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--background-secondary);
+    
+    width: 100%;
+    margin: auto;
+}
+
+.container {
+    display: grid;
+
+    width: 100%;
+}
+
+.post-container {
+    position: relative;
+
+    border-left: 1px solid var(--outline-primary);
+    border-right: 1px solid var(--outline-primary);
+
+    width: calc(100% - 1px); /* subtract for border */
+    min-height: 100vh;
+    height: 100%;
+}

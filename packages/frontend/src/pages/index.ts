@@ -5,6 +5,7 @@ import Auth, { routes as AuthRoutes } from "./Auth";
 import Home, { routes as HomeRoutes } from "./Home";
 import Profile, { routes as ProfileRoutes } from "./Profile";
 import Chats, { routes as ChatsRoutes } from "./Chats";
+import Post, { routes as PostRoutes } from "./Post";
 import Settings, { routes as SettingsRoutes } from "./Settings";
 
 const Page = {
@@ -15,6 +16,7 @@ const Page = {
     Home,
     Profile,
     Chats,
+    Post,
     Settings,
 };
 
@@ -26,5 +28,6 @@ export const Routes = {
     Home: HomeRoutes,
     Profile: ProfileRoutes,
     Chats: ChatsRoutes,
+    Post: PostRoutes,
     Settings: SettingsRoutes,
 };

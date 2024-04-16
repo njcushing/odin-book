@@ -9,6 +9,7 @@ import Chat from "@/features/chat";
 import Home, { routes as HomeRoutes } from "../Home";
 import Profile, { routes as ProfileRoutes } from "../Profile";
 import Chats, { routes as ChatsRoutes } from "../Chats";
+import Post, { routes as PostRoutes } from "../Post";
 import Settings, { routes as SettingsRoutes } from "../Settings";
 import styles from "./index.module.css";
 
@@ -29,6 +30,12 @@ export const routes = [
         path: "chats",
         element: <Chats />,
         children: ChatsRoutes,
+        errorElement: <div></div>,
+    },
+    {
+        path: "post",
+        element: <Post />,
+        children: PostRoutes,
         errorElement: <div></div>,
     },
     {
