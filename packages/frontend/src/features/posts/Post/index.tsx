@@ -231,7 +231,7 @@ function Post({
                                 label="view likes"
                                 palette="bare"
                                 onClickHandler={() => {
-                                    if (disableLikesLink) {
+                                    if (!disableLikesLink) {
                                         window.location.href = `/post/${!getIdFromURLParam ? _id : postId}/likes`;
                                     }
                                 }}
