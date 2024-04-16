@@ -4,6 +4,18 @@ import mongoose from "mongoose";
 
 const validators = {
     body: {
+        replyingTo: param("replyingTo")
+            .trim()
+            .optional()
+            .custom((value) => {
+                if (!mongoose.Types.ObjectId.isValid(value)) {
+                    throw new Error(
+                        "The provided post id to reply to in the request body is not a valid MongoDB ObjectId",
+                    );
+                } else {
+                    return true;
+                }
+            }),
         text: body("text")
             .trim()
             .custom((value) => {
