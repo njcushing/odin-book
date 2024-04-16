@@ -21,6 +21,7 @@ type CreateTypes = {
     defaultText?: string;
     placeholder?: string;
     defaultImages?: Images;
+    replyingTo?: mongoose.Types.ObjectId | undefined | null;
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
 };
 
@@ -28,6 +29,7 @@ function Create({
     defaultText = "",
     placeholder = "",
     defaultImages = {},
+    replyingTo = null,
     onCloseClickHandler = null,
 }: CreateTypes) {
     const [text, setText] = useState<string>(defaultText);
@@ -126,6 +128,7 @@ function Create({
                                 setParams([
                                     {
                                         body: {
+                                            replyingTo,
                                             text,
                                             images: Object.keys(images).map(
                                                 (key) => images[key].data,
