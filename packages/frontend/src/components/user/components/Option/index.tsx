@@ -97,7 +97,7 @@ function Option({ _id, overrideOptionData }: OptionTypes) {
                         }
                         displayName={optionData.preferences.displayName}
                         accountTag={optionData.accountTag}
-                        size="s"
+                        size="m"
                     />
                     {displayFollowButton ? (
                         <Buttons.Basic
