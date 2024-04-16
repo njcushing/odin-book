@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import generateToken from "@/utils/generateToken";
 import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
+import User from "@/models/user";
 import Post from "@/models/post";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
 import validators from "../validators";
@@ -120,6 +121,106 @@ export const regular = [
                         tokenErr,
                     );
                 });
+        }
+    }),
+];
+
+export const likes = [
+    protectedRouteJWT,
+    validators.param.postId,
+    validators.query.limit,
+    validators.query.after,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { postId } = req.params;
+        const { limit, after } = req.query;
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        // match user, unwind & populate following.users
+        aggregation.push(
+            { $match: { _id: new mongoose.Types.ObjectId(postId) } },
+            { $unwind: { path: "$likes", preserveNullAndEmptyArrays: true } },
+            // if the 'likes' array is empty, it will not be present on the document at this stage
+            {
+                $addFields: {
+                    postLikes: {
+                        $cond: {
+                            if: { $eq: [{ $type: "$likes" }, "missing"] },
+                            then: [],
+                            else: "$likes",
+                        },
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "postLikes",
+                    foreignField: "_id",
+                    as: "populatedLikes",
+                },
+            },
+        );
+        // if 'after' query parameter is specified, check user exists
+        let responding = false;
+        if (after) {
+            const afterUser = await User.findById(after);
+            if (!afterUser) {
+                sendResponse(res, 404, "Specified 'after' user not found in the database");
+                responding = true;
+            } else {
+                // if so, check user is within likes array
+                aggregation.push({
+                    $match: { populatedLikes: { $elemMatch: { _id: afterUser._id } } },
+                });
+                // and filter users based on their creation date being after the 'after' user
+                aggregation.push({
+                    $match: {
+                        "populatedLikes.createdAt": { $lt: afterUser.createdAt },
+                    },
+                });
+            }
+        }
+        if (!responding) {
+            // sort & limit likes
+            aggregation.push({ $sort: { "populatedLikes.createdAt": -1 } });
+            if (limit) aggregation.push({ $limit: Number(limit) });
+            // group results back into postLikes array
+            aggregation.push(
+                { $unwind: { path: "$populatedLikes", preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: "$_id",
+                        postLikes: { $push: "$populatedLikes" },
+                    },
+                },
+            );
+            // final projection
+            aggregation.push({ $project: { _id: 0, postLikes: "$postLikes._id" } });
+            // execute aggregation
+            const aggregationResult = await Post.aggregate(aggregation).exec();
+            if (aggregationResult.length === 0) {
+                sendResponse(res, 404, "Could not find post likes");
+            } else {
+                const { postLikes } = aggregationResult[0];
+                await generateToken(res.locals.user)
+                    .then((token) => {
+                        sendResponse(res, 200, "Post likes found", {
+                            token,
+                            likes: postLikes,
+                        });
+                    })
+                    .catch((tokenErr) => {
+                        sendResponse(
+                            res,
+                            500,
+                            tokenErr.message || `Post likes found, but token creation failed`,
+                            { likes: postLikes },
+                            tokenErr,
+                        );
+                    });
+            }
         }
     }),
 ];

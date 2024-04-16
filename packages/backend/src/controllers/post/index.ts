@@ -7,6 +7,7 @@ import * as remove from "./remove";
 const router = express.Router();
 
 router.get("/:postId", get.regular);
+router.get("/:postId/likes", get.likes);
 router.post("/", create.regular);
 router.put("/:postId/like", put.like);
 router.delete("/:postId", remove.regular);
