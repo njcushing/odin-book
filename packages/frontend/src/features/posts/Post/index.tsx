@@ -9,6 +9,10 @@ import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
 import Posts from "..";
 import getPost, { Params as GetPostParams, Response as GetPostResponse } from "./utils/getPost";
+import getPostReplies, {
+    Params as GetPostRepliesParams,
+    Response as GetPostRepliesResponse,
+} from "./utils/getPostReplies";
 import likePost, { Params as LikePostParams } from "./utils/likePost";
 import styles from "./index.module.css";
 
@@ -19,7 +23,7 @@ type PostTypes = {
     viewingDefault?: "" | "replies";
     canToggleReplies?: boolean;
     maxRepliesToDisplay?: number;
-    overrideReplies?: mongoose.Types.ObjectId[];
+    overrideReplies?: GetPostRepliesResponse;
     canReply?: boolean;
     removeSeeMoreRepliesButton?: boolean;
     removeLinkToReply?: boolean;
@@ -36,7 +40,7 @@ function Post({
     viewingDefault = "",
     canToggleReplies = false,
     maxRepliesToDisplay = 10,
-    overrideReplies = [],
+    overrideReplies = null,
     canReply = false,
     removeSeeMoreRepliesButton = false,
     removeLinkToReply = false,
@@ -46,6 +50,7 @@ function Post({
     size = "l",
 }: PostTypes) {
     const [postData, setPostData] = useState<GetPostResponse>(null);
+    const [postReplies, setPostReplies] = useState<GetPostRepliesResponse>(overrideReplies || null);
     const [viewing, setViewing] = useState<"" | "replies">(!previewMode ? viewingDefault : "");
 
     const { postId } = useParams();
@@ -71,11 +76,35 @@ function Post({
         !overridePostData,
     );
     useEffect(() => {
-        if (!overridePostData) {
-            const newState = getPostResponse ? getPostResponse.data : null;
-            setPostData(newState);
-        }
-    }, [overridePostData, getPostResponse]);
+        const newState = getPostResponse ? getPostResponse.data : null;
+        setPostData(newState);
+    }, [getPostResponse]);
+
+    // get post replies api handling
+    const [getPostRepliesResponse /* getPostRepliesParams */, , getPostRepliesAgain] = useAsync.GET<
+        GetPostRepliesParams,
+        GetPostRepliesResponse
+    >(
+        {
+            func: getPostReplies,
+            parameters: [
+                {
+                    params: {
+                        postId: !getIdFromURLParam
+                            ? _id
+                            : (postId as unknown as mongoose.Types.ObjectId),
+                        after: null,
+                    },
+                },
+                null,
+            ],
+        },
+        viewing === "replies",
+    );
+    useEffect(() => {
+        const newState = getPostRepliesResponse ? getPostRepliesResponse.data : null;
+        setPostReplies(newState);
+    }, [getPostRepliesResponse]);
 
     // like post api handling
     const [likePostResponse /* setLikePostParams */, , likePostAgain] = useAsync.PUT<
@@ -121,6 +150,19 @@ function Post({
         }
     }, [overridePostData, getPostAgain, likePostResponse]);
 
+    // fetch replies again
+    useEffect(() => {
+        if (viewing === "replies") {
+            if (overrideReplies) {
+                getPostRepliesAgain(true);
+            } else {
+                setPostReplies(overrideReplies);
+            }
+        } else {
+            setPostReplies([]);
+        }
+    }, [viewing, viewingDefault, overrideReplies, getPostRepliesAgain]);
+
     if (getPostResponse && getPostResponse.status === 401) window.location.assign("/");
 
     let sizes = {
@@ -143,11 +185,6 @@ function Post({
         default:
             sizes = { ...sizes };
             break;
-    }
-
-    let replies: mongoose.Types.ObjectId[] = [];
-    if (overrideReplies.length > 0) {
-        replies = overrideReplies;
     }
 
     const errorElement =
@@ -304,14 +341,15 @@ function Post({
             {viewing === "replies" ? (
                 <div className={styles["row-four"]}>
                     <ul className={styles["replies"]}>
-                        {replies.map((reply, i) => {
-                            if (i >= maxRepliesToDisplay) return null;
-                            return (
-                                <li className={styles["reply"]} key={reply.toString()}>
-                                    <Posts.Post _id={reply} size="s" />
-                                </li>
-                            );
-                        })}
+                        {postReplies &&
+                            postReplies.map((reply, i) => {
+                                if (i >= maxRepliesToDisplay) return null;
+                                return (
+                                    <li className={styles["reply"]} key={reply.toString()}>
+                                        <Posts.Post _id={reply} canReply size="s" />
+                                    </li>
+                                );
+                            })}
                     </ul>
                     {!removeSeeMoreRepliesButton ? (
                         <div className={styles["see-more-replies-button-wrapper"]}>
