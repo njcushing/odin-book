@@ -14,6 +14,7 @@ export function GET<Params, Response>(
         React.SetStateAction<Parameters<apiFunctionTypes.GET<Params, Response>> | undefined>
     >,
     React.Dispatch<React.SetStateAction<boolean>>,
+    boolean,
 ] {
     const [params, setParams] = useState<
         Parameters<apiFunctionTypes.GET<Params, Response>> | undefined
@@ -55,7 +56,7 @@ export function GET<Params, Response>(
         };
     }, [params, abortController, attempting, functionInfo]);
 
-    return [response, setParams, setAttempting];
+    return [response, setParams, setAttempting, attempting];
 }
 
 export function POST<Params, Body, Response>(
@@ -70,6 +71,7 @@ export function POST<Params, Body, Response>(
         React.SetStateAction<Parameters<apiFunctionTypes.POST<Params, Body, Response>> | undefined>
     >,
     React.Dispatch<React.SetStateAction<boolean>>,
+    boolean,
 ] {
     const [params, setParams] = useState<
         Parameters<apiFunctionTypes.POST<Params, Body, Response>> | undefined
@@ -111,7 +113,7 @@ export function POST<Params, Body, Response>(
         };
     }, [params, abortController, attempting, functionInfo]);
 
-    return [response, setParams, setAttempting];
+    return [response, setParams, setAttempting, attempting];
 }
 
 export function PUT<Params, Body, Response>(
