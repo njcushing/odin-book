@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from "react";
-import mongoose from "mongoose";
 import * as useAsync from "@/hooks/useAsync";
 import { ProfileContext } from "@/features/profile/Main";
 import Posts from "@/features/posts";
+import Accessibility from "@/components/accessibility";
 import getUserPosts, { Params, Response } from "./utils/getUserPosts";
 import styles from "./index.module.css";
 
@@ -13,8 +13,10 @@ export type UserPostsTypes = {
 function UserPosts({ repliesOnly = false }: UserPostsTypes) {
     const { _id } = useContext(ProfileContext);
 
+    const [waiting, setWaiting] = useState(true);
+
     const [posts, setPosts] = useState<Response>([]);
-    const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
+    const [response, setParams, setAttempting, gettingPosts] = useAsync.GET<Params, Response>(
         {
             func: getUserPosts,
             parameters: [{ params: { userId: _id, after: null, repliesOnly } }, null],
@@ -42,7 +44,11 @@ function UserPosts({ repliesOnly = false }: UserPostsTypes) {
         }
     }, [response]);
 
-    return (
+    useEffect(() => {
+        setWaiting(gettingPosts);
+    }, [gettingPosts]);
+
+    return !waiting ? (
         <>
             {errorMessage.length > 0 ? (
                 <p className={styles["error-message"]}>{errorMessage}</p>
@@ -63,6 +69,8 @@ function UserPosts({ repliesOnly = false }: UserPostsTypes) {
                 <p className={styles["empty-message"]}>Nothing to see here!</p>
             )}
         </>
+    ) : (
+        <Accessibility.WaitingWheel />
     );
 }
 

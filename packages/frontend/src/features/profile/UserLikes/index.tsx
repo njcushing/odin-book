@@ -2,14 +2,17 @@ import { useState, useEffect, useContext } from "react";
 import * as useAsync from "@/hooks/useAsync";
 import { ProfileContext } from "@/features/profile/Main";
 import Posts from "@/features/posts";
+import Accessibility from "@/components/accessibility";
 import getUserLikes, { Params, Response } from "./utils/getUserLikes";
 import styles from "./index.module.css";
 
 function UserLikes() {
     const { _id } = useContext(ProfileContext);
 
+    const [waiting, setWaiting] = useState<boolean>(true);
+
     const [likes, setLikes] = useState<Response>([]);
-    const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
+    const [response, setParams, setAttempting, gettingLikes] = useAsync.GET<Params, Response>(
         {
             func: getUserLikes,
             parameters: [{ params: { userId: _id, after: null } }, null],
@@ -34,10 +37,16 @@ function UserLikes() {
     useEffect(() => {
         if (response && response.status >= 400 && response.message && response.message.length > 0) {
             setErrorMessage(response.message);
+        } else {
+            setErrorMessage("");
         }
     }, [response]);
 
-    return (
+    useEffect(() => {
+        setWaiting(gettingLikes);
+    }, [gettingLikes]);
+
+    return !waiting ? (
         <>
             {errorMessage.length > 0 ? (
                 <p className={styles["error-message"]}>{errorMessage}</p>
@@ -50,6 +59,8 @@ function UserLikes() {
                 <p className={styles["empty-message"]}>Nothing to see here!</p>
             )}
         </>
+    ) : (
+        <Accessibility.WaitingWheel />
     );
 }
 

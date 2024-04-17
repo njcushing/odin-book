@@ -2,14 +2,17 @@ import { useState, useEffect, useContext } from "react";
 import * as useAsync from "@/hooks/useAsync";
 import { ProfileContext } from "@/features/profile/Main";
 import User from "@/components/user";
+import Accessibility from "@/components/accessibility";
 import getUserFollowers, { Params, Response } from "./utils/getUserFollowers";
 import styles from "./index.module.css";
 
 function UserFollowers() {
     const { _id } = useContext(ProfileContext);
 
+    const [waiting, setWaiting] = useState(true);
+
     const [followers, setFollowers] = useState<Response>([]);
-    const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
+    const [response, setParams, setAttempting, gettingFollowers] = useAsync.GET<Params, Response>(
         {
             func: getUserFollowers,
             parameters: [{ params: { userId: _id, after: null } }, null],
@@ -34,10 +37,16 @@ function UserFollowers() {
     useEffect(() => {
         if (response && response.status >= 400 && response.message && response.message.length > 0) {
             setErrorMessage(response.message);
+        } else {
+            setErrorMessage("");
         }
     }, [response]);
 
-    return (
+    useEffect(() => {
+        setWaiting(gettingFollowers);
+    }, [gettingFollowers]);
+
+    return !waiting ? (
         <>
             {errorMessage.length > 0 ? (
                 <p className={styles["error-message"]}>{errorMessage}</p>
@@ -52,6 +61,8 @@ function UserFollowers() {
                 <p className={styles["empty-message"]}>Nothing to see here!</p>
             )}
         </>
+    ) : (
+        <Accessibility.WaitingWheel />
     );
 }
 
