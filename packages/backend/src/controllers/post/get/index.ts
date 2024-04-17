@@ -137,7 +137,7 @@ export const likes = [
 
         /// create aggregation pipeline
         const aggregation: mongoose.PipelineStage[] = [];
-        // match user, unwind & populate following.users
+        // match post, unwind & populate likes
         aggregation.push(
             { $match: { _id: new mongoose.Types.ObjectId(postId) } },
             { $unwind: { path: "$likes", preserveNullAndEmptyArrays: true } },
@@ -217,6 +217,106 @@ export const likes = [
                             500,
                             tokenErr.message || `Post likes found, but token creation failed`,
                             { likes: postLikes },
+                            tokenErr,
+                        );
+                    });
+            }
+        }
+    }),
+];
+
+export const replies = [
+    protectedRouteJWT,
+    validators.param.postId,
+    validators.query.limit,
+    validators.query.after,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { postId } = req.params;
+        const { limit, after } = req.query;
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        // match post, unwind & populate replies
+        aggregation.push(
+            { $match: { _id: new mongoose.Types.ObjectId(postId) } },
+            { $unwind: { path: "$replies", preserveNullAndEmptyArrays: true } },
+            // if the 'replies' array is empty, it will not be present on the document at this stage
+            {
+                $addFields: {
+                    postReplies: {
+                        $cond: {
+                            if: { $eq: [{ $type: "$replies" }, "missing"] },
+                            then: [],
+                            else: "$replies",
+                        },
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "postReplies",
+                    foreignField: "_id",
+                    as: "populatedReplies",
+                },
+            },
+        );
+        // if 'after' query parameter is specified, check reply exists
+        let responding = false;
+        if (after) {
+            const afterPost = await Post.findById(after);
+            if (!afterPost) {
+                sendResponse(res, 404, "Specified 'after' post not found in the database");
+                responding = true;
+            } else {
+                // if so, check post is within replies array
+                aggregation.push({
+                    $match: { populatedReplies: { $elemMatch: { _id: afterPost._id } } },
+                });
+                // and filter posts based on their creation date being after the 'after' post
+                aggregation.push({
+                    $match: {
+                        "populatedReplies.createdAt": { $lt: afterPost.createdAt },
+                    },
+                });
+            }
+        }
+        if (!responding) {
+            // sort & limit replies
+            aggregation.push({ $sort: { "populatedReplies.createdAt": -1 } });
+            if (limit) aggregation.push({ $limit: Number(limit) });
+            // group results back into postReplies array
+            aggregation.push(
+                { $unwind: { path: "$populatedReplies", preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: "$_id",
+                        postReplies: { $push: "$populatedReplies" },
+                    },
+                },
+            );
+            // final projection
+            aggregation.push({ $project: { _id: 0, postReplies: "$postReplies._id" } });
+            // execute aggregation
+            const aggregationResult = await Post.aggregate(aggregation).exec();
+            if (aggregationResult.length === 0) {
+                sendResponse(res, 404, "Could not find post replies");
+            } else {
+                const { postReplies } = aggregationResult[0];
+                await generateToken(res.locals.user)
+                    .then((token) => {
+                        sendResponse(res, 200, "Post replies found", {
+                            token,
+                            replies: postReplies,
+                        });
+                    })
+                    .catch((tokenErr) => {
+                        sendResponse(
+                            res,
+                            500,
+                            tokenErr.message || `Post replies found, but token creation failed`,
+                            { replies: postReplies },
                             tokenErr,
                         );
                     });

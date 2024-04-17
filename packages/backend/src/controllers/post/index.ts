@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.get("/:postId", get.regular);
 router.get("/:postId/likes", get.likes);
+router.get("/:postId/replies", get.replies);
 router.post("/", create.regular);
 router.put("/:postId/like", put.like);
 router.delete("/:postId", remove.regular);
