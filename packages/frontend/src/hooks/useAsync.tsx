@@ -24,6 +24,7 @@ export function GET<Params, Response>(
     > | null>(null);
     const [abortController, setAbortController] = useState<AbortController | null>(null);
     const [attempting, setAttempting] = useState<boolean>(false);
+    const [awaiting, setAwaiting] = useState<boolean>(attemptOnMount || false);
 
     useEffect(() => {
         if (attemptOnMount) setAttempting(true);
@@ -56,7 +57,13 @@ export function GET<Params, Response>(
         };
     }, [params, abortController, attempting, functionInfo]);
 
-    return [response, setParams, setAttempting, attempting];
+    useEffect(() => {
+        if (awaiting && response && response.message !== "Client cancelled request") {
+            setAwaiting(false);
+        }
+    }, [awaiting, response]);
+
+    return [response, setParams, setAttempting, awaiting];
 }
 
 export function POST<Params, Body, Response>(
@@ -81,6 +88,7 @@ export function POST<Params, Body, Response>(
     > | null>(null);
     const [abortController, setAbortController] = useState<AbortController | null>(null);
     const [attempting, setAttempting] = useState<boolean>(false);
+    const [awaiting, setAwaiting] = useState<boolean>(attemptOnMount || false);
 
     useEffect(() => {
         if (attemptOnMount) setAttempting(true);
@@ -113,7 +121,13 @@ export function POST<Params, Body, Response>(
         };
     }, [params, abortController, attempting, functionInfo]);
 
-    return [response, setParams, setAttempting, attempting];
+    useEffect(() => {
+        if (awaiting && response && response.message !== "Client cancelled request") {
+            setAwaiting(false);
+        }
+    }, [awaiting, response]);
+
+    return [response, setParams, setAttempting, awaiting];
 }
 
 export function PUT<Params, Body, Response>(
