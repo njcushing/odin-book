@@ -54,7 +54,7 @@ function UserFollowers() {
             {followers && followers.length > 0 ? (
                 <div className={styles["followers"]}>
                     {followers.map((userId) => {
-                        return <User.Option _id={userId} key={`follower-${userId}`} />;
+                        return <User.Option _id={userId} skeleton key={`follower-${userId}`} />;
                     })}
                 </div>
             ) : (

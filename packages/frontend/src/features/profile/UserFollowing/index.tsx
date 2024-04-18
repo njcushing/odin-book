@@ -54,7 +54,7 @@ function UserFollowing() {
             {following && following.length > 0 ? (
                 <div className={styles["following"]}>
                     {following.map((userId) => {
-                        return <User.Option _id={userId} key={`following-${userId}`} />;
+                        return <User.Option _id={userId} skeleton key={`following-${userId}`} />;
                     })}
                 </div>
             ) : (
