@@ -6,7 +6,7 @@
 
     font-family: Gabarito;
 
-    width: auto;
+    width: 100%;
 }
 
 .row-one-right {
@@ -30,8 +30,9 @@
     border: none;
     outline: none;
     background-color: transparent;
+    text-align: left;
 
-    max-width: 100%;
+    width: 100%;
     padding: 0rem;
 }
 

@@ -1,4 +1,5 @@
 import Images from "@/components/images";
+import Accessibility from "@/components/accessibility";
 import { ProfileTypes } from "@/components/images/components/Profile";
 import * as Types from "../../types";
 import styles from "./index.module.css";
@@ -8,6 +9,7 @@ export type ImageAndNameTypes = Types.Sizes & {
     displayName: string;
     accountTag: string;
     disableLinks?: boolean;
+    waiting?: boolean;
 };
 
 function ImageAndName({
@@ -15,6 +17,7 @@ function ImageAndName({
     displayName = "Display Name",
     accountTag = "account_name",
     disableLinks = false,
+    waiting = false,
     size = "m",
 }: ImageAndNameTypes) {
     const sizes = { image: 48, displayName: 1.0, accountTag: 0.8 };
@@ -54,47 +57,65 @@ function ImageAndName({
     return (
         <div className={styles["container"]}>
             <div className={styles["row-one-left"]}>
-                <Images.Profile src={image.src} alt={image.alt} sizePx={sizes.image} />
+                <Accessibility.Skeleton waiting={waiting} style={{ borderRadius: "9999px" }}>
+                    <Images.Profile src={image.src} alt={image.alt} sizePx={sizes.image} />
+                </Accessibility.Skeleton>
             </div>
             <div className={styles["row-one-right"]}>
-                <button
-                    type="button"
-                    className={`truncate-ellipsis ${styles["display-name-button"]}`}
-                    aria-label="display name"
-                    onClick={(e) => {
-                        window.location.href = `/user/${accountTag}`;
-                        e.currentTarget.blur();
-                        e.preventDefault();
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.blur();
-                    }}
-                    disabled={disableLinks}
+                <Accessibility.Skeleton
+                    waiting={waiting}
                     style={{
-                        fontSize: `${sizes.displayName}rem`,
+                        width: "100%",
+                        height: `${sizes.displayName + 0.2}rem`,
                     }}
                 >
-                    {name}
-                </button>
-                <button
-                    type="button"
-                    className={`truncate-ellipsis ${styles["account-tag-button"]}`}
-                    aria-label="account tag"
-                    onClick={(e) => {
-                        window.location.href = `/user/${accountTag}`;
-                        e.currentTarget.blur();
-                        e.preventDefault();
-                    }}
-                    onMouseLeave={(e) => {
-                        e.currentTarget.blur();
-                    }}
-                    disabled={disableLinks}
+                    <button
+                        type="button"
+                        className={`truncate-ellipsis ${styles["display-name-button"]}`}
+                        aria-label="display name"
+                        onClick={(e) => {
+                            window.location.href = `/user/${accountTag}`;
+                            e.currentTarget.blur();
+                            e.preventDefault();
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.blur();
+                        }}
+                        disabled={disableLinks}
+                        style={{
+                            fontSize: `${sizes.displayName}rem`,
+                        }}
+                    >
+                        {name}
+                    </button>
+                </Accessibility.Skeleton>
+                <Accessibility.Skeleton
+                    waiting={waiting}
                     style={{
-                        fontSize: `${sizes.accountTag}rem`,
+                        width: "100%",
+                        height: `${sizes.accountTag + 0.2}rem`,
                     }}
                 >
-                    @{accountTag.length > 0 ? accountTag : "user"}
-                </button>
+                    <button
+                        type="button"
+                        className={`truncate-ellipsis ${styles["account-tag-button"]}`}
+                        aria-label="account tag"
+                        onClick={(e) => {
+                            window.location.href = `/user/${accountTag}`;
+                            e.currentTarget.blur();
+                            e.preventDefault();
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.blur();
+                        }}
+                        disabled={disableLinks}
+                        style={{
+                            fontSize: `${sizes.accountTag}rem`,
+                        }}
+                    >
+                        @{accountTag.length > 0 ? accountTag : "user"}
+                    </button>
+                </Accessibility.Skeleton>
             </div>
         </div>
     );
