@@ -1,0 +1,20 @@
+@keyframes gradient-scroll {
+    0% {
+         background-position: 0rem 0rem;
+    }
+    100% {
+        background-position: 50rem 0rem;
+    }
+}
+
+.container {
+    background-image: repeating-linear-gradient(
+        90deg,
+        rgba(222, 222, 222, 0.3),
+        rgba(190, 190, 190, 0.4),
+        rgba(222, 222, 222, 0.3)
+    );
+    background-size: 50rem 100%;
+
+    animation: gradient-scroll 1.6s linear infinite;
+}
