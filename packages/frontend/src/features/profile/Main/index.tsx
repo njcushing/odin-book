@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useMemo } from "react";
 import { useParams, useLocation, Outlet } from "react-router-dom";
 import Navigation from "@/components/navigation";
+import Accessibility from "@/components/accessibility";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
 import getIdFromTag, { Params, Response } from "@/utils/getIdFromTag";
@@ -56,8 +57,13 @@ export const ProfileContext = createContext<ProfileState>(defaultState);
 function Main() {
     const { accountTag } = useParams();
 
+    const [waiting, setWaiting] = useState<boolean>(true);
+
     const [state, setState] = useState<mongoose.Types.ObjectId | null | undefined>(null);
-    const [response] = useAsync.GET<Params, Response>(
+    const [response /* setParams */ /* setAttempting */, , , gettingIdFromTag] = useAsync.GET<
+        Params,
+        Response
+    >(
         { func: getIdFromTag, parameters: [{ params: { accountTag: accountTag || "" } }, null] },
         true,
     );
@@ -70,6 +76,10 @@ function Main() {
         setState(newState || null);
         setAwaitingResponse(false);
     }, [response]);
+
+    useEffect(() => {
+        setWaiting(gettingIdFromTag);
+    }, [gettingIdFromTag]);
 
     const location = useLocation();
     const path = location.pathname.split("/");
@@ -98,9 +108,15 @@ function Main() {
             value={useMemo(() => ({ _id: state, awaitingResponse }), [state, awaitingResponse])}
         >
             <div className={styles["container"]}>
-                <Profile.Summary key={0} />
-                {navigation}
-                <Outlet key={2} />
+                {!waiting ? (
+                    <>
+                        <Profile.Summary key={0} />
+                        {navigation}
+                        <Outlet key={2} />
+                    </>
+                ) : (
+                    <Accessibility.WaitingWheel />
+                )}
             </div>
         </ProfileContext.Provider>
     );
