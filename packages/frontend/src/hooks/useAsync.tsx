@@ -37,6 +37,7 @@ export function GET<Params, Response>(
             }
             const abortControllerNew = new AbortController();
             setAbortController(abortControllerNew);
+            setResponse(null);
             (async () => {
                 let data = {};
                 let redundantAbortController;
@@ -58,10 +59,12 @@ export function GET<Params, Response>(
     }, [params, abortController, attempting, functionInfo]);
 
     useEffect(() => {
-        if (awaiting && response && response.message !== "Client cancelled request") {
+        if (attempting) {
+            setAwaiting(true);
+        } else if (awaiting && response && response.message !== "Client cancelled request") {
             setAwaiting(false);
         }
-    }, [awaiting, response]);
+    }, [attempting, awaiting, response]);
 
     return [response, setParams, setAttempting, awaiting];
 }
@@ -101,6 +104,7 @@ export function POST<Params, Body, Response>(
             }
             const abortControllerNew = new AbortController();
             setAbortController(abortControllerNew);
+            setResponse(null);
             (async () => {
                 let data = {};
                 let redundantAbortController;
@@ -122,10 +126,12 @@ export function POST<Params, Body, Response>(
     }, [params, abortController, attempting, functionInfo]);
 
     useEffect(() => {
-        if (awaiting && response && response.message !== "Client cancelled request") {
+        if (attempting) {
+            setAwaiting(true);
+        } else if (awaiting && response && response.message !== "Client cancelled request") {
             setAwaiting(false);
         }
-    }, [awaiting, response]);
+    }, [attempting, awaiting, response]);
 
     return [response, setParams, setAttempting, awaiting];
 }
