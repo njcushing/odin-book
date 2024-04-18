@@ -71,10 +71,10 @@ type UserContextProviderTypes = {
 
 function UserContextProvider({ children }: UserContextProviderTypes) {
     const [state, setState] = useState<UserTypes>(defaultUser);
-    const [response, setParams, setAttempting] = useAsync.GET<null, UserTypes>(
-        { func: getActiveUser },
-        true,
-    );
+    const [response /* setParams */, , setAttempting, gettingActiveUser] = useAsync.GET<
+        null,
+        UserTypes
+    >({ func: getActiveUser }, true);
     const [awaitingResponse, setAwaitingResponse] = useState<boolean>(
         defaultState.awaitingResponse,
     );
@@ -84,6 +84,10 @@ function UserContextProvider({ children }: UserContextProviderTypes) {
         setState(newState || defaultUser);
         setAwaitingResponse(false);
     }, [response]);
+
+    useEffect(() => {
+        setAwaitingResponse(gettingActiveUser);
+    }, [gettingActiveUser]);
 
     const updateUser = useCallback(() => {
         setAwaitingResponse(true);
