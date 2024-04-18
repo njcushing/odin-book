@@ -4,6 +4,7 @@ import PubSub from "pubsub-js";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
 import Images from "@/components/images";
+import Accessibility from "@/components/accessibility";
 import formatNumber from "@/utils/formatNumber";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
@@ -30,6 +31,7 @@ type PostTypes = {
     disableRepliesLink?: boolean;
     disableLikesLink?: boolean;
     previewMode?: boolean;
+    skeleton?: boolean;
     size?: "s" | "l";
 };
 
@@ -47,16 +49,18 @@ function Post({
     disableRepliesLink = false,
     disableLikesLink = false,
     previewMode = false,
+    skeleton = true,
     size = "l",
 }: PostTypes) {
     const [postData, setPostData] = useState<GetPostResponse>(null);
     const [postReplies, setPostReplies] = useState<GetPostRepliesResponse>(overrideReplies || null);
     const [viewing, setViewing] = useState<"" | "replies">(!previewMode ? viewingDefault : "");
+    const [waiting, setWaiting] = useState<boolean>(true);
 
     const { postId } = useParams();
 
     // get post api handling
-    const [getPostResponse /* setGetPostParams */, , getPostAgain] = useAsync.GET<
+    const [getPostResponse /* setGetPostParams */, , getPostAgain, gettingPost] = useAsync.GET<
         GetPostParams,
         GetPostResponse
     >(
@@ -163,6 +167,10 @@ function Post({
         }
     }, [viewing, viewingDefault, overrideReplies, getPostRepliesAgain]);
 
+    useEffect(() => {
+        setWaiting(gettingPost);
+    }, [gettingPost]);
+
     if (getPostResponse && getPostResponse.status === 401) window.location.assign("/");
 
     let sizes = {
@@ -190,10 +198,10 @@ function Post({
     const errorElement =
         errorMessage.length > 0 ? <p className={styles["error-message"]}>{errorMessage}</p> : null;
 
-    return postData ? (
+    return skeleton || postData ? (
         <>
             <div className={styles["container"]} style={{ gap: sizes.rowGap }}>
-                {!removeLinkToReply && postData.replyingTo ? (
+                {!removeLinkToReply && postData && postData.replyingTo ? (
                     <a className={styles["replying-to"]} href={`/post/${postData.replyingTo}`}>
                         <p className={`material-symbols-rounded ${styles["replying-to-arrow"]}`}>
                             arrow_back
@@ -204,137 +212,158 @@ function Post({
                 <div className={styles["row-one"]}>
                     <User.ImageAndName
                         image={
-                            postData.author.preferences.profileImage
+                            postData && postData.author.preferences.profileImage
                                 ? {
                                       src: postData.author.preferences.profileImage.url,
                                       alt: postData.author.preferences.profileImage.alt,
                                   }
                                 : { src: "", alt: "" }
                         }
-                        displayName={postData.author.preferences.displayName}
-                        accountTag={postData.author.accountTag}
+                        displayName={postData ? postData.author.preferences.displayName : " "}
+                        accountTag={postData ? postData.author.accountTag : " "}
                         disableLinks={previewMode}
+                        waiting={waiting}
                         size={sizes.imageAndName as "s" | "l"}
                     />
                 </div>
-                {(postData.text.length > 0 || postData.images.length > 0) && (
-                    <div className={styles["row-two"]}>
-                        {postData.text.length > 0 && (
-                            <p
-                                className={styles["text"]}
-                                style={{
-                                    fontSize: sizes.contentFont,
-                                    lineHeight: sizes.contentLineHeight,
-                                }}
-                            >
-                                {postData.text}
-                            </p>
-                        )}
-                        {postData.images.length > 0 && (
-                            <ul
-                                className={styles["images"]}
-                                data-image-quantity={`${Math.min(4, postData.images.length)}`}
-                            >
-                                {postData.images.map((image, i) => {
-                                    if (i >= 4) return null;
-                                    return (
-                                        <li
-                                            className={styles["image-container"]}
-                                            key={`${image._id}`}
-                                        >
-                                            <Images.Basic
-                                                src={image.url}
-                                                alt={image.alt}
-                                                style={{ width: "100%", height: "100%" }}
-                                            />
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        )}
-                    </div>
-                )}
+                <div className={styles["row-two"]}>
+                    <Accessibility.Skeleton waiting={waiting} style={{ width: "100%" }}>
+                        <p
+                            className={styles["text"]}
+                            style={{
+                                fontSize: sizes.contentFont,
+                                lineHeight: sizes.contentLineHeight,
+                            }}
+                        >
+                            {postData ? postData.text : "a"}
+                        </p>
+                    </Accessibility.Skeleton>
+                    {postData && postData.images.length > 0 && (
+                        <ul
+                            className={styles["images"]}
+                            data-image-quantity={`${Math.min(4, postData.images.length)}`}
+                        >
+                            {postData.images.map((image, i) => {
+                                if (i >= 4) return null;
+                                return (
+                                    <li className={styles["image-container"]} key={`${image._id}`}>
+                                        <Images.Basic
+                                            src={image.url}
+                                            alt={image.alt}
+                                            style={{ width: "100%", height: "100%" }}
+                                        />
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    )}
+                </div>
                 <div className={styles["row-three"]}>
                     <div className={styles["row-three-left"]}>
                         <p className={styles["likes-count"]}>
                             <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
-                                {formatNumber(postData.likesCount, 1)}
+                                {postData ? formatNumber(postData.likesCount, 1) : ""}
                             </strong>
-                            <Buttons.Basic
-                                text={`Like${postData.likesCount === 1 ? "" : "s"}`}
-                                label="view likes"
-                                palette="bare"
-                                onClickHandler={() => {
-                                    if (!disableLikesLink) {
-                                        window.location.href = `/post/${!getIdFromURLParam ? _id : postId}/likes`;
-                                    }
-                                }}
-                                otherStyles={{
-                                    fontSize: sizes.linksAndButtonsRegular,
-                                    fontWeight: "normal",
-                                    padding: "0rem",
-                                }}
-                                disabled={previewMode || disableLikesLink}
-                            />
+                            <Accessibility.Skeleton
+                                waiting={waiting}
+                                style={{ borderRadius: "9999px" }}
+                            >
+                                <Buttons.Basic
+                                    text={`Like${postData && postData.likesCount === 1 ? "" : "s"}`}
+                                    label="view likes"
+                                    palette="bare"
+                                    onClickHandler={() => {
+                                        if (!disableLikesLink) {
+                                            window.location.href = `/post/${!getIdFromURLParam ? _id : postId}/likes`;
+                                        }
+                                    }}
+                                    otherStyles={{
+                                        fontSize: sizes.linksAndButtonsRegular,
+                                        fontWeight: "normal",
+                                        padding: "0rem",
+                                    }}
+                                    disabled={previewMode || disableLikesLink || waiting}
+                                />
+                            </Accessibility.Skeleton>
                         </p>
                         <p className={styles["replies-count"]}>
                             <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
-                                {formatNumber(postData.repliesCount, 1)}
+                                {postData ? formatNumber(postData.repliesCount, 1) : " "}
                             </strong>
-                            <Buttons.Basic
-                                text={`Repl${postData.repliesCount === 1 ? "y" : "ies"}`}
-                                label="view replies"
-                                onClickHandler={() => {
-                                    if (!disableRepliesLink) {
-                                        if (canToggleReplies) {
-                                            if (viewing === "replies") setViewing("");
-                                            if (viewing !== "replies") setViewing("replies");
-                                        } else {
-                                            window.location.href = `/post/${!getIdFromURLParam ? _id : postId}`;
+                            <Accessibility.Skeleton
+                                waiting={waiting}
+                                style={{ borderRadius: "9999px" }}
+                            >
+                                <Buttons.Basic
+                                    text={`Repl${postData && postData.repliesCount === 1 ? "y" : "ies"}`}
+                                    label="view replies"
+                                    onClickHandler={() => {
+                                        if (!disableRepliesLink) {
+                                            if (canToggleReplies) {
+                                                if (viewing === "replies") setViewing("");
+                                                if (viewing !== "replies") setViewing("replies");
+                                            } else {
+                                                window.location.href = `/post/${!getIdFromURLParam ? _id : postId}`;
+                                            }
                                         }
-                                    }
-                                }}
-                                palette="bare"
-                                otherStyles={{
-                                    fontSize: sizes.linksAndButtonsRegular,
-                                    fontWeight: "normal",
-                                    padding: "0rem",
-                                }}
-                                disabled={previewMode || disableRepliesLink}
-                            />
+                                    }}
+                                    palette="bare"
+                                    otherStyles={{
+                                        fontSize: sizes.linksAndButtonsRegular,
+                                        fontWeight: "normal",
+                                        padding: "0rem",
+                                    }}
+                                    disabled={previewMode || disableRepliesLink || waiting}
+                                />
+                            </Accessibility.Skeleton>
                         </p>
                     </div>
                     <div className={styles["row-three-buttons"]}>
-                        <Buttons.Basic
-                            text={postData.likedByUser ? "" : "Like"}
-                            symbol="star"
-                            onClickHandler={() => {
-                                if (!overridePostData && postData !== null) likePostAgain(true);
-                            }}
-                            palette={postData.likedByUser ? "gold" : "primary"}
-                            otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
-                            disabled={previewMode}
-                        />
-                        <Buttons.Basic
-                            text="Reply"
-                            symbol="reply"
-                            onClickHandler={() => {
-                                if (!overridePostData && canReply) {
-                                    PubSub.publish(
-                                        "create-new-reply-button-click",
-                                        !getIdFromURLParam ? _id : postId,
-                                    );
-                                }
-                            }}
-                            otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
-                            disabled={previewMode}
-                        />
-                        <Buttons.Basic
-                            text="Share"
-                            symbol="share"
-                            otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
-                            disabled={previewMode}
-                        />
+                        <Accessibility.Skeleton
+                            waiting={waiting}
+                            style={{ borderRadius: "9999px" }}
+                        >
+                            <Buttons.Basic
+                                text={postData && postData.likedByUser ? "" : "Like"}
+                                symbol="star"
+                                onClickHandler={() => {
+                                    if (!overridePostData && postData !== null) likePostAgain(true);
+                                }}
+                                palette={postData && postData.likedByUser ? "gold" : "primary"}
+                                otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+                                disabled={previewMode || waiting}
+                            />
+                        </Accessibility.Skeleton>
+                        <Accessibility.Skeleton
+                            waiting={waiting}
+                            style={{ borderRadius: "9999px" }}
+                        >
+                            <Buttons.Basic
+                                text="Reply"
+                                symbol="reply"
+                                onClickHandler={() => {
+                                    if (!overridePostData && canReply) {
+                                        PubSub.publish(
+                                            "create-new-reply-button-click",
+                                            !getIdFromURLParam ? _id : postId,
+                                        );
+                                    }
+                                }}
+                                otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+                                disabled={previewMode || waiting}
+                            />
+                        </Accessibility.Skeleton>
+                        <Accessibility.Skeleton
+                            waiting={waiting}
+                            style={{ borderRadius: "9999px" }}
+                        >
+                            <Buttons.Basic
+                                text="Share"
+                                symbol="share"
+                                otherStyles={{ fontSize: sizes.linksAndButtonsRegular }}
+                                disabled={previewMode || waiting}
+                            />
+                        </Accessibility.Skeleton>
                     </div>
                 </div>
             </div>
