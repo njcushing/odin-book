@@ -4,6 +4,7 @@ import { UserContext } from "@/context/user";
 import { ProfileContext } from "@/features/profile/Main";
 import Images from "@/components/images";
 import Buttons from "@/components/buttons";
+import Accessibility from "@/components/accessibility";
 import formatCreationDate from "@/utils/formatCreationDate";
 import followUser, {
     Params as FollowUserParams,
@@ -18,15 +19,22 @@ function Summary() {
     const { extract } = useContext(UserContext);
     const { _id } = useContext(ProfileContext);
 
-    // get option api handling
+    const [waiting, setWaiting] = useState(true);
+
+    // get user summary api handling
     const [userSummary, setUserSummary] = useState<GetUserSummaryResponse>(null);
-    const [getUserSummaryResponse, setGetUserSummaryParams, getUserSummaryAgain] = useAsync.GET<
-        GetUserSummaryParams,
-        GetUserSummaryResponse
-    >({
-        func: getUserSummary,
-        parameters: [{ params: { userId: _id } }, null],
-    });
+    const [
+        getUserSummaryResponse,
+        setGetUserSummaryParams,
+        getUserSummaryAgain,
+        gettingUserSummary,
+    ] = useAsync.GET<GetUserSummaryParams, GetUserSummaryResponse>(
+        {
+            func: getUserSummary,
+            parameters: [{ params: { userId: _id } }, null],
+        },
+        true,
+    );
     useEffect(() => {
         const newState = getUserSummaryResponse ? getUserSummaryResponse.data : null;
         setUserSummary(newState);
@@ -74,7 +82,11 @@ function Summary() {
         setErrorMessage("");
     }, [getUserSummaryAgain, followUserResponse]);
 
-    let displayNameString = "user";
+    useEffect(() => {
+        setWaiting(gettingUserSummary);
+    }, [gettingUserSummary]);
+
+    let displayNameString = "userino";
     if (userSummary) {
         if (userSummary.preferences.displayName.length > 0) {
             displayNameString = userSummary.preferences.displayName;
@@ -83,7 +95,7 @@ function Summary() {
         }
     }
 
-    let button = null;
+    let button = <Buttons.Basic text="Edit Profile" />;
     if (userSummary) {
         if (extract("accountTag") === userSummary.accountTag) {
             button = (
@@ -108,58 +120,99 @@ function Summary() {
         }
     }
 
+    // including ' || userSummary === null' allows skeletons to display when provided userId is bad
+    const currentlyWaiting = waiting || userSummary === null;
+
     return (
         <div className={styles["container"]}>
             <div className={styles["banner-image"]}>
-                <Images.Basic
-                    src={new Uint8Array([])}
-                    alt=""
-                    style={{ width: "100%", height: "200px" }}
-                />
+                <Accessibility.Skeleton waiting={currentlyWaiting} style={{ width: "100%" }}>
+                    <Images.Basic
+                        src={new Uint8Array([])}
+                        alt=""
+                        style={{ width: "100%", height: "200px" }}
+                    />
+                </Accessibility.Skeleton>
             </div>
             <div className={styles["main-content-container"]}>
                 <div className={styles["row-one"]}>
                     <div className={styles["row-one-left"]}>
-                        {userSummary && userSummary.preferences.profileImage ? (
-                            <Images.Profile
-                                src={userSummary.preferences.profileImage.url}
-                                alt=""
-                                sizePx={120}
-                            />
-                        ) : (
-                            <Images.Profile sizePx={120} />
-                        )}
+                        <Accessibility.Skeleton
+                            waiting={currentlyWaiting}
+                            style={{ borderRadius: "9999px" }}
+                        >
+                            {userSummary && userSummary.preferences.profileImage ? (
+                                <Images.Profile
+                                    src={userSummary.preferences.profileImage.url}
+                                    alt={userSummary.preferences.profileImage.alt}
+                                    sizePx={120}
+                                />
+                            ) : (
+                                <Images.Profile sizePx={120} />
+                            )}
+                        </Accessibility.Skeleton>
                     </div>
                     <div className={styles["row-one-right"]}>
-                        <h2 className={`truncate-ellipsis ${styles["display-name"]}`}>
-                            {displayNameString}
-                        </h2>
-                        <h3 className={`truncate-ellipsis ${styles["account-tag"]}`}>
-                            @{userSummary ? userSummary.accountTag : "user"}
-                        </h3>
-                        {button}
+                        <Accessibility.Skeleton
+                            waiting={currentlyWaiting}
+                            style={{ width: "100%" }}
+                        >
+                            <h2 className={`truncate-ellipsis ${styles["display-name"]}`}>
+                                {displayNameString}
+                            </h2>
+                        </Accessibility.Skeleton>
+                        <Accessibility.Skeleton
+                            waiting={currentlyWaiting}
+                            style={{ width: "100%" }}
+                        >
+                            <h3 className={`truncate-ellipsis ${styles["account-tag"]}`}>
+                                @{userSummary ? userSummary.accountTag : "user"}
+                            </h3>
+                        </Accessibility.Skeleton>
+                        <Accessibility.Skeleton
+                            waiting={currentlyWaiting}
+                            style={{ borderRadius: "9999px" }}
+                        >
+                            {button}
+                        </Accessibility.Skeleton>
                     </div>
                 </div>
-                {userSummary && userSummary.preferences.bio.length > 0 ? (
+                <Accessibility.Skeleton waiting={currentlyWaiting} style={{ width: "100%" }}>
                     <div className={styles["row-two"]}>
-                        <p className={styles["bio"]}>{userSummary.preferences.bio}</p>
+                        <p className={styles["bio"]}>
+                            {userSummary ? userSummary.preferences.bio : "placeholder"}
+                        </p>
                     </div>
-                ) : null}
+                </Accessibility.Skeleton>
                 <div className={styles["row-three"]}>
-                    <p className={styles["account-creation-date"]}>
-                        {formatCreationDate(userSummary ? userSummary.creationDate : "0")}
-                    </p>
+                    <Accessibility.Skeleton waiting={currentlyWaiting}>
+                        <p className={styles["account-creation-date"]}>
+                            {formatCreationDate(
+                                userSummary
+                                    ? userSummary.creationDate
+                                    : "Account creation date unknown",
+                            )}
+                        </p>
+                    </Accessibility.Skeleton>
                 </div>
                 <div className={styles["row-four"]}>
-                    <p className={styles["following-count"]}>
-                        <strong>{userSummary ? userSummary.followingCount : "0"}</strong> Following
-                    </p>
-                    <p className={styles["followers-count"]}>
-                        <strong>{userSummary ? userSummary.followersCount : "0"}</strong> Followers
-                    </p>
-                    <p className={styles["likes-count"]}>
-                        <strong>{userSummary ? userSummary.likesCount : "0"}</strong> Likes
-                    </p>
+                    <Accessibility.Skeleton waiting={currentlyWaiting}>
+                        <p className={styles["following-count"]}>
+                            <strong>{userSummary ? userSummary.followingCount : "0"}</strong>{" "}
+                            Following
+                        </p>
+                    </Accessibility.Skeleton>
+                    <Accessibility.Skeleton waiting={currentlyWaiting}>
+                        <p className={styles["followers-count"]}>
+                            <strong>{userSummary ? userSummary.followersCount : "0"}</strong>{" "}
+                            Followers
+                        </p>
+                    </Accessibility.Skeleton>
+                    <Accessibility.Skeleton waiting={currentlyWaiting}>
+                        <p className={styles["likes-count"]}>
+                            <strong>{userSummary ? userSummary.likesCount : "0"}</strong> Likes
+                        </p>
+                    </Accessibility.Skeleton>
                 </div>
             </div>
             {errorMessage.length > 0 ? (

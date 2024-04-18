@@ -21,6 +21,7 @@ export type Response = {
         profileImage: {
             _id: mongoose.Types.ObjectId | null | undefined;
             url: string;
+            alt: string;
         } | null;
     };
     isFollowing: boolean;
