@@ -260,14 +260,11 @@ function Post({
                 </div>
                 <div className={styles["row-three"]}>
                     <div className={styles["row-three-left"]}>
-                        <p className={styles["likes-count"]}>
-                            <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
-                                {postData ? formatNumber(postData.likesCount, 1) : ""}
-                            </strong>
-                            <Accessibility.Skeleton
-                                waiting={waiting}
-                                style={{ borderRadius: "9999px" }}
-                            >
+                        <Accessibility.Skeleton waiting={waiting}>
+                            <p className={styles["likes-count"]}>
+                                <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
+                                    {postData ? formatNumber(postData.likesCount, 1) : ""}
+                                </strong>
                                 <Buttons.Basic
                                     text={`Like${postData && postData.likesCount === 1 ? "" : "s"}`}
                                     label="view likes"
@@ -284,16 +281,13 @@ function Post({
                                     }}
                                     disabled={previewMode || disableLikesLink || waiting}
                                 />
-                            </Accessibility.Skeleton>
-                        </p>
-                        <p className={styles["replies-count"]}>
-                            <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
-                                {postData ? formatNumber(postData.repliesCount, 1) : " "}
-                            </strong>
-                            <Accessibility.Skeleton
-                                waiting={waiting}
-                                style={{ borderRadius: "9999px" }}
-                            >
+                            </p>
+                        </Accessibility.Skeleton>
+                        <Accessibility.Skeleton waiting={waiting}>
+                            <p className={styles["replies-count"]}>
+                                <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
+                                    {postData ? formatNumber(postData.repliesCount, 1) : " "}
+                                </strong>
                                 <Buttons.Basic
                                     text={`Repl${postData && postData.repliesCount === 1 ? "y" : "ies"}`}
                                     label="view replies"
@@ -315,8 +309,8 @@ function Post({
                                     }}
                                     disabled={previewMode || disableRepliesLink || waiting}
                                 />
-                            </Accessibility.Skeleton>
-                        </p>
+                            </p>
+                        </Accessibility.Skeleton>
                     </div>
                     <div className={styles["row-three-buttons"]}>
                         <Accessibility.Skeleton
