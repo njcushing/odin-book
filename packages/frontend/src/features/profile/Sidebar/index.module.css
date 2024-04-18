@@ -9,15 +9,6 @@
     height: min-content;
 }
 
-.row-one {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-    gap: 0.6rem;
-
-    width: 100%;
-}
-
 .row-one-right {
     align-self: center;
 
