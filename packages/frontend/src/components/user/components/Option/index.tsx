@@ -90,7 +90,7 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
         buttonText = "Unfollow";
         buttonSymbol = "person_remove";
     }
-    if (optionData && optionData.isFollowing) {
+    if (optionData && !optionData.isFollowing) {
         buttonText = "Follow";
         buttonSymbol = "person_add";
     }
