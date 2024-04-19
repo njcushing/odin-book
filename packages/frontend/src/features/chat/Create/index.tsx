@@ -1,18 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import * as useAsync from "@/hooks/useAsync";
 import Modals from "@/components/modals";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
-import { v4 as uuidv4 } from "uuid";
+import mongoose from "mongoose";
+import createChat, { Body, Response } from "./utils/createChat";
 import styles from "./index.module.css";
 
 type CreateTypes = {
-    defaultUsers?: string[];
+    defaultParticipants?: mongoose.Types.ObjectId[];
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
 };
 
-function Create({ defaultUsers = [], onCloseClickHandler = null }: CreateTypes) {
-    const [users, setUsers] = useState<string[]>(defaultUsers);
-    const [submissionErrors, setSubmissionErrors] = useState<string[]>([]);
+function Create({ defaultParticipants = [], onCloseClickHandler = null }: CreateTypes) {
+    const [participants, setParticipants] =
+        useState<mongoose.Types.ObjectId[]>(defaultParticipants);
+
+    const [response, setParams, setAttempting] = useAsync.POST<null, Body, Response>(
+        { func: createChat },
+        false,
+    );
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
+    useEffect(() => {
+        if (response && response.status >= 400 && response.message && response.message.length > 0) {
+            setErrorMessage(response.message);
+        }
+    }, [response]);
 
     return (
         <Modals.Basic onCloseClickHandler={onCloseClickHandler}>
@@ -21,40 +35,25 @@ function Create({ defaultUsers = [], onCloseClickHandler = null }: CreateTypes) 
                 <div className={styles["content"]}>
                     <User.Selector
                         onChangeHandler={(selectedUsers) =>
-                            setUsers(
+                            setParticipants(
                                 Object.keys(selectedUsers).map((user) => selectedUsers[user]._id),
                             )
                         }
                     />
-                    {submissionErrors.length > 0 ? (
-                        <div className={styles["errors-list"]}>
-                            <p className={styles["submission-errors-title"]}>Submission Errors:</p>
-                            <ul
-                                className={styles["submission-errors"]}
-                                aria-label="message-submission-errors"
-                            >
-                                {submissionErrors.map((error) => {
-                                    return (
-                                        <li
-                                            className={styles["error"]}
-                                            aria-label="message-submission-error"
-                                            key={uuidv4()}
-                                        >
-                                            {error}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    ) : null}
                 </div>
+                {errorMessage.length > 0 ? (
+                    <p className={styles["error-message"]}>{errorMessage}</p>
+                ) : null}
                 <div className={styles["create-button-container"]}>
                     <Buttons.Basic
                         text="Create"
                         palette="green"
                         onClickHandler={() => {
-                            // attempt to create chat
+                            setErrorMessage("");
+                            setParams([{ body: { participants } }, null]);
+                            setAttempting(true);
                         }}
+                        disabled={participants.length === 0}
                         otherStyles={{ fontSize: "1.2rem" }}
                     />
                 </div>

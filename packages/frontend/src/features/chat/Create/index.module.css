@@ -20,6 +20,14 @@
     width: 500px;
 }
 
+.error-message {
+    color: var(--text-error);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-wrap:wrap;
+}
+
 .create-button-container {
     align-self: center;
 }
