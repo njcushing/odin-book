@@ -27,6 +27,16 @@ const validators = {
         participants: body("participants")
             .trim()
             .custom((value) => {
+                if (!Array.isArray(value)) {
+                    throw new Error(
+                        `The provided participants field in the request body is not an array`,
+                    );
+                }
+                if (value.length === 0) {
+                    throw new Error(
+                        `The provided participants array in the request body must have at least one element`,
+                    );
+                }
                 for (let i = 0; i < value.length; i++) {
                     if (!mongoose.Types.ObjectId.isValid(value[i])) {
                         throw new Error(
