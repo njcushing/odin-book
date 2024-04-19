@@ -111,6 +111,10 @@ const validators = {
             .optional()
             .isBoolean()
             .withMessage("The provided 'repliesOnly' query parameter is not a valid boolean value"),
+        softCheck: query("softCheck")
+            .optional()
+            .isBoolean()
+            .withMessage("The provided 'softCheck' query parameter is not a valid boolean value"),
     },
 };
 
