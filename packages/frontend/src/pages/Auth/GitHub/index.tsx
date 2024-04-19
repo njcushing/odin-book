@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import * as useAsync from "@/hooks/useAsync";
-import login from "./utils/login";
+import login, { Params, Response } from "./utils/login";
 import styles from "./index.module.css";
 
 function Auth() {
-    const [response, setParams, setAttempting] = useAsync.GET<string>({ func: login }, false);
+    const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
+        { func: login },
+        false,
+    );
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 

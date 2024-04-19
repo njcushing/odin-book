@@ -1,19 +1,25 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
-export type Types = apiFunctionTypes.GET<string>;
+export type Params = {
+    code: string;
+};
 
-const login: Types = async (data, abortController = null) => {
-    if (!data || !data.params || !("code" in data.params)) {
-        return {
-            status: 400,
-            message: "Code must be provided as query parameter",
-            data: "",
-        };
-    }
+export type Response = null;
+
+const login: apiFunctionTypes.GET<Params, Response> = async (data, abortController = null) => {
+    const { code } = data.params as Params;
+
+    const queryObject = { code };
+    const urlParams = new URLSearchParams();
+    Object.entries(queryObject).forEach(([key, value]) => {
+        if (value !== "" && value !== undefined && value !== null) {
+            urlParams.append(key, value);
+        }
+    });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/auth/github/login?code=${data.params.code}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/auth/github/login?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",
@@ -27,14 +33,14 @@ const login: Types = async (data, abortController = null) => {
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: "",
+                data: null,
             };
         })
         .catch((error) => {
             return {
                 status: error.status ? error.status : 500,
                 message: error.message,
-                data: "",
+                data: null,
             };
         });
     return result;
