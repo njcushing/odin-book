@@ -44,7 +44,7 @@ export const overviewFromTag = [
     validators.query.softCheck,
     query("accountTag").custom((value, { req }) => {
         const softCheck = req.query && req.query.softCheck;
-        if (!softCheck) {
+        if (!softCheck || softCheck === "false") {
             const valid = validation.user.accountTag(value, "front");
             if (!valid.status) {
                 throw new Error(valid.message);
@@ -348,7 +348,7 @@ export const posts = [
             }
         }
         // if 'repliesOnly' query parameter is specified as 'true', filter out non-replies
-        if (repliesOnly) {
+        if (repliesOnly === "true") {
             aggregation.push({
                 $match: {
                     $or: [

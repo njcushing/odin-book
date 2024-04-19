@@ -109,12 +109,26 @@ const validators = {
             }),
         repliesOnly: query("repliesOnly")
             .optional()
-            .isBoolean()
-            .withMessage("The provided 'repliesOnly' query parameter is not a valid boolean value"),
+            .custom((value) => {
+                if (value !== "true" && value !== "false") {
+                    throw new Error(
+                        "The provided 'repliesOnly' query parameter is not a valid boolean value",
+                    );
+                } else {
+                    return true;
+                }
+            }),
         softCheck: query("softCheck")
             .optional()
-            .isBoolean()
-            .withMessage("The provided 'softCheck' query parameter is not a valid boolean value"),
+            .custom((value) => {
+                if (value !== "true" && value !== "false") {
+                    throw new Error(
+                        "The provided 'softCheck' query parameter is not a valid boolean value",
+                    );
+                } else {
+                    return true;
+                }
+            }),
     },
 };
 
