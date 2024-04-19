@@ -57,10 +57,9 @@ const ChatSchema: Schema = new Schema(
         },
         image: {
             type: {
-                type: String,
-                trim: true,
+                type: Schema.Types.ObjectId,
+                ref: "Image",
             },
-            default: null,
         },
         messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
     },
