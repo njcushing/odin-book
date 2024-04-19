@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Buttons from "@/components/buttons";
 import * as Types from "../../types";
 import getSizes from "../../utils/getSizes";
@@ -6,7 +6,10 @@ import styles from "./index.module.css";
 
 type BaseLite = Omit<Types.Base<string>, "labelText" | "fieldId" | "fieldName">;
 
-type Custom = { onSearchHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null };
+type Custom = {
+    onSearchHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+    searchAfterDelay?: number;
+};
 
 export type SearchTypes = BaseLite &
     Types.Placeholder &
@@ -22,21 +25,47 @@ function Search({
     placeholder = "",
     size = "s",
     onSearchHandler = null,
+    searchAfterDelay = 0,
 }: SearchTypes) {
     const [value, setValue] = useState<string>(initialValue || "");
 
+    const timeoutId = useRef<NodeJS.Timeout | null>(null);
+    const button = useRef<JSX.Element | null>(null);
+
     const sizes = getSizes(size, "input");
+
+    button.current = (
+        <Buttons.Basic
+            text=""
+            symbol="search"
+            label="search"
+            onClickHandler={onSearchHandler}
+            disabled={disabled || false}
+            otherStyles={{ ...sizes, padding: "0.6rem" }}
+        />
+    );
+
+    useEffect(() => {
+        if (timeoutId.current) clearTimeout(timeoutId.current);
+        if (typeof searchAfterDelay !== "undefined") {
+            const id = setTimeout(
+                () => {
+                    if (button.current) button.current.props.onClickHandler();
+                    timeoutId.current = null;
+                },
+                Math.max(0, searchAfterDelay),
+            );
+            timeoutId.current = id;
+        }
+
+        return () => {
+            if (timeoutId.current) clearTimeout(timeoutId.current);
+        };
+    }, [value, searchAfterDelay]);
 
     return (
         <div className={styles["container"]} data-disabled={disabled || false}>
-            <Buttons.Basic
-                text=""
-                symbol="search"
-                label="search"
-                onClickHandler={onSearchHandler}
-                disabled={disabled || false}
-                otherStyles={{ ...sizes, padding: "0.6rem" }}
-            />
+            {button.current}
             <input
                 className={`truncate-ellipsis ${styles["input"]}`}
                 aria-label="search bar"
