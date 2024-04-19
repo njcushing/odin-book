@@ -1,17 +1,12 @@
 import { useState } from "react";
-import Buttons from "@/components/buttons";
 import { BasicTypes as ButtonBasicTypes } from "@/components/buttons/components/Basic";
-import * as ModelTypes from "@/utils/modelTypes";
+import { Response } from "@/components/user/components/Finder/utils/getUserOverviewFromTag";
 import User from "../..";
 import styles from "./index.module.css";
 import Option from "./components/Option";
 
-type UserTypesPicked = Pick<ModelTypes.User, "_id" | "accountTag"> & {
-    preferences: Pick<ModelTypes.User["preferences"], "displayName">;
-};
-
 type Users = {
-    [key: string]: UserTypesPicked;
+    [key: string]: Exclude<Response, null>;
 };
 
 export type SelectorTypes = {
@@ -35,14 +30,8 @@ function Selector({ onChangeHandler }: SelectorTypes) {
                 button={addButton}
                 onClickHandler={(user) => {
                     const newSelectedUsers: Users = {};
-                    const key = user._id;
-                    newSelectedUsers[key] = {
-                        _id: user._id,
-                        accountTag: user.accountTag,
-                        preferences: {
-                            displayName: user.preferences.displayName,
-                        },
-                    };
+                    const key = `${user._id}`;
+                    newSelectedUsers[key] = user;
                     setSelectedUsers({ ...selectedUsers, ...newSelectedUsers });
                     if (onChangeHandler) onChangeHandler({ ...selectedUsers, ...newSelectedUsers });
                 }}
@@ -66,7 +55,7 @@ function Selector({ onChangeHandler }: SelectorTypes) {
                                     setSelectedUsers(newSelectedUsers);
                                     if (onChangeHandler) onChangeHandler(newSelectedUsers);
                                 }}
-                                key={user._id}
+                                key={key}
                             />
                         );
                     })}
