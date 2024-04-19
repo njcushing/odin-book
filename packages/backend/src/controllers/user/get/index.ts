@@ -50,7 +50,7 @@ export const overviewFromTag = [
             { _id: 1, accountTag: 1, "preferences.displayName": 1, "preferences.profileImage": 1 },
         ).lean({ virtuals: false });
         if (!user) {
-            sendResponse(res, softCheck ? 400 : 404, "User not found in database");
+            sendResponse(res, softCheck ? 204 : 404, "User not found in database");
         } else {
             await generateToken(res.locals.user)
                 .then((token) => {
