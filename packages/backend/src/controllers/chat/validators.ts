@@ -24,6 +24,18 @@ const validators = {
                     return true;
                 }
             }),
+        participants: body("participants")
+            .trim()
+            .custom((value) => {
+                for (let i = 0; i < value.length; i++) {
+                    if (!mongoose.Types.ObjectId.isValid(value[i])) {
+                        throw new Error(
+                            `The provided participant id '${value[i]}' in the request body is not a valid MongoDB ObjectId`,
+                        );
+                    }
+                }
+                return true;
+            }),
     },
     param: {
         chatId: param("chatId")
