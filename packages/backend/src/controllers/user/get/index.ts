@@ -37,6 +37,38 @@ export const idFromTag = [
     }),
 ];
 
+export const overviewFromTag = [
+    protectedRouteJWT,
+    validators.query.accountTag,
+    validators.query.softCheck,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { accountTag, softCheck } = req.query;
+        // find user
+        const user = await User.findOne(
+            { accountTag },
+            { _id: 1, accountTag: 1, "preferences.displayName": 1, "preferences.profileImage": 1 },
+        ).lean({ virtuals: false });
+        if (!user) {
+            sendResponse(res, softCheck ? 400 : 404, "User not found in database");
+        } else {
+            await generateToken(res.locals.user)
+                .then((token) => {
+                    sendResponse(res, 200, "User found", { token, user });
+                })
+                .catch((tokenErr) => {
+                    sendResponse(
+                        res,
+                        500,
+                        tokenErr.message || `User found, but token creation failed`,
+                        { user },
+                        tokenErr,
+                    );
+                });
+        }
+    }),
+];
+
 export const active = [
     protectedRouteJWT,
     async (req: Request, res: Response) => {

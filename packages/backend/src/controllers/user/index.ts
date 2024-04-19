@@ -12,6 +12,7 @@ router.get("/:userId/option", get.option);
 router.get("/:userId/followers/users", get.followers);
 router.get("/:userId/following/users", get.following);
 router.get("/id", get.idFromTag);
+router.get("/overviewFromTag", get.overviewFromTag);
 router.get("/active", get.active);
 router.post("/", create.regular);
 router.put("/:userId/follow", put.follow);
