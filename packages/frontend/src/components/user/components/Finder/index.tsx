@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import * as useAsync from "@/hooks/useAsync";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
 import { BasicTypes as ButtonBasicTypes } from "@/components/buttons/components/Basic";
-import findUser, { User as UserTypes } from "./utils/findUserFromTag";
+import getUserOverviewFromTag, { Params, Response } from "./utils/getUserOverviewFromTag";
 import User from "../..";
 import styles from "./index.module.css";
 
@@ -10,38 +11,62 @@ export type FinderTypes = {
     placeholder?: string;
     button?: ButtonBasicTypes;
     clearFindOnClick?: boolean;
-    onClickHandler?: ((user: UserTypes) => void) | null;
+    onClickHandler?: ((user: Exclude<Response, null>) => void) | null;
 };
 
 function Finder({ placeholder, button, onClickHandler, clearFindOnClick }: FinderTypes) {
-    const [user, setUser] = useState<UserTypes | null>(null);
+    const [currentAccountTag, setCurrentAccountTag] = useState<string>("");
+
+    const [foundUser, setFoundUser] = useState<Response>(null);
+    const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
+        {
+            func: getUserOverviewFromTag,
+            parameters: [{ params: { accountTag: currentAccountTag } }, null],
+        },
+        true,
+    );
+
+    useEffect(() => {
+        const newState = response ? response.data : null;
+        setFoundUser(newState);
+    }, [response]);
+
+    useEffect(() => {
+        setParams([{ params: { accountTag: currentAccountTag } }, null]);
+    }, [currentAccountTag, setParams]);
 
     return (
         <div className={styles["container"]}>
             <Inputs.Search
-                onSearchHandler={() => {
-                    const userNew = findUser("");
-                    setUser(userNew);
+                onChangeHandler={(e) => {
+                    setFoundUser(null);
+                    setCurrentAccountTag(e.target.value);
                 }}
+                onSearchHandler={() => setAttempting(true)}
                 placeholder={placeholder}
+                searchAfterDelay={0}
             />
-            {user && (
+            {foundUser && (
                 <div className={styles["found-user"]}>
                     <User.ImageAndName
-                        image={{
-                            src: user.preferences.profileImage.src,
-                            alt: user.preferences.profileImage.alt,
-                        }}
-                        displayName={user.preferences.displayName}
-                        accountTag={user.accountTag}
+                        image={
+                            foundUser.preferences.profileImage
+                                ? {
+                                      src: foundUser.preferences.profileImage.url,
+                                      alt: foundUser.preferences.profileImage.alt,
+                                  }
+                                : { src: "", alt: "" }
+                        }
+                        displayName={foundUser.preferences.displayName}
+                        accountTag={foundUser.accountTag}
                         size="m"
                     />
                     {button && (
                         <Buttons.Basic
                             {...button}
                             onClickHandler={() => {
-                                if (onClickHandler) onClickHandler(user);
-                                if (clearFindOnClick) setUser(null);
+                                if (onClickHandler) onClickHandler(foundUser);
+                                if (clearFindOnClick) setFoundUser(null);
                             }}
                         />
                     )}
