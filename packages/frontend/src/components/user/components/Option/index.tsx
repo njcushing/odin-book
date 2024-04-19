@@ -46,17 +46,14 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
     }, [overrideOptionData, getOptionResponse]);
 
     // follow user api handling
-    const [followUserResponse /* setFollowUserParams */, , followUserAgain] = useAsync.PUT<
-        FollowUserParams,
-        null,
-        null
-    >(
-        {
-            func: followUser,
-            parameters: [{ params: { userId: _id } }, null],
-        },
-        false,
-    );
+    const [followUserResponse /* setFollowUserParams */, , followUserAgain, followingUser] =
+        useAsync.PUT<FollowUserParams, null, null>(
+            {
+                func: followUser,
+                parameters: [{ params: { userId: _id } }, null],
+            },
+            false,
+        );
 
     // error message handling
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -78,7 +75,22 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
         } else {
             getOptionAgain(true);
         }
-    }, [overrideOptionData, getOptionAgain, followUserResponse]);
+    }, [overrideOptionData, getOptionAgain]);
+
+    useEffect(() => {
+        if (followUserResponse && followUserResponse.status < 400) {
+            setOptionData((prevOptionData) => {
+                if (prevOptionData) {
+                    return {
+                        ...prevOptionData,
+                        isFollowing: !prevOptionData.isFollowing,
+                    };
+                }
+                getOptionAgain(true);
+                return prevOptionData;
+            });
+        }
+    }, [followUserResponse, getOptionAgain]);
 
     useEffect(() => {
         setWaiting(gettingOption);
@@ -126,6 +138,7 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
                                 symbol={buttonSymbol}
                                 palette={optionData && optionData.isFollowing ? "red" : "orange"}
                                 onClickHandler={() => followUserAgain(true)}
+                                disabled={followingUser}
                                 otherStyles={{ fontSize: "1.0rem" }}
                             />
                         </Accessibility.Skeleton>

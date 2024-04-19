@@ -45,7 +45,7 @@ function Summary() {
     }
 
     // follow user api handling
-    const [followUserResponse, setFollowUserParams, followUserAgain] = useAsync.PUT<
+    const [followUserResponse, setFollowUserParams, followUserAgain, followingUser] = useAsync.PUT<
         FollowUserParams,
         null,
         null
@@ -80,7 +80,25 @@ function Summary() {
     useEffect(() => {
         getUserSummaryAgain(true);
         setErrorMessage("");
-    }, [getUserSummaryAgain, followUserResponse]);
+    }, [getUserSummaryAgain]);
+
+    useEffect(() => {
+        if (followUserResponse && followUserResponse.status < 400) {
+            setUserSummary((prevUserSummary) => {
+                if (prevUserSummary) {
+                    return {
+                        ...prevUserSummary,
+                        followersCount: prevUserSummary.isFollowing
+                            ? prevUserSummary.followersCount - 1
+                            : prevUserSummary.followersCount + 1,
+                        isFollowing: !prevUserSummary.isFollowing,
+                    };
+                }
+                getUserSummaryAgain(true);
+                return prevUserSummary;
+            });
+        }
+    }, [followUserResponse, getUserSummaryAgain]);
 
     useEffect(() => {
         setWaiting(gettingUserSummary);
@@ -113,6 +131,7 @@ function Summary() {
                     text={userSummary.isFollowing ? "Unfollow" : "Follow"}
                     symbol={userSummary.isFollowing ? "person_remove" : "person_add"}
                     palette={userSummary.isFollowing ? "red" : "orange"}
+                    disabled={followingUser}
                     onClickHandler={() => followUserAgain(true)}
                     otherStyles={{ fontSize: "1.0rem" }}
                 />
