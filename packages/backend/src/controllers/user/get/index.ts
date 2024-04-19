@@ -6,6 +6,8 @@ import sendResponse from "@/utils/sendResponse";
 import generateToken from "@/utils/generateToken";
 import User from "@/models/user";
 import Post from "@/models/post";
+import validation from "@shared/validation";
+import { query } from "express-validator";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
 import validators from "../validators";
 
@@ -39,8 +41,17 @@ export const idFromTag = [
 
 export const overviewFromTag = [
     protectedRouteJWT,
-    validators.query.accountTag,
     validators.query.softCheck,
+    query("accountTag").custom((value, { req }) => {
+        const softCheck = req.query && req.query.softCheck;
+        if (!softCheck) {
+            const valid = validation.user.accountTag(value, "front");
+            if (!valid.status) {
+                throw new Error(valid.message);
+            }
+        }
+        return true;
+    }),
     checkRequestValidationError,
     asyncHandler(async (req: Request, res: Response) => {
         const { accountTag, softCheck } = req.query;
