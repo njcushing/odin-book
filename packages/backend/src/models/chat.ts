@@ -60,6 +60,7 @@ const ChatSchema: Schema = new Schema(
                 type: String,
                 trim: true,
             },
+            default: null,
         },
         messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
     },
