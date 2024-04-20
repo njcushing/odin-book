@@ -81,7 +81,7 @@ export const regular = [
 
             // create chat
             const chat = new Chat({
-                type: "individual",
+                type: chatType,
                 participants: participantObjects,
             });
             await chat.save({ session }).catch((saveErr) => {
