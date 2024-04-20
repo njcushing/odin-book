@@ -126,6 +126,8 @@ export const follow = [
                         );
                     });
             } catch (err: unknown) {
+                await session.abortTransaction();
+
                 session.endSession();
 
                 const status =

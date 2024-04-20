@@ -48,7 +48,7 @@ export const regular = [
                         uploadResponses.map(async (url) => {
                             const image = new Image({ url });
                             await image
-                                .save()
+                                .save({ session })
                                 .then(async (result) => result)
                                 .catch((saveErr) => {
                                     throw saveErr;
@@ -68,7 +68,7 @@ export const regular = [
                         images: images.map((image) => image._id),
                         replyingTo: req.body.replyingTo ? req.body.replyingTo : null,
                     });
-                    await post.save().catch((saveErr) => {
+                    await post.save({ session }).catch((saveErr) => {
                         const error = new Error(saveErr);
                         throw error;
                     });
@@ -124,6 +124,8 @@ export const regular = [
                             );
                         });
                 } catch (err: unknown) {
+                    await session.abortTransaction();
+
                     session.endSession();
 
                     const status =
@@ -137,6 +139,16 @@ export const regular = [
                     const error = err instanceof Error ? (err as types.ResponseError) : null;
                     sendResponse(res, status, message, null, error);
                 }
+
+                // delete all created documents in case of aborted transaction
+                session.on("abort", async () => {
+                    try {
+                        await Post.deleteMany({ session });
+                        await Image.deleteMany({ session });
+                    } catch (error) {
+                        console.error("Error occurred while deleting documents:", error);
+                    }
+                });
             }
         }
     }),
