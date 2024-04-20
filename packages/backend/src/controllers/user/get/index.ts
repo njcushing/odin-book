@@ -6,6 +6,7 @@ import sendResponse from "@/utils/sendResponse";
 import generateToken from "@/utils/generateToken";
 import User from "@/models/user";
 import Post from "@/models/post";
+import Chat from "@/models/chat";
 import validation from "@shared/validation";
 import { query } from "express-validator";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
@@ -652,7 +653,7 @@ export const followers = [
             // execute aggregation
             const aggregationResult = await User.aggregate(aggregation).exec();
             if (aggregationResult.length === 0) {
-                sendResponse(res, 404, "Could not find likes");
+                sendResponse(res, 404, "Could not find followers");
             } else {
                 const { userFollowers } = aggregationResult[0];
                 await generateToken(res.locals.user)
@@ -752,7 +753,7 @@ export const following = [
             // execute aggregation
             const aggregationResult = await User.aggregate(aggregation).exec();
             if (aggregationResult.length === 0) {
-                sendResponse(res, 404, "Could not find likes");
+                sendResponse(res, 404, "Could not find users following");
             } else {
                 const { userFollowing } = aggregationResult[0];
                 await generateToken(res.locals.user)
@@ -768,6 +769,111 @@ export const following = [
                             500,
                             tokenErr.message || `Users following found, but token creation failed`,
                             { following: userFollowing },
+                            tokenErr,
+                        );
+                    });
+            }
+        }
+    }),
+];
+
+export const chats = [
+    protectedRouteJWT,
+    validators.param.userId,
+    validators.query.limit,
+    validators.query.after,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const { limit, after } = req.query;
+
+        if (userId !== res.locals.user.id) {
+            sendResponse(res, 401, "Cannot view another user's chat list");
+            return;
+        }
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        // match user, unwind & populate following.users
+        aggregation.push(
+            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
+            { $unwind: { path: "$chats", preserveNullAndEmptyArrays: true } },
+            // if the 'chats' array is empty, it will not be present on the document at this stage
+            {
+                $addFields: {
+                    userChats: {
+                        $cond: {
+                            if: { $eq: [{ $type: "$chats" }, "missing"] },
+                            then: [],
+                            else: "$chats",
+                        },
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "chats",
+                    localField: "userChats",
+                    foreignField: "_id",
+                    as: "populatedChats",
+                },
+            },
+        );
+        // if 'after' query parameter is specified, check chat exists
+        let responding = false;
+        if (after) {
+            const afterChat = await Chat.findById(after);
+            if (!afterChat) {
+                sendResponse(res, 404, "Specified 'after' chat not found in the database");
+                responding = true;
+            } else {
+                // if so, check chat is within chat array
+                aggregation.push({
+                    $match: { populatedChats: { $elemMatch: { _id: afterChat._id } } },
+                });
+                // and filter chats based on their update date being after the 'after' chat
+                aggregation.push({
+                    $match: {
+                        "populatedChats.updatedAt": { $lt: afterChat.updatedAt },
+                    },
+                });
+            }
+        }
+        if (!responding) {
+            // sort & limit chats
+            aggregation.push({ $sort: { "populatedChats.updatedAt": -1 } });
+            if (limit) aggregation.push({ $limit: Number(limit) });
+            // group results back into userChats array
+            aggregation.push(
+                { $unwind: { path: "$populatedChats", preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: "$_id",
+                        userChats: { $push: "$populatedChats" },
+                    },
+                },
+            );
+            // final projection
+            aggregation.push({ $project: { _id: 0, userChats: "$userChats._id" } });
+            // execute aggregation
+            const aggregationResult = await User.aggregate(aggregation).exec();
+            if (aggregationResult.length === 0) {
+                sendResponse(res, 404, "Could not find chats");
+            } else {
+                const { userChats } = aggregationResult[0];
+                await generateToken(res.locals.user)
+                    .then((token) => {
+                        sendResponse(res, 200, "Chats found", {
+                            token,
+                            chats: userChats,
+                        });
+                    })
+                    .catch((tokenErr) => {
+                        sendResponse(
+                            res,
+                            500,
+                            tokenErr.message || `Chats found, but token creation failed`,
+                            { chats: userChats },
                             tokenErr,
                         );
                     });
