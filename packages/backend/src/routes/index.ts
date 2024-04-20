@@ -2,6 +2,7 @@ import express from "express";
 import auth from "@/controllers/auth";
 import user from "@/controllers/user";
 import post from "@/controllers/post";
+import chat from "@/controllers/chat";
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ const routes = {
     auth,
     user,
     post,
+    chat,
 };
 
 export default routes;
