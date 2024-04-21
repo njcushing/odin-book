@@ -86,11 +86,10 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
                         isFollowing: !prevOptionData.isFollowing,
                     };
                 }
-                getOptionAgain(true);
                 return prevOptionData;
             });
         }
-    }, [followUserResponse, getOptionAgain]);
+    }, [followUserResponse]);
 
     useEffect(() => {
         setWaiting(gettingOption);
