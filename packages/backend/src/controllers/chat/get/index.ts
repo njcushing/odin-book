@@ -5,6 +5,7 @@ import generateToken from "@/utils/generateToken";
 import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
 import Chat from "@/models/chat";
+import Message from "@/models/message";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
 import validators from "../validators";
 
@@ -20,14 +21,15 @@ export const overview = [
          *  - '_id', 'name', 'createdAt' as normal
          *  - 'image' document populated, projecting its '_id', 'url' and 'alt' fields
          *  - 'recentMessage' - the most recent message document populated, projecting '_id',
-         *    'author', 'text', 'images' and 'deleted' fields
+         *    'author', 'text' (hidden if the post is deleted), 'imageCount' (quantity of images in
+         *    the message) and 'deleted' fields
          *  - 'participants' - projecting their 'user' and 'nickname' fields, with 'user' populated,
          *    projecting its '_id', 'accountTag' and 'preferences.displayName' fields
          */
 
         const aggregationResult = await Chat.aggregate([
             { $match: { _id: new mongoose.Types.ObjectId(chatId) } },
-            // populate all participants documents
+            // populate all participants.user documents
             { $unwind: "$participants" },
             {
                 $lookup: {
@@ -186,6 +188,109 @@ export const overview = [
                         tokenErr,
                     );
                 });
+        }
+    }),
+];
+
+export const messages = [
+    protectedRouteJWT,
+    validators.param.chatId,
+    validators.query.limit,
+    validators.query.after,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { chatId } = req.params;
+        const { limit, after } = req.query;
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        // match chat, unwind & populate messages
+        aggregation.push(
+            // only match the chat if the active user is a participant of the chat
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(chatId),
+                    participants: {
+                        $elemMatch: { user: new mongoose.Types.ObjectId(`${res.locals.user.id}`) },
+                    },
+                },
+            },
+            { $unwind: { path: "$messages", preserveNullAndEmptyArrays: true } },
+            // if the 'messages' array is empty, it will not be present on the document at this stage
+            {
+                $addFields: {
+                    messages: {
+                        $cond: {
+                            if: { $eq: [{ $type: "$messages" }, "missing"] },
+                            then: [],
+                            else: "$messages",
+                        },
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "posts",
+                    localField: "messages",
+                    foreignField: "_id",
+                    as: "populatedMessages",
+                },
+            },
+        );
+        // if 'after' query parameter is specified, check message exists
+        let responding = false;
+        if (after) {
+            const afterMessage = await Message.findById(after);
+            if (!afterMessage) {
+                sendResponse(res, 404, "Specified 'after' message not found in the database");
+                responding = true;
+            } else {
+                // if so, check message is within likes array
+                aggregation.push({
+                    $match: { populatedMessages: { $elemMatch: { _id: afterMessage._id } } },
+                });
+                // and filter messages based on their creation date being after the 'after' message
+                aggregation.push({
+                    $match: {
+                        "populatedMessages.createdAt": { $lt: afterMessage.createdAt },
+                    },
+                });
+            }
+        }
+        if (!responding) {
+            // sort & limit messages
+            aggregation.push({ $sort: { "populatedMessages.createdAt": -1 } });
+            if (limit) aggregation.push({ $limit: Number(limit) });
+            // group results back into messages array
+            aggregation.push(
+                { $unwind: { path: "$populatedMessages", preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: "$_id",
+                        messages: { $push: "$populatedMessages" },
+                    },
+                },
+            );
+            // execute aggregation
+            const aggregationResult = await Chat.aggregate(aggregation).exec();
+            if (aggregationResult.length === 0) {
+                sendResponse(res, 404, "Could not find messages");
+            } else {
+                const chatMessages = aggregationResult[0].messages;
+                await generateToken(res.locals.user)
+                    .then((token) => {
+                        sendResponse(res, 200, "Messages found", { token, messages: chatMessages });
+                    })
+                    .catch((tokenErr) => {
+                        sendResponse(
+                            res,
+                            500,
+                            tokenErr.message || `Messages found, but token creation failed`,
+                            { messages: chatMessages },
+                            tokenErr,
+                        );
+                    });
+            }
         }
     }),
 ];
