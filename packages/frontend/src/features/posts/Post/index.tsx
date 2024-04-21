@@ -152,7 +152,7 @@ function Post({
         } else {
             getPostAgain(true);
         }
-    }, [overridePostData, getPostAgain, likePostResponse]);
+    }, [overridePostData, getPostAgain]);
 
     // fetch replies again
     useEffect(() => {
@@ -166,6 +166,23 @@ function Post({
             setPostReplies([]);
         }
     }, [viewing, viewingDefault, overrideReplies, getPostRepliesAgain]);
+
+    useEffect(() => {
+        if (likePostResponse && likePostResponse.status < 400) {
+            setPostData((prevPostData) => {
+                if (prevPostData) {
+                    return {
+                        ...prevPostData,
+                        likedByUser: !prevPostData.likedByUser,
+                        likesCount: prevPostData.likedByUser
+                            ? prevPostData.likesCount - 1
+                            : prevPostData.likesCount + 1,
+                    };
+                }
+                return prevPostData;
+            });
+        }
+    }, [likePostResponse]);
 
     useEffect(() => {
         setWaiting(gettingPost);
