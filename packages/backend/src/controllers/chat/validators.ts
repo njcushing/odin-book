@@ -90,6 +90,17 @@ const validators = {
                     return true;
                 }
             }),
+        messageId: param("messageId")
+            .trim()
+            .custom((value) => {
+                if (!mongoose.Types.ObjectId.isValid(value)) {
+                    throw new Error(
+                        "The provided message id in the route path is not a valid MongoDB ObjectId",
+                    );
+                } else {
+                    return true;
+                }
+            }),
     },
     query: {
         limit: query("limit")
