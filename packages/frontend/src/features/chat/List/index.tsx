@@ -1,10 +1,64 @@
-import LayoutUI from "@/layouts";
+import { useState, useEffect, useContext } from "react";
+import * as useAsync from "@/hooks/useAsync";
+import { UserContext } from "@/context/user";
 import Buttons from "@/components/buttons";
-import * as mockData from "@/mockData";
+import Accessibility from "@/components/accessibility";
+import mongoose from "mongoose";
+import Chat from "..";
+import getUserChats, { Params, Response } from "./utils/getUserChats";
 import styles from "./index.module.css";
 
 function List() {
-    const chats = mockData.chats(10);
+    const { user, extract } = useContext(UserContext);
+
+    const [waiting, setWaiting] = useState(true);
+
+    const [chats, setChats] = useState<Response>([]);
+    const [response, setParams, setAttempting, gettingChats] = useAsync.GET<Params, Response>(
+        {
+            func: getUserChats,
+            parameters: [
+                {
+                    params: {
+                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        after: null,
+                    },
+                },
+                null,
+            ],
+        },
+        true,
+    );
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
+    useEffect(() => {
+        const newState = response ? response.data : [];
+        setChats(newState || []);
+    }, [response]);
+
+    useEffect(() => {
+        setAttempting(true);
+        setErrorMessage("");
+        setParams([
+            {
+                params: {
+                    userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                    after: null,
+                },
+            },
+            null,
+        ]);
+    }, [user, extract, setParams, setAttempting]);
+
+    useEffect(() => {
+        if (response && response.status >= 400 && response.message && response.message.length > 0) {
+            setErrorMessage(response.message);
+        }
+    }, [response]);
+
+    useEffect(() => {
+        setWaiting(gettingChats);
+    }, [gettingChats]);
 
     const buttons = (
         <div className={styles["create-new-chat-button-container"]} key={0}>
@@ -25,30 +79,27 @@ function List() {
 
     return (
         <div className={styles["container"]}>
-            <LayoutUI.Spatial
-                width="100%"
-                height="100%"
-                arrangements={[
-                    {
-                        type: "rows",
-                        minWidth: 0,
-                        maxWidth: 999999,
-                        minHeight: 0,
-                        maxHeight: 999999,
-                        areas: [
-                            { size: "auto", children: [buttons] },
-                            { size: "1fr", children: [chats.map((chat) => chat)] },
-                        ],
-                        style: {
-                            justifySelf: "flex-start",
-                            alignSelf: "center",
-                            width: "100%",
-                            height: "100%",
-                            padding: "0rem",
-                        },
-                    },
-                ]}
-            />
+            {!waiting ? (
+                <>
+                    {errorMessage.length > 0 ? (
+                        <p className={styles["error-message"]}>{errorMessage}</p>
+                    ) : null}
+                    {buttons}
+                    {chats && chats.length > 0 ? (
+                        <div className={styles["chats"]}>
+                            {chats.map((chatId) => {
+                                return (
+                                    <Chat.Option _id={chatId} skeleton key={`follower-${chatId}`} />
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        <p className={styles["empty-message"]}>Nothing to see here!</p>
+                    )}
+                </>
+            ) : (
+                <Accessibility.WaitingWheel />
+            )}
         </div>
     );
 }
