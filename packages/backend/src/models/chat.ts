@@ -1,14 +1,16 @@
 import mongoose, { Schema, Document } from "mongoose";
 import * as validateChat from "@shared/validation/chat";
 
+export type TChatParticipants = {
+    user: mongoose.Types.ObjectId;
+    nickname?: string;
+    role?: "admin" | "moderator" | "guest";
+    muted?: boolean;
+}[];
+
 export type TChat = {
     type: "individual" | "group";
-    participants: {
-        user: mongoose.Types.ObjectId;
-        nickname?: string;
-        role?: "admin" | "moderator" | "guest";
-        muted?: boolean;
-    }[];
+    participants: TChatParticipants;
     name?: string;
     image?: {
         type?: string;
