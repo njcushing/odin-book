@@ -1,4 +1,3 @@
-import Panel, { routes as PanelRoutes } from "./Panel";
 import Header from "./Header";
 import List from "./List";
 import Option from "./Option";
@@ -8,7 +7,6 @@ import Create from "./Create";
 import AddUsers from "./AddUsers";
 
 const Chat = {
-    Panel,
     Header,
     List,
     Option,
@@ -19,7 +17,3 @@ const Chat = {
 };
 
 export default Chat;
-
-export const Routes = {
-    Panel: PanelRoutes,
-};

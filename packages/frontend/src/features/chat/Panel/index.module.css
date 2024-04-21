@@ -1,9 +1,0 @@
-.container {
-    position: relative;
-    
-    border-left: 1px solid var(--outline-primary);
-    border-right: 1px solid var(--outline-primary);
-
-    width: calc(100% - 1px); /* subtract for border */
-    height: 100%;
-}
