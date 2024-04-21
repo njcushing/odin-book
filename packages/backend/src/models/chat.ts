@@ -3,21 +3,21 @@ import * as validateChat from "@shared/validation/chat";
 
 export type TChatParticipants = {
     user: mongoose.Types.ObjectId;
-    nickname?: string;
-    role?: "admin" | "moderator" | "guest";
-    muted?: boolean;
+    nickname: string;
+    role: "admin" | "moderator" | "guest";
+    muted: boolean;
 }[];
 
 export type TChat = {
     type: "individual" | "group";
     participants: TChatParticipants;
-    name?: string;
+    name: string;
     image?: {
         type?: string;
     };
-    messages?: mongoose.Types.ObjectId[];
-    createdAt?: Date;
-    updatedAt?: Date;
+    messages: mongoose.Types.ObjectId[];
+    createdAt: Date;
+    updatedAt: Date;
 };
 
 export interface IChat extends TChat, Document {}
@@ -57,12 +57,7 @@ const ChatSchema: Schema = new Schema(
             },
             default: "",
         },
-        image: {
-            type: {
-                type: Schema.Types.ObjectId,
-                ref: "Image",
-            },
-        },
+        image: { type: Schema.Types.ObjectId, ref: "Image" },
         messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
     },
     {
