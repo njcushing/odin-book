@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import * as useAsync from "@/hooks/useAsync";
 import Images from "@/components/images";
-import Buttons from "@/components/buttons";
 import Accessibility from "@/components/accessibility";
 import mongoose from "mongoose";
 import combineParticipantNames from "../utils/combineParticipantNames";
@@ -128,20 +127,6 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
                             ) : null}
                         </Accessibility.Skeleton>
                     </div>
-                    <Accessibility.Skeleton waiting={waiting} style={{ borderRadius: "9999px" }}>
-                        <Buttons.Basic
-                            text=""
-                            symbol="delete"
-                            onClickHandler={(e) => {
-                                // delete chat
-                            }}
-                            palette="red"
-                            otherStyles={{
-                                fontSize: "0.9rem",
-                                padding: "0.5rem",
-                            }}
-                        />
-                    </Accessibility.Skeleton>
                 </>
             ) : null}
         </a>
