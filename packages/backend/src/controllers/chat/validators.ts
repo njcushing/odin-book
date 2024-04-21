@@ -4,6 +4,18 @@ import mongoose from "mongoose";
 
 const validators = {
     body: {
+        replyingTo: param("replyingTo")
+            .trim()
+            .optional()
+            .custom((value) => {
+                if (!mongoose.Types.ObjectId.isValid(value)) {
+                    throw new Error(
+                        "The provided message id to reply to in the request body is not a valid MongoDB ObjectId",
+                    );
+                } else {
+                    return true;
+                }
+            }),
         name: body("name")
             .trim()
             .custom((value) => {
@@ -14,7 +26,17 @@ const validators = {
                     return true;
                 }
             }),
-        image: body("image")
+        text: body("text") // message text
+            .trim()
+            .custom((value) => {
+                const valid = validation.message.text(value, "front");
+                if (!valid.status) {
+                    throw new Error(valid.message);
+                } else {
+                    return true;
+                }
+            }),
+        image: body("image") // chat image
             .trim()
             .custom((value) => {
                 const valid = validation.chat.imageBase64(value, "front");
@@ -23,6 +45,15 @@ const validators = {
                 } else {
                     return true;
                 }
+            }),
+        images: body("images") // message images
+            .trim()
+            .custom((value) => {
+                for (let i = 0; i < value.length; i++) {
+                    const valid = validation.message.imageBase64(value[i], "front");
+                    if (!valid.status) throw new Error(valid.message);
+                }
+                return true;
             }),
         participants: body("participants")
             .trim()
