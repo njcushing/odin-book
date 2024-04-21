@@ -20,8 +20,7 @@ export const overview = [
          *  - '_id', 'name', 'createdAt' as normal
          *  - 'image' document populated, projecting its '_id', 'url' and 'alt' fields
          *  - 'recentMessage' - the most recent message document populated, projecting '_id',
-         *    'author', 'text', 'images' and 'deleted' fields, with 'author' populated, projecting
-         *    its '_id', 'accountTag' and 'preferences.displayName' fields
+         *    'author', 'text', 'images' and 'deleted' fields
          *  - 'participants' - projecting their 'user' and 'nickname' fields, with 'user' populated,
          *    projecting its '_id', 'accountTag' and 'preferences.displayName' fields
          */
@@ -127,6 +126,45 @@ export const overview = [
                             else: null,
                         },
                     },
+                },
+            },
+            // project (to clean up fields in newly-populated 'image' and 'recentMessage' documents)
+            {
+                $project: {
+                    _id: 1,
+                    participants: 1,
+                    name: 1,
+                    image: {
+                        $cond: {
+                            if: { $eq: ["$image", null] },
+                            then: null,
+                            else: {
+                                _id: "$image._id",
+                                url: "$image.url",
+                                alt: "$image.alt",
+                            },
+                        },
+                    },
+                    recentMessage: {
+                        $cond: {
+                            if: { $eq: ["$recentMessage", null] },
+                            then: null,
+                            else: {
+                                _id: "$recentMessage._id",
+                                author: "$recentMessage.author",
+                                text: {
+                                    $cond: {
+                                        if: "$recentMessage.deleted",
+                                        then: "", // hiding text in case of deleted message
+                                        else: "$recentMessage.text",
+                                    },
+                                },
+                                imageCount: { $size: "$recentMessage.images" },
+                                deleted: "$recentMessage.deleted",
+                            },
+                        },
+                    },
+                    createdAt: 1,
                 },
             },
         ]);
