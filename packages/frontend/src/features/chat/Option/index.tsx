@@ -3,8 +3,8 @@ import * as useAsync from "@/hooks/useAsync";
 import Images from "@/components/images";
 import Accessibility from "@/components/accessibility";
 import mongoose from "mongoose";
+import getChatOverview, { Params, Response } from "@/features/chat/utils/getChatOverview";
 import combineParticipantNames from "../utils/combineParticipantNames";
-import getChatOverview, { Params, Response } from "./utils/getChatOverview";
 import styles from "./index.module.css";
 
 type OptionTypes = {
