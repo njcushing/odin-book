@@ -1,14 +1,18 @@
 import { Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
-import Chat, { Routes } from "@/features/chat";
+import Chat from "@/features/chat";
 import Infobar from "@/features/infobar";
 import styles from "./index.module.css";
 
 export const routes = [
     {
-        path: "",
-        element: <Chat.Panel />,
-        children: Routes.Panel,
+        path: "/chats",
+        element: <Chat.List />,
+        errorElement: <div></div>,
+    },
+    {
+        path: "/chat/:chatId",
+        element: <Chat.Active />,
         errorElement: <div></div>,
     },
 ];

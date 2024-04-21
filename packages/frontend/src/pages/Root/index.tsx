@@ -28,7 +28,7 @@ export const routes = [
         errorElement: <div></div>,
     },
     {
-        path: "chats",
+        path: "",
         element: <Chats />,
         children: ChatsRoutes,
         errorElement: <div></div>,
