@@ -271,6 +271,31 @@ export const messages = [
                     },
                 },
             );
+            // project
+            aggregation.push({
+                $project: {
+                    messages: {
+                        $map: {
+                            input: "$messages",
+                            as: "message",
+                            in: {
+                                _id: "$$message._id",
+                                author: "$$message.author",
+                                imageCount: { $size: "$$message.images" },
+                                replyingTo: {
+                                    $cond: {
+                                        if: { $eq: [{ $type: "$$message.replyingTo" }, "missing"] },
+                                        then: null,
+                                        else: "$$message.replyingTo",
+                                    },
+                                },
+                                deleted: "$$message.deleted",
+                                createdAt: "$$message.createdAt",
+                            },
+                        },
+                    },
+                },
+            });
             // execute aggregation
             const aggregationResult = await Chat.aggregate(aggregation).exec();
             if (aggregationResult.length === 0) {
