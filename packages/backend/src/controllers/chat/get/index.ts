@@ -230,7 +230,7 @@ export const messages = [
             },
             {
                 $lookup: {
-                    from: "posts",
+                    from: "messages",
                     localField: "messages",
                     foreignField: "_id",
                     as: "populatedMessages",
