@@ -7,7 +7,16 @@ export type Params = {
     after: string | null;
 };
 
-export type Response = mongoose.Types.ObjectId[] | null;
+export type Response =
+    | {
+          _id: mongoose.Types.ObjectId;
+          author: mongoose.Types.ObjectId;
+          imageCount: number;
+          replyingTo: mongoose.Types.ObjectId | null;
+          deleted: boolean;
+          createdAt: string;
+      }[]
+    | null;
 
 const getChatMessages: apiFunctionTypes.GET<Params, Response> = async (
     data,
