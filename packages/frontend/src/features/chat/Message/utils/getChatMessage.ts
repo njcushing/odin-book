@@ -11,7 +11,9 @@ export type Response = {
     _id: mongoose.Types.ObjectId;
     author: {
         _id: mongoose.Types.ObjectId;
+        accountTag: string;
         preferences: {
+            displayName: string;
             profileImage: {
                 _id: mongoose.Types.ObjectId;
                 url: string;
@@ -29,7 +31,9 @@ export type Response = {
         _id: mongoose.Types.ObjectId;
         author: {
             _id: mongoose.Types.ObjectId;
+            accountTag: string;
             preferences: {
+                displayName: string;
                 profileImage: {
                     _id: mongoose.Types.ObjectId;
                     url: string;
