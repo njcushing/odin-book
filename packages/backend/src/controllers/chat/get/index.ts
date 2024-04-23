@@ -319,3 +319,309 @@ export const messages = [
         }
     }),
 ];
+
+export const message = [
+    protectedRouteJWT,
+    validators.param.chatId,
+    validators.param.messageId,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { chatId, messageId } = req.params;
+
+        /*
+         *  When requesting a message, the following fields should be projected:
+         *  - '_id', 'text', 'deleted', 'createdAt' as normal
+         *  - 'images' documents populated, projecting their '_id', 'url' and 'alt' fields
+         *  - 'author' populated, projecting '_id', 'accountTag', 'preferences.displayName' and
+         *    'preferences.profileImage' fields, with the latter populated, projecting the same
+         *    fields as the 'images' documents
+         *  - 'replyingTo' document populated, projecting the same fields as the message being
+         *    requested, with the exception that its own 'replyingTo' field document is NOT
+         *    populated
+         */
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        /*
+         *  Only match the chat if:
+         *  - the active user is a participant of the specified chat
+         *  - the specified message is contained within the specified chat
+         */
+        aggregation.push({
+            $match: {
+                _id: new mongoose.Types.ObjectId(chatId),
+                participants: {
+                    $elemMatch: { user: new mongoose.Types.ObjectId(`${res.locals.user.id}`) },
+                },
+                messages: new mongoose.Types.ObjectId(messageId),
+            },
+        });
+        // filter 'messages' array and populate message
+        aggregation.push({
+            $addFields: {
+                message: {
+                    $arrayElemAt: [
+                        {
+                            $filter: {
+                                input: "$messages",
+                                cond: { $eq: ["$$this", new mongoose.Types.ObjectId(messageId)] },
+                            },
+                        },
+                        0,
+                    ],
+                },
+            },
+        });
+        aggregation.push({
+            $lookup: {
+                from: "messages",
+                localField: "message",
+                foreignField: "_id",
+                as: "message",
+            },
+        });
+        aggregation.push({
+            $addFields: {
+                message: { $arrayElemAt: ["$message", 0] },
+            },
+        });
+        // ensure the only remaining field in the projection is the message
+        aggregation.push({
+            $replaceRoot: {
+                newRoot: { $mergeObjects: "$message" },
+            },
+        });
+        // populate 'author' field & 'author.preferences.profileImage' field
+        aggregation.push({
+            $lookup: { from: "users", localField: "author", foreignField: "_id", as: "author" },
+        });
+        aggregation.push({ $addFields: { author: { $arrayElemAt: ["$author", 0] } } });
+        aggregation.push({
+            $lookup: {
+                from: "images",
+                localField: "author.preferences.profileImage",
+                foreignField: "_id",
+                as: "author.preferences.profileImage",
+            },
+        });
+        aggregation.push({
+            $addFields: {
+                "author.preferences.profileImage": {
+                    $cond: {
+                        if: { $eq: [{ $size: "$author.preferences.profileImage" }, 0] },
+                        then: null,
+                        else: { $arrayElemAt: ["$author.preferences.profileImage", 0] },
+                    },
+                },
+            },
+        });
+        // populate 'images' field
+        aggregation.push(
+            { $unwind: { path: "$images", preserveNullAndEmptyArrays: true } },
+            // if the 'images' array is empty, it will not be present on the document at this stage
+            {
+                $addFields: {
+                    postImages: {
+                        $cond: {
+                            if: { $eq: [{ $type: "$images" }, "missing"] },
+                            then: [],
+                            else: "$images",
+                        },
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "images",
+                    localField: "images",
+                    foreignField: "_id",
+                    as: "images",
+                },
+            },
+            { $unwind: { path: "$images", preserveNullAndEmptyArrays: true } },
+            {
+                $group: {
+                    _id: "$_id",
+                    otherFields: { $first: "$$ROOT" },
+                    images: { $push: "$images" },
+                },
+            },
+            { $addFields: { "otherFields.images": "$images" } },
+            { $replaceRoot: { newRoot: "$otherFields" } },
+        );
+        // populate 'replyingTo' field
+        aggregation.push({
+            $lookup: {
+                from: "messages",
+                localField: "replyingTo",
+                foreignField: "_id",
+                as: "replyingTo",
+            },
+        });
+        aggregation.push({
+            $addFields: {
+                replyingTo: {
+                    $cond: {
+                        if: { $eq: [{ $size: "$replyingTo" }, 0] },
+                        then: null,
+                        else: { $arrayElemAt: ["$replyingTo", 0] },
+                    },
+                },
+            },
+        });
+        // populate 'replyingTo.author' field & 'replyingTo.author.preferences.profileImage' field
+        aggregation.push({
+            $lookup: {
+                from: "users",
+                localField: "replyingTo.author",
+                foreignField: "_id",
+                as: "replyingToAuthor",
+            },
+        });
+        aggregation.push({
+            $addFields: { replyingToAuthor: { $arrayElemAt: ["$replyingToAuthor", 0] } },
+        });
+        aggregation.push({
+            $lookup: {
+                from: "images",
+                localField: "replyingTo.author.preferences.profileImage",
+                foreignField: "_id",
+                as: "replyingToAuthorProfileImage",
+            },
+        });
+        aggregation.push({
+            $addFields: {
+                replyingToAuthorProfileImage: {
+                    $cond: {
+                        if: { $eq: [{ $size: "$replyingToAuthorProfileImage" }, 0] },
+                        then: null,
+                        else: { $arrayElemAt: ["$replyingToAuthorProfileImage", 0] },
+                    },
+                },
+            },
+        });
+        // populate 'replyingTo.images' field
+        aggregation.push({
+            $lookup: {
+                from: "images",
+                localField: "replyingTo.images",
+                foreignField: "_id",
+                as: "replyingToImages",
+            },
+        });
+        // project
+        aggregation.push({
+            $project: {
+                _id: 1,
+                author: {
+                    _id: 1,
+                    accountTag: 1,
+                    preferences: {
+                        displayName: 1,
+                        profileImage: {
+                            $cond: {
+                                if: { $eq: ["$author.preferences.profileImage", null] },
+                                then: null,
+                                else: {
+                                    _id: "$author.preferences.profileImage._id",
+                                    url: "$author.preferences.profileImage.url",
+                                    alt: "$author.preferences.profileImage.alt",
+                                },
+                            },
+                        },
+                    },
+                },
+                text: {
+                    $cond: {
+                        if: "$deleted",
+                        then: "", // hiding text in case of deleted message
+                        else: "$text",
+                    },
+                },
+                images: {
+                    $map: {
+                        input: "$images",
+                        as: "image",
+                        in: {
+                            _id: "$$image._id",
+                            url: "$$image.url",
+                            alt: "$$image.alt",
+                        },
+                    },
+                },
+                replyingTo: {
+                    $cond: {
+                        if: { $eq: ["$replyingTo", null] },
+                        then: null,
+                        else: {
+                            _id: "$replyingTo._id",
+                            author: {
+                                _id: "$replyingToAuthor._id",
+                                accountTag: "$replyingToAuthor.accountTag",
+                                preferences: {
+                                    displayName: "$replyingToAuthor.preferences.displayName",
+                                    profileImage: {
+                                        $cond: {
+                                            if: {
+                                                $eq: ["$replyingToAuthorProfileImage", null],
+                                            },
+                                            then: null,
+                                            else: {
+                                                _id: "$replyingToAuthorProfileImage._id",
+                                                url: "$replyingToAuthorProfileImage.url",
+                                                alt: "$replyingToAuthorProfileImage.alt",
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                            text: {
+                                $cond: {
+                                    if: "$replyingTo.deleted",
+                                    then: "", // hiding text in case of deleted message
+                                    else: "$replyingTo.text",
+                                },
+                            },
+                            images: {
+                                $map: {
+                                    input: "$replyingToImages",
+                                    as: "image",
+                                    in: {
+                                        _id: "$$image._id",
+                                        url: "$$image.url",
+                                        alt: "$$image.alt",
+                                    },
+                                },
+                            },
+                            replyingTo: "$replyingTo.replyingTo",
+                            deleted: "$replyingTo.deleted",
+                            createdAt: "$replyingTo.createdAt",
+                        },
+                    },
+                },
+                deleted: 1,
+                createdAt: 1,
+            },
+        });
+        // execute aggregation
+        const aggregationResult = await Chat.aggregate(aggregation).exec();
+        if (aggregationResult.length === 0) {
+            sendResponse(res, 404, "Could not find message");
+        } else {
+            const foundMessage = aggregationResult[0];
+            await generateToken(res.locals.user)
+                .then((token) => {
+                    sendResponse(res, 200, "Message found", { token, message: foundMessage });
+                })
+                .catch((tokenErr) => {
+                    sendResponse(
+                        res,
+                        500,
+                        tokenErr.message || `Message found, but token creation failed`,
+                        { message: foundMessage },
+                        tokenErr,
+                    );
+                });
+        }
+    }),
+];
