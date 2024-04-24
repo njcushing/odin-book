@@ -65,7 +65,7 @@ const getChatMessage: apiFunctionTypes.GET<Params, Response> = async (
     if (!chatId) {
         return {
             status: 400,
-            message: "No userId provided to route path",
+            message: "No chatId provided to route path",
             data: null,
         };
     }
