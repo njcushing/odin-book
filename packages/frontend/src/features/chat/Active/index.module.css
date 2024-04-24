@@ -9,9 +9,9 @@
     height: 100%;
 }
 
-.message-list-container {
-    border-top: 1px solid var(--outline-primary);
-    border-bottom: 1px solid var(--outline-primary);
+.chat-content-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
 
     width: 100%;
     height: 100%;
