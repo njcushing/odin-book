@@ -3,6 +3,7 @@ import * as useAsync from "@/hooks/useAsync";
 import { UserContext } from "@/context/user";
 import { ChatContext } from "@/features/chat/Active";
 import mongoose from "mongoose";
+import PubSub from "pubsub-js";
 import Buttons from "@/components/buttons";
 import Images from "@/components/images";
 import Accessibility from "@/components/accessibility";
@@ -11,8 +12,8 @@ import getChatMessage, { Params, Response } from "./utils/getChatMessage";
 import styles from "./index.module.css";
 
 type MessageTypes = {
-    chatId: mongoose.Types.ObjectId | undefined | null;
-    messageId: mongoose.Types.ObjectId | undefined | null;
+    chatId?: mongoose.Types.ObjectId | undefined | null;
+    messageId?: mongoose.Types.ObjectId | undefined | null;
     overrideMessageData?: Response;
     messagePreloadInformaton?: {
         author?: mongoose.Types.ObjectId | null;
@@ -20,7 +21,6 @@ type MessageTypes = {
         replyingTo?: mongoose.Types.ObjectId | null;
     };
     skeleton?: boolean;
-    onReplyClickHandler?: ((event?: React.MouseEvent<HTMLButtonElement>) => void) | null;
 };
 
 function Message({
@@ -33,7 +33,6 @@ function Message({
         replyingTo: null,
     },
     skeleton = false,
-    onReplyClickHandler = null,
 }: MessageTypes) {
     const { user, extract } = useContext(UserContext);
     const { participantsInfo } = useContext(ChatContext);
@@ -291,8 +290,13 @@ function Message({
                             <Buttons.Basic
                                 text=""
                                 symbol="reply"
-                                onClickHandler={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                    if (onReplyClickHandler) onReplyClickHandler(e);
+                                onClickHandler={() => {
+                                    if (messageId && messageData) {
+                                        PubSub.publish("reply-to-message-button-click", {
+                                            messageId: messageData._id,
+                                            userId: messageData.author._id,
+                                        });
+                                    }
                                 }}
                                 disabled={waiting}
                                 style={{ shape: "rounded" }}
