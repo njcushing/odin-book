@@ -12,7 +12,7 @@ export const routes = [
     },
     {
         path: "/chat/:chatId",
-        element: <Chat.Active />,
+        element: <Chat.Active getIdFromURLParam />,
         errorElement: <div></div>,
     },
 ];
