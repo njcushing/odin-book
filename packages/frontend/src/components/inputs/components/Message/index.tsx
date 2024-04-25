@@ -48,7 +48,7 @@ function Message({
     return (
         <div className={styles["container"]}>
             <div className={styles["message-box"]} aria-label="message-box">
-                <div className={styles["input-container"]}>
+                <div className={`${styles["input-container"]} ${sending ? styles["sending"] : ""}`}>
                     <div className={styles["textarea-container"]}>
                         <Inputs.TextArea
                             labelText=""

@@ -60,7 +60,7 @@
 }
 
 @media (hover: hover) {
-    .input-container:hover {
+    .input-container:hover:not(.sending) {
         outline-width: 2px;
         border-radius: 4px;
     }
@@ -89,9 +89,12 @@
     color: rgba(128, 128, 128, 0.5);
     outline-width: 1px;
     border-radius: 1px;
-    background-color: rgba(128, 128, 128, 0.2);
     
     cursor: default;
+}
+
+.textarea-container textarea:disabled {
+    background-color: rgba(128, 128, 128, 0.2);
 }
 
 .textarea-container textarea:focus::placeholder {
