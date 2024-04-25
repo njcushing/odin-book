@@ -34,13 +34,14 @@ const MessageSchema: Schema = new Schema(
         images: {
             type: [
                 {
-                    type: String,
+                    type: Schema.Types.ObjectId,
+                    ref: "Image",
                     trim: true,
                 },
             ],
             validate: [
                 {
-                    validator: (value: string) => value.length <= 4,
+                    validator: (value: Schema.Types.ObjectId[]) => value.length <= 4,
                     message: "A message cannot contain more than 4 images",
                 },
             ],
