@@ -8,5 +8,6 @@ router.get("/:chatId/overview", get.overview);
 router.get("/:chatId/messages", get.messages);
 router.get("/:chatId/message/:messageId", get.message);
 router.post("/", create.regular);
+router.post("/:chatId/message", create.message);
 
 export default router;
