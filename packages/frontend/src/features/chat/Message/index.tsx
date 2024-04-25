@@ -19,6 +19,7 @@ type MessageTypes = {
         author?: mongoose.Types.ObjectId | null;
         imageCount?: number;
         replyingTo?: mongoose.Types.ObjectId | null;
+        deleted?: boolean;
     };
     skeleton?: boolean;
 };
@@ -31,6 +32,7 @@ function Message({
         author: null,
         imageCount: 0,
         replyingTo: null,
+        deleted: false,
     },
     skeleton = false,
 }: MessageTypes) {
@@ -82,6 +84,13 @@ function Message({
     useEffect(() => {
         setWaiting(gettingChatMessage);
     }, [gettingChatMessage]);
+
+    let deleted = false;
+    if (messageData && messageData.deleted) {
+        deleted = true;
+    } else if (messagePreloadInformaton && messagePreloadInformaton.deleted) {
+        deleted = true;
+    }
 
     let position = "left";
     if (
@@ -221,7 +230,7 @@ function Message({
                         <div className={styles["message-container"]} style={messageContainerStyles}>
                             {text.length > 0 ? (
                                 <p className={styles["message-text"]} aria-label="message-text">
-                                    {text}
+                                    {!deleted ? text : "This message has been deleted."}
                                 </p>
                             ) : null}
                             {images.length > 0 && (
