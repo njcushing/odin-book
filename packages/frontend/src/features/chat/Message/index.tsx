@@ -291,7 +291,7 @@ function Message({
                             ) : null}
                         </div>
                     </Accessibility.Skeleton>
-                    <div className={styles["option-button"]}>
+                    <div className={styles["option-buttons"]}>
                         <Accessibility.Skeleton
                             waiting={waiting}
                             style={{ borderRadius: "9999px" }}
@@ -309,8 +309,26 @@ function Message({
                                 }}
                                 disabled={waiting}
                                 style={{ shape: "rounded" }}
+                                otherStyles={{ padding: "0.4rem" }}
                             />
                         </Accessibility.Skeleton>
+                        {position === "right" ? (
+                            <Accessibility.Skeleton
+                                waiting={waiting}
+                                style={{ borderRadius: "9999px" }}
+                            >
+                                <Buttons.Basic
+                                    text=""
+                                    symbol="delete"
+                                    onClickHandler={() => {
+                                        // delete message
+                                    }}
+                                    disabled={waiting}
+                                    style={{ shape: "rounded" }}
+                                    otherStyles={{ padding: "0.4rem" }}
+                                />
+                            </Accessibility.Skeleton>
+                        ) : null}
                     </div>
                     <Accessibility.Skeleton
                         waiting={waiting}

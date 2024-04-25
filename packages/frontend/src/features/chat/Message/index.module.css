@@ -19,7 +19,6 @@
     align-items: end;
     gap: 0.2rem 0.4rem;
 
-    width: max-content;
     max-width: 85%;
 }
 
@@ -166,8 +165,13 @@
     max-height: 100%;
 }
 
-.option-button {
+.option-buttons {
     align-self: center;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
 }
 
 .wrapper[data-position |= "left"] .option-button {
