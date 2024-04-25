@@ -15,7 +15,7 @@ export const regular = [
     asyncHandler(async (req: Request, res: Response) => {
         const { postId } = req.params;
         // find user
-        const user = await User.findOne({ _id: res.locals.user._id, posts: postId });
+        const user = await User.findOne({ _id: res.locals.user.id, posts: postId });
         if (!user) {
             sendResponse(res, 404, "User not found in database");
         } else {
