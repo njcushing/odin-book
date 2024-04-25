@@ -84,7 +84,9 @@ function File({
 
     return (
         <div className={styles["wrapper"]}>
-            <div className={`truncate-ellipsis ${styles["label-and-upload-button-container"]}`}>
+            <div
+                className={`truncate-ellipsis ${styles["label-and-upload-button-container"]}  ${disabled ? styles["disabled"] : ""}`}
+            >
                 <Inputs.Label
                     labelText={labelText}
                     fieldId={fieldId}
