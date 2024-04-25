@@ -50,7 +50,7 @@ export type Response = {
         replyingTo: mongoose.Types.ObjectId | null;
         deleted: boolean;
         createdAt: string;
-    };
+    } | null;
     deleted: boolean;
     createdAt: string;
 } | null;
