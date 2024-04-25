@@ -643,6 +643,8 @@ export const message = [
                                     else: "$replyingTo.replyingTo",
                                 },
                             },
+                            deleted: "$replyingTo.deleted",
+                            createdAt: "$replyingTo.createdAt",
                         },
                     },
                 },
