@@ -69,6 +69,16 @@ export function GET<Params, Response>(
     return [response, setParams, setAttempting, awaiting];
 }
 
+export function DELETE<Params, Response>(
+    functionInfo: {
+        func: apiFunctionTypes.GET<Params, Response>;
+        parameters?: Parameters<apiFunctionTypes.GET<Params, Response>>;
+    },
+    attemptOnMount?: boolean,
+) {
+    return GET<Params, Response>(functionInfo, attemptOnMount);
+}
+
 export function POST<Params, Body, Response>(
     functionInfo: {
         func: apiFunctionTypes.POST<Params, Body, Response>;
