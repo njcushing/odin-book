@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Buttons from "@/components/buttons";
 import { v4 as uuidv4 } from "uuid";
 import * as extendedTypes from "@shared/utils/extendedTypes";
@@ -59,6 +59,7 @@ function Message({
                             onChangeHandler={(e) => {
                                 setText(e.target.value);
                             }}
+                            disabled={sending}
                             maxLength={500}
                             placeholder={placeholder}
                         />
@@ -69,6 +70,7 @@ function Message({
                             fieldId={imageFieldId}
                             fieldName={imageFieldName}
                             initialValue={images}
+                            disabled={sending}
                             onUpdateHandler={(data) => setImages(data)}
                             validator={imageValidator}
                             maximumAmount={4}
