@@ -161,7 +161,13 @@ export const overview = [
                                         else: "$recentMessage.text",
                                     },
                                 },
-                                imageCount: { $size: "$recentMessage.images" },
+                                imageCount: {
+                                    $cond: {
+                                        if: "$recentMessage.deleted",
+                                        then: 0, // hiding image count in case of deleted message
+                                        else: { $size: "$recentMessage.images" },
+                                    },
+                                },
                                 deleted: "$recentMessage.deleted",
                             },
                         },
@@ -281,10 +287,26 @@ export const messages = [
                             in: {
                                 _id: "$$message._id",
                                 author: "$$message.author",
-                                imageCount: { $size: "$$message.images" },
+                                imageCount: {
+                                    $cond: {
+                                        if: "$$message.deleted",
+                                        then: 0, // hiding image count in case of deleted message
+                                        else: { $size: "$$message.images" },
+                                    },
+                                },
                                 replyingTo: {
                                     $cond: {
-                                        if: { $eq: [{ $type: "$$message.replyingTo" }, "missing"] },
+                                        if: {
+                                            $or: [
+                                                {
+                                                    $eq: [
+                                                        { $type: "$$message.replyingTo" },
+                                                        "missing",
+                                                    ],
+                                                },
+                                                "$$message.deleted", // hiding replyingTo in case of deleted message
+                                            ],
+                                        },
                                         then: null,
                                         else: "$$message.replyingTo",
                                     },
@@ -338,6 +360,10 @@ export const message = [
          *  - 'replyingTo' document populated, projecting the same fields as the message being
          *    requested, with the exception that its own 'replyingTo' field document is NOT
          *    populated
+         *
+         *  - if the message's 'deleted' field is 'true', obscure the 'text', 'images' and
+         *    'replyingTo' fields; the same applies to the 'replyingTo' field if its 'deleted' field
+         *    is 'true'
          */
 
         /// create aggregation pipeline
@@ -539,19 +565,30 @@ export const message = [
                     },
                 },
                 images: {
-                    $map: {
-                        input: "$images",
-                        as: "image",
-                        in: {
-                            _id: "$$image._id",
-                            url: "$$image.url",
-                            alt: "$$image.alt",
+                    $cond: {
+                        if: "$deleted",
+                        then: [], // hiding images in case of deleted message
+                        else: {
+                            $map: {
+                                input: "$images",
+                                as: "image",
+                                in: {
+                                    _id: "$$image._id",
+                                    url: "$$image.url",
+                                    alt: "$$image.alt",
+                                },
+                            },
                         },
                     },
                 },
                 replyingTo: {
                     $cond: {
-                        if: { $eq: ["$replyingTo", null] },
+                        if: {
+                            $or: [
+                                { $eq: ["$replyingTo", null] },
+                                "$deleted", // hiding replyingTo in case of deleted message
+                            ],
+                        },
                         then: null,
                         else: {
                             _id: "$replyingTo._id",
@@ -583,19 +620,29 @@ export const message = [
                                 },
                             },
                             images: {
-                                $map: {
-                                    input: "$replyingToImages",
-                                    as: "image",
-                                    in: {
-                                        _id: "$$image._id",
-                                        url: "$$image.url",
-                                        alt: "$$image.alt",
+                                $cond: {
+                                    if: "$replyingTo.deleted",
+                                    then: [], // hiding images in case of deleted message
+                                    else: {
+                                        $map: {
+                                            input: "$replyingToImages",
+                                            as: "image",
+                                            in: {
+                                                _id: "$$image._id",
+                                                url: "$$image.url",
+                                                alt: "$$image.alt",
+                                            },
+                                        },
                                     },
                                 },
                             },
-                            replyingTo: "$replyingTo.replyingTo",
-                            deleted: "$replyingTo.deleted",
-                            createdAt: "$replyingTo.createdAt",
+                            replyingTo: {
+                                $cond: {
+                                    if: "$replyingTo.deleted",
+                                    then: "", // hiding replyingTo in case of deleted message
+                                    else: "$replyingTo.replyingTo",
+                                },
+                            },
                         },
                     },
                 },
