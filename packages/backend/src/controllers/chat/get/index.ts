@@ -639,7 +639,7 @@ export const message = [
                             replyingTo: {
                                 $cond: {
                                     if: "$replyingTo.deleted",
-                                    then: "", // hiding replyingTo in case of deleted message
+                                    then: null, // hiding replyingTo in case of deleted message
                                     else: "$replyingTo.replyingTo",
                                 },
                             },
