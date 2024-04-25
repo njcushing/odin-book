@@ -2,9 +2,6 @@ import { createContext, useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
-import PubSub from "pubsub-js";
-import Buttons from "@/components/buttons";
-import Inputs from "@/components/inputs";
 import Accessibility from "@/components/accessibility";
 import getChatOverview, { Params, Response } from "@/features/chat/utils/getChatOverview";
 import extractParticipantsInformation, {
@@ -17,11 +14,6 @@ type ActiveTypes = {
     _id?: mongoose.Types.ObjectId;
     getIdFromURLParam?: boolean;
 };
-
-type ReplyingTo = {
-    messageId: string;
-    inChatName: string;
-} | null;
 
 interface ChatState {
     chatData: Response;
@@ -40,10 +32,9 @@ export const ChatContext = createContext<ChatState>(defaultState);
 function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
     const { chatId } = useParams();
 
-    const [replyingTo, setReplyingTo] = useState<ReplyingTo>(null);
-
     const [waiting, setWaiting] = useState(true);
 
+    // get chat data api handling
     const [chatData, setChatData] = useState<Response>(null);
     const [response, setParams, setAttempting, gettingChatOverview] = useAsync.GET<
         Params,
@@ -105,22 +96,6 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
         setWaiting(gettingChatOverview);
     }, [gettingChatOverview]);
 
-    useEffect(() => {
-        PubSub.subscribe("reply-to-message-button-click", (msg, data) => {
-            if (replyingTo && data.messageId === replyingTo.messageId) {
-                setReplyingTo(null);
-            } else {
-                const inChatName =
-                    data.userId in participantsInfo ? participantsInfo[data.userId].inChatName : "";
-                setReplyingTo({ messageId: data.messageId, inChatName });
-            }
-        });
-
-        return () => {
-            PubSub.unsubscribe("reply-to-message-button-click");
-        };
-    }, [replyingTo, participantsInfo]);
-
     return (
         <ChatContext.Provider
             value={useMemo(
@@ -137,30 +112,7 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
                         <div className={styles["chat-content-container"]}>
                             <Chat.Header />
                             <Chat.MessageList getIdFromURLParam />
-                            {replyingTo ? (
-                                <div className={styles["replying-to-container"]}>
-                                    <Buttons.Basic
-                                        text=""
-                                        symbol="cancel"
-                                        onClickHandler={() => setReplyingTo(null)}
-                                        otherStyles={{ fontSize: "1.2rem", padding: "0.5rem" }}
-                                    />
-                                    <p
-                                        className={`truncate-ellipsis ${styles["replying-to-string"]}`}
-                                    >
-                                        {`Replying to ${replyingTo.inChatName}`}
-                                    </p>
-                                </div>
-                            ) : null}
-                            <div className={styles["message-box-container"]}>
-                                <Inputs.Message
-                                    textFieldId="message-text"
-                                    textFieldName="messageText"
-                                    placeholder="Type your message..."
-                                    imageFieldId="message-images"
-                                    imageFieldName="messageImages"
-                                />
-                            </div>
+                            <Chat.MessageInput />
                         </div>
                     ) : (
                         <p className={styles["empty-message"]}>Nothing to see here!</p>
