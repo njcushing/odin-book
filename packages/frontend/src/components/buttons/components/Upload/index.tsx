@@ -42,7 +42,7 @@ function Upload({
                 className={styles["label"]}
                 htmlFor={fieldId}
                 aria-label="upload"
-                data-disabled={!!(button.disabled || buttonDefaultProps.disabled)}
+                data-disabled={!!(button.disabled || buttonDefaultProps.disabled || disabled)}
                 data-shape={buttonProps.style && buttonProps.style.shape}
             >
                 {labelText}
