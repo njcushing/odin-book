@@ -10,6 +10,8 @@ export type GET<Params, Response> = (
     data: Response | null;
 }>;
 
+export type DELETE<Params, Response> = GET<Params, Response>;
+
 export type POST<Params, Body, Response> = (
     data: {
         params?: Params;
