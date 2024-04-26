@@ -1,6 +1,6 @@
-.header {
+.container {
     display: grid;
-    grid-template-columns: minmax(0, 100%) auto;
+    grid-template-columns: auto minmax(0, 100%) auto;
     align-items: center;
     flex-wrap: nowrap;
     gap: 0.2rem;
@@ -8,7 +8,31 @@
     padding: 0.4rem;
 }
 
+.profile-image-container {
+    border-radius: 50%;
+    outline-width: 0px;
+    outline-style: solid;
+    outline-color: var(--chat-option-primary-image-outline);
+
+    transition: outline-width 0.05s ease-in-out 0s;
+}
+
+@media (hover: hover) {
+    .container:hover .profile-image-container {
+        outline-width: 3px;
+    }
+}
+
 .name-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    width: calc(100% - 0.4rem);
+    padding-left: 0.4rem;
+}
+
+.name-container-top-row {
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -35,7 +59,32 @@
     font-size: 1.6rem;
 
     width: 100%;
-    max-width: 20rem;
+    max-width: 100%;
+}
+
+.edit-name:disabled {
+    color: var(--input-text-disabled);
+    outline-color: var(--input-outline-disabled);
+    background-color: rgba(200, 200, 200, 1.0);
+}
+
+.edit-chat-name-options {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
+}
+
+.error-message {
+    color: var(--text-error);
+    font-family: Gabarito;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: left;
+}
+
+.edit-button-container {
+    border-radius: 9999px;
 }
 
 .options {
