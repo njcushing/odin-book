@@ -9,19 +9,24 @@ export type FileButtonTypes = Types.Sizes & {
     file: File;
     label?: string;
     onClickHandler: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+    disabled?: boolean;
 };
 
 function FileButton({
     file,
     label = "file button",
     onClickHandler = null,
+    disabled = false,
     size = "m",
 }: FileButtonTypes) {
     const fileNameSizes = getSizes(size, "text");
     const fileSizeSizes = getSizes(size, "description");
 
     return (
-        <div className={styles["container"]} aria-label={label}>
+        <div
+            className={`${styles["container"]} ${disabled ? styles["disabled"] : ""}`}
+            aria-label={label}
+        >
             <div className={styles["file-info"]}>
                 <p
                     className={`truncate-ellipsis ${styles["file-name"]}`}
@@ -40,6 +45,7 @@ function FileButton({
                 text=""
                 symbol="cancel"
                 onClickHandler={onClickHandler}
+                disabled={disabled}
                 otherStyles={{ fontSize: "1.2rem", padding: "0.2rem" }}
             />
         </div>
