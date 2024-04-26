@@ -254,6 +254,16 @@ export const message = [
                 throw error;
             }
 
+            // format new message similarly to /chat/:chatId/messages GET route
+            const newMessageFormatted = {
+                _id: newMessage._id,
+                author: newMessage.author,
+                imageCount: !newMessage.deleted ? newMessage.images.length : 0,
+                replyingTo: !newMessage.deleted ? newMessage.replyingTo : null,
+                deleted: newMessage.deleted,
+                createdAt: newMessage.createdAt,
+            };
+
             await session.commitTransaction();
 
             session.endSession();
@@ -263,7 +273,7 @@ export const message = [
                 .then((token) => {
                     return sendResponse(res, 201, "Message created successfully", {
                         token,
-                        newMessage,
+                        message: newMessageFormatted,
                     });
                 })
                 .catch((tokenErr) => {
@@ -272,7 +282,7 @@ export const message = [
                         500,
                         tokenErr.message ||
                             `Message created successfully, but token creation failed`,
-                        { newMessage },
+                        { message: newMessageFormatted },
                         tokenErr,
                     );
                 });
