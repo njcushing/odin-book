@@ -69,6 +69,7 @@ function File({
                     setFiles(newFiles);
                     if (onUpdateHandler) onUpdateHandler(newFiles);
                 }}
+                disabled={disabled}
                 size={size}
                 key={key}
             />
