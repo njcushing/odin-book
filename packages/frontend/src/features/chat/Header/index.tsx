@@ -1,18 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { ChatContext } from "@/features/chat/Active";
 import Buttons from "@/components/buttons";
+import determineChatName from "@/features/chat/utils/determineChatName";
 import styles from "./index.module.css";
 
 const buttonStyles = { fontSize: "1.1rem", padding: "0.6rem" };
 
 type HeaderTypes = {
-    name?: string;
+    overrideChatName?: string;
     onEditNameHandler?: ((name: string) => void) | null;
 };
 
-function Header({ name = "Chat Title", onEditNameHandler = null }: HeaderTypes) {
+function Header({ overrideChatName, onEditNameHandler = null }: HeaderTypes) {
+    const { chatData } = useContext(ChatContext);
+
     const [editingName, setEditingName] = useState<boolean>(false);
-    const [chatName, setChatName] = useState<string>(name);
-    const [nameStored, setNameStored] = useState<string>(name);
+    const [chatName, setChatName] = useState<string>(
+        overrideChatName || determineChatName(chatData),
+    );
+    const [nameStored, setNameStored] = useState<string>(
+        overrideChatName || determineChatName(chatData),
+    );
 
     useEffect(() => {
         if (!editingName && onEditNameHandler && chatName !== nameStored) {
@@ -41,12 +49,13 @@ function Header({ name = "Chat Title", onEditNameHandler = null }: HeaderTypes) 
                 )}
                 <Buttons.Basic
                     text=""
-                    symbol="edit"
+                    symbol={!editingName ? "edit" : "done"}
                     label="edit chat name"
-                    otherStyles={{ ...buttonStyles }}
                     onClickHandler={() => {
                         setEditingName(!editingName);
                     }}
+                    palette={!editingName ? "primary" : "green"}
+                    otherStyles={{ ...buttonStyles }}
                 />
             </div>
             <div className={styles["options"]}>
