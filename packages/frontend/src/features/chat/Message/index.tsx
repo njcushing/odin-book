@@ -8,13 +8,20 @@ import Buttons from "@/components/buttons";
 import Images from "@/components/images";
 import Accessibility from "@/components/accessibility";
 import formatDate from "@/utils/formatDate";
-import getChatMessage, { Params, Response } from "./utils/getChatMessage";
+import getChatMessage, {
+    Params as GetChatMessageParams,
+    Response as GetChatMessageResponse,
+} from "./utils/getChatMessage";
+import deleteChatMessage, {
+    Params as DeleteChatMessageParams,
+    Response as DeleteChatMessageResponse,
+} from "./utils/deleteChatMessage";
 import styles from "./index.module.css";
 
 type MessageTypes = {
     chatId?: mongoose.Types.ObjectId | undefined | null;
     messageId?: mongoose.Types.ObjectId | undefined | null;
-    overrideMessageData?: Response;
+    overrideMessageData?: GetChatMessageResponse;
     messagePreloadInformaton?: {
         author?: mongoose.Types.ObjectId | null;
         imageCount?: number;
@@ -40,14 +47,16 @@ function Message({
     const { participantsInfo } = useContext(ChatContext);
 
     const [waiting, setWaiting] = useState<boolean>(true);
+    const [waitingDeletion, setWaitingDeletion] = useState<boolean>(true);
 
-    const [messageData, setMessageData] = useState<Response>(null);
+    // get message api handling
+    const [messageData, setMessageData] = useState<GetChatMessageResponse>(null);
     const [
         getChatMessageResponse /* setGetChatMessageParams */,
         ,
         getChatMessageAgain,
         gettingChatMessage,
-    ] = useAsync.GET<Params, Response>(
+    ] = useAsync.GET<GetChatMessageParams, GetChatMessageResponse>(
         {
             func: getChatMessage,
             parameters: [{ params: { chatId, messageId } }, null],
@@ -61,7 +70,39 @@ function Message({
         }
     }, [overrideMessageData, getChatMessageResponse]);
 
+    // delete message api handling
+    const [
+        deleteChatMessageResponse /* setDeleteChatMessageParams */,
+        ,
+        deleteChatMessageAgain,
+        deletingChatMessage,
+    ] = useAsync.DELETE<DeleteChatMessageParams, DeleteChatMessageResponse>(
+        {
+            func: deleteChatMessage,
+            parameters: [{ params: { chatId, messageId } }, null],
+        },
+        false,
+    );
+    useEffect(() => {
+        if (deleteChatMessageResponse && deleteChatMessageResponse.status < 400) {
+            setMessageData((oldMessageData) =>
+                oldMessageData
+                    ? {
+                          ...oldMessageData,
+                          text: "",
+                          images: [],
+                          replyingTo: null,
+                          deleted: true,
+                          createdAt: oldMessageData.createdAt,
+                      }
+                    : null,
+            );
+        }
+    }, [deleteChatMessageResponse, getChatMessageAgain]);
+
+    // error message handling
     const [errorMessage, setErrorMessage] = useState<string>("");
+    const [deletionErrorMessage, setDeletionErrorMessage] = useState<string>("");
     useEffect(() => {
         if (
             getChatMessageResponse &&
@@ -72,7 +113,18 @@ function Message({
             setErrorMessage(getChatMessageResponse.message);
         }
     }, [getChatMessageResponse]);
+    useEffect(() => {
+        if (
+            deleteChatMessageResponse &&
+            deleteChatMessageResponse.status >= 400 &&
+            deleteChatMessageResponse.message &&
+            deleteChatMessageResponse.message.length > 0
+        ) {
+            setDeletionErrorMessage(deleteChatMessageResponse.message);
+        }
+    }, [deleteChatMessageResponse]);
 
+    // fetch message again
     useEffect(() => {
         if (overrideMessageData) {
             setMessageData(overrideMessageData);
@@ -85,12 +137,9 @@ function Message({
         setWaiting(gettingChatMessage);
     }, [gettingChatMessage]);
 
-    let deleted = false;
-    if (messageData && messageData.deleted) {
-        deleted = true;
-    } else if (messagePreloadInformaton && messagePreloadInformaton.deleted) {
-        deleted = true;
-    }
+    useEffect(() => {
+        setWaitingDeletion(deletingChatMessage);
+    }, [deletingChatMessage]);
 
     let position = "left";
     if (
@@ -100,41 +149,77 @@ function Message({
         position = "right";
     }
 
+    let deleted = false;
+    if (messageData && messageData.deleted) {
+        deleted = true;
+    } else if (messagePreloadInformaton && messagePreloadInformaton.deleted) {
+        deleted = true;
+    }
+
+    let replyingToDeleted = false;
+    if (messageData && messageData.replyingTo && messageData.replyingTo.deleted) {
+        replyingToDeleted = true;
+    }
+
     let text = "";
-    if (messageData && messageData.text.length > 0) {
+    if (messageData && messageData.deleted) {
+        text = "This message has been deleted.";
+    } else if (messageData && messageData.text.length > 0) {
         text = messageData.text;
     } else if (waiting) {
         text = "placeholder";
     }
 
     let replyingToText = "";
-    if (messageData && messageData.replyingTo && messageData.replyingTo.text.length > 0) {
+    if (messageData && messageData.replyingTo && messageData.replyingTo.deleted) {
+        replyingToText = "This message has been deleted.";
+    } else if (messageData && messageData.replyingTo && messageData.replyingTo.text.length > 0) {
         replyingToText = messageData.replyingTo.text;
     } else if (waiting) {
         replyingToText = "placeholder";
     }
 
     let images: React.ReactNode[] = [];
-    if (messageData && messageData.images.length) {
-        images = messageData.images.map((image, i) => {
-            if (i >= 4) return null;
-            return (
-                <li className={styles["message-image"]} key={`${image._id}`}>
-                    <Images.Basic
-                        src={image.url}
-                        alt={image.alt}
-                        style={{ width: "100%", height: "100%" }}
-                    />
-                </li>
-            );
-        });
-    } else if (messagePreloadInformaton && messagePreloadInformaton.imageCount) {
-        for (let i = 0; i < Math.min(4, messagePreloadInformaton.imageCount); i++) {
-            images.push(
-                <li className={styles["message-image"]} key={i}>
-                    <Images.Basic src="" alt="" style={{ width: "100%", height: "100%" }} />
-                </li>,
-            );
+    if (!deleted) {
+        if (messageData && messageData.images.length > 0) {
+            images = messageData.images.map((image, i) => {
+                if (i >= 4) return null;
+                return (
+                    <li className={styles["message-image"]} key={`${image._id}`}>
+                        <Images.Basic
+                            src={image.url}
+                            alt={image.alt}
+                            style={{ width: "100%", height: "100%" }}
+                        />
+                    </li>
+                );
+            });
+        } else if (messagePreloadInformaton && messagePreloadInformaton.imageCount) {
+            for (let i = 0; i < Math.min(4, messagePreloadInformaton.imageCount); i++) {
+                images.push(
+                    <li className={styles["message-image"]} key={i}>
+                        <Images.Basic src="" alt="" style={{ width: "100%", height: "100%" }} />
+                    </li>,
+                );
+            }
+        }
+    }
+
+    let replyingToImages: React.ReactNode[] = [];
+    if (!replyingToDeleted) {
+        if (messageData && messageData.replyingTo && messageData.replyingTo.images.length > 0) {
+            replyingToImages = messageData.replyingTo.images.map((image, i) => {
+                if (i >= 4) return null;
+                return (
+                    <li className={styles["message-image"]} key={`${image._id}`}>
+                        <Images.Basic
+                            src={image.url}
+                            alt={image.alt}
+                            style={{ width: "100%", height: "100%" }}
+                        />
+                    </li>
+                );
+            });
         }
     }
 
@@ -166,7 +251,7 @@ function Message({
     const messageContainerStyles: React.CSSProperties =
         position === "left"
             ? {
-                  alignSelf: "start",
+                  justifySelf: "start",
                   borderTopLeftRadius: "12px",
                   borderTopRightRadius: "12px",
                   borderBottomLeftRadius: "0px",
@@ -176,7 +261,7 @@ function Message({
                   padding: "0.4rem",
               }
             : {
-                  alignSelf: "end",
+                  justifySelf: "end",
                   borderTopLeftRadius: "12px",
                   borderTopRightRadius: "12px",
                   borderBottomLeftRadius: "12px",
@@ -204,6 +289,9 @@ function Message({
             {errorMessage.length > 0 ? (
                 <p className={styles["error-message"]}>{errorMessage}</p>
             ) : null}
+            {deletionErrorMessage.length > 0 ? (
+                <p className={styles["error-message"]}>{deletionErrorMessage}</p>
+            ) : null}
             {skeleton || messageData ? (
                 <div className={styles["container"]} style={{ width: containerWidth }}>
                     <div className={styles["profile-image"]}>
@@ -229,8 +317,11 @@ function Message({
                     <Accessibility.Skeleton waiting={waiting} style={messageContainerStyles}>
                         <div className={styles["message-container"]} style={messageContainerStyles}>
                             {text.length > 0 ? (
-                                <p className={styles["message-text"]} aria-label="message-text">
-                                    {!deleted ? text : "This message has been deleted."}
+                                <p
+                                    className={`${styles["message-text"]} ${deleted ? styles["deleted"] : ""}`}
+                                    aria-label="message-text"
+                                >
+                                    {text}
                                 </p>
                             ) : null}
                             {images.length > 0 && (
@@ -242,7 +333,10 @@ function Message({
                                 </ul>
                             )}
                             {(messageData && messageData.replyingTo) ||
-                            (messagePreloadInformaton && messagePreloadInformaton.replyingTo) ? (
+                            (!messageData &&
+                                messagePreloadInformaton &&
+                                messagePreloadInformaton.replyingTo) ||
+                            replyingToDeleted ? (
                                 <div className={styles["replying-to-message-container"]}>
                                     <p
                                         className={styles["replying-to-message-username"]}
@@ -252,39 +346,20 @@ function Message({
                                     </p>
                                     {replyingToText.length > 0 ? (
                                         <p
-                                            className={styles["replying-to-message-text"]}
+                                            className={`${styles["replying-to-message-text"]} ${replyingToDeleted ? styles["deleted"] : ""}`}
                                             aria-label="replying-to-message-text"
                                         >
                                             {replyingToText}
                                         </p>
                                     ) : null}
-                                    {messageData && messageData.replyingTo.images.length > 0 && (
+                                    {replyingToImages.length > 0 && (
                                         <ul
                                             className={
                                                 styles["replying-to-message-images-container"]
                                             }
-                                            data-image-quantity={`${Math.min(4, messageData.replyingTo.images.length)}`}
+                                            data-image-quantity={`${Math.min(4, replyingToImages.length)}`}
                                         >
-                                            {messageData.replyingTo.images.map((image, i) => {
-                                                if (i >= 4) return null;
-                                                return (
-                                                    <li
-                                                        className={
-                                                            styles["replying-to-message-image"]
-                                                        }
-                                                        key={`${image._id}`}
-                                                    >
-                                                        <Images.Basic
-                                                            src={image.url}
-                                                            alt={image.alt}
-                                                            style={{
-                                                                width: "100%",
-                                                                height: "100%",
-                                                            }}
-                                                        />
-                                                    </li>
-                                                );
-                                            })}
+                                            {replyingToImages}
                                         </ul>
                                     )}
                                 </div>
@@ -312,7 +387,7 @@ function Message({
                                 otherStyles={{ padding: "0.4rem" }}
                             />
                         </Accessibility.Skeleton>
-                        {position === "right" ? (
+                        {position === "right" && !deleted ? (
                             <Accessibility.Skeleton
                                 waiting={waiting}
                                 style={{ borderRadius: "9999px" }}
@@ -320,10 +395,8 @@ function Message({
                                 <Buttons.Basic
                                     text=""
                                     symbol="delete"
-                                    onClickHandler={() => {
-                                        // delete message
-                                    }}
-                                    disabled={waiting}
+                                    onClickHandler={() => deleteChatMessageAgain(true)}
+                                    disabled={waitingDeletion}
                                     style={{ shape: "rounded" }}
                                     otherStyles={{ padding: "0.4rem" }}
                                 />
