@@ -4,7 +4,7 @@ import Images from "@/components/images";
 import Accessibility from "@/components/accessibility";
 import mongoose from "mongoose";
 import getChatOverview, { Params, Response } from "@/features/chat/utils/getChatOverview";
-import combineParticipantNames from "../utils/combineParticipantNames";
+import determineChatName from "@/features/chat/utils/determineChatName";
 import styles from "./index.module.css";
 
 type OptionTypes = {
@@ -63,23 +63,7 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
         setWaiting(gettingChatOverview);
     }, [gettingChatOverview]);
 
-    let chatName = "Chat";
-    if (chatData) {
-        if (chatData.name.length > 0) {
-            chatName = chatData.name;
-        } else if (chatData.participants && chatData.participants.length > 0) {
-            const extractedParticipantNames = chatData.participants.map((participant) => {
-                if (participant.nickname.length > 0) {
-                    return participant.nickname;
-                }
-                if (participant.user.preferences.displayName.length > 0) {
-                    return participant.user.preferences.displayName;
-                }
-                return participant.user.accountTag;
-            });
-            chatName = combineParticipantNames(extractedParticipantNames as unknown as string[], 3);
-        }
-    }
+    const chatName = determineChatName(chatData);
 
     let recentMessage = "";
     if (chatData && chatData.recentMessage) {
