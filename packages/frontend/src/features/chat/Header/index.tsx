@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import * as extendedTypes from "@shared/utils/extendedTypes";
 import Buttons from "@/components/buttons";
 import styles from "./index.module.css";
 
