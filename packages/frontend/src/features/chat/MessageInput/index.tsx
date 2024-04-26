@@ -46,10 +46,13 @@ function MessageInput() {
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        if (response && response.status >= 400 && response.message && response.message.length > 0) {
-            setErrorMessage(response.message);
-        } else {
-            setErrorMessage("");
+        if (response) {
+            if (response.status >= 400 && response.message && response.message.length > 0) {
+                setErrorMessage(response.message);
+            } else {
+                setErrorMessage("");
+                PubSub.publish("message-creation-successful", response.data);
+            }
         }
     }, [response]);
 
