@@ -72,6 +72,19 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
         setWaiting(gettingMessages);
     }, [gettingMessages]);
 
+    // subscribe to successful message creation
+    useEffect(() => {
+        PubSub.subscribe("message-creation-successful", (msg, data) => {
+            setMessages((oldMessages) => {
+                return oldMessages ? [data, ...oldMessages] : [];
+            });
+        });
+
+        return () => {
+            PubSub.unsubscribe("message-creation-successful");
+        };
+    }, []);
+
     return !waiting ? (
         <div className={styles["container"]}>
             {errorMessage.length > 0 ? (
