@@ -18,15 +18,16 @@
     width: 100%;
 }
 
-.label-and-upload-button-container.disabled {
-    background-color: rgba(128, 128, 128, 0.2);
-}
-
 .file-buttons-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 0.3rem;
+}
+
+.label-and-upload-button-container.disabled,
+.file-buttons-list.disabled {
+    background-color: rgba(128, 128, 128, 0.2);
 }
 
 .no-files-message {

@@ -85,7 +85,7 @@ function File({
     return (
         <div className={styles["wrapper"]}>
             <div
-                className={`truncate-ellipsis ${styles["label-and-upload-button-container"]}  ${disabled ? styles["disabled"] : ""}`}
+                className={`truncate-ellipsis ${styles["label-and-upload-button-container"]} ${disabled ? styles["disabled"] : ""}`}
             >
                 <Inputs.Label
                     labelText={labelText}
@@ -134,7 +134,9 @@ function File({
             <Inputs.Description text={description} size={size} />
             {Object.keys(files).length > 0 ? (
                 <div className={styles["input-container"]}>
-                    <ul className={styles["file-buttons-list"]}>
+                    <ul
+                        className={`${styles["file-buttons-list"]} ${disabled ? styles["disabled"] : ""}`}
+                    >
                         {Object.keys(files).map((key) => createFileButton(key))}
                     </ul>
                 </div>
