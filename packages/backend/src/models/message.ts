@@ -3,12 +3,12 @@ import * as validateMessage from "@shared/validation/message";
 
 export type TMessage = {
     author: mongoose.Types.ObjectId;
-    text?: string;
-    images?: string[];
+    text: string;
+    images: mongoose.Types.ObjectId[];
     replyingTo?: mongoose.Types.ObjectId;
-    deleted?: boolean;
-    createdAt?: Date;
-    updatedAt?: Date;
+    deleted: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 };
 
 export interface IMessage extends TMessage, Document {}
