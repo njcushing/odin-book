@@ -2,6 +2,7 @@ import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 import convertArrayBufferToBase64 from "@/utils/convertArrayBufferToBase64";
 import mongoose from "mongoose";
+import { Response as GetChatMessagesResponse } from "@/features/chat/MessageList/utils/getChatMessages";
 
 export type Params = {
     chatId: mongoose.Types.ObjectId | null | undefined;
@@ -13,7 +14,7 @@ export type Body = {
     images: ArrayBuffer[];
 };
 
-export type Response = string | null;
+export type Response = GetChatMessagesResponse;
 
 const createMessage: apiFunctionTypes.POST<Params, Body, Response> = async (
     data,
@@ -64,7 +65,7 @@ const createMessage: apiFunctionTypes.POST<Params, Body, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: null,
+                data: responseJSON.data.message,
             };
         })
         .catch((error) => {
