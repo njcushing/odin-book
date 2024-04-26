@@ -6,6 +6,7 @@ import Buttons from "@/components/buttons";
 import Inputs from "@/components/inputs";
 import mongoose from "mongoose";
 import validation from "@shared/validation";
+import { v4 as uuidv4 } from "uuid";
 import createMessage, { Params, Body, Response } from "./utils/createMessage";
 import styles from "./index.module.css";
 
@@ -19,6 +20,7 @@ function MessageInput() {
 
     const [waiting, setWaiting] = useState(true);
     const [replyingTo, setReplyingTo] = useState<ReplyingTo>(null);
+    const [generateKey, setGenerateKey] = useState<string>(uuidv4());
 
     const [response, setParams, setAttempting, creatingMessage] = useAsync.POST<
         Params,
@@ -52,6 +54,9 @@ function MessageInput() {
             } else {
                 setErrorMessage("");
                 PubSub.publish("message-creation-successful", response.data);
+
+                // easy way to re-render Inputs.Message component on successful message creation, clearing inputs
+                setGenerateKey(uuidv4());
             }
         }
     }, [response]);
@@ -119,6 +124,7 @@ function MessageInput() {
                         ]);
                     }}
                     sending={waiting}
+                    key={generateKey}
                 />
             </div>
             {errorMessage.length > 0 ? (
