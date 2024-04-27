@@ -11,7 +11,8 @@ router.get("/:chatId/messages", get.messages);
 router.get("/:chatId/message/:messageId", get.message);
 router.post("/", create.regular);
 router.post("/:chatId/message", create.message);
-router.put("/:chatId/name", put.namePUT);
+router.put("/:chatId/name", put.name);
+router.put("/:chatId/participants", put.participants);
 router.delete("/:chatId/message/:messageId", remove.message);
 
 export default router;

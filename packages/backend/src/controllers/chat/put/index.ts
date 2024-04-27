@@ -7,14 +7,14 @@ import checkRequestValidationError from "@/utils/checkRequestValidationError";
 import checkUserAuthorisedInChat from "../utils/checkUserAuthorisedInChat";
 import validators from "../validators";
 
-export const namePUT = [
+export const name = [
     protectedRouteJWT,
     validators.param.chatId,
     validators.body.name,
     checkRequestValidationError,
     async (req: Request, res: Response) => {
         const { chatId } = req.params;
-        const { name } = req.body;
+        const newName = req.body.name;
 
         const chat = await Chat.findOne({
             _id: chatId,
@@ -38,7 +38,7 @@ export const namePUT = [
         );
         if (!userAuthorised) return sendResponse(res, 401, authMessage);
 
-        const updatedChat = await Chat.findByIdAndUpdate(chatId, { $set: { name } });
+        const updatedChat = await Chat.findByIdAndUpdate(chatId, { $set: { newName } });
         if (updatedChat === null) {
             return sendResponse(res, 404, "Specified chat not found in the database");
         }
