@@ -12,9 +12,16 @@ export type FinderTypes = {
     button?: ButtonBasicTypes;
     clearFindOnClick?: boolean;
     onClickHandler?: ((user: Exclude<Response, null>) => void) | null;
+    disabled?: boolean;
 };
 
-function Finder({ placeholder, button, onClickHandler, clearFindOnClick }: FinderTypes) {
+function Finder({
+    placeholder,
+    button,
+    onClickHandler,
+    clearFindOnClick,
+    disabled = false,
+}: FinderTypes) {
     const [currentAccountTag, setCurrentAccountTag] = useState<string>("");
 
     const [foundUser, setFoundUser] = useState<Response>(null);
@@ -42,8 +49,9 @@ function Finder({ placeholder, button, onClickHandler, clearFindOnClick }: Finde
                     setFoundUser(null);
                     setCurrentAccountTag(e.target.value);
                 }}
-                onSearchHandler={() => setAttempting(true)}
+                disabled={disabled}
                 placeholder={placeholder}
+                onSearchHandler={() => setAttempting(true)}
                 searchAfterDelay={0}
             />
             {foundUser && (
@@ -68,6 +76,7 @@ function Finder({ placeholder, button, onClickHandler, clearFindOnClick }: Finde
                                 if (onClickHandler) onClickHandler(foundUser);
                                 if (clearFindOnClick) setFoundUser(null);
                             }}
+                            disabled={disabled}
                         />
                     )}
                 </div>
