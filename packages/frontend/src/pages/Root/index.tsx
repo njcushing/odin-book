@@ -65,8 +65,10 @@ function Root() {
         PubSub.subscribe("create-new-chat-button-click", () => {
             setModal(<Chat.Create onCloseClickHandler={() => setModal(null)} />);
         });
-        PubSub.subscribe("add-users-to-chat-button-click", () => {
-            setModal(<Chat.AddUsers onCloseClickHandler={() => setModal(null)} />);
+        PubSub.subscribe("add-users-to-chat-button-click", (msg, data) => {
+            setModal(
+                <Chat.AddUsers chatId={data.chatId} onCloseClickHandler={() => setModal(null)} />,
+            );
         });
 
         return () => {
