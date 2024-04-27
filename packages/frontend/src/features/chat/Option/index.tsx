@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
+import { UserContext } from "@/context/user";
 import * as useAsync from "@/hooks/useAsync";
 import Images from "@/components/images";
 import Accessibility from "@/components/accessibility";
@@ -14,6 +15,8 @@ type OptionTypes = {
 };
 
 function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
+    const { extract } = useContext(UserContext);
+
     const [waiting, setWaiting] = useState<boolean>(true);
 
     // get option api handling
@@ -63,7 +66,11 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
         setWaiting(gettingChatOverview);
     }, [gettingChatOverview]);
 
-    const chatName = determineChatName({ chatData });
+    const chatName = determineChatName({
+        chatData,
+        ignoreActiveUser: true,
+        activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+    });
 
     let recentMessage = "";
     if (chatData && chatData.recentMessage) {
