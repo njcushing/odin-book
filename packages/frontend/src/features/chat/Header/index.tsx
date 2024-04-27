@@ -212,7 +212,9 @@ function Header({ overrideChatName }: HeaderTypes) {
                     symbol="person_add"
                     label="add people"
                     onClickHandler={() => {
-                        PubSub.publish("add-users-to-chat-button-click", null);
+                        PubSub.publish("add-users-to-chat-button-click", {
+                            chatId: chatData && chatData._id,
+                        });
                     }}
                     palette="blue"
                     otherStyles={{ ...buttonStyles }}
