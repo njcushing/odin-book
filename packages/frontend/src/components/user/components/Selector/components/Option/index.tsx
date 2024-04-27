@@ -7,9 +7,10 @@ export type OptionTypes = {
         preferences: Pick<ModelTypes.User["preferences"], "displayName">;
     };
     onClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+    disabled?: boolean;
 };
 
-function Option({ user, onClickHandler = null }: OptionTypes) {
+function Option({ user, onClickHandler = null, disabled = false }: OptionTypes) {
     const { accountTag, preferences } = user;
 
     return (
@@ -24,6 +25,7 @@ function Option({ user, onClickHandler = null }: OptionTypes) {
                 onClickHandler={(e) => {
                     if (onClickHandler) onClickHandler(e);
                 }}
+                disabled={disabled}
                 palette="red"
                 otherStyles={{ fontSize: "1.0rem", padding: "0.2rem" }}
             />
