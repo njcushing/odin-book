@@ -1,18 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import * as useAsync from "@/hooks/useAsync";
 import Modals from "@/components/modals";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
-import { v4 as uuidv4 } from "uuid";
+import mongoose from "mongoose";
+import addParticipantsToChat, { Params, Body, Response } from "./utils/addParticipantsToChat";
 import styles from "./index.module.css";
 
 type AddUsersTypes = {
-    defaultUsers?: string[];
+    chatId: mongoose.Types.ObjectId;
+    defaultParticipants?: mongoose.Types.ObjectId[];
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
 };
 
-function AddUsers({ defaultUsers = [], onCloseClickHandler = null }: AddUsersTypes) {
-    const [users, setUsers] = useState<string[]>(defaultUsers);
-    const [submissionErrors, setSubmissionErrors] = useState<string[]>([]);
+function AddUsers({ chatId, defaultParticipants = [], onCloseClickHandler = null }: AddUsersTypes) {
+    const [participants, setParticipants] =
+        useState<mongoose.Types.ObjectId[]>(defaultParticipants);
+
+    const [waiting, setWaiting] = useState<boolean>(false);
+
+    const [response, setParams, setAttempting, addingParticipants] = useAsync.PUT<
+        Params,
+        Body,
+        Response
+    >(
+        {
+            func: addParticipantsToChat,
+            parameters: [
+                {
+                    params: { chatId },
+                    body: { participants },
+                },
+                null,
+            ],
+        },
+        false,
+    );
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
+    useEffect(() => {
+        if (response && response.status >= 400 && response.message && response.message.length > 0) {
+            setErrorMessage(response.message);
+        }
+    }, [response]);
+
+    useEffect(() => {
+        setWaiting(addingParticipants);
+    }, [addingParticipants]);
 
     return (
         <Modals.Basic onCloseClickHandler={onCloseClickHandler}>
@@ -21,40 +55,31 @@ function AddUsers({ defaultUsers = [], onCloseClickHandler = null }: AddUsersTyp
                 <div className={styles["content"]}>
                     <User.Selector
                         onChangeHandler={(selectedUsers) =>
-                            setUsers(
+                            setParticipants(
                                 Object.keys(selectedUsers).map((user) => selectedUsers[user]._id),
                             )
                         }
                     />
-                    {submissionErrors.length > 0 ? (
-                        <div className={styles["errors-list"]}>
-                            <p className={styles["submission-errors-title"]}>Submission Errors:</p>
-                            <ul
-                                className={styles["submission-errors"]}
-                                aria-label="message-submission-errors"
-                            >
-                                {submissionErrors.map((error) => {
-                                    return (
-                                        <li
-                                            className={styles["error"]}
-                                            aria-label="message-submission-error"
-                                            key={uuidv4()}
-                                        >
-                                            {error}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    ) : null}
                 </div>
+                {errorMessage.length > 0 ? (
+                    <p className={styles["error-message"]}>{errorMessage}</p>
+                ) : null}
                 <div className={styles["add-users-button-container"]}>
                     <Buttons.Basic
                         text="Add Users"
                         palette="green"
                         onClickHandler={() => {
-                            // attempt to add users
+                            setErrorMessage("");
+                            setParams([
+                                {
+                                    params: { chatId },
+                                    body: { participants },
+                                },
+                                null,
+                            ]);
+                            setAttempting(true);
                         }}
+                        disabled={participants.length === 0}
                         otherStyles={{ fontSize: "1.2rem" }}
                     />
                 </div>
