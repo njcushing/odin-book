@@ -88,6 +88,7 @@
     --chat-option-primary-disabled: rgb(128, 128, 128);
     --chat-option-primary-outline: transparent;
     --chat-option-primary-image-outline: rgb(0, 0, 0);
+    --chat-option-secondary-text: rgb(47, 47, 47);
     --text-secondary: rgb(48, 48, 48);
     --button-red: rgb(228, 28, 28);
     --button-red-text: rgb(255, 255, 255);
