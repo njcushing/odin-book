@@ -59,6 +59,7 @@ function AddUsers({ chatId, defaultParticipants = [], onCloseClickHandler = null
                                 Object.keys(selectedUsers).map((user) => selectedUsers[user]._id),
                             )
                         }
+                        disabled={waiting}
                     />
                 </div>
                 {errorMessage.length > 0 ? (
@@ -79,7 +80,7 @@ function AddUsers({ chatId, defaultParticipants = [], onCloseClickHandler = null
                             ]);
                             setAttempting(true);
                         }}
-                        disabled={participants.length === 0}
+                        disabled={waiting || participants.length === 0}
                         otherStyles={{ fontSize: "1.2rem" }}
                     />
                 </div>
