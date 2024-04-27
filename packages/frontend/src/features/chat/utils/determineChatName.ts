@@ -18,8 +18,7 @@ const determineChatName = (params: Params): string => {
             chatName = chatData.name;
         } else if (chatData.participants && chatData.participants.length > 0) {
             const namesToCombine: string[] = [];
-            let i = 0;
-            while (namesToCombine.length < numberToCombine && i < chatData.participants.length) {
+            for (let i = 0; i < chatData.participants.length; i++) {
                 const participant = chatData.participants[i];
                 if (!ignoreActiveUser || participant.user._id !== activeUserId) {
                     if (participant.nickname.length > 0) {
@@ -30,12 +29,8 @@ const determineChatName = (params: Params): string => {
                         namesToCombine.push(participant.user.accountTag);
                     }
                 }
-                i += 1;
             }
-            chatName = combineParticipantNames(
-                namesToCombine,
-                Math.min(namesToCombine.length, numberToCombine),
-            );
+            chatName = combineParticipantNames(namesToCombine, numberToCombine);
         }
     }
     return chatName;
