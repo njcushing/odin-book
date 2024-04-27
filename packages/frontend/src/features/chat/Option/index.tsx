@@ -63,7 +63,7 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
         setWaiting(gettingChatOverview);
     }, [gettingChatOverview]);
 
-    const chatName = determineChatName(chatData);
+    const chatName = determineChatName({ chatData });
 
     let recentMessage = "";
     if (chatData && chatData.recentMessage) {

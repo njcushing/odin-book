@@ -24,11 +24,11 @@ function Header({ overrideChatName }: HeaderTypes) {
     const [editingName, setEditingName] = useState<boolean>(false);
     const [doneButtonClicked, setDoneButtonClicked] = useState<boolean>(false);
     const [nameStored, setNameStored] = useState<string>(
-        overrideChatName || determineChatName(chatData),
+        overrideChatName || determineChatName({ chatData }),
     );
 
     const [chatName, setChatName] = useState<string>(
-        overrideChatName || determineChatName(chatData),
+        overrideChatName || determineChatName({ chatData }),
     );
     const [savedResponse, setSavedResponse] = useState<{
         status: number;
@@ -90,8 +90,8 @@ function Header({ overrideChatName }: HeaderTypes) {
             } else {
                 setErrorMessage("");
                 if (chatName.length === 0) {
-                    setChatName(determineChatName(chatData));
-                    setNameStored(determineChatName(chatData));
+                    setChatName(determineChatName({ chatData }));
+                    setNameStored(determineChatName({ chatData }));
                 } else {
                     setNameStored(chatName);
                 }
