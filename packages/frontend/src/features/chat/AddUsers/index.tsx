@@ -11,9 +11,15 @@ type AddUsersTypes = {
     chatId: mongoose.Types.ObjectId;
     defaultParticipants?: mongoose.Types.ObjectId[];
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+    onSuccessHandler?: (() => void) | null;
 };
 
-function AddUsers({ chatId, defaultParticipants = [], onCloseClickHandler = null }: AddUsersTypes) {
+function AddUsers({
+    chatId,
+    defaultParticipants = [],
+    onCloseClickHandler = null,
+    onSuccessHandler = null,
+}: AddUsersTypes) {
     const [participants, setParticipants] =
         useState<mongoose.Types.ObjectId[]>(defaultParticipants);
 
@@ -43,6 +49,12 @@ function AddUsers({ chatId, defaultParticipants = [], onCloseClickHandler = null
             setErrorMessage(response.message);
         }
     }, [response]);
+
+    useEffect(() => {
+        if (response && response.status < 400) {
+            if (onSuccessHandler) onSuccessHandler();
+        }
+    }, [response, onSuccessHandler]);
 
     useEffect(() => {
         setWaiting(addingParticipants);
