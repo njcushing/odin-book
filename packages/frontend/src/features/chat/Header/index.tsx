@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
+import { UserContext } from "@/context/user";
 import { ChatContext } from "@/features/chat/Active";
 import * as useAsync from "@/hooks/useAsync";
 import Images from "@/components/images";
@@ -6,6 +7,7 @@ import Buttons from "@/components/buttons";
 import determineChatName from "@/features/chat/utils/determineChatName";
 import validation from "@shared/validation";
 import createMultilineTextTruncateStyles from "@/utils/createMultilineTextTruncateStyles";
+import mongoose from "mongoose";
 import changeChatName, { Params, Body, Response } from "./utils/changeChatName";
 import styles from "./index.module.css";
 
@@ -16,6 +18,7 @@ type HeaderTypes = {
 };
 
 function Header({ overrideChatName }: HeaderTypes) {
+    const { extract } = useContext(UserContext);
     const { chatData } = useContext(ChatContext);
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -24,11 +27,21 @@ function Header({ overrideChatName }: HeaderTypes) {
     const [editingName, setEditingName] = useState<boolean>(false);
     const [doneButtonClicked, setDoneButtonClicked] = useState<boolean>(false);
     const [nameStored, setNameStored] = useState<string>(
-        overrideChatName || determineChatName({ chatData }),
+        overrideChatName ||
+            determineChatName({
+                chatData,
+                ignoreActiveUser: true,
+                activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+            }),
     );
 
     const [chatName, setChatName] = useState<string>(
-        overrideChatName || determineChatName({ chatData }),
+        overrideChatName ||
+            determineChatName({
+                chatData,
+                ignoreActiveUser: true,
+                activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+            }),
     );
     const [savedResponse, setSavedResponse] = useState<{
         status: number;
@@ -90,8 +103,20 @@ function Header({ overrideChatName }: HeaderTypes) {
             } else {
                 setErrorMessage("");
                 if (chatName.length === 0) {
-                    setChatName(determineChatName({ chatData }));
-                    setNameStored(determineChatName({ chatData }));
+                    setChatName(
+                        determineChatName({
+                            chatData,
+                            ignoreActiveUser: true,
+                            activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+                        }),
+                    );
+                    setNameStored(
+                        determineChatName({
+                            chatData,
+                            ignoreActiveUser: true,
+                            activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+                        }),
+                    );
                 } else {
                     setNameStored(chatName);
                 }
@@ -99,7 +124,7 @@ function Header({ overrideChatName }: HeaderTypes) {
             }
             setSavedResponse(null);
         }
-    }, [savedResponse, chatData, chatName, nameStored]);
+    }, [savedResponse, chatData, chatName, nameStored, extract]);
 
     useEffect(() => {
         setWaiting(settingChatName);
