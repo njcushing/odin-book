@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
+import * as types from "@/utils/types";
 import generateToken from "@/utils/generateToken";
 import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
+import User from "@/models/user";
 import Chat from "@/models/chat";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
+import mongoose from "mongoose";
 import checkUserAuthorisedInChat from "../utils/checkUserAuthorisedInChat";
 import validators from "../validators";
 
@@ -30,6 +33,7 @@ export const name = [
             );
         }
 
+        // validate active user is allowed to change the chat's name
         const [userAuthorised, authMessage] = checkUserAuthorisedInChat(
             res.locals.user.id,
             chat.participants,
@@ -38,7 +42,7 @@ export const name = [
         );
         if (!userAuthorised) return sendResponse(res, 401, authMessage);
 
-        const updatedChat = await Chat.findByIdAndUpdate(chatId, { $set: { newName } });
+        const updatedChat = await Chat.findByIdAndUpdate(chatId, { $set: { name: newName } });
         if (updatedChat === null) {
             return sendResponse(res, 404, "Specified chat not found in the database");
         }
