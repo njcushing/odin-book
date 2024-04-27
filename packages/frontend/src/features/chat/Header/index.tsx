@@ -30,6 +30,11 @@ function Header({ overrideChatName }: HeaderTypes) {
     const [chatName, setChatName] = useState<string>(
         overrideChatName || determineChatName(chatData),
     );
+    const [savedResponse, setSavedResponse] = useState<{
+        status: number;
+        message: string | null;
+        data?: null | undefined;
+    } | null>(null);
     const [response, setParams, setAttempting, settingChatName] = useAsync.PUT<
         Params,
         Body,
@@ -70,9 +75,17 @@ function Header({ overrideChatName }: HeaderTypes) {
     }, [doneButtonClicked, chatName, nameStored, chatData, setParams, setAttempting]);
 
     useEffect(() => {
-        if (response) {
-            if (response.status >= 400 && response.message && response.message.length > 0) {
-                setErrorMessage(response.message);
+        setSavedResponse(response);
+    }, [response]);
+
+    useEffect(() => {
+        if (savedResponse) {
+            if (
+                savedResponse.status >= 400 &&
+                savedResponse.message &&
+                savedResponse.message.length > 0
+            ) {
+                setErrorMessage(savedResponse.message);
                 setChatName(nameStored);
             } else {
                 setErrorMessage("");
@@ -84,8 +97,9 @@ function Header({ overrideChatName }: HeaderTypes) {
                 }
                 setEditingName(false);
             }
+            setSavedResponse(null);
         }
-    }, [response, chatData, chatName, nameStored]);
+    }, [savedResponse, chatData, chatName, nameStored]);
 
     useEffect(() => {
         setWaiting(settingChatName);
