@@ -8,7 +8,7 @@
     padding: 0.4rem;
 }
 
-.profile-image-container {
+.chat-image-container {
     border-radius: 50%;
     outline-width: 0px;
     outline-style: solid;
@@ -18,8 +18,9 @@
 }
 
 @media (hover: hover) {
-    .container:hover .profile-image-container {
+    .chat-image-container:hover {
         outline-width: 3px;
+        cursor: pointer;
     }
 }
 
