@@ -202,15 +202,15 @@ export const messages = [
     protectedRouteJWT,
     validators.param.chatId,
     validators.query.limit,
-    validators.query.after,
+    validators.query.before,
     checkRequestValidationError,
     asyncHandler(async (req: Request, res: Response) => {
         const { chatId } = req.params;
-        const { limit, after } = req.query;
+        const { limit, before } = req.query;
 
         /// create aggregation pipeline
         const aggregation: mongoose.PipelineStage[] = [];
-        // match chat, unwind & populate messages
+        // match chat
         aggregation.push(
             // only match the chat if the active user is a participant of the chat
             {
@@ -221,6 +221,15 @@ export const messages = [
                     },
                 },
             },
+        );
+        // if 'before' query parameter is specified, check message is within messages array
+        if (before) {
+            aggregation.push({
+                $match: { messages: new mongoose.Types.ObjectId(`${before}`) },
+            });
+        }
+        // unwind & populate messages
+        aggregation.push(
             { $unwind: { path: "$messages", preserveNullAndEmptyArrays: true } },
             // if the 'messages' array is empty, it will not be present on the document at this stage
             {
@@ -243,22 +252,18 @@ export const messages = [
                 },
             },
         );
-        // if 'after' query parameter is specified, check message exists
+        // if 'before' query parameter is specified, check message exists
         let responding = false;
-        if (after) {
-            const afterMessage = await Message.findById(after);
-            if (!afterMessage) {
-                sendResponse(res, 404, "Specified 'after' message not found in the database");
+        if (before) {
+            const beforeMessage = await Message.findById(before);
+            if (!beforeMessage) {
+                sendResponse(res, 404, "Specified 'before' message not found in the database");
                 responding = true;
             } else {
-                // if so, check message is within likes array
-                aggregation.push({
-                    $match: { populatedMessages: { $elemMatch: { _id: afterMessage._id } } },
-                });
-                // and filter messages based on their creation date being after the 'after' message
+                // and filter messages based on their creation date being before the 'before' message
                 aggregation.push({
                     $match: {
-                        "populatedMessages.createdAt": { $lt: afterMessage.createdAt },
+                        "populatedMessages.createdAt": { $lt: beforeMessage.createdAt },
                     },
                 });
             }
