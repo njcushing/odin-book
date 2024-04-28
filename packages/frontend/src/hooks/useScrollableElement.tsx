@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 
 type Params = {
     ref: React.RefObject<HTMLElement>;
@@ -9,7 +9,7 @@ type Params = {
     onlyCallbackOnCorrectDirectionalScroll?: boolean;
 };
 
-function useScrollableElement(params: Params, dependencies: unknown[] = []) {
+function useScrollableElement(params: Params, dependencies: unknown[] | undefined = undefined) {
     const {
         ref,
         atTopCallback = null,
@@ -19,69 +19,58 @@ function useScrollableElement(params: Params, dependencies: unknown[] = []) {
         onlyCallbackOnCorrectDirectionalScroll,
     } = params;
 
-    const [previousScrollTop, setPreviousScrollTop] = useState<number>(0);
-    const [isAtTop, setIsAtTop] = useState<boolean>(false);
-    const [isAtBottom, setIsAtBottom] = useState<boolean>(false);
+    const isAtTop = useRef<boolean>(false);
+    const isAtBottom = useRef<boolean>(false);
+    const previousScrollTopRef = useRef<number>(0);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const { current } = ref;
+    const handleScroll = useCallback(() => {
+        const { current } = ref;
+        const previousScrollTop = previousScrollTopRef.current;
 
-            if (current) {
-                const scrollbarTop = Math.abs(
-                    isInverted ? Math.min(0, current.scrollTop) : Math.max(0, current.scrollTop),
-                );
-                const scrollbarBottom = current.clientHeight + scrollbarTop;
+        if (current) {
+            const scrollbarTop = Math.abs(
+                isInverted ? Math.min(0, current.scrollTop) : Math.max(0, current.scrollTop),
+            );
+            const scrollbarBottom = current.clientHeight + scrollbarTop;
 
-                const scrollStart = scrollbarTop;
-                const scrollEnd = current.scrollHeight - scrollbarBottom;
+            const scrollStart = scrollbarTop;
+            const scrollEnd = current.scrollHeight - scrollbarBottom;
 
-                const atTop = isInverted ? scrollEnd <= leniency : scrollStart <= leniency;
-                const atBottom = isInverted ? scrollStart <= leniency : scrollEnd <= leniency;
+            const atTop = isInverted ? scrollEnd <= leniency : scrollStart <= leniency;
+            const atBottom = isInverted ? scrollStart <= leniency : scrollEnd <= leniency;
 
-                if (atTop) {
-                    if (
-                        atTopCallback &&
-                        (!onlyCallbackOnCorrectDirectionalScroll ||
-                            (isInverted
-                                ? previousScrollTop < scrollStart
-                                : previousScrollTop > scrollStart))
-                    ) {
-                        atTopCallback();
-                    }
-                    setIsAtTop(true);
-                } else {
-                    setIsAtTop(false);
+            if (atTop) {
+                if (
+                    atTopCallback &&
+                    (!onlyCallbackOnCorrectDirectionalScroll ||
+                        (isInverted
+                            ? previousScrollTop < scrollStart
+                            : previousScrollTop > scrollStart))
+                ) {
+                    atTopCallback();
                 }
-
-                if (atBottom) {
-                    if (
-                        atBottomCallback &&
-                        (!onlyCallbackOnCorrectDirectionalScroll ||
-                            (isInverted
-                                ? previousScrollTop > scrollStart
-                                : previousScrollTop < scrollStart))
-                    ) {
-                        atBottomCallback();
-                    }
-                    setIsAtBottom(true);
-                } else {
-                    setIsAtBottom(false);
-                }
-
-                setPreviousScrollTop(scrollStart);
+                isAtTop.current = true;
+            } else {
+                isAtTop.current = false;
             }
-        };
 
-        const scrollElement = ref.current;
-        if (scrollElement) {
-            setPreviousScrollTop(Math.abs(scrollElement.scrollTop));
-            ref.current.addEventListener("scroll", handleScroll);
+            if (atBottom) {
+                if (
+                    atBottomCallback &&
+                    (!onlyCallbackOnCorrectDirectionalScroll ||
+                        (isInverted
+                            ? previousScrollTop > scrollStart
+                            : previousScrollTop < scrollStart))
+                ) {
+                    atBottomCallback();
+                }
+                isAtBottom.current = true;
+            } else {
+                isAtBottom.current = false;
+            }
+
+            previousScrollTopRef.current = scrollStart;
         }
-
-        return () => {
-            if (scrollElement) scrollElement.removeEventListener("scroll", handleScroll);
-        };
     }, [
         ref,
         atTopCallback,
@@ -89,11 +78,27 @@ function useScrollableElement(params: Params, dependencies: unknown[] = []) {
         isInverted,
         leniency,
         onlyCallbackOnCorrectDirectionalScroll,
-        dependencies,
-        previousScrollTop,
+        previousScrollTopRef,
     ]);
 
-    return [isAtTop, isAtBottom];
+    useEffect(() => {
+        const scrollElement = ref.current;
+        if (scrollElement) {
+            scrollElement.removeEventListener("scroll", handleScroll);
+            scrollElement.addEventListener("scroll", handleScroll);
+        }
+
+        return () => {
+            if (scrollElement) scrollElement.removeEventListener("scroll", handleScroll);
+        };
+    }, [ref, dependencies, handleScroll]);
+
+    useEffect(() => {
+        const { current } = ref;
+        if (current) previousScrollTopRef.current = Math.abs(current.scrollTop);
+    }, [ref]);
+
+    return [isAtTop.current, isAtBottom.current];
 }
 
 export default useScrollableElement;
