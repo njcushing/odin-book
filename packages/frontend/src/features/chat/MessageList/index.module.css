@@ -1,4 +1,7 @@
 .container {
+    display: flex;
+    flex-direction: column;
+
     border-top: 1px solid var(--outline-primary);
     border-bottom: 1px solid var(--outline-primary);
 
@@ -11,6 +14,10 @@
     font-family: Gabarito;
     font-size: 1.1rem;
     font-weight: bold;
+
+    border-bottom: 1px solid var(--outline-primary);
+
+    padding: 0.4rem;
 }
 
 .scrollable-wrapper {

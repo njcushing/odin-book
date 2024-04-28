@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
 import Accessibility from "@/components/accessibility";
+import useScrollableElement from "@/hooks/useScrollableElement";
 import Chat from "..";
 import getChatMessages, { Params, Response } from "./utils/getChatMessages";
 import styles from "./index.module.css";
@@ -15,7 +16,8 @@ type MessageListTypes = {
 function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
     const { chatId } = useParams();
 
-    const [waiting, setWaiting] = useState(true);
+    const [initialWaiting, setInitialWaiting] = useState(true);
+    const [, /* waiting */ setWaiting] = useState(true);
 
     const [messages, setMessages] = useState<Response>([]);
     const [response, setParams, setAttempting, gettingMessages] = useAsync.GET<Params, Response>(
@@ -27,7 +29,7 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
                         chatId: !getIdFromURLParam
                             ? _id
                             : (chatId as unknown as mongoose.Types.ObjectId),
-                        after: null,
+                        before: null,
                     },
                 },
                 null,
@@ -39,7 +41,9 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
 
     useEffect(() => {
         const newState = response ? response.data : [];
-        setMessages(newState || []);
+        setMessages((currentMessages) => {
+            return currentMessages ? currentMessages.concat(newState || []) : newState || [];
+        });
     }, [response]);
 
     useEffect(() => {
@@ -51,7 +55,7 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
                     chatId: !getIdFromURLParam
                         ? _id
                         : (chatId as unknown as mongoose.Types.ObjectId),
-                    after: null,
+                    before: null,
                 },
             },
             null,
@@ -67,6 +71,10 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
             setErrorMessage("");
         }
     }, [response]);
+
+    useEffect(() => {
+        if (!gettingMessages) setInitialWaiting(gettingMessages);
+    }, [gettingMessages]);
 
     useEffect(() => {
         setWaiting(gettingMessages);
@@ -85,13 +93,48 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
         };
     }, []);
 
-    return !waiting ? (
+    const scrollableWrapperRef = useRef<HTMLDivElement>(null);
+    useScrollableElement(
+        {
+            ref: scrollableWrapperRef,
+            atTopCallback: () => {
+                if (!gettingMessages && messages) {
+                    setAttempting(true);
+                    setParams([
+                        {
+                            params: {
+                                chatId: !getIdFromURLParam
+                                    ? _id
+                                    : (chatId as unknown as mongoose.Types.ObjectId),
+                                before: messages[messages.length - 1]._id,
+                            },
+                        },
+                        null,
+                    ]);
+                }
+            },
+            isInverted: true,
+            onlyCallbackOnCorrectDirectionalScroll: true,
+        },
+        [
+            _id,
+            chatId,
+            scrollableWrapperRef,
+            initialWaiting,
+            messages,
+            getIdFromURLParam,
+            setAttempting,
+            setParams,
+        ],
+    );
+
+    return !initialWaiting ? (
         <div className={styles["container"]}>
             {errorMessage.length > 0 ? (
                 <p className={styles["error-message"]}>{errorMessage}</p>
             ) : null}
             {messages && messages.length > 0 ? (
-                <div className={styles["scrollable-wrapper"]}>
+                <div className={styles["scrollable-wrapper"]} ref={scrollableWrapperRef}>
                     <li className={styles["message-list"]}>
                         {messages.map((message) => {
                             return (
