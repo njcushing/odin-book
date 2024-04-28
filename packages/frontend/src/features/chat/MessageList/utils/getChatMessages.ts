@@ -4,7 +4,7 @@ import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
     chatId: mongoose.Types.ObjectId | null | undefined;
-    after: mongoose.Types.ObjectId | null | undefined;
+    before: mongoose.Types.ObjectId | null | undefined;
 };
 
 export type Response =
@@ -22,7 +22,7 @@ const getChatMessages: apiFunctionTypes.GET<Params, Response> = async (
     data,
     abortController = null,
 ) => {
-    const { chatId, after } = data.params as Params;
+    const { chatId, before } = data.params as Params;
 
     if (!chatId) {
         return {
@@ -32,7 +32,7 @@ const getChatMessages: apiFunctionTypes.GET<Params, Response> = async (
         };
     }
 
-    const queryObject = { limit: "10", after };
+    const queryObject = { limit: "50", before };
     const urlParams = new URLSearchParams();
     Object.entries(queryObject).forEach(([key, value]) => {
         if (value !== "" && value !== undefined && value !== null) {
