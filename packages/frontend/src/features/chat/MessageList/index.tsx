@@ -65,10 +65,12 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
     if (response && response.status === 401) window.location.assign("/");
 
     useEffect(() => {
-        if (response && response.status >= 400 && response.message && response.message.length > 0) {
-            setErrorMessage(response.message);
-        } else {
-            setErrorMessage("");
+        if (response) {
+            if (response.status >= 400 && response.message && response.message.length > 0) {
+                setErrorMessage(response.message);
+            } else {
+                setErrorMessage("");
+            }
         }
     }, [response]);
 
@@ -94,39 +96,27 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
     }, []);
 
     const scrollableWrapperRef = useRef<HTMLDivElement>(null);
-    useScrollableElement(
-        {
-            ref: scrollableWrapperRef,
-            atTopCallback: () => {
-                if (!gettingMessages && messages) {
-                    setAttempting(true);
-                    setParams([
-                        {
-                            params: {
-                                chatId: !getIdFromURLParam
-                                    ? _id
-                                    : (chatId as unknown as mongoose.Types.ObjectId),
-                                before: messages[messages.length - 1]._id,
-                            },
+    useScrollableElement({
+        ref: scrollableWrapperRef,
+        atTopCallback: () => {
+            if (!gettingMessages && messages) {
+                setAttempting(true);
+                setParams([
+                    {
+                        params: {
+                            chatId: !getIdFromURLParam
+                                ? _id
+                                : (chatId as unknown as mongoose.Types.ObjectId),
+                            before: messages[messages.length - 1]._id,
                         },
-                        null,
-                    ]);
-                }
-            },
-            isInverted: true,
-            onlyCallbackOnCorrectDirectionalScroll: true,
+                    },
+                    null,
+                ]);
+            }
         },
-        [
-            _id,
-            chatId,
-            scrollableWrapperRef,
-            initialWaiting,
-            messages,
-            getIdFromURLParam,
-            setAttempting,
-            setParams,
-        ],
-    );
+        isInverted: true,
+        onlyCallbackOnCorrectDirectionalScroll: true,
+    });
 
     return !initialWaiting ? (
         <div className={styles["container"]}>
