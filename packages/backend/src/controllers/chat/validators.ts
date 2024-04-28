@@ -121,13 +121,13 @@ const validators = {
                 }
                 return true;
             }),
-        after: query("after")
+        before: query("before")
             .trim()
             .optional()
             .custom((value) => {
                 if (!mongoose.Types.ObjectId.isValid(value)) {
                     throw new Error(
-                        "The provided 'after' query parameter is not a valid MongoDB ObjectId",
+                        "The provided 'before' query parameter is not a valid MongoDB ObjectId",
                     );
                 } else {
                     return true;
