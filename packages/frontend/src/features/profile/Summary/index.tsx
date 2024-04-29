@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
 import { UserContext } from "@/context/user";
 import { ProfileContext } from "@/features/profile/Main";
@@ -18,6 +19,8 @@ import styles from "./index.module.css";
 function Summary() {
     const { extract } = useContext(UserContext);
     const { _id } = useContext(ProfileContext);
+
+    const navigate = useNavigate();
 
     const [waiting, setWaiting] = useState(true);
 
@@ -120,7 +123,7 @@ function Summary() {
                 <Buttons.Basic
                     text="Edit Profile"
                     onClickHandler={() => {
-                        window.location.href = "/settings/profile";
+                        navigate("/settings/profile");
                     }}
                     palette="blue"
                 />
