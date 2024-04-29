@@ -120,7 +120,7 @@ export const regular = [
                 .then((token) => {
                     sendResponse(res, 201, "Chat created successfully", {
                         token,
-                        chatId: chat,
+                        chatId: chat._id,
                     });
                 })
                 .catch((tokenErr) => {
@@ -128,7 +128,7 @@ export const regular = [
                         res,
                         500,
                         tokenErr.message || `Chat created successfully, but token creation failed`,
-                        { chatId: chat },
+                        { chatId: chat._id },
                         tokenErr,
                     );
                 });
