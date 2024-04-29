@@ -30,8 +30,13 @@ function Create({
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        if (response && response.status >= 400 && response.message && response.message.length > 0) {
-            setErrorMessage(response.message);
+        if (response) {
+            if (response.status >= 400 && response.message && response.message.length > 0) {
+                setErrorMessage(response.message);
+            } else {
+                setErrorMessage("");
+                PubSub.publish("chat-creation-successful", response.data);
+            }
         }
     }, [response]);
 
