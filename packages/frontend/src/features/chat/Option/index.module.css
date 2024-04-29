@@ -72,3 +72,11 @@
     font-size: 1.1rem;
     text-align: left;
 }
+
+.error-message {
+    color: var(--text-error);
+    font-family: Gabarito;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: left;
+}
