@@ -96,7 +96,11 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
 
     let recentMessage = "";
     if (chatData && chatData.recentMessage) {
-        recentMessage = `${username}: ${chatData.recentMessage.text}`;
+        recentMessage = `${username}: ${
+            !chatData.recentMessage.deleted
+                ? chatData.recentMessage.text
+                : "This message has been deleted."
+        }`;
     } else if (waiting) {
         recentMessage = "placeholder";
     }
