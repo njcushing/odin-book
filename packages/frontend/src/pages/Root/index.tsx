@@ -52,18 +52,29 @@ function Root() {
 
     useEffect(() => {
         PubSub.subscribe("create-new-post-button-click", () => {
-            setModal(<Posts.Create onCloseClickHandler={() => setModal(null)} />);
+            setModal(
+                <Posts.Create
+                    onCloseClickHandler={() => setModal(null)}
+                    onSuccessHandler={() => setModal(null)}
+                />,
+            );
         });
         PubSub.subscribe("create-new-reply-button-click", (msg, data) => {
             setModal(
                 <Posts.Create
                     replyingTo={data as unknown as mongoose.Types.ObjectId}
                     onCloseClickHandler={() => setModal(null)}
+                    onSuccessHandler={() => setModal(null)}
                 />,
             );
         });
         PubSub.subscribe("create-new-chat-button-click", () => {
-            setModal(<Chat.Create onCloseClickHandler={() => setModal(null)} />);
+            setModal(
+                <Chat.Create
+                    onCloseClickHandler={() => setModal(null)}
+                    onSuccessHandler={() => setModal(null)}
+                />,
+            );
         });
         PubSub.subscribe("add-users-to-chat-button-click", (msg, data) => {
             setModal(
