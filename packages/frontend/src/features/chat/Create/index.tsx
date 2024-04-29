@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
 import Modals from "@/components/modals";
 import Buttons from "@/components/buttons";
@@ -18,6 +19,8 @@ function Create({
     onCloseClickHandler = null,
     onSuccessHandler = null,
 }: CreateTypes) {
+    const navigate = useNavigate();
+
     const [participants, setParticipants] =
         useState<mongoose.Types.ObjectId[]>(defaultParticipants);
 
@@ -36,9 +39,10 @@ function Create({
             } else {
                 setErrorMessage("");
                 PubSub.publish("chat-creation-successful", response.data);
+                navigate(`/chat/${response.data}`);
             }
         }
-    }, [response]);
+    }, [response, navigate]);
 
     useEffect(() => {
         if (response && response.status < 400) {
