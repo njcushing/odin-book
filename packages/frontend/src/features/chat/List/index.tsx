@@ -60,6 +60,19 @@ function List() {
         setWaiting(gettingChats);
     }, [gettingChats]);
 
+    // subscribe to successful chat creation
+    useEffect(() => {
+        PubSub.subscribe("chat-creation-successful", (msg, data) => {
+            setChats((oldChats) => {
+                return oldChats ? [data, ...oldChats] : [];
+            });
+        });
+
+        return () => {
+            PubSub.unsubscribe("chat-creation-successful");
+        };
+    }, []);
+
     const buttons = (
         <div className={styles["create-new-chat-button-container"]} key={0}>
             <Buttons.Basic
