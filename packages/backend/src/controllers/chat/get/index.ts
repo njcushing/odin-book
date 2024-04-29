@@ -262,8 +262,15 @@ export const messages = [
             } else {
                 // and filter messages based on their creation date being before the 'before' message
                 aggregation.push({
-                    $match: {
-                        "populatedMessages.createdAt": { $lt: beforeMessage.createdAt },
+                    $addFields: {
+                        populatedMessages: {
+                            $filter: {
+                                input: "$populatedMessages",
+                                cond: {
+                                    $lt: ["$$this.createdAt", beforeMessage.createdAt],
+                                },
+                            },
+                        },
                     },
                 });
             }
