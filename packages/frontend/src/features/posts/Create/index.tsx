@@ -23,6 +23,7 @@ type CreateTypes = {
     defaultImages?: Images;
     replyingTo?: mongoose.Types.ObjectId | undefined | null;
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+    onSuccessHandler?: (() => unknown) | null;
 };
 
 function Create({
@@ -31,11 +32,14 @@ function Create({
     defaultImages = {},
     replyingTo = null,
     onCloseClickHandler = null,
+    onSuccessHandler = null,
 }: CreateTypes) {
     const [text, setText] = useState<string>(defaultText);
     const [images, setImages] = useState<Images>(defaultImages);
 
-    const [response, setParams, setAttempting] = useAsync.POST<null, Body, Response>(
+    const [waiting, setWaiting] = useState<boolean>(false);
+
+    const [response, setParams, setAttempting, creatingPost] = useAsync.POST<null, Body, Response>(
         { func: createPost },
         false,
     );
@@ -46,6 +50,16 @@ function Create({
             setErrorMessage(response.message);
         }
     }, [response]);
+
+    useEffect(() => {
+        if (response && response.status < 400) {
+            if (onSuccessHandler) onSuccessHandler();
+        }
+    }, [response, onSuccessHandler]);
+
+    useEffect(() => {
+        setWaiting(creatingPost);
+    }, [creatingPost]);
 
     return (
         <Modals.Basic onCloseClickHandler={onCloseClickHandler}>
@@ -61,6 +75,7 @@ function Create({
                             onChangeHandler={(e) => {
                                 setText(e.target.value);
                             }}
+                            disabled={waiting}
                             maxLength={500}
                             counter
                             placeholder={placeholder}
@@ -69,6 +84,7 @@ function Create({
                             labelText="Images"
                             fieldId="test"
                             fieldName="test"
+                            disabled={waiting}
                             onUpdateHandler={(data) => setImages(data)}
                             validator={{ func: validate.post.imageArray }}
                             maximumAmount={4}
@@ -140,6 +156,9 @@ function Create({
                                 setAttempting(true);
                             }
                         }}
+                        disabled={
+                            waiting || (text.length === 0 && Object.keys(images).length === 0)
+                        }
                         otherStyles={{ fontSize: "1.2rem" }}
                     />
                 </div>
