@@ -33,6 +33,7 @@ export type Response = {
             url: string;
             alt: string;
         } | null;
+        deleted: boolean;
     } | null;
 } | null;
 
