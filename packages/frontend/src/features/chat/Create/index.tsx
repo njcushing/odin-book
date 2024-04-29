@@ -10,13 +10,20 @@ import styles from "./index.module.css";
 type CreateTypes = {
     defaultParticipants?: mongoose.Types.ObjectId[];
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
+    onSuccessHandler?: (() => unknown) | null;
 };
 
-function Create({ defaultParticipants = [], onCloseClickHandler = null }: CreateTypes) {
+function Create({
+    defaultParticipants = [],
+    onCloseClickHandler = null,
+    onSuccessHandler = null,
+}: CreateTypes) {
     const [participants, setParticipants] =
         useState<mongoose.Types.ObjectId[]>(defaultParticipants);
 
-    const [response, setParams, setAttempting] = useAsync.POST<null, Body, Response>(
+    const [waiting, setWaiting] = useState<boolean>(false);
+
+    const [response, setParams, setAttempting, creatingChat] = useAsync.POST<null, Body, Response>(
         { func: createChat },
         false,
     );
@@ -27,6 +34,16 @@ function Create({ defaultParticipants = [], onCloseClickHandler = null }: Create
             setErrorMessage(response.message);
         }
     }, [response]);
+
+    useEffect(() => {
+        if (response && response.status < 400) {
+            if (onSuccessHandler) onSuccessHandler();
+        }
+    }, [response, onSuccessHandler]);
+
+    useEffect(() => {
+        setWaiting(creatingChat);
+    }, [creatingChat]);
 
     return (
         <Modals.Basic onCloseClickHandler={onCloseClickHandler}>
@@ -39,6 +56,7 @@ function Create({ defaultParticipants = [], onCloseClickHandler = null }: Create
                                 Object.keys(selectedUsers).map((user) => selectedUsers[user]._id),
                             )
                         }
+                        disabled={waiting}
                     />
                 </div>
                 {errorMessage.length > 0 ? (
@@ -53,7 +71,7 @@ function Create({ defaultParticipants = [], onCloseClickHandler = null }: Create
                             setParams([{ body: { participants } }, null]);
                             setAttempting(true);
                         }}
-                        disabled={participants.length === 0}
+                        disabled={waiting || participants.length === 0}
                         otherStyles={{ fontSize: "1.2rem" }}
                     />
                 </div>
