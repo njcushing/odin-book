@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "@/context/user";
 import * as useAsync from "@/hooks/useAsync";
 import Images from "@/components/images";
@@ -16,6 +17,8 @@ type OptionTypes = {
 
 function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
     const { extract } = useContext(UserContext);
+
+    const navigate = useNavigate();
 
     const [waiting, setWaiting] = useState<boolean>(true);
 
@@ -80,7 +83,13 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
     }
 
     return (
-        <a className={styles["container"]} href={`/chat/${_id}`}>
+        <button
+            className={styles["container"]}
+            type="button"
+            onClick={() => {
+                navigate(`/chat/${_id}`);
+            }}
+        >
             {errorMessage.length > 0 ? (
                 <p className={styles["error-message"]}>{errorMessage}</p>
             ) : null}
@@ -120,7 +129,7 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
                     </div>
                 </>
             ) : null}
-        </a>
+        </button>
     );
 }
 
