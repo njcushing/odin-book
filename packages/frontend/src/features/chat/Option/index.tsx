@@ -75,9 +75,28 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
         activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
     });
 
+    const username = (() => {
+        if (chatData && chatData.recentMessage) {
+            for (let i = 0; i < chatData.participants.length; i++) {
+                const participant = chatData.participants[i];
+                const userId = `${participant.user._id}`;
+                if (`${chatData.recentMessage.author}` === userId) {
+                    if (participant.nickname.length > 0) {
+                        return participant.nickname;
+                    }
+                    if (participant.user.preferences.displayName.length > 0) {
+                        return participant.user.preferences.displayName;
+                    }
+                    return participant.user.accountTag;
+                }
+            }
+        }
+        return "User";
+    })();
+
     let recentMessage = "";
     if (chatData && chatData.recentMessage) {
-        recentMessage = `${chatData.recentMessage.author}: ${chatData.recentMessage.text}`;
+        recentMessage = `${username}: ${chatData.recentMessage.text}`;
     } else if (waiting) {
         recentMessage = "placeholder";
     }
@@ -90,9 +109,6 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
                 navigate(`/chat/${_id}`);
             }}
         >
-            {errorMessage.length > 0 ? (
-                <p className={styles["error-message"]}>{errorMessage}</p>
-            ) : null}
             {skeleton || chatData ? (
                 <>
                     <div className={styles["profile-image-container"]}>
@@ -126,6 +142,9 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
                                 </p>
                             ) : null}
                         </Accessibility.Skeleton>
+                        {errorMessage.length > 0 ? (
+                            <p className={styles["error-message"]}>{errorMessage}</p>
+                        ) : null}
                     </div>
                 </>
             ) : null}
