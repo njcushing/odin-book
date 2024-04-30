@@ -38,17 +38,17 @@ function Create({
                 setErrorMessage(response.message);
             } else {
                 setErrorMessage("");
-                PubSub.publish("chat-creation-successful", response.data);
-                navigate(`/chat/${response.data}`);
             }
         }
-    }, [response, navigate]);
+    }, [response]);
 
     useEffect(() => {
         if (response && response.status < 400) {
             if (onSuccessHandler) onSuccessHandler();
+            PubSub.publish("chat-creation-successful", response.data);
+            navigate(`/chat/${response.data}`);
         }
-    }, [response, onSuccessHandler]);
+    }, [response, onSuccessHandler, navigate]);
 
     useEffect(() => {
         setWaiting(creatingChat);
