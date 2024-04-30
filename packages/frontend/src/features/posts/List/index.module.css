@@ -9,7 +9,7 @@
     height: 100%;
 }
 
-.create-new-post-button-wrapper {
+.sticky-wrapper {
     position: absolute;
     top: 0;
     left: 0;
@@ -20,7 +20,7 @@
     height: 100%;
 }
 
-.create-new-post-button-container {
+.sticky-container {
     position: sticky;
     top: 0;
     left: 0;
@@ -28,11 +28,11 @@
     pointer-events: none;
 
     display: flex;
-    justify-content: center;
-    align-items: end;
+    flex-direction: column;
+    justify-content: space-between;
 
     width: 100%;
-    height: calc(100vh - 20px);
+    height: 100vh;
 }
 
 .error-message {
@@ -40,6 +40,17 @@
     font-family: Gabarito;
     font-size: 1.1rem;
     font-weight: bold;
+    
+    border-bottom: 1px solid var(--outline-primary);
+    background-color: var(--background-primary);
+}
+
+.create-new-post-button-container {
+    display: flex;
+    justify-content: center;
+
+    width: calc(100% - (2 * 0.4rem));
+    padding: 1.6rem 0.4rem;
 }
 
 .empty-message {
