@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Router from "@/routes";
 import useScrollableElement from "./hooks/useScrollableElement";
 
@@ -11,6 +11,23 @@ function App() {
         isInverted: false,
         onlyCallbackOnCorrectDirectionalScroll: true,
     });
+
+    // subscribe to relevant scroll topics
+    useEffect(() => {
+        PubSub.unsubscribe("page-scrollable-area-shift-up");
+        PubSub.subscribe("page-scrollable-area-shift-up", (msg, data) => {
+            if (scrollableWrapperRef.current) scrollableWrapperRef.current.scrollTop -= data;
+        });
+        PubSub.unsubscribe("page-scrollable-area-shift-down");
+        PubSub.subscribe("page-scrollable-area-shift-down", (msg, data) => {
+            if (scrollableWrapperRef.current) scrollableWrapperRef.current.scrollTop += data;
+        });
+
+        return () => {
+            PubSub.unsubscribe("page-scrollable-area-shift-up");
+            PubSub.unsubscribe("page-scrollable-area-shift-down");
+        };
+    }, []);
 
     return (
         <div
