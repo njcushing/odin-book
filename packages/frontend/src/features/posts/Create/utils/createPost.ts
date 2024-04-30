@@ -9,7 +9,10 @@ export type Body = {
     images: ArrayBuffer[];
 };
 
-export type Response = string | null;
+export type Response = {
+    _id: mongoose.Types.ObjectId;
+    replyingTo: mongoose.Types.ObjectId | null;
+} | null;
 
 const createPost: apiFunctionTypes.POST<null, Body, Response> = async (
     data,
@@ -50,7 +53,7 @@ const createPost: apiFunctionTypes.POST<null, Body, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: "",
+                data: responseJSON.data.post,
             };
         })
         .catch((error) => {
