@@ -110,7 +110,10 @@ export const regular = [
                         .then((token) => {
                             sendResponse(res, 201, "Post created successfully", {
                                 token,
-                                post,
+                                post: {
+                                    _id: post.id,
+                                    replyingTo: post.replyingTo,
+                                },
                             });
                         })
                         .catch((tokenErr) => {
@@ -119,7 +122,12 @@ export const regular = [
                                 500,
                                 tokenErr.message ||
                                     `Post created successfully, but token creation failed`,
-                                { post },
+                                {
+                                    post: {
+                                        _id: post.id,
+                                        replyingTo: post.replyingTo,
+                                    },
+                                },
                                 tokenErr,
                             );
                         });
