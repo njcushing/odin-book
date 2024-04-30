@@ -54,6 +54,7 @@ function Create({
     useEffect(() => {
         if (response && response.status < 400) {
             if (onSuccessHandler) onSuccessHandler();
+            PubSub.publish("post-creation-successful", response.data);
         }
     }, [response, onSuccessHandler]);
 
