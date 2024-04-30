@@ -65,6 +65,19 @@ function List() {
         setWaiting(gettingPosts);
     }, [gettingPosts]);
 
+    // subscribe to successful post creation
+    useEffect(() => {
+        PubSub.subscribe("post-creation-successful", (msg, data) => {
+            setPosts((oldPosts) => {
+                return oldPosts ? [data, ...oldPosts] : [];
+            });
+        });
+
+        return () => {
+            PubSub.unsubscribe("post-creation-successful");
+        };
+    }, []);
+
     return (
         <div className={styles["container"]}>
             {!waiting ? (
