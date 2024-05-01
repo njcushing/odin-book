@@ -300,9 +300,16 @@ export const posts = [
 
         /// create aggregation pipeline
         const aggregation: mongoose.PipelineStage[] = [];
-        // match user, unwind & populate posts
+        // match user
+        aggregation.push({ $match: { _id: new mongoose.Types.ObjectId(userId) } });
+        // if 'after' query parameter is specified, check post is within 'posts' array
+        if (after) {
+            aggregation.push({
+                $match: { posts: new mongoose.Types.ObjectId(`${after}`) },
+            });
+        }
+        // unwind & populate posts
         aggregation.push(
-            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
             { $unwind: { path: "$posts", preserveNullAndEmptyArrays: true } },
             // if the 'posts' array is empty, it will not be present on the document at this stage
             {
@@ -332,18 +339,18 @@ export const posts = [
             if (!afterPost) {
                 sendResponse(res, 404, "Specified 'after' post not found in the database");
                 responding = true;
-            } else if (afterPost.author.toString() !== userId) {
-                sendResponse(
-                    res,
-                    400,
-                    "Specified 'after' post exists, but it is not owned by the specified user",
-                );
-                responding = true;
             } else {
-                // if so, filter posts based on their creation date being after the 'after' post
+                // and filter posts based on their creation date being after the 'after' post
                 aggregation.push({
-                    $match: {
-                        "populatedPosts.createdAt": { $lt: afterPost.createdAt },
+                    $addFields: {
+                        populatedPosts: {
+                            $filter: {
+                                input: "$populatedPosts",
+                                cond: {
+                                    $lt: ["$$this.createdAt", afterPost.createdAt],
+                                },
+                            },
+                        },
                     },
                 });
             }
@@ -424,9 +431,16 @@ export const likes = [
 
         /// create aggregation pipeline
         const aggregation: mongoose.PipelineStage[] = [];
-        // match user, unwind & populate likes
+        // match user
+        aggregation.push({ $match: { _id: new mongoose.Types.ObjectId(userId) } });
+        // if 'after' query parameter is specified, check like is within 'likes' array
+        if (after) {
+            aggregation.push({
+                $match: { likes: new mongoose.Types.ObjectId(`${after}`) },
+            });
+        }
+        // unwind & populate likes
         aggregation.push(
-            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
             { $unwind: { path: "$likes", preserveNullAndEmptyArrays: true } },
             // if the 'likes' array is empty, it will not be present on the document at this stage
             {
@@ -457,14 +471,17 @@ export const likes = [
                 sendResponse(res, 404, "Specified 'after' post not found in the database");
                 responding = true;
             } else {
-                // if so, check post is within likes array
-                aggregation.push({
-                    $match: { populatedLikes: { $elemMatch: { _id: afterPost._id } } },
-                });
                 // and filter likes based on their creation date being after the 'after' post
                 aggregation.push({
-                    $match: {
-                        "populatedLikes.createdAt": { $lt: afterPost.createdAt },
+                    $addFields: {
+                        populatedLikes: {
+                            $filter: {
+                                input: "$populatedLikes",
+                                cond: {
+                                    $lt: ["$$this.createdAt", afterPost.createdAt],
+                                },
+                            },
+                        },
                     },
                 });
             }
@@ -794,9 +811,16 @@ export const chats = [
 
         /// create aggregation pipeline
         const aggregation: mongoose.PipelineStage[] = [];
-        // match user, unwind & populate following.users
+        // match user, unwind & populate chats
+        aggregation.push({ $match: { _id: new mongoose.Types.ObjectId(userId) } });
+        // if 'after' query parameter is specified, check chat is within 'chats' array
+        if (after) {
+            aggregation.push({
+                $match: { chats: new mongoose.Types.ObjectId(`${after}`) },
+            });
+        }
+        // unwind & populate chats
         aggregation.push(
-            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
             { $unwind: { path: "$chats", preserveNullAndEmptyArrays: true } },
             // if the 'chats' array is empty, it will not be present on the document at this stage
             {
@@ -827,14 +851,17 @@ export const chats = [
                 sendResponse(res, 404, "Specified 'after' chat not found in the database");
                 responding = true;
             } else {
-                // if so, check chat is within chat array
-                aggregation.push({
-                    $match: { populatedChats: { $elemMatch: { _id: afterChat._id } } },
-                });
                 // and filter chats based on their update date being after the 'after' chat
                 aggregation.push({
-                    $match: {
-                        "populatedChats.updatedAt": { $lt: afterChat.updatedAt },
+                    $addFields: {
+                        populatedChats: {
+                            $filter: {
+                                input: "$populatedChats",
+                                cond: {
+                                    $lt: ["$$this.updatedAt", afterChat.updatedAt],
+                                },
+                            },
+                        },
                     },
                 });
             }
