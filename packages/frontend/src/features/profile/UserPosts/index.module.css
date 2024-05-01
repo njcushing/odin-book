@@ -1,8 +1,43 @@
+.container {
+    position: relative;
+
+    height: 100%;
+}
+
+.sticky-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    pointer-events: none;
+
+    width: 100%;
+    height: 100%;
+}
+
+.sticky-container {
+    position: sticky;
+    top: 0;
+    left: 0;
+
+    pointer-events: none;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 100vh;
+}
+
 .error-message {
     color: var(--text-error);
     font-family: Gabarito;
     font-size: 1.1rem;
     font-weight: bold;
+    
+    border-bottom: 1px solid var(--outline-primary);
+    background-color: var(--background-primary);
 }
 
 .empty-message {
