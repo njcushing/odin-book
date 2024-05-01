@@ -606,9 +606,16 @@ export const followers = [
 
         /// create aggregation pipeline
         const aggregation: mongoose.PipelineStage[] = [];
-        // match user, unwind & populate followers.users
+        // match user
+        aggregation.push({ $match: { _id: new mongoose.Types.ObjectId(userId) } });
+        // if 'after' query parameter is specified, check user is within 'followers.users' array
+        if (after) {
+            aggregation.push({
+                $match: { "followers.users": new mongoose.Types.ObjectId(`${after}`) },
+            });
+        }
+        // unwind & populate followers.users
         aggregation.push(
-            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
             { $unwind: { path: "$followers.users", preserveNullAndEmptyArrays: true } },
             // if the 'followers.users' array is empty, it will not be present on the document at this stage
             {
@@ -639,14 +646,17 @@ export const followers = [
                 sendResponse(res, 404, "Specified 'after' user not found in the database");
                 responding = true;
             } else {
-                // if so, check user is within followers.users array
-                aggregation.push({
-                    $match: { populatedFollowers: { $elemMatch: { _id: afterUser._id } } },
-                });
                 // and filter users based on their creation date being after the 'after' user
                 aggregation.push({
-                    $match: {
-                        "populatedFollowers.createdAt": { $lt: afterUser.createdAt },
+                    $addFields: {
+                        populatedFollowers: {
+                            $filter: {
+                                input: "$populatedFollowers",
+                                cond: {
+                                    $lt: ["$$this.createdAt", afterUser.createdAt],
+                                },
+                            },
+                        },
                     },
                 });
             }
@@ -706,9 +716,16 @@ export const following = [
 
         /// create aggregation pipeline
         const aggregation: mongoose.PipelineStage[] = [];
-        // match user, unwind & populate following.users
+        // match user
+        aggregation.push({ $match: { _id: new mongoose.Types.ObjectId(userId) } });
+        // if 'after' query parameter is specified, check user is within 'following.users' array
+        if (after) {
+            aggregation.push({
+                $match: { "following.users": new mongoose.Types.ObjectId(`${after}`) },
+            });
+        }
+        // unwind & populate following.users
         aggregation.push(
-            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
             { $unwind: { path: "$following.users", preserveNullAndEmptyArrays: true } },
             // if the 'following.users' array is empty, it will not be present on the document at this stage
             {
@@ -741,12 +758,15 @@ export const following = [
             } else {
                 // if so, check user is within following.users array
                 aggregation.push({
-                    $match: { populatedFollowing: { $elemMatch: { _id: afterUser._id } } },
-                });
-                // and filter users based on their creation date being after the 'after' user
-                aggregation.push({
-                    $match: {
-                        "populatedFollowing.createdAt": { $lt: afterUser.createdAt },
+                    $addFields: {
+                        populatedFollowing: {
+                            $filter: {
+                                input: "$populatedFollowing",
+                                cond: {
+                                    $lt: ["$$this.createdAt", afterUser.createdAt],
+                                },
+                            },
+                        },
                     },
                 });
             }
