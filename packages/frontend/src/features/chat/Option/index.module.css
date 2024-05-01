@@ -13,7 +13,7 @@
     outline-color: var(--chat-option-primary-outline);
     background-color: var(--chat-option-primary);
 
-    width: calc(100% - (2 * 0.4rem));
+    width: 100%;
     height: auto;
     padding: 0.4rem;
 
