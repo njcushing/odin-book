@@ -23,7 +23,7 @@ const getUserChats: apiFunctionTypes.GET<Params, Response> = async (
         };
     }
 
-    const queryObject = { limit: "10", after };
+    const queryObject = { limit: "30", after };
     const urlParams = new URLSearchParams();
     Object.entries(queryObject).forEach(([key, value]) => {
         if (value !== "" && value !== undefined && value !== null) {
