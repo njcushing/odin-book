@@ -21,12 +21,24 @@
 
     color: var(--text-primary);
     font-size: 0.9rem;
+    font-family: Gabarito;
     text-decoration: none;
+    border: none;
+    background-color: transparent;
+
+    padding: 0rem;
 }
 
-.replying-to:hover > .replying-to-text,
+@media (hover: hover) {
+    .replying-to:hover > .replying-to-text {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
 .replying-to:focus > .replying-to-text {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .replying-to-arrow {

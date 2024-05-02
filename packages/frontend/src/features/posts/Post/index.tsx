@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import PubSub from "pubsub-js";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
@@ -58,6 +58,8 @@ function Post({
     const [waiting, setWaiting] = useState<boolean>(true);
 
     const { postId } = useParams();
+
+    const navigate = useNavigate();
 
     // get post api handling
     const [getPostResponse /* setGetPostParams */, , getPostAgain, gettingPost] = useAsync.GET<
@@ -219,12 +221,23 @@ function Post({
         <>
             <div className={styles["container"]} style={{ gap: sizes.rowGap }}>
                 {!removeLinkToReply && postData && postData.replyingTo ? (
-                    <a className={styles["replying-to"]} href={`/post/${postData.replyingTo}`}>
+                    <button
+                        type="button"
+                        className={styles["replying-to"]}
+                        onClick={(e) => {
+                            navigate(`/post/${postData.replyingTo}`);
+                            e.currentTarget.blur();
+                            e.preventDefault();
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.blur();
+                        }}
+                    >
                         <p className={`material-symbols-rounded ${styles["replying-to-arrow"]}`}>
                             arrow_back
                         </p>
                         <p className={styles["replying-to-text"]}>Replying To...</p>
-                    </a>
+                    </button>
                 ) : null}
                 <div className={styles["row-one"]}>
                     <User.ImageAndName
@@ -288,7 +301,9 @@ function Post({
                                     palette="bare"
                                     onClickHandler={() => {
                                         if (!disableLikesLink) {
-                                            window.location.href = `/post/${!getIdFromURLParam ? _id : postId}/likes`;
+                                            navigate(
+                                                `/post/${!getIdFromURLParam ? _id : postId}/likes`,
+                                            );
                                         }
                                     }}
                                     otherStyles={{
@@ -314,7 +329,9 @@ function Post({
                                                 if (viewing === "replies") setViewing("");
                                                 if (viewing !== "replies") setViewing("replies");
                                             } else {
-                                                window.location.href = `/post/${!getIdFromURLParam ? _id : postId}`;
+                                                navigate(
+                                                    `/post/${!getIdFromURLParam ? _id : postId}`,
+                                                );
                                             }
                                         }
                                     }}
@@ -386,7 +403,12 @@ function Post({
                                 if (i >= maxRepliesToDisplay) return null;
                                 return (
                                     <li className={styles["reply"]} key={reply.toString()}>
-                                        <Posts.Post _id={reply} canReply size="s" />
+                                        <Posts.Post
+                                            _id={reply}
+                                            canReply
+                                            removeLinkToReply
+                                            size="s"
+                                        />
                                     </li>
                                 );
                             })}
