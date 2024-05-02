@@ -1,9 +1,17 @@
-.container {
+.wrapper {
     display: flex;
     flex-direction: column;
 
     font-family: Gabarito;
     border-bottom: 1px solid var(--outline-primary);
+
+    width: 100%;
+    height: min-content;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
 
     width: calc(100% - (2 * 0.6rem));
     height: min-content;
@@ -171,8 +179,6 @@
     flex-direction: column;
     justify-content: flex-start;
 
-    border-bottom: 1px solid var(--outline-primary);
-
     width: 100%;
 }
 
@@ -188,13 +194,14 @@
     border-left: 1px solid var(--outline-primary);
 }
 
-.see-more-replies-button-wrapper {
-    padding: 0.6rem 0rem;
-}
-
 .error-message {
     color: var(--text-error);
     font-family: Gabarito;
     font-size: 1.1rem;
     font-weight: bold;
+    
+    border-bottom: 1px solid var(--outline-primary);
+    background-color: var(--background-primary);
+
+    padding: 0.6rem 0.2rem;
 }
