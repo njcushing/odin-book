@@ -188,7 +188,13 @@ function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
                     {likes && likes.length > 0 ? (
                         <div className={styles["post-likes"]}>
                             {likes.map((userId) => {
-                                return <User.Option _id={userId} key={`post-like-${userId}`} />;
+                                return (
+                                    <User.Option
+                                        _id={userId}
+                                        skeleton
+                                        key={`post-like-${userId}`}
+                                    />
+                                );
                             })}
                         </div>
                     ) : (
