@@ -4,7 +4,7 @@ import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
     postId: mongoose.Types.ObjectId | null | undefined;
-    after: string | null;
+    after: mongoose.Types.ObjectId | null | undefined;
 };
 
 export type Response = mongoose.Types.ObjectId[] | null;
@@ -27,7 +27,7 @@ const getPostLikes: apiFunctionTypes.GET<Params, Response> = async (
     const urlParams = new URLSearchParams();
     Object.entries(queryObject).forEach(([key, value]) => {
         if (value !== "" && value !== undefined && value !== null) {
-            urlParams.append(key, value);
+            urlParams.append(key, `${value}`);
         }
     });
 
