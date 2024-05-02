@@ -4,6 +4,7 @@ import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
     postId: mongoose.Types.ObjectId | null | undefined;
+    limit?: number;
     after: mongoose.Types.ObjectId | null | undefined;
 };
 
@@ -13,7 +14,7 @@ const getPostReplies: apiFunctionTypes.GET<Params, Response> = async (
     data,
     abortController = null,
 ) => {
-    const { postId, after } = data.params as Params;
+    const { postId, limit, after } = data.params as Params;
 
     if (!postId) {
         return {
@@ -23,7 +24,7 @@ const getPostReplies: apiFunctionTypes.GET<Params, Response> = async (
         };
     }
 
-    const queryObject = { limit: "10", after };
+    const queryObject = { limit: limit || "10", after };
     const urlParams = new URLSearchParams();
     Object.entries(queryObject).forEach(([key, value]) => {
         if (value !== "" && value !== undefined && value !== null) {
