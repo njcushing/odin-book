@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Images from "@/components/images";
 import Accessibility from "@/components/accessibility";
 import { ProfileTypes } from "@/components/images/components/Profile";
@@ -20,6 +21,8 @@ function ImageAndName({
     waiting = false,
     size = "m",
 }: ImageAndNameTypes) {
+    const navigate = useNavigate();
+
     const sizes = { image: 48, displayName: 1.0, accountTag: 0.8 };
     switch (size) {
         case "xs":
@@ -74,7 +77,7 @@ function ImageAndName({
                         className={`truncate-ellipsis ${styles["display-name-button"]}`}
                         aria-label="display name"
                         onClick={(e) => {
-                            window.location.href = `/user/${accountTag}`;
+                            navigate(`/user/${accountTag}`);
                             e.currentTarget.blur();
                             e.preventDefault();
                         }}
@@ -101,7 +104,7 @@ function ImageAndName({
                         className={`truncate-ellipsis ${styles["account-tag-button"]}`}
                         aria-label="account tag"
                         onClick={(e) => {
-                            window.location.href = `/user/${accountTag}`;
+                            navigate(`/user/${accountTag}`);
                             e.currentTarget.blur();
                             e.preventDefault();
                         }}
