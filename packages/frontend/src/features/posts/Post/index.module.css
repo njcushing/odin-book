@@ -30,10 +30,17 @@
 }
 
 @media (hover: hover) {
-    .replying-to:hover > .replying-to-text {
-        text-decoration: underline;
+    .replying-to:hover {
         cursor: pointer;
     }
+
+    .replying-to:hover > .replying-to-text {
+        text-decoration: underline;
+    }
+}
+
+.replying-to:focus {
+    cursor: pointer;
 }
 
 .replying-to:focus > .replying-to-text {
