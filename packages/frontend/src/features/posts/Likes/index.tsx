@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
 import User from "@/components/user";
+import Accessibility from "@/components/accessibility";
+import * as calculateElementHeight from "@/utils/calculateElementHeight";
 import getPostLikes, { Params, Response } from "./utils/getPostLikes";
 import styles from "./index.module.css";
 
@@ -14,8 +16,18 @@ type LikesTypes = {
 function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
     const { postId } = useParams();
 
+    const navigate = useNavigate();
+
+    const errorMessageRef = useRef(null);
+    const [errorMessageHeight, setErrorMessageHeight] = useState<number>(0);
+    const returnToPostButtonRef = useRef(null);
+    const [returnToPostButtonHeight, setReturnToPostButtonHeight] = useState<number>(0);
+
+    const [initialWaiting, setInitialWaiting] = useState(true);
+    const [waiting, setWaiting] = useState(true);
+
     const [likes, setLikes] = useState<Response>([]);
-    const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
+    const [response, setParams, setAttempting, gettingLikes] = useAsync.GET<Params, Response>(
         {
             func: getPostLikes,
             parameters: [
@@ -55,38 +67,142 @@ function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
         ]);
     }, [_id, getIdFromURLParam, postId, setParams, setAttempting]);
 
-    if (response && response.status === 401) window.location.assign("/");
-
     useEffect(() => {
-        if (response && response.status >= 400 && response.message && response.message.length > 0) {
-            setErrorMessage(response.message);
+        if (response) {
+            if (response.status >= 400 && response.message && response.message.length > 0) {
+                setErrorMessage(response.message);
+            } else {
+                setErrorMessage("");
+            }
         }
     }, [response]);
 
+    useEffect(() => {
+        if (!gettingLikes) setInitialWaiting(gettingLikes);
+        setWaiting(gettingLikes);
+    }, [gettingLikes]);
+
+    // subscribe to main App component's scroll topic
+    useEffect(() => {
+        PubSub.unsubscribe("page-scroll-reached-bottom");
+        PubSub.subscribe("page-scroll-reached-bottom", () => {
+            if (!waiting && likes) {
+                setAttempting(true);
+                setParams([
+                    {
+                        params: {
+                            postId: !getIdFromURLParam
+                                ? _id
+                                : (postId as unknown as mongoose.Types.ObjectId),
+                            after: likes[likes.length - 1],
+                        },
+                    },
+                    null,
+                ]);
+            }
+        });
+
+        return () => {
+            PubSub.unsubscribe("page-scroll-reached-bottom");
+        };
+    }, [likes, _id, getIdFromURLParam, postId, setAttempting, setParams, waiting]);
+
+    useEffect(() => {
+        let errorMessageRefCurrent: Element;
+        let returnToPostButtonRefCurrent: Element;
+
+        const errorMessageObserver = new ResizeObserver((entries) => {
+            const totalHeight = calculateElementHeight.fromResizeObserverEntry(
+                entries[0],
+                setErrorMessageHeight,
+            );
+            PubSub.publish("page-scrollable-area-shift-down", totalHeight);
+        });
+        if (errorMessageRef.current) {
+            errorMessageRefCurrent = errorMessageRef.current;
+            calculateElementHeight.fromElement(errorMessageRefCurrent, setErrorMessageHeight);
+            errorMessageObserver.unobserve(errorMessageRef.current);
+            errorMessageObserver.observe(errorMessageRef.current);
+        }
+
+        const returnToPostButtonObserver = new ResizeObserver((entries) => {
+            calculateElementHeight.fromResizeObserverEntry(entries[0], setReturnToPostButtonHeight);
+        });
+        if (returnToPostButtonRef.current) {
+            returnToPostButtonRefCurrent = returnToPostButtonRef.current;
+            calculateElementHeight.fromElement(
+                returnToPostButtonRefCurrent,
+                setReturnToPostButtonHeight,
+            );
+            returnToPostButtonObserver.unobserve(returnToPostButtonRef.current);
+            returnToPostButtonObserver.observe(returnToPostButtonRef.current);
+        }
+
+        return () => {
+            if (errorMessageRefCurrent instanceof Element) {
+                errorMessageObserver.unobserve(errorMessageRefCurrent);
+            }
+            if (returnToPostButtonRefCurrent instanceof Element) {
+                returnToPostButtonObserver.unobserve(returnToPostButtonRefCurrent);
+            }
+        };
+    }, [likes, waiting, initialWaiting, errorMessageRef, returnToPostButtonRef]);
+
+    const errorMessageElement =
+        errorMessage.length > 0 ? (
+            <p className={styles["error-message"]} ref={errorMessageRef}>
+                {errorMessage}
+            </p>
+        ) : (
+            <p ref={errorMessageRef}></p>
+        );
+
+    const returnToPostButtonElement = (
+        <div className={styles["return-to-post-button-container"]} ref={returnToPostButtonRef}>
+            <button
+                type="button"
+                className={styles["return-to-post-button"]}
+                onClick={(e) => {
+                    navigate(`/post/${!getIdFromURLParam ? _id : postId}`);
+                    e.currentTarget.blur();
+                    e.preventDefault();
+                }}
+                onMouseLeave={(e) => {
+                    e.currentTarget.blur();
+                }}
+            >
+                <p className={`material-symbols-rounded ${styles["return-to-post-arrow"]}`}>
+                    arrow_back
+                </p>
+                <p className={styles["return-to-post-text"]}>Return to post...</p>
+            </button>
+        </div>
+    );
+
     return (
         <div className={styles["container"]}>
-            {likes ? (
-                <a
-                    className={styles["return-to-post"]}
-                    href={`/post/${!getIdFromURLParam ? _id : postId}`}
-                >
-                    <p className={`material-symbols-rounded ${styles["return-to-post-arrow"]}`}>
-                        arrow_back
-                    </p>
-                    <p className={styles["return-to-post-text"]}>Return to post...</p>
-                </a>
-            ) : null}
-            {errorMessage.length > 0 ? (
-                <p className={styles["error-message"]}>{errorMessage}</p>
-            ) : null}
-            {likes && likes.length > 0 ? (
-                <div className={styles["post-likes"]}>
-                    {likes.map((userId) => {
-                        return <User.Option _id={userId} key={`post-like-${userId}`} />;
-                    })}
-                </div>
+            {!initialWaiting ? (
+                <>
+                    <div style={{ height: errorMessageHeight }}></div>
+                    <div style={{ height: returnToPostButtonHeight }}></div>
+                    {likes && likes.length > 0 ? (
+                        <div className={styles["post-likes"]}>
+                            {likes.map((userId) => {
+                                return <User.Option _id={userId} key={`post-like-${userId}`} />;
+                            })}
+                        </div>
+                    ) : (
+                        <p className={styles["empty-message"]}>Nothing to see here!</p>
+                    )}
+                    <div className={styles["sticky-wrapper"]}>
+                        <div className={styles["sticky-container"]}>
+                            {errorMessageElement}
+                            {likes ? returnToPostButtonElement : null}
+                        </div>
+                    </div>
+                </>
             ) : (
-                <p className={styles["empty-message"]}>Nothing to see here!</p>
+                <Accessibility.WaitingWheel />
             )}
         </div>
     );
