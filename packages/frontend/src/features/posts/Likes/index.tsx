@@ -48,7 +48,9 @@ function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
 
     useEffect(() => {
         const newState = response ? response.data : [];
-        setLikes(newState || []);
+        setLikes((currentLikes) => {
+            return currentLikes ? currentLikes.concat(newState || []) : newState || [];
+        });
     }, [response]);
 
     useEffect(() => {
