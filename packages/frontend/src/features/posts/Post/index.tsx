@@ -103,7 +103,7 @@ function Post({
                 null,
             ],
         },
-        viewing === "replies",
+        viewing === "replies" && !overrideReplies,
     );
     useEffect(() => {
         const newState = getPostRepliesResponse ? getPostRepliesResponse.data : null;
@@ -157,7 +157,7 @@ function Post({
     // fetch replies again
     useEffect(() => {
         if (viewing === "replies") {
-            if (overrideReplies) {
+            if (!overrideReplies) {
                 getPostRepliesAgain(true);
             } else {
                 setPostReplies(overrideReplies);
