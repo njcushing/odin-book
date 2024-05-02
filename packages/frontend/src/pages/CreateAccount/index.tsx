@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Forms from "@/components/forms";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
@@ -8,7 +9,9 @@ import styles from "./index.module.css";
 import createAccountPOST, { Body, Response } from "./utils/createAccount";
 
 function CreateAccount() {
-    const [response, setParams, setAttempting] = useAsync.POST<Body, Response>(
+    const navigate = useNavigate();
+
+    const [response, setParams, setAttempting] = useAsync.POST<null, Body, Response>(
         { func: createAccountPOST },
         false,
     );
@@ -90,7 +93,7 @@ function CreateAccount() {
                 <Buttons.Basic
                     text="Return to Login"
                     onClickHandler={() => {
-                        window.location.href = "/login";
+                        navigate("/login");
                     }}
                     palette="bare"
                 />
