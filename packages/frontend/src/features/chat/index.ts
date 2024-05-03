@@ -6,6 +6,7 @@ import MessageList from "./MessageList";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
 import Create from "./Create";
+import UpdateImage from "./UpdateImage";
 import AddUsers from "./AddUsers";
 
 const Chat = {
@@ -17,6 +18,7 @@ const Chat = {
     Message,
     MessageInput,
     Create,
+    UpdateImage,
     AddUsers,
 };
 
