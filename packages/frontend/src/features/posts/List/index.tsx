@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
 import { UserContext } from "@/context/user";
 import Buttons from "@/components/buttons";
@@ -11,6 +12,8 @@ import styles from "./index.module.css";
 
 function List() {
     const { user, extract } = useContext(UserContext);
+
+    const navigate = useNavigate();
 
     const errorMessageRef = useRef(null);
     const [errorMessageHeight, setErrorMessageHeight] = useState<number>(0);
@@ -81,16 +84,21 @@ function List() {
 
     // subscribe to successful post creation
     useEffect(() => {
+        PubSub.unsubscribe("post-creation-successful");
         PubSub.subscribe("post-creation-successful", (msg, data) => {
-            setPosts((oldPosts) => {
-                return oldPosts ? [data, ...oldPosts] : [];
-            });
+            if (posts && posts.findIndex((post) => post._id === data.replyingTo) > -1) {
+                navigate(`/post/${data.replyingTo}`);
+            } else {
+                setPosts((oldPosts) => {
+                    return oldPosts ? [data, ...oldPosts] : [];
+                });
+            }
         });
 
         return () => {
             PubSub.unsubscribe("post-creation-successful");
         };
-    }, []);
+    }, [posts, navigate]);
 
     // subscribe to main App component's scroll topic
     useEffect(() => {
