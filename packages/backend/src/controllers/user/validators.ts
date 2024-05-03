@@ -52,6 +52,38 @@ const validators = {
                     return true;
                 }
             }),
+        preferences: {
+            displayName: body("displayName")
+                .trim()
+                .custom((value) => {
+                    const valid = validation.user.displayName(value, "front");
+                    if (!valid.status) {
+                        throw new Error(valid.message);
+                    } else {
+                        return true;
+                    }
+                }),
+            bio: body("bio")
+                .trim()
+                .custom((value) => {
+                    const valid = validation.user.bio(value, "front");
+                    if (!valid.status) {
+                        throw new Error(valid.message);
+                    } else {
+                        return true;
+                    }
+                }),
+            profileImage: body("profileImage")
+                .trim()
+                .custom((value) => {
+                    const valid = validation.user.imageBase64(value, "front");
+                    if (!valid.status) {
+                        throw new Error(valid.message);
+                    } else {
+                        return true;
+                    }
+                }),
+        },
     },
     param: {
         userId: param("userId")
