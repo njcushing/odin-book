@@ -11,6 +11,7 @@ import styles from "./index.module.css";
 
 type RepliesTypes = {
     _id?: mongoose.Types.ObjectId;
+    overrideReplies?: mongoose.Types.ObjectId[];
     getIdFromURLParam?: boolean;
     maxRepliesToDisplay?: number;
     numberOfRepliesToLoadOnMount?: number;
@@ -20,6 +21,7 @@ type RepliesTypes = {
 
 function Replies({
     _id,
+    overrideReplies,
     getIdFromURLParam = false,
     maxRepliesToDisplay,
     numberOfRepliesToLoadOnMount = 10,
@@ -31,8 +33,8 @@ function Replies({
     const errorMessageRef = useRef(null);
     const [errorMessageHeight, setErrorMessageHeight] = useState<number>(0);
 
-    const [initialWaiting, setInitialWaiting] = useState(true);
-    const [waiting, setWaiting] = useState(true);
+    const [initialWaiting, setInitialWaiting] = useState(!overrideReplies);
+    const [waiting, setWaiting] = useState(!overrideReplies);
 
     const [postReplies, setPostReplies] = useState<Response>([]);
     const [response, setParams, setAttempting, gettingPostReplies] = useAsync.GET<Params, Response>(
@@ -51,7 +53,7 @@ function Replies({
                 null,
             ],
         },
-        true,
+        !overrideReplies,
     );
     const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -63,21 +65,23 @@ function Replies({
     }, [response]);
 
     useEffect(() => {
-        setAttempting(true);
-        setErrorMessage("");
-        setParams([
-            {
-                params: {
-                    postId: !getIdFromURLParam
-                        ? _id
-                        : (postId as unknown as mongoose.Types.ObjectId),
-                    limit: undefined,
-                    after: null,
+        if (!overrideReplies) {
+            setAttempting(true);
+            setErrorMessage("");
+            setParams([
+                {
+                    params: {
+                        postId: !getIdFromURLParam
+                            ? _id
+                            : (postId as unknown as mongoose.Types.ObjectId),
+                        limit: undefined,
+                        after: null,
+                    },
                 },
-            },
-            null,
-        ]);
-    }, [_id, getIdFromURLParam, postId, setParams, setAttempting]);
+                null,
+            ]);
+        }
+    }, [overrideReplies, _id, getIdFromURLParam, postId, setParams, setAttempting]);
 
     useEffect(() => {
         if (response) {
@@ -96,29 +100,37 @@ function Replies({
 
     // subscribe to main App component's scroll topic
     useEffect(() => {
-        PubSub.unsubscribe("page-scroll-reached-bottom");
-        PubSub.subscribe("page-scroll-reached-bottom", () => {
-            if (canLoadMoreReplies && !waiting && postReplies) {
-                setAttempting(true);
-                setParams([
-                    {
-                        params: {
-                            postId: !getIdFromURLParam
-                                ? _id
-                                : (postId as unknown as mongoose.Types.ObjectId),
-                            limit: undefined,
-                            after: postReplies[postReplies.length - 1],
-                        },
-                    },
-                    null,
-                ]);
-            }
-        });
+        let unmountFunc = () => {};
 
-        return () => {
+        if (canLoadMoreReplies) {
             PubSub.unsubscribe("page-scroll-reached-bottom");
-        };
+            PubSub.subscribe("page-scroll-reached-bottom", () => {
+                if (!overrideReplies && canLoadMoreReplies && !waiting && postReplies) {
+                    setAttempting(true);
+                    setParams([
+                        {
+                            params: {
+                                postId: !getIdFromURLParam
+                                    ? _id
+                                    : (postId as unknown as mongoose.Types.ObjectId),
+                                limit: undefined,
+                                after: postReplies[postReplies.length - 1],
+                            },
+                        },
+                        null,
+                    ]);
+                }
+            });
+
+            unmountFunc = () => {
+                PubSub.unsubscribe("page-scroll-reached-bottom");
+            };
+        }
+
+        return unmountFunc;
     }, [
+        overrideReplies,
+        canLoadMoreReplies,
         postReplies,
         _id,
         getIdFromURLParam,
@@ -126,7 +138,6 @@ function Replies({
         setAttempting,
         setParams,
         waiting,
-        canLoadMoreReplies,
     ]);
 
     useEffect(() => {
@@ -162,6 +173,8 @@ function Replies({
             <p ref={errorMessageRef}></p>
         );
 
+    const repliesToDisplay = overrideReplies || postReplies;
+
     return (
         <div className={styles["container"]}>
             {!initialWaiting ? (
@@ -173,14 +186,13 @@ function Replies({
                                 ? _id
                                 : (postId as unknown as mongoose.Types.ObjectId)
                         }
-                        getIdFromURLParam
                         canReply
                         disableRepliesLink={disableRepliesLink}
                         size="l"
                     />
-                    {postReplies && postReplies.length > 0 ? (
+                    {repliesToDisplay && repliesToDisplay.length > 0 ? (
                         <ul className={styles["replies"]}>
-                            {postReplies.map((reply, i) => {
+                            {repliesToDisplay.map((reply, i) => {
                                 if (maxRepliesToDisplay && i >= maxRepliesToDisplay) return null;
                                 return (
                                     <li className={styles["reply"]} key={reply.toString()}>
