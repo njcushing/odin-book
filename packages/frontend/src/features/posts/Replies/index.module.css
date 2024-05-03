@@ -1,5 +1,9 @@
 .container {
     position: relative;
+
+    border-top: 1px solid var(--outline-primary);
+
+    margin-top: -1px;
 }
 
 .replies {
