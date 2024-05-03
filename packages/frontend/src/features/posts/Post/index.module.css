@@ -174,26 +174,6 @@
     font-weight: bold;
 }
 
-.row-four {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-
-    width: 100%;
-}
-
-.replies {
-    color: var(--text-tertiary);
-    font-size: 1.1rem;
-
-    padding: 0rem 0rem 0rem 1.6rem;
-}
-
-.reply {
-    outline: none;
-    border-left: 1px solid var(--outline-primary);
-}
-
 .error-message {
     color: var(--text-error);
     font-family: Gabarito;
