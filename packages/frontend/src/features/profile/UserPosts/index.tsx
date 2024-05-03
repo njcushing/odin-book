@@ -108,13 +108,11 @@ function UserPosts({ repliesOnly = false }: UserPostsTypes) {
                     {posts && posts.length > 0 ? (
                         posts.map((post) => {
                             return (
-                                <Posts.Post
+                                <Posts.Replies
                                     _id={
                                         repliesOnly && post.replyingTo ? post.replyingTo : post._id
                                     }
                                     overrideReplies={repliesOnly ? [post._id] : []}
-                                    viewingDefault={repliesOnly ? "replies" : ""}
-                                    removeSeeMoreRepliesButton={repliesOnly}
                                     key={`post-self-${post._id}`}
                                 />
                             );
