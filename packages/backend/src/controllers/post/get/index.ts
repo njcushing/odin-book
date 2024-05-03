@@ -137,9 +137,16 @@ export const likes = [
 
         /// create aggregation pipeline
         const aggregation: mongoose.PipelineStage[] = [];
-        // match post, unwind & populate likes
+        // match post
+        aggregation.push({ $match: { _id: new mongoose.Types.ObjectId(postId) } });
+        // if 'after' query parameter is specified, check user is within 'likes' array
+        if (after) {
+            aggregation.push({
+                $match: { likes: new mongoose.Types.ObjectId(`${after}`) },
+            });
+        }
+        // unwind & populate likes
         aggregation.push(
-            { $match: { _id: new mongoose.Types.ObjectId(postId) } },
             { $unwind: { path: "$likes", preserveNullAndEmptyArrays: true } },
             // if the 'likes' array is empty, it will not be present on the document at this stage
             {
@@ -170,14 +177,17 @@ export const likes = [
                 sendResponse(res, 404, "Specified 'after' user not found in the database");
                 responding = true;
             } else {
-                // if so, check user is within likes array
-                aggregation.push({
-                    $match: { populatedLikes: { $elemMatch: { _id: afterUser._id } } },
-                });
                 // and filter users based on their creation date being after the 'after' user
                 aggregation.push({
-                    $match: {
-                        "populatedLikes.createdAt": { $lt: afterUser.createdAt },
+                    $addFields: {
+                        populatedLikes: {
+                            $filter: {
+                                input: "$populatedLikes",
+                                cond: {
+                                    $lt: ["$$this.createdAt", afterUser.createdAt],
+                                },
+                            },
+                        },
                     },
                 });
             }
@@ -237,9 +247,16 @@ export const replies = [
 
         /// create aggregation pipeline
         const aggregation: mongoose.PipelineStage[] = [];
-        // match post, unwind & populate replies
+        // match post
+        aggregation.push({ $match: { _id: new mongoose.Types.ObjectId(postId) } });
+        // if 'after' query parameter is specified, check post is within 'replies' array
+        if (after) {
+            aggregation.push({
+                $match: { replies: new mongoose.Types.ObjectId(`${after}`) },
+            });
+        }
+        // unwind & populate replies
         aggregation.push(
-            { $match: { _id: new mongoose.Types.ObjectId(postId) } },
             { $unwind: { path: "$replies", preserveNullAndEmptyArrays: true } },
             // if the 'replies' array is empty, it will not be present on the document at this stage
             {
@@ -270,14 +287,17 @@ export const replies = [
                 sendResponse(res, 404, "Specified 'after' post not found in the database");
                 responding = true;
             } else {
-                // if so, check post is within replies array
-                aggregation.push({
-                    $match: { populatedReplies: { $elemMatch: { _id: afterPost._id } } },
-                });
                 // and filter posts based on their creation date being after the 'after' post
                 aggregation.push({
-                    $match: {
-                        "populatedReplies.createdAt": { $lt: afterPost.createdAt },
+                    $addFields: {
+                        populatedReplies: {
+                            $filter: {
+                                input: "$populatedReplies",
+                                cond: {
+                                    $lt: ["$$this.createdAt", afterPost.createdAt],
+                                },
+                            },
+                        },
                     },
                 });
             }
