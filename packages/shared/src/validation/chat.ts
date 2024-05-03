@@ -1,3 +1,4 @@
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import isStringBase64 from "@shared/utils/isStringBase64";
 
 const maximumImageSize = 2000000;
@@ -20,6 +21,34 @@ export const name = (value: string, messageType: "front" | "back"): ReturnTypes 
     return {
         status: true,
         message: messageType === "front" ? "Valid name." : "'name' field (String) is valid",
+    };
+};
+
+export const imageArray = (
+    value: extendedTypes.TypedArray,
+    messageType: "front" | "back",
+): ReturnTypes => {
+    if (!extendedTypes.isTypedArray(value)) {
+        return {
+            status: false,
+            message:
+                messageType === "front"
+                    ? `Post image must be a Typed Array.`
+                    : `'image' field must be a Typed Array.`,
+        };
+    }
+    if (value.length > maximumImageSize) {
+        return {
+            status: false,
+            message:
+                messageType === "front"
+                    ? `Post image must be smaller than 2MB.`
+                    : `'image' field (Array) must be smaller than 2MB.`,
+        };
+    }
+    return {
+        status: true,
+        message: messageType === "front" ? `Valid post image.` : `'image' field (Array) is valid`,
     };
 };
 
