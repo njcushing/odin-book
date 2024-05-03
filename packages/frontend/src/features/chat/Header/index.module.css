@@ -8,17 +8,20 @@
     padding: 0.4rem;
 }
 
-.chat-image-container {
-    border-radius: 50%;
+.chat-image-button {
+    border: none;
+    border-radius: 9999px;
     outline-width: 0px;
     outline-style: solid;
     outline-color: var(--chat-option-primary-image-outline);
+
+    padding: 0rem;
 
     transition: outline-width 0.05s ease-in-out 0s;
 }
 
 @media (hover: hover) {
-    .chat-image-container:hover {
+    .chat-image-button:hover {
         outline-width: 3px;
         cursor: pointer;
     }
