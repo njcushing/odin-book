@@ -12,9 +12,7 @@ export type TChat = {
     type: "individual" | "group";
     participants: TChatParticipants;
     name: string;
-    image?: {
-        type?: string;
-    };
+    image?: mongoose.Types.ObjectId;
     messages: mongoose.Types.ObjectId[];
     createdAt: Date;
     updatedAt: Date;
