@@ -5,6 +5,7 @@ import Accessibility from "@/components/accessibility";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
 import getIdFromTag, { Params, Response } from "@/utils/getIdFromTag";
+import { v4 as uuidv4 } from "uuid";
 import Profile from "..";
 import UserPosts from "../UserPosts";
 import UserLikes from "../UserLikes";
@@ -60,10 +61,7 @@ function Main() {
     const [waiting, setWaiting] = useState<boolean>(true);
 
     const [state, setState] = useState<mongoose.Types.ObjectId | null | undefined>(null);
-    const [response /* setParams */ /* setAttempting */, , , gettingIdFromTag] = useAsync.GET<
-        Params,
-        Response
-    >(
+    const [response, setParams, setAttempting, gettingIdFromTag] = useAsync.GET<Params, Response>(
         { func: getIdFromTag, parameters: [{ params: { accountTag: accountTag || "" } }, null] },
         true,
     );
@@ -80,6 +78,15 @@ function Main() {
     useEffect(() => {
         setWaiting(gettingIdFromTag);
     }, [gettingIdFromTag]);
+
+    // reset component on URL route change
+    const [generateKey, setGenerateKey] = useState<string>(uuidv4());
+    useEffect(() => {
+        setGenerateKey(uuidv4());
+        setState(null);
+        setAttempting(true);
+        setParams([{ params: { accountTag: accountTag || "" } }, null]);
+    }, [accountTag, setAttempting, setParams]);
 
     const location = useLocation();
     const path = location.pathname.split("/");
@@ -107,7 +114,7 @@ function Main() {
         <ProfileContext.Provider
             value={useMemo(() => ({ _id: state, awaitingResponse }), [state, awaitingResponse])}
         >
-            <div className={styles["container"]}>
+            <div className={styles["container"]} key={generateKey}>
                 {!waiting ? (
                     <>
                         <Profile.Summary key={0} />
