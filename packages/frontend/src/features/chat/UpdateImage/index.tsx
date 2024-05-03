@@ -35,10 +35,11 @@ function UpdateImage({
 
     const [waiting, setWaiting] = useState<boolean>(false);
 
-    const [response, setParams, setAttempting, creatingChat] = useAsync.PUT<Params, Body, Response>(
-        { func: updateChatImage },
-        false,
-    );
+    const [response, setParams, setAttempting, updatingImage] = useAsync.PUT<
+        Params,
+        Body,
+        Response
+    >({ func: updateChatImage }, false);
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
@@ -59,8 +60,8 @@ function UpdateImage({
     }, [response, _id, onSuccessHandler]);
 
     useEffect(() => {
-        setWaiting(creatingChat);
-    }, [creatingChat]);
+        setWaiting(updatingImage);
+    }, [updatingImage]);
 
     const imageSrc = Object.keys(images).length === 1 ? images[Object.keys(images)[0]].data : null;
 
