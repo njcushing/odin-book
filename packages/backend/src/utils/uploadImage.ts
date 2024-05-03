@@ -6,7 +6,10 @@ const options: UploadApiOptions = {
     resource_type: "auto",
 };
 
-const destroy = async (image: string, opts: UploadApiOptions): Promise<UploadApiResponse> => {
+export const destroy = async (
+    image: string,
+    opts: UploadApiOptions = {},
+): Promise<UploadApiResponse> => {
     return new Promise((resolve, reject) => {
         cloudinary.uploader.destroy(
             image,
