@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import PubSub from "pubsub-js";
 import Accessibility from "@/components/accessibility";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
 import * as calculateElementHeight from "@/utils/calculateElementHeight";
+import { v4 as uuidv4 } from "uuid";
 import Posts from "..";
 import getPostReplies, { Params, Response } from "./utils/getPostReplies";
 import styles from "./index.module.css";
@@ -29,6 +30,8 @@ function Replies({
     disableRepliesLink = false,
 }: RepliesTypes) {
     const { postId } = useParams();
+
+    const navigate = useNavigate();
 
     const errorMessageRef = useRef(null);
     const [errorMessageHeight, setErrorMessageHeight] = useState<number>(0);
@@ -98,6 +101,23 @@ function Replies({
         setWaiting(gettingPostReplies);
     }, [gettingPostReplies]);
 
+    // subscribe to successful post creation
+    useEffect(() => {
+        PubSub.subscribe("post-creation-successful", (msg, data) => {
+            if (!getIdFromURLParam ? _id : postId === data.replyingTo) {
+                setPostReplies((oldPostReplies) => {
+                    return oldPostReplies ? [data._id, ...oldPostReplies] : [];
+                });
+            } else if (postReplies && postReplies.includes(data.replyingTo)) {
+                navigate(`/post/${data.replyingTo}`);
+            }
+        });
+
+        return () => {
+            PubSub.unsubscribe("post-creation-successful");
+        };
+    }, [_id, getIdFromURLParam, postId, postReplies, navigate]);
+
     // subscribe to main App component's scroll topic
     useEffect(() => {
         let unmountFunc = () => {};
@@ -164,6 +184,27 @@ function Replies({
         };
     }, [postReplies, waiting, initialWaiting, errorMessageRef]);
 
+    // reset component on URL route change
+    const [generateKey, setGenerateKey] = useState<string>(uuidv4());
+    useEffect(() => {
+        if (getIdFromURLParam) {
+            setGenerateKey(uuidv4());
+            setPostReplies([]);
+            setAttempting(true);
+            setErrorMessage("");
+            setParams([
+                {
+                    params: {
+                        postId: postId as unknown as mongoose.Types.ObjectId,
+                        limit: numberOfRepliesToLoadOnMount,
+                        after: null,
+                    },
+                },
+                null,
+            ]);
+        }
+    }, [getIdFromURLParam, postId, numberOfRepliesToLoadOnMount, setAttempting, setParams]);
+
     const errorMessageElement =
         errorMessage.length > 0 ? (
             <p className={styles["error-message"]} ref={errorMessageRef}>
@@ -176,7 +217,7 @@ function Replies({
     const repliesToDisplay = overrideReplies || postReplies;
 
     return (
-        <div className={styles["container"]}>
+        <div className={styles["container"]} key={generateKey}>
             {!initialWaiting ? (
                 <>
                     <div style={{ height: errorMessageHeight }}></div>
