@@ -13,6 +13,7 @@ router.post("/", create.regular);
 router.post("/:chatId/message", create.message);
 router.put("/:chatId/name", put.name);
 router.put("/:chatId/participants", put.participants);
+router.put("/:chatId/image", put.image);
 router.delete("/:chatId/message/:messageId", remove.message);
 
 export default router;
