@@ -79,7 +79,7 @@ function Root() {
         PubSub.subscribe("update-chat-image-button-click", (msg, data) => {
             setModal(
                 <Chat.UpdateImage
-                    _id={data._id}
+                    _id={data.chatId}
                     defaultImageURL={data.image && data.image.url}
                     onCloseClickHandler={() => setModal(null)}
                     onSuccessHandler={() => setModal(null)}
