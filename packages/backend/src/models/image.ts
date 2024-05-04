@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export type TImage = {
     url: string;
+    alt: string;
     createdAt?: Date;
     updatedAt?: Date;
 };
