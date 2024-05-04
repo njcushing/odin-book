@@ -6,13 +6,27 @@ const options: UploadApiOptions = {
     resource_type: "auto",
 };
 
+const getPublicIdFromImageURL = (imageURL: string) => {
+    const split = imageURL.split("/");
+    if (split.length > 0) {
+        const pop = split.pop();
+        if (pop) {
+            const final = pop.split(".");
+            if (final.length > 0) {
+                return final[0];
+            }
+        }
+    }
+    return "";
+};
+
 export const destroy = async (
     image: string,
-    opts: UploadApiOptions = {},
+    opts: UploadApiOptions = { resource_type: "image" },
 ): Promise<UploadApiResponse> => {
     return new Promise((resolve, reject) => {
         cloudinary.uploader.destroy(
-            image,
+            getPublicIdFromImageURL(image),
             { resource_type: opts.resource_type },
             (error, result) => {
                 if (result && result.secure_url) {
