@@ -28,12 +28,7 @@ export const destroy = async (
         cloudinary.uploader.destroy(
             getPublicIdFromImageURL(image),
             { resource_type: opts.resource_type },
-            (error, result) => {
-                if (result && result.secure_url) {
-                    return resolve(result.secure_url);
-                }
-                return reject(error);
-            },
+            (error, result) => (result ? resolve(result) : reject(error)),
         );
     });
 };
