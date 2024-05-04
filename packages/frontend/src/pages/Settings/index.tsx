@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import LayoutUI from "@/layouts";
 import SettingsComponents, { Routes } from "@/features/settings";
-import Infobar from "@/features/infobar";
 import styles from "./index.module.css";
 
 export const routes = [
@@ -25,10 +24,7 @@ function Settings() {
                     maxWidth: 999999,
                     minHeight: 0,
                     maxHeight: 999999,
-                    areas: [
-                        { size: "600px", children: [<Outlet key={0} />] },
-                        { size: "320px", children: [<Infobar.Home key={0} />] },
-                    ],
+                    areas: [{ size: "920px", children: [<Outlet key={0} />] }],
                     style: {
                         justifySelf: "flex-start",
                         alignSelf: "flex-start",
