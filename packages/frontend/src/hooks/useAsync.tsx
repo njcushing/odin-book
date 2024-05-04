@@ -61,10 +61,11 @@ export function GET<Params, Response>(
     useEffect(() => {
         if (attempting) {
             setAwaiting(true);
-        } else if (awaiting && response && response.message !== "Client cancelled request") {
+            // the abortController is only ever null when the API function is either finished or aborted
+        } else if (!abortController) {
             setAwaiting(false);
         }
-    }, [attempting, awaiting, response]);
+    }, [attempting, abortController]);
 
     return [response, setParams, setAttempting, awaiting];
 }
@@ -138,10 +139,11 @@ export function POST<Params, Body, Response>(
     useEffect(() => {
         if (attempting) {
             setAwaiting(true);
-        } else if (awaiting && response && response.message !== "Client cancelled request") {
+            // the abortController is only ever null when the API function is either finished or aborted
+        } else if (!abortController) {
             setAwaiting(false);
         }
-    }, [attempting, awaiting, response]);
+    }, [attempting, abortController]);
 
     return [response, setParams, setAttempting, awaiting];
 }
