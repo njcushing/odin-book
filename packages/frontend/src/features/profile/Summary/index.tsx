@@ -152,7 +152,7 @@ function Summary() {
                     <Images.Basic
                         src={new Uint8Array([])}
                         alt=""
-                        style={{ width: "100%", height: "200px" }}
+                        style={{ width: "100%", height: "240px" }}
                     />
                 </Accessibility.Skeleton>
             </div>
