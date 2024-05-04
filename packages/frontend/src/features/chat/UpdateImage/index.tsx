@@ -31,7 +31,7 @@ function UpdateImage({
     onCloseClickHandler = null,
     onSuccessHandler = null,
 }: UpdateImageTypes) {
-    const [images, setImages] = useState<Images>({});
+    const [images, setImages] = useState<Images | null>(null);
 
     const [waiting, setWaiting] = useState<boolean>(false);
 
@@ -39,7 +39,13 @@ function UpdateImage({
         Params,
         Body,
         Response
-    >({ func: updateChatImage }, false);
+    >(
+        {
+            func: updateChatImage,
+            parameters: [{ params: { chatId: _id } }, null],
+        },
+        false,
+    );
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
@@ -63,14 +69,17 @@ function UpdateImage({
         setWaiting(updatingImage);
     }, [updatingImage]);
 
-    const imageSrc = Object.keys(images).length === 1 ? images[Object.keys(images)[0]].data : null;
+    const imageSrc =
+        images && Object.keys(images).length === 1 ? images[Object.keys(images)[0]].data : null;
 
     return (
-        <Modals.Basic onCloseClickHandler={onCloseClickHandler}>
-            <div className={styles["container"]}>
-                <h2 className={styles["title"]}>Set a New Chat Image</h2>
-                <div className={styles["content"]}>
-                    <Images.Profile src={imageSrc || defaultImageURL} sizePx={144} />
+        <Modals.Basic onCloseClickHandler={onCloseClickHandler} key="h">
+            <div className={styles["container"]} key="d">
+                <h2 className={styles["title"]} key="e">
+                    Set a New Chat Image
+                </h2>
+                <div className={styles["content"]} key="f">
+                    <Images.Profile src={imageSrc || defaultImageURL} sizePx={144} key="a" />
                     <Buttons.Upload
                         labelText=""
                         fieldId="chat-image"
@@ -101,6 +110,7 @@ function UpdateImage({
                             }
                             setImages(newFiles);
                         }}
+                        key="b"
                     />
                 </div>
                 {errorMessage.length > 0 ? (
@@ -111,18 +121,20 @@ function UpdateImage({
                         text="Confirm"
                         palette="green"
                         onClickHandler={() => {
-                            setErrorMessage("");
-                            setParams([
-                                {
-                                    params: { chatId: _id },
-                                    body: { image: images[Object.keys(images)[0]].data },
-                                },
-                                null,
-                            ]);
-                            setAttempting(true);
+                            if (images && Object.keys(images).length > 0) {
+                                const image = images[Object.keys(images)[0]].data;
+                                setErrorMessage("");
+                                setParams([{ params: { chatId: _id }, body: { image } }, null]);
+                                setAttempting(true);
+                            }
                         }}
-                        disabled={waiting || Object.keys(images).length !== 1}
+                        disabled={
+                            waiting ||
+                            (images ? Object.keys(images).length !== 1 : true) ||
+                            errorMessage.length > 0
+                        }
                         otherStyles={{ fontSize: "1.2rem" }}
+                        key="c"
                     />
                 </div>
             </div>
