@@ -99,8 +99,8 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
     return (
         <ChatContext.Provider
             value={useMemo(
-                () => ({ chatData, participantsInfo, awaitingResponse: waiting }),
-                [chatData, participantsInfo, waiting],
+                () => ({ chatData, setChatData, participantsInfo, awaitingResponse: waiting }),
+                [chatData, setChatData, participantsInfo, waiting],
             )}
         >
             {!waiting ? (
