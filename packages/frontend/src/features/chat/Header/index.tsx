@@ -19,7 +19,7 @@ type HeaderTypes = {
 
 function Header({ overrideChatName }: HeaderTypes) {
     const { extract } = useContext(UserContext);
-    const { chatData } = useContext(ChatContext);
+    const { chatData, setChatData } = useContext(ChatContext);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -129,6 +129,21 @@ function Header({ overrideChatName }: HeaderTypes) {
     useEffect(() => {
         setWaiting(settingChatName);
     }, [settingChatName]);
+
+    // subscribe to successful chat image update
+    useEffect(() => {
+        PubSub.unsubscribe("chat-image-update-successful");
+        PubSub.subscribe("chat-image-update-successful", (msg, data) => {
+            const { _id, image } = data;
+            if (chatData && chatData._id === _id) {
+                setChatData((oldChatData) => ({ ...oldChatData, image }));
+            }
+        });
+
+        return () => {
+            PubSub.unsubscribe("chat-image-update-successful");
+        };
+    }, [chatData, setChatData]);
 
     return (
         <div className={styles["container"]}>
