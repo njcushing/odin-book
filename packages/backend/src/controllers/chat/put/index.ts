@@ -298,11 +298,18 @@ export const image = [
 
             session.endSession();
 
+            const responseImage = {
+                _id: imageDoc._id,
+                url: imageDoc.url,
+                alt: imageDoc.alt,
+            };
+
             // create token and send response
             const response = await generateToken(res.locals.user)
                 .then((token) => {
                     return sendResponse(res, 200, "Chat image successfully updated", {
                         token,
+                        image: responseImage,
                     });
                 })
                 .catch((tokenErr) => {
@@ -311,7 +318,7 @@ export const image = [
                         500,
                         tokenErr.message ||
                             "Chat image successfully updated, but token creation failed",
-                        null,
+                        { image: responseImage },
                         tokenErr,
                     );
                 });
