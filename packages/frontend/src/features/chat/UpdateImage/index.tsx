@@ -73,13 +73,11 @@ function UpdateImage({
         images && Object.keys(images).length === 1 ? images[Object.keys(images)[0]].data : null;
 
     return (
-        <Modals.Basic onCloseClickHandler={onCloseClickHandler} key="h">
-            <div className={styles["container"]} key="d">
-                <h2 className={styles["title"]} key="e">
-                    Set a New Chat Image
-                </h2>
-                <div className={styles["content"]} key="f">
-                    <Images.Profile src={imageSrc || defaultImageURL} sizePx={144} key="a" />
+        <Modals.Basic onCloseClickHandler={onCloseClickHandler}>
+            <div className={styles["container"]}>
+                <h2 className={styles["title"]}>Set a New Chat Image</h2>
+                <div className={styles["content"]}>
+                    <Images.Profile src={imageSrc || defaultImageURL} sizePx={144} />
                     <Buttons.Upload
                         labelText=""
                         fieldId="chat-image"
@@ -110,7 +108,6 @@ function UpdateImage({
                             }
                             setImages(newFiles);
                         }}
-                        key="b"
                     />
                 </div>
                 {errorMessage.length > 0 ? (
@@ -134,7 +131,6 @@ function UpdateImage({
                             errorMessage.length > 0
                         }
                         otherStyles={{ fontSize: "1.2rem" }}
-                        key="c"
                     />
                 </div>
             </div>
