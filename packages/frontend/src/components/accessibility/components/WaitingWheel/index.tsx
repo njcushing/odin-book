@@ -1,9 +1,15 @@
+import React from "react";
 import styles from "./index.module.css";
 
-function WaitingWheel() {
+type TWaitingWheel = {
+    containerStyles?: React.CSSProperties;
+    wheelStyles?: React.CSSProperties;
+};
+
+function WaitingWheel({ containerStyles = {}, wheelStyles = {} }: TWaitingWheel) {
     return (
-        <div className={styles["container"]}>
-            <div className={styles["wheel"]}></div>
+        <div className={styles["container"]} style={containerStyles}>
+            <div className={styles["wheel"]} style={wheelStyles}></div>
         </div>
     );
 }
