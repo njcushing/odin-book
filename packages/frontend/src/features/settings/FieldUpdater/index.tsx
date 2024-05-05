@@ -16,10 +16,7 @@ type TField = {
 
 export type TFieldUpdater = {
     field: React.ReactElement<TField>;
-    func: PUT<unknown, unknown, unknown>;
-    params: unknown;
-    body: unknown;
-    response: unknown;
+    func: PUT<null, { fieldValue: unknown }, unknown>;
     publishResponseOnSuccess?: boolean;
     publishTopic?: string;
     onSuccessHandler?: (() => unknown) | null;
@@ -29,9 +26,6 @@ export type TFieldUpdater = {
 function FieldUpdater({
     field,
     func,
-    params,
-    body,
-    response,
     publishResponseOnSuccess,
     publishTopic,
     onSuccessHandler,
@@ -44,16 +38,10 @@ function FieldUpdater({
     const formRef = useRef(null);
 
     const [asyncResponse, setParams, setAttempting, awaitingResponse] = useAsync.PUT<
-        typeof params,
-        typeof body,
-        typeof response
-    >(
-        {
-            func,
-            parameters: [{ params, body }, null],
-        },
-        false,
-    );
+        null,
+        { fieldValue: unknown },
+        Parameters<typeof func>[2]
+    >({ func }, false);
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
