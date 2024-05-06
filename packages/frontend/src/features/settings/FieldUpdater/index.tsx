@@ -17,6 +17,7 @@ type TField = {
 export type TFieldUpdater = {
     field: React.ReactElement<TField>;
     func: PUT<null, { fieldValue: unknown }, unknown>;
+    conversionFunc?: (value: unknown) => unknown;
     publishTopic?: string;
     onSuccessHandler?: (() => unknown) | null;
     overrideWaiting?: boolean;
@@ -25,6 +26,7 @@ export type TFieldUpdater = {
 function FieldUpdater({
     field,
     func,
+    conversionFunc,
     publishTopic,
     onSuccessHandler,
     overrideWaiting = false,
@@ -103,7 +105,10 @@ function FieldUpdater({
                             text={!waiting ? "Confirm Changes" : ""}
                             onClickHandler={() => {
                                 setErrorMessage("");
-                                setParams([{ body: { fieldValue: fieldCurrentValue } }, null]);
+                                const fieldValue = conversionFunc
+                                    ? conversionFunc(fieldCurrentValue)
+                                    : fieldCurrentValue;
+                                setParams([{ body: { fieldValue } }, null]);
                                 setAttempting(true);
                             }}
                             disabled={waiting || !buttonEnabled}
