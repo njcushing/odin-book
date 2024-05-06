@@ -5,6 +5,7 @@ import Error from "./components/Error";
 import Text from "./components/Text";
 import TextArea from "./components/TextArea";
 import File from "./components/File";
+import Image from "./components/Image";
 import Select from "./components/Select";
 import Search from "./components/Search";
 import Message from "./components/Message";
@@ -18,6 +19,7 @@ const Inputs = {
     Text,
     TextArea,
     File,
+    Image,
     Select,
     Search,
     Message,
