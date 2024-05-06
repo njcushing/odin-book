@@ -30,6 +30,7 @@ function FieldUpdater({
     overrideWaiting = false,
 }: TFieldUpdater) {
     const [waiting, setWaiting] = useState<boolean>(overrideWaiting);
+    const [fieldInitialValue, setFieldInitialValue] = useState<unknown>(field.props.initialValue);
     const [fieldCurrentValue, setFieldCurrentValue] = useState<unknown>(field.props.initialValue);
     const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
 
@@ -62,8 +63,9 @@ function FieldUpdater({
             if (publishTopic && publishTopic.length > 0) {
                 PubSub.publish(publishTopic, asyncResponse.data);
             }
+            setFieldInitialValue(fieldCurrentValue);
         }
-    }, [asyncResponse, onSuccessHandler, publishTopic]);
+    }, [asyncResponse, onSuccessHandler, publishTopic, fieldCurrentValue]);
 
     useEffect(() => {
         setWaiting(false);
@@ -74,9 +76,9 @@ function FieldUpdater({
             const { fieldName, validator, required } = field.props;
             const validField = validate(formData[fieldName], validator || null, required || false);
             setFieldCurrentValue(formData[fieldName]);
-            setButtonEnabled(validField.status && formData[fieldName] !== field.props.initialValue);
+            setButtonEnabled(validField.status && formData[fieldName] !== fieldInitialValue);
         },
-        [field.props],
+        [field.props, fieldInitialValue],
     );
 
     return (
@@ -94,7 +96,7 @@ function FieldUpdater({
                 {errorMessage.length > 0 ? (
                     <p className={styles["error-message"]}>{errorMessage}</p>
                 ) : null}
-                {fieldCurrentValue !== field.props.initialValue ? (
+                {fieldCurrentValue !== fieldInitialValue ? (
                     <div className={styles["confirm-changes-button-container"]}>
                         <Buttons.Basic
                             type="submit"
