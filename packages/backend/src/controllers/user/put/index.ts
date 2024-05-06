@@ -6,6 +6,7 @@ import protectedRouteJWT from "@/utils/protectedRouteJWT";
 import * as types from "@/utils/types";
 import User from "@/models/user";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
+import validation from "@shared/validation";
 import validators from "../validators";
 
 export const follow = [
@@ -142,5 +143,43 @@ export const follow = [
                 sendResponse(res, status, message, null, error);
             }
         }
+    },
+];
+
+export const preferencesDisplayName = [
+    protectedRouteJWT,
+    validators.param.userId,
+    validators.body.preferences.displayName,
+    checkRequestValidationError,
+    async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const { displayName } = req.body;
+
+        if (userId === res.locals.user.id) {
+            return sendResponse(res, 401, "User is not authorised to perform this action");
+        }
+
+        const updatedTargetUser = await User.updateOne({ _id: userId }, [
+            { $set: { "preferences.displayName": displayName } },
+        ]);
+        if (!updatedTargetUser.acknowledged) {
+            return sendResponse(res, 500, "Could not update user's display name");
+        }
+
+        // create token and send response
+        const response = await generateToken(res.locals.user)
+            .then((token) => {
+                return sendResponse(res, 201, "Request successful", { token });
+            })
+            .catch((tokenErr) => {
+                return sendResponse(
+                    res,
+                    500,
+                    tokenErr.message || `Request successful, but token creation failed`,
+                    null,
+                    tokenErr,
+                );
+            });
+        return response;
     },
 ];
