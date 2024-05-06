@@ -5,8 +5,9 @@ import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
 import * as types from "@/utils/types";
 import User from "@/models/user";
+import Image from "@/models/image";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
-import validation from "@shared/validation";
+import { single, destroy } from "@/utils/uploadImage";
 import validators from "../validators";
 
 export const follow = [
@@ -155,7 +156,7 @@ export const preferencesDisplayName = [
         const { userId } = req.params;
         const { displayName } = req.body;
 
-        if (userId === res.locals.user.id) {
+        if (userId !== res.locals.user.id) {
             return sendResponse(res, 401, "User is not authorised to perform this action");
         }
 
@@ -193,7 +194,7 @@ export const preferencesBio = [
         const { userId } = req.params;
         const { bio } = req.body;
 
-        if (userId === res.locals.user.id) {
+        if (userId !== res.locals.user.id) {
             return sendResponse(res, 401, "User is not authorised to perform this action");
         }
 
