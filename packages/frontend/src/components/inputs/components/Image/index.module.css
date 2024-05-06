@@ -1,0 +1,17 @@
+.wrapper {
+    container-type: inline-size;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    width: 100%;
+}
+
+.image-and-upload-button-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    justify-items: flex-start;
+    align-items: center;
+    gap: 0.6rem;
+}
