@@ -17,5 +17,6 @@ router.get("/overviewFromTag", get.overviewFromTag);
 router.get("/active", get.active);
 router.post("/", create.regular);
 router.put("/:userId/follow", put.follow);
+router.put("/:userId/preferences/displayName", put.preferencesDisplayName);
 
 export default router;
