@@ -17,7 +17,6 @@ type TField = {
 export type TFieldUpdater = {
     field: React.ReactElement<TField>;
     func: PUT<null, { fieldValue: unknown }, unknown>;
-    publishResponseOnSuccess?: boolean;
     publishTopic?: string;
     onSuccessHandler?: (() => unknown) | null;
     overrideWaiting?: boolean;
@@ -26,7 +25,6 @@ export type TFieldUpdater = {
 function FieldUpdater({
     field,
     func,
-    publishResponseOnSuccess,
     publishTopic,
     onSuccessHandler,
     overrideWaiting = false,
@@ -61,11 +59,11 @@ function FieldUpdater({
     useEffect(() => {
         if (asyncResponse && asyncResponse.status < 400) {
             if (onSuccessHandler) onSuccessHandler();
-            if (publishResponseOnSuccess && publishTopic && publishTopic.length > 0) {
+            if (publishTopic && publishTopic.length > 0) {
                 PubSub.publish(publishTopic, asyncResponse.data);
             }
         }
-    }, [asyncResponse, onSuccessHandler, publishResponseOnSuccess, publishTopic]);
+    }, [asyncResponse, onSuccessHandler, publishTopic]);
 
     useEffect(() => {
         setWaiting(false);
