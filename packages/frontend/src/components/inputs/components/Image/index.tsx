@@ -2,7 +2,6 @@ import { useState } from "react";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 import Images from "@/components/images";
 import Buttons from "@/components/buttons";
-import convertArrayBufferToBase64 from "@/utils/convertArrayBufferToBase64";
 import * as Types from "../../types";
 import validateUploadedFile from "../File/utils/validateUploadedFile";
 import Inputs from "../..";
@@ -17,7 +16,7 @@ export type ImageInfo = {
 
 type Custom = {
     description?: string;
-    onChangeHandler?: ((imageBase64: string | null) => void) | null;
+    onChangeHandler?: ((image: extendedTypes.TypedArray | null) => void) | null;
     imageSizePx?: number;
 };
 
@@ -81,10 +80,7 @@ function Image({
                         setError(!status ? message : "");
                         const newImage = status && data ? data : null;
                         setValue(newImage);
-                        const imageBase64 = newImage
-                            ? await convertArrayBufferToBase64(newImage.data)
-                            : null;
-                        if (onChangeHandler) onChangeHandler(imageBase64);
+                        if (onChangeHandler) onChangeHandler(newImage ? newImage.data : null);
                     }}
                 />
             </div>
