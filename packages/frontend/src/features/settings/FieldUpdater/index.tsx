@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import * as useAsync from "@/hooks/useAsync";
 import Buttons from "@/components/buttons";
 import { Validator, validate } from "@/components/inputs/utils/validation";
-import validateUploadedFile from "@/components/inputs/components/File/utils/validateUploadedFile";
 import Accessibility from "@/components/accessibility";
 import { PUT } from "@shared/utils/apiFunctionTypes";
 import styles from "./index.module.css";
@@ -18,7 +17,7 @@ type TField = {
 export type TFieldUpdater = {
     field: React.ReactElement<TField>;
     func: PUT<null, { fieldValue: unknown }, unknown>;
-    conversionFunc?: (value: unknown) => unknown;
+    conversionFunc?: ((value: unknown) => unknown) | ((value: unknown) => Promise<unknown>);
     publishTopic?: string;
     onSuccessHandler?: (() => unknown) | null;
     overrideWaiting?: boolean;
@@ -120,10 +119,10 @@ function FieldUpdater({
                         <Buttons.Basic
                             type="submit"
                             text={!waiting ? "Confirm Changes" : ""}
-                            onClickHandler={() => {
+                            onClickHandler={async () => {
                                 setErrorMessage("");
                                 const fieldValue = conversionFunc
-                                    ? conversionFunc(fieldCurrentValue)
+                                    ? await conversionFunc(fieldCurrentValue)
                                     : fieldCurrentValue;
                                 setParams([{ body: { fieldValue } }, null]);
                                 setAttempting(true);
