@@ -353,3 +353,41 @@ export const preferencesProfileImage = [
         }
     },
 ];
+
+export const preferencesTheme = [
+    protectedRouteJWT,
+    validators.param.userId,
+    validators.body.preferences.theme,
+    checkRequestValidationError,
+    async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const { theme } = req.body;
+
+        if (userId !== res.locals.user.id) {
+            return sendResponse(res, 401, "User is not authorised to perform this action");
+        }
+
+        const updatedTargetUser = await User.updateOne({ _id: userId }, [
+            { $set: { "preferences.theme": theme } },
+        ]);
+        if (!updatedTargetUser.acknowledged) {
+            return sendResponse(res, 500, "Could not update user's theme");
+        }
+
+        // create token and send response
+        const response = await generateToken(res.locals.user)
+            .then((token) => {
+                return sendResponse(res, 201, "Request successful", { token });
+            })
+            .catch((tokenErr) => {
+                return sendResponse(
+                    res,
+                    500,
+                    tokenErr.message || `Request successful, but token creation failed`,
+                    null,
+                    tokenErr,
+                );
+            });
+        return response;
+    },
+];
