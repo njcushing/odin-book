@@ -10,7 +10,7 @@ import styles from "./index.module.css";
 
 type Custom = {
     onChangeHandler?: ((event: React.ChangeEvent<HTMLSelectElement>) => void) | null;
-    options: string[];
+    options: { text: string; value: string }[];
     description?: string;
 };
 
@@ -61,12 +61,13 @@ function Select({
                     ...sizes,
                 }}
                 onChange={(e) => {
+                    const option = options[e.target.selectedIndex];
                     const validValue = validation.validate(
-                        options[e.target.selectedIndex],
+                        option.value,
                         validator || validator,
                         required,
                     );
-                    setValue(options[e.target.selectedIndex]);
+                    setValue(option.value);
                     setError(!validValue.status && validValue.message ? validValue.message : "");
                     if (!validValue.status && onInvalidHandler) onInvalidHandler();
                     if (onChangeHandler) onChangeHandler(e);
@@ -75,8 +76,12 @@ function Select({
             >
                 {options.map((option) => {
                     return (
-                        <option className={styles["select-option"]} value={option} key={option}>
-                            {option}
+                        <option
+                            className={styles["select-option"]}
+                            value={option.value}
+                            key={option.value}
+                        >
+                            {option.text}
                         </option>
                     );
                 })}
