@@ -81,7 +81,7 @@ function Image({
                         setError(!status ? message : "");
                         if (!status && onInvalidHandler) onInvalidHandler();
                         const newImage = status && data ? data : null;
-                        setValue(newImage);
+                        if (newImage) setValue(newImage);
                         if (onChangeHandler) onChangeHandler(newImage ? newImage.data : null);
                     }}
                 />
