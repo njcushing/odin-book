@@ -216,3 +216,24 @@ export const imageBase64 = (value: string, messageType: "front" | "back"): Retur
         message: messageType === "front" ? `Valid image.` : `'image' field (string) is valid`,
     };
 };
+
+export const themeOptions = [
+    { text: "Light", value: "light" },
+    { text: "Dark", value: "dark" },
+];
+
+export const theme = (value: string, messageType: "front" | "back"): ReturnTypes => {
+    if (!themeOptions.some((option) => option.value === value)) {
+        return {
+            status: false,
+            message:
+                messageType === "front"
+                    ? `Theme must be one of the following: ${themeOptions.map((option) => option.value)}.`
+                    : `'theme' field (String) must be one of the following: ${themeOptions.map((option) => option.value)}`,
+        };
+    }
+    return {
+        status: true,
+        message: messageType === "front" ? "Valid Theme." : "'theme' field (String) is valid",
+    };
+};
