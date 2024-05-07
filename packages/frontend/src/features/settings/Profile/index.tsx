@@ -3,6 +3,7 @@ import { UserContext } from "@/context/user";
 import { v4 as uuidv4 } from "uuid";
 import Inputs from "@/components/inputs";
 import validation from "@shared/validation";
+import convertArrayBufferToBase64 from "@/utils/convertArrayBufferToBase64";
 import List from "../List";
 import FieldUpdater from "../FieldUpdater";
 import generatePUTAsyncFunction from "../utils/generatePUTAsyncFunction";
@@ -41,7 +42,6 @@ function Profile() {
                 `${import.meta.env.VITE_SERVER_DOMAIN}/user/${extract("_id")}/preferences/bio`,
                 "bio",
             )}
-            publishResponseOnSuccess
             publishTopic="successful-settings-update-user-preferences-bio"
         />,
         <FieldUpdater
@@ -59,8 +59,33 @@ function Profile() {
                 `${import.meta.env.VITE_SERVER_DOMAIN}/user/${extract("_id")}/preferences/displayName`,
                 "displayName",
             )}
-            publishResponseOnSuccess
             publishTopic="successful-settings-update-user-preferences-displayName"
+        />,
+        <FieldUpdater
+            field={
+                <Inputs.Image
+                    labelText="Profile Image"
+                    fieldId="profileImage"
+                    fieldName="profileImage"
+                    initialValue={`${
+                        extract("preferences.profileImage")
+                            ? (extract("preferences.profileImage") as { url: string }).url
+                            : ""
+                    }`}
+                    disabled={waiting}
+                    validator={{ func: validation.user.imageArray }}
+                    imageSizePx={144}
+                />
+            }
+            func={generatePUTAsyncFunction<null>(
+                `${import.meta.env.VITE_SERVER_DOMAIN}/user/${extract("_id")}/preferences/profileImage`,
+                "profileImage",
+            )}
+            conversionFunc={async (value) => {
+                const convertedValue = await convertArrayBufferToBase64(value as ArrayBuffer);
+                return convertedValue;
+            }}
+            publishTopic="successful-settings-update-user-preferences-profileImage"
         />,
     ];
     /* eslint-enable react/jsx-key */
