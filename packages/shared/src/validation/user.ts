@@ -196,7 +196,7 @@ export const imageBase64 = (value: string, messageType: "front" | "back"): Retur
             status: false,
             message:
                 messageType === "front"
-                    ? `Chat image must be a base64-encoded string.`
+                    ? `Image must be a base64-encoded string.`
                     : `'image' field must be a base64-encoded string.`,
         };
     }
@@ -207,12 +207,12 @@ export const imageBase64 = (value: string, messageType: "front" | "back"): Retur
             status: false,
             message:
                 messageType === "front"
-                    ? `Chat image must be smaller than 2MB.`
+                    ? `Image must be smaller than 2MB.`
                     : `'image' field (Array) must be smaller than 2MB.`,
         };
     }
     return {
         status: true,
-        message: messageType === "front" ? `Valid chat image.` : `'image' field (string) is valid`,
+        message: messageType === "front" ? `Valid image.` : `'image' field (string) is valid`,
     };
 };
