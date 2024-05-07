@@ -222,3 +222,134 @@ export const preferencesBio = [
         return response;
     },
 ];
+
+export const preferencesProfileImage = [
+    protectedRouteJWT,
+    validators.param.userId,
+    validators.body.preferences.profileImage,
+    checkRequestValidationError,
+    async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const { profileImage } = req.body;
+
+        if (userId !== res.locals.user.id) {
+            return sendResponse(res, 401, "User is not authorised to perform this action");
+        }
+
+        const user = await User.findById(userId);
+        if (!user) return sendResponse(res, 404, "Specified user not found in database");
+
+        const existingImage = await Image.findById(user.preferences.profileImage);
+
+        // attempt to upload image
+        let failedUpload = false;
+        const url = await single(profileImage)
+            .then((result) => result)
+            .catch((error) => {
+                failedUpload = true;
+                return error;
+            });
+        if (failedUpload) return sendResponse(res, 500, "Could not upload image");
+
+        const session = await mongoose.startSession();
+
+        // delete all created documents in case of aborted transaction
+        session.on("abort", async () => {
+            try {
+                await Image.deleteMany({ session });
+                await destroy(url); // destroy uploaded image too
+            } catch (error) {
+                console.error("Error occurred while deleting documents:", error);
+            }
+        });
+
+        try {
+            session.startTransaction();
+
+            // create image
+            const imageDoc = new Image({ url });
+            await imageDoc.save({ session }).catch((saveErr) => {
+                const error = new Error(saveErr);
+                throw error;
+            });
+
+            // update user's 'preferences.profileImage' field to new image _id
+            const updatedChat = await User.updateOne({ _id: userId }, [
+                { $set: { "preferences.profileImage": imageDoc._id } },
+            ]);
+            if (!updatedChat.acknowledged) {
+                return sendResponse(res, 500, "Could not update user's profile image");
+            }
+
+            // attempt to destroy existing image (in two places: the database first, then the cloud)
+            if (existingImage) {
+                const deletedImage = await Image.deleteOne({ _id: existingImage._id });
+                if (deletedImage.deletedCount === 0) {
+                    const error = new Error(
+                        `Could not delete current image: ${existingImage.url}.`,
+                    ) as types.ResponseError;
+                    error.status = 500;
+                    throw error;
+                }
+
+                let failedDestroy = false;
+                await destroy(existingImage.url)
+                    .then((result) => result)
+                    .catch((error) => {
+                        failedDestroy = true;
+                        return error;
+                    });
+                if (failedDestroy) {
+                    const error = new Error(
+                        `Could not destroy current image: ${existingImage.url}.`,
+                    ) as types.ResponseError;
+                    error.status = 500;
+                    throw error;
+                }
+            }
+
+            await session.commitTransaction();
+
+            session.endSession();
+
+            const responseImage = {
+                _id: imageDoc._id,
+                url: imageDoc.url,
+                alt: imageDoc.alt,
+            };
+
+            // create token and send response
+            const response = await generateToken(res.locals.user)
+                .then((token) => {
+                    return sendResponse(res, 200, "User's profile image successfully updated", {
+                        token,
+                        image: responseImage,
+                    });
+                })
+                .catch((tokenErr) => {
+                    return sendResponse(
+                        res,
+                        500,
+                        tokenErr.message ||
+                            "User's profile image successfully updated, but token creation failed",
+                        { image: responseImage },
+                        tokenErr,
+                    );
+                });
+            return response;
+        } catch (err: unknown) {
+            await session.abortTransaction();
+
+            session.endSession();
+
+            const status =
+                err && typeof err === "object" && "status" in err ? (err.status as number) : 500;
+            const errMessage =
+                err && typeof err === "object" && "message" in err
+                    ? (err.message as string)
+                    : "Internal Server Error";
+            const error = err instanceof Error ? (err as types.ResponseError) : null;
+            return sendResponse(res, status, errMessage, null, error);
+        }
+    },
+];
