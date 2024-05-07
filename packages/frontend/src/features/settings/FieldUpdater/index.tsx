@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import * as useAsync from "@/hooks/useAsync";
 import Buttons from "@/components/buttons";
 import { Validator, validate } from "@/components/inputs/utils/validation";
+import validateUploadedFile from "@/components/inputs/components/File/utils/validateUploadedFile";
 import Accessibility from "@/components/accessibility";
 import { PUT } from "@shared/utils/apiFunctionTypes";
 import styles from "./index.module.css";
@@ -74,11 +75,27 @@ function FieldUpdater({
     }, [awaitingResponse]);
 
     const calculateFormValidity = useCallback(
-        (formData: { [k: string]: FormDataEntryValue }) => {
+        async (formData: { [k: string]: FormDataEntryValue }) => {
             const { fieldName, validator, required } = field.props;
-            const validField = validate(formData[fieldName], validator || null, required || false);
-            setFieldCurrentValue(formData[fieldName]);
-            setButtonEnabled(validField.status && formData[fieldName] !== fieldInitialValue);
+            let value = formData[fieldName];
+
+            // for files, convert File object in form data back into array buffer
+            if (value instanceof File) {
+                await new Promise<void>((resolve) => {
+                    const read = new FileReader();
+                    read.readAsArrayBuffer(value as File);
+                    read.onloadend = () => {
+                        value = new Uint8Array(
+                            read.result as ArrayBuffer,
+                        ) as unknown as FormDataEntryValue;
+                        resolve();
+                    };
+                });
+            }
+
+            const validField = validate(value, validator || null, required || false);
+            setFieldCurrentValue(value);
+            setButtonEnabled(validField.status && value !== fieldInitialValue);
         },
         [field.props, fieldInitialValue],
     );
