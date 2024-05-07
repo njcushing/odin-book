@@ -49,6 +49,7 @@ function File({
     description = "",
     buttonSymbol = "attach_file",
     onUpdateHandler = null,
+    onInvalidHandler = null,
     displayNoFilesSelectedMessage = false,
 }: FileTypes) {
     const [files, setFiles] = useState<Files>(initialValue);
@@ -122,6 +123,7 @@ function File({
                             );
                             if (!status) {
                                 setError(message);
+                                if (onInvalidHandler) onInvalidHandler();
                             } else if (data) {
                                 const key = uuidv4();
                                 newFiles[key] = data;

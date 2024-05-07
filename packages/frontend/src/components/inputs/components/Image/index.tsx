@@ -38,6 +38,7 @@ function Image({
     size = "s",
     description = "",
     onChangeHandler = null,
+    onInvalidHandler = null,
     imageSizePx = 64,
 }: TImage) {
     const [value, setValue] = useState<ImageInfo>({ data: initialValue, file: null });
@@ -78,6 +79,7 @@ function Image({
                             validator,
                         );
                         setError(!status ? message : "");
+                        if (!status && onInvalidHandler) onInvalidHandler();
                         const newImage = status && data ? data : null;
                         setValue(newImage);
                         if (onChangeHandler) onChangeHandler(newImage ? newImage.data : null);

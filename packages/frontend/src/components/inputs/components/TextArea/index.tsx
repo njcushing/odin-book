@@ -34,6 +34,7 @@ function TextArea({
     fieldName,
     initialValue = "",
     onChangeHandler = null,
+    onInvalidHandler = null,
     disabled = false,
     readOnly = false,
     required = false,
@@ -81,6 +82,7 @@ function TextArea({
                     );
                     setValue(e.target.value);
                     setError(!validValue.status && validValue.message ? validValue.message : "");
+                    if (!validValue.status && onInvalidHandler) onInvalidHandler();
                     if (onChangeHandler) onChangeHandler(e);
                 }}
                 disabled={disabled || false}

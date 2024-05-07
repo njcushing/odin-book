@@ -26,6 +26,7 @@ function Select({
     fieldName,
     initialValue = "",
     onChangeHandler = null,
+    onInvalidHandler = null,
     disabled = false,
     required = false,
     errorMessage = "",
@@ -67,6 +68,7 @@ function Select({
                     );
                     setValue(options[e.target.selectedIndex]);
                     setError(!validValue.status && validValue.message ? validValue.message : "");
+                    if (!validValue.status && onInvalidHandler) onInvalidHandler();
                     if (onChangeHandler) onChangeHandler(e);
                 }}
                 disabled={disabled || false}
