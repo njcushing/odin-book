@@ -70,7 +70,7 @@ function FieldUpdater({
     }, [asyncResponse, onSuccessHandler, publishTopic, fieldCurrentValue]);
 
     useEffect(() => {
-        setWaiting(false);
+        setWaiting(awaitingResponse);
     }, [awaitingResponse]);
 
     const calculateFormValidity = useCallback(
