@@ -6,6 +6,7 @@ export type Base<T> = {
     fieldName: string;
     initialValue?: T;
     onChangeHandler?: ((event: React.ChangeEvent<HTMLInputElement>) => void) | null;
+    onInvalidHandler?: (() => void) | null;
     disabled?: boolean;
     readOnly?: boolean;
     required?: boolean;
