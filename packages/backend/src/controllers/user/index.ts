@@ -19,5 +19,6 @@ router.post("/", create.regular);
 router.put("/:userId/follow", put.follow);
 router.put("/:userId/preferences/displayName", put.preferencesDisplayName);
 router.put("/:userId/preferences/bio", put.preferencesBio);
+router.put("/:userId/preferences/profileImage", put.preferencesProfileImage);
 
 export default router;
