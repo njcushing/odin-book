@@ -83,6 +83,16 @@ const validators = {
                         return true;
                     }
                 }),
+            theme: body("theme")
+                .trim()
+                .custom((value) => {
+                    const valid = validation.user.theme(value, "front");
+                    if (!valid.status) {
+                        throw new Error(valid.message);
+                    } else {
+                        return true;
+                    }
+                }),
         },
     },
     param: {
