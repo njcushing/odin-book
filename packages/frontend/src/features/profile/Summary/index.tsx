@@ -149,11 +149,15 @@ function Summary() {
         <div className={styles["container"]}>
             <div className={styles["banner-image"]}>
                 <Accessibility.Skeleton waiting={currentlyWaiting} style={{ width: "100%" }}>
-                    <Images.Basic
-                        src={new Uint8Array([])}
-                        alt=""
-                        style={{ width: "100%", height: "240px" }}
-                    />
+                    {userSummary && userSummary.preferences.headerImage ? (
+                        <Images.Basic
+                            src={userSummary.preferences.headerImage.url}
+                            alt={userSummary.preferences.headerImage.alt}
+                            style={{ width: "100%", height: "240px" }}
+                        />
+                    ) : (
+                        <Images.Basic style={{ width: "100%", height: "240px" }} />
+                    )}
                 </Accessibility.Skeleton>
             </div>
             <div className={styles["main-content-container"]}>
