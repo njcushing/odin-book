@@ -1,7 +1,8 @@
 import { Outlet, Navigate } from "react-router-dom";
 import LayoutUI from "@/layouts";
 import Navigation from "@/components/navigation";
-import Sections from "../utils/Sections";
+import Profile from "../Profile";
+import Preferences from "../Preferences";
 import styles from "./index.module.css";
 
 export const routes = [
@@ -12,17 +13,17 @@ export const routes = [
     },
     {
         path: "account",
-        element: <Sections.Account />,
+        element: null,
         errorElement: <div></div>,
     },
     {
         path: "preferences",
-        element: <Sections.Preferences />,
+        element: <Preferences />,
         errorElement: <div></div>,
     },
     {
         path: "profile",
-        element: <Sections.Profile />,
+        element: <Profile />,
         errorElement: <div></div>,
     },
 ];
@@ -31,7 +32,7 @@ function Main() {
     const optionStyles = {
         gap: "0.4rem",
         fontSize: "1.2rem",
-        padding: "0.3rem 0.4rem",
+        padding: "0.16rem 0.4rem",
     };
 
     const navigationOptions = [
@@ -62,11 +63,11 @@ function Main() {
                         maxHeight: 999999,
                         areas: [
                             {
-                                size: "40%",
+                                size: "36%",
                                 children: [navigation],
                             },
                             {
-                                size: "60%",
+                                size: "64%",
                                 children: [
                                     <div className={styles["right-panel"]} key={0}>
                                         <Outlet />
