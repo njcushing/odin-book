@@ -9,6 +9,7 @@ import validation from "@shared/validation";
 import createMultilineTextTruncateStyles from "@/utils/createMultilineTextTruncateStyles";
 import mongoose from "mongoose";
 import changeChatName, { Params, Body, Response } from "./utils/changeChatName";
+import { Response as ChatOverviewResponse } from "../utils/getChatOverview";
 import styles from "./index.module.css";
 
 const buttonStyles = { fontSize: "1.1rem", padding: "0.6rem" };
@@ -136,7 +137,7 @@ function Header({ overrideChatName }: HeaderTypes) {
         PubSub.subscribe("chat-image-update-successful", (msg, data) => {
             const { _id, image } = data;
             if (chatData && chatData._id === _id) {
-                setChatData((oldChatData) => ({ ...oldChatData, image }));
+                setChatData((oldChatData) => ({ ...oldChatData, image }) as ChatOverviewResponse);
             }
         });
 
