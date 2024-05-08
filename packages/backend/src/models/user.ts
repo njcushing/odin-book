@@ -27,6 +27,7 @@ export type TUser = {
         displayName: string;
         bio: string;
         profileImage?: mongoose.Types.ObjectId;
+        headerImage?: mongoose.Types.ObjectId;
         theme: string;
     };
     createdAt?: Date;
@@ -127,6 +128,11 @@ const UserSchema: Schema = new Schema(
                 default: "",
             },
             profileImage: {
+                type: Schema.Types.ObjectId,
+                ref: "Image",
+                default: null,
+            },
+            headerImage: {
                 type: Schema.Types.ObjectId,
                 ref: "Image",
                 default: null,
