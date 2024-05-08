@@ -80,7 +80,7 @@ function Root() {
             setModal(
                 <Chat.UpdateImage
                     _id={data.chatId}
-                    defaultImageURL={data.image && data.image.url}
+                    defaultImageURL={data.currentImage && data.currentImage.url}
                     onCloseClickHandler={() => setModal(null)}
                     onSuccessHandler={() => setModal(null)}
                 />,
