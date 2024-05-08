@@ -21,6 +21,7 @@ type Custom = {
     imageSizePx?: number;
     imageWidth?: string;
     imageHeight?: string;
+    imageAspectRatio?: string;
 };
 
 export type TImage = Types.Base<AcceptedImageTypes> &
@@ -44,8 +45,9 @@ function Image({
     onInvalidHandler = null,
     imageType = "basic",
     imageSizePx = 64,
-    imageWidth = "64px",
-    imageHeight = "64px",
+    imageWidth,
+    imageHeight,
+    imageAspectRatio,
 }: TImage) {
     const [value, setValue] = useState<ImageInfo>({ data: initialValue, file: null });
     const [error, setError] = useState<string>("");
@@ -62,16 +64,18 @@ function Image({
             <Inputs.Label labelText={labelText} fieldId={fieldId} required={required} size={size} />
             <Inputs.Description text={description} size={size} />
             <div className={styles["image-and-upload-button-container"]}>
-                <div className={styles["test"]}>
-                    {imageType === "basic" ? (
-                        <Images.Basic
-                            src={value ? value.data : ""}
-                            style={{ width: imageWidth, height: imageHeight }}
-                        />
-                    ) : (
-                        <Images.Profile src={value ? value.data : ""} sizePx={imageSizePx} />
-                    )}
-                </div>
+                {imageType === "basic" ? (
+                    <Images.Basic
+                        src={value ? value.data : ""}
+                        style={{
+                            width: imageWidth,
+                            height: imageHeight,
+                            aspectRatio: imageAspectRatio,
+                        }}
+                    />
+                ) : (
+                    <Images.Profile src={value ? value.data : ""} sizePx={imageSizePx} />
+                )}
                 <Buttons.Upload
                     labelText=""
                     fieldId={fieldId}
