@@ -32,6 +32,8 @@ const extractUserProperty = (user: UserTypes, property: string): unknown => {
             return user.preferences.bio;
         case "preferences.profileImage":
             return user.preferences.profileImage;
+        case "preferences.headerImage":
+            return user.preferences.headerImage;
         case "preferences.theme":
             return user.preferences.theme;
         case "creationDate":
