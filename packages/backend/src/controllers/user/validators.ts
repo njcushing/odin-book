@@ -83,6 +83,16 @@ const validators = {
                         return true;
                     }
                 }),
+            headerImage: body("headerImage")
+                .trim()
+                .custom((value) => {
+                    const valid = validation.user.imageBase64(value, "front");
+                    if (!valid.status) {
+                        throw new Error(valid.message);
+                    } else {
+                        return true;
+                    }
+                }),
             theme: body("theme")
                 .trim()
                 .custom((value) => {
