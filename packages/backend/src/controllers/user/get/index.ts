@@ -238,7 +238,7 @@ export const summary = [
                     "preferences.profileImage": {
                         $cond: {
                             if: { $isArray: "$preferences.profileImage" },
-                            then: { $arrayElemAt: ["$profileImage", 0] },
+                            then: { $arrayElemAt: ["$preferences.profileImage", 0] },
                             else: null,
                         },
                     },
