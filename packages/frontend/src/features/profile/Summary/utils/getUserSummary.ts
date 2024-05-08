@@ -23,6 +23,11 @@ export type Response = {
             url: string;
             alt: string;
         } | null;
+        headerImage: {
+            _id: mongoose.Types.ObjectId | null | undefined;
+            url: string;
+            alt: string;
+        } | null;
     };
     isFollowing: boolean;
     creationDate: string;
