@@ -17,12 +17,14 @@ type ActiveTypes = {
 
 interface ChatState {
     chatData: Response;
+    setChatData: React.Dispatch<React.SetStateAction<Response>>;
     participantsInfo: extractedParticipantsInfo;
     awaitingResponse: boolean;
 }
 
 const defaultState: ChatState = {
     chatData: null,
+    setChatData: () => {},
     participantsInfo: {},
     awaitingResponse: true,
 };
