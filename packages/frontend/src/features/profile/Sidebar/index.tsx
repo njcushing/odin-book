@@ -33,7 +33,14 @@ function Sidebar({ type }: SidebarTypes) {
             <div className={styles["row-one"]}>
                 <User.ImageAndName
                     waiting={waiting}
-                    image={{ src: new Uint8Array([]), alt: "" }}
+                    image={
+                        extract("preferences.profileImage")
+                            ? {
+                                  src: (extract("preferences.profileImage") as { url: string }).url,
+                                  alt: (extract("preferences.profileImage") as { alt: string }).alt,
+                              }
+                            : { src: "", alt: "" }
+                    }
                     displayName={`${extract("preferences.displayName")}`}
                     accountTag={`${extract("accountTag")}`}
                     size="m"
