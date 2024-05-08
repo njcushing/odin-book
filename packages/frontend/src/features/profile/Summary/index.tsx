@@ -153,7 +153,7 @@ function Summary() {
                         <Images.Basic
                             src={userSummary.preferences.headerImage.url}
                             alt={userSummary.preferences.headerImage.alt}
-                            style={{ width: "100%", height: "240px" }}
+                            style={{ width: "100%", aspectRatio: "21 / 9" }}
                         />
                     ) : (
                         <Images.Basic style={{ width: "100%", height: "240px" }} />
