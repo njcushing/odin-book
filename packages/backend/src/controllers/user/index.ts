@@ -20,6 +20,7 @@ router.put("/:userId/follow", put.follow);
 router.put("/:userId/preferences/displayName", put.preferencesDisplayName);
 router.put("/:userId/preferences/bio", put.preferencesBio);
 router.put("/:userId/preferences/profileImage", put.preferencesProfileImage);
+router.put("/:userId/preferences/headerImage", put.preferencesHeaderImage);
 router.put("/:userId/preferences/theme", put.preferencesTheme);
 
 export default router;
