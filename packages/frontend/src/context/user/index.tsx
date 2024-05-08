@@ -33,7 +33,8 @@ export interface UserTypes {
 }
 
 export interface UserState {
-    user?: UserTypes;
+    user: UserTypes;
+    setUser: React.Dispatch<React.SetStateAction<UserTypes>>;
     updateUser: () => void;
     awaitingResponse: boolean;
     extract: (property: string) => unknown;
@@ -61,6 +62,7 @@ export const defaultUser: UserTypes = {
 
 const defaultState: UserState = {
     user: defaultUser,
+    setUser: () => {},
     updateUser: () => {},
     awaitingResponse: false,
     extract: (property: string) => {
@@ -109,7 +111,7 @@ function UserContextProvider({ children }: UserContextProviderTypes) {
     return (
         <UserContext.Provider
             value={useMemo(
-                () => ({ user: state, updateUser, awaitingResponse, extract }),
+                () => ({ user: state, setUser: setState, updateUser, awaitingResponse, extract }),
                 [state, updateUser, awaitingResponse, extract],
             )}
         >
