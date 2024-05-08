@@ -170,14 +170,14 @@ export const preferencesDisplayName = [
         // create token and send response
         const response = await generateToken(res.locals.user)
             .then((token) => {
-                return sendResponse(res, 201, "Request successful", { token });
+                return sendResponse(res, 201, "Request successful", { token, displayName });
             })
             .catch((tokenErr) => {
                 return sendResponse(
                     res,
                     500,
                     tokenErr.message || `Request successful, but token creation failed`,
-                    null,
+                    { displayName },
                     tokenErr,
                 );
             });
@@ -208,14 +208,14 @@ export const preferencesBio = [
         // create token and send response
         const response = await generateToken(res.locals.user)
             .then((token) => {
-                return sendResponse(res, 201, "Request successful", { token });
+                return sendResponse(res, 201, "Request successful", { token, bio });
             })
             .catch((tokenErr) => {
                 return sendResponse(
                     res,
                     500,
                     tokenErr.message || `Request successful, but token creation failed`,
-                    null,
+                    { bio },
                     tokenErr,
                 );
             });
@@ -508,14 +508,14 @@ export const preferencesTheme = [
         // create token and send response
         const response = await generateToken(res.locals.user)
             .then((token) => {
-                return sendResponse(res, 201, "Request successful", { token });
+                return sendResponse(res, 201, "Request successful", { token, theme });
             })
             .catch((tokenErr) => {
                 return sendResponse(
                     res,
                     500,
                     tokenErr.message || `Request successful, but token creation failed`,
-                    null,
+                    { theme },
                     tokenErr,
                 );
             });
