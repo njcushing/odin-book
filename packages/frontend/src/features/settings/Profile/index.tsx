@@ -74,6 +74,7 @@ function Profile() {
                     }`}
                     disabled={waiting}
                     validator={{ func: validation.user.imageArray }}
+                    imageType="profile"
                     imageSizePx={144}
                 />
             }
@@ -86,6 +87,34 @@ function Profile() {
                 return convertedValue;
             }}
             publishTopic="successful-settings-update-user-preferences-profileImage"
+        />,
+        <FieldUpdater
+            field={
+                <Inputs.Image
+                    labelText="Header Image"
+                    fieldId="headerImage"
+                    fieldName="headerImage"
+                    initialValue={`${
+                        extract("preferences.headerImage")
+                            ? (extract("preferences.headerImage") as { url: string }).url
+                            : ""
+                    }`}
+                    disabled={waiting}
+                    validator={{ func: validation.user.imageArray }}
+                    imageType="basic"
+                    imageWidth="100%"
+                    imageAspectRatio="21 / 9"
+                />
+            }
+            func={generatePUTAsyncFunction<null>(
+                `${import.meta.env.VITE_SERVER_DOMAIN}/user/${extract("_id")}/preferences/headerImage`,
+                "headerImage",
+            )}
+            conversionFunc={async (value) => {
+                const convertedValue = await convertArrayBufferToBase64(value as ArrayBuffer);
+                return convertedValue;
+            }}
+            publishTopic="successful-settings-update-user-preferences-headerImage"
         />,
     ];
     /* eslint-enable react/jsx-key */
