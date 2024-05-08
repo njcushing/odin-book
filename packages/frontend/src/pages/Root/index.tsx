@@ -100,6 +100,7 @@ function Root() {
             PubSub.unsubscribe("create-new-post-button-click");
             PubSub.unsubscribe("create-new-reply-button-click");
             PubSub.unsubscribe("create-new-chat-button-click");
+            PubSub.unsubscribe("update-chat-image-button-click");
             PubSub.unsubscribe("add-users-to-chat-button-click");
         };
     }, []);
