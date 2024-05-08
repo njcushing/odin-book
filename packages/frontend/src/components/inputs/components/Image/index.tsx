@@ -17,7 +17,10 @@ export type ImageInfo = {
 type Custom = {
     description?: string;
     onChangeHandler?: ((image: extendedTypes.TypedArray | null) => void) | null;
+    imageType?: "basic" | "profile";
     imageSizePx?: number;
+    imageWidth?: string;
+    imageHeight?: string;
 };
 
 export type TImage = Types.Base<AcceptedImageTypes> &
@@ -39,7 +42,10 @@ function Image({
     description = "",
     onChangeHandler = null,
     onInvalidHandler = null,
+    imageType = "basic",
     imageSizePx = 64,
+    imageWidth = "64px",
+    imageHeight = "64px",
 }: TImage) {
     const [value, setValue] = useState<ImageInfo>({ data: initialValue, file: null });
     const [error, setError] = useState<string>("");
@@ -57,7 +63,14 @@ function Image({
             <Inputs.Description text={description} size={size} />
             <div className={styles["image-and-upload-button-container"]}>
                 <div className={styles["test"]}>
-                    <Images.Profile src={value ? value.data : ""} sizePx={imageSizePx} />
+                    {imageType === "basic" ? (
+                        <Images.Basic
+                            src={value ? value.data : ""}
+                            style={{ width: imageWidth, height: imageHeight }}
+                        />
+                    ) : (
+                        <Images.Profile src={value ? value.data : ""} sizePx={imageSizePx} />
+                    )}
                 </div>
                 <Buttons.Upload
                     labelText=""
