@@ -19,7 +19,7 @@ export type TFieldUpdater = {
     func: PUT<null, { fieldValue: unknown }, unknown>;
     conversionFunc?: ((value: unknown) => unknown) | ((value: unknown) => Promise<unknown>);
     publishTopic?: string;
-    onSuccessHandler?: (() => unknown) | null;
+    onSuccessHandler?: ((value: unknown) => unknown) | null;
     overrideWaiting?: boolean;
 };
 
@@ -71,7 +71,7 @@ function FieldUpdater({
 
     useEffect(() => {
         if (asyncResponseStored && asyncResponseStored.status < 400) {
-            if (onSuccessHandler) onSuccessHandler();
+            if (onSuccessHandler) onSuccessHandler(fieldCurrentValue);
             if (publishTopic && publishTopic.length > 0) {
                 PubSub.publish(publishTopic, asyncResponseStored.data);
             }
