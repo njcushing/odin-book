@@ -114,6 +114,16 @@ export const active = [
                                     else: "$preferences.profileImage",
                                 },
                             },
+                            // project headerImage even if it is not present in the document
+                            headerImage: {
+                                $cond: {
+                                    if: {
+                                        $eq: [{ $type: "$preferences.headerImage" }, "missing"],
+                                    },
+                                    then: null,
+                                    else: "$preferences.headerImage",
+                                },
+                            },
                         },
                         creationDate: "$createdAt",
                     },
@@ -133,6 +143,26 @@ export const active = [
                             $cond: {
                                 if: { $isArray: "$preferences.profileImage" },
                                 then: { $arrayElemAt: ["$preferences.profileImage", 0] },
+                                else: null,
+                            },
+                        },
+                    },
+                },
+                // find headerImage if possible
+                {
+                    $lookup: {
+                        from: "images",
+                        localField: "preferences.headerImage",
+                        foreignField: "_id",
+                        as: "preferences.headerImage",
+                    },
+                },
+                {
+                    $addFields: {
+                        "preferences.headerImage": {
+                            $cond: {
+                                if: { $isArray: "$preferences.headerImage" },
+                                then: { $arrayElemAt: ["$preferences.headerImage", 0] },
                                 else: null,
                             },
                         },
