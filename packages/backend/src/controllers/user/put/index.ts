@@ -323,7 +323,7 @@ export const preferencesProfileImage = [
                 .then((token) => {
                     return sendResponse(res, 200, "User's profile image successfully updated", {
                         token,
-                        image: responseImage,
+                        profileImage: responseImage,
                     });
                 })
                 .catch((tokenErr) => {
@@ -332,7 +332,7 @@ export const preferencesProfileImage = [
                         500,
                         tokenErr.message ||
                             "User's profile image successfully updated, but token creation failed",
-                        { image: responseImage },
+                        { profileImage: responseImage },
                         tokenErr,
                     );
                 });
@@ -454,7 +454,7 @@ export const preferencesHeaderImage = [
                 .then((token) => {
                     return sendResponse(res, 200, "User's header image successfully updated", {
                         token,
-                        image: responseImage,
+                        headerImage: responseImage,
                     });
                 })
                 .catch((tokenErr) => {
@@ -463,7 +463,7 @@ export const preferencesHeaderImage = [
                         500,
                         tokenErr.message ||
                             "User's header image successfully updated, but token creation failed",
-                        { image: responseImage },
+                        { headerImage: responseImage },
                         tokenErr,
                     );
                 });
