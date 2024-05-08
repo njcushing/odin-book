@@ -35,6 +35,11 @@ function FieldUpdater({
     const [fieldInitialValue, setFieldInitialValue] = useState<unknown>(field.props.initialValue);
     const [fieldCurrentValue, setFieldCurrentValue] = useState<unknown>(field.props.initialValue);
     const [buttonEnabled, setButtonEnabled] = useState<boolean>(false);
+    const [asyncResponseStored, setAsyncResponseStored] = useState<{
+        status: number;
+        message: string | null;
+        data?: unknown;
+    } | null>(null);
 
     const formRef = useRef(null);
 
@@ -46,28 +51,33 @@ function FieldUpdater({
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        if (asyncResponse) {
-            if (
-                asyncResponse.status >= 400 &&
-                asyncResponse.message &&
-                asyncResponse.message.length > 0
-            ) {
-                setErrorMessage(asyncResponse.message);
-            } else {
-                setErrorMessage("");
-            }
-        }
+        setAsyncResponseStored(asyncResponse);
     }, [asyncResponse]);
 
     useEffect(() => {
-        if (asyncResponse && asyncResponse.status < 400) {
+        if (asyncResponseStored) {
+            if (
+                asyncResponseStored.status >= 400 &&
+                asyncResponseStored.message &&
+                asyncResponseStored.message.length > 0
+            ) {
+                setErrorMessage(asyncResponseStored.message);
+            } else {
+                setErrorMessage("");
+            }
+            setAsyncResponseStored(null);
+        }
+    }, [asyncResponseStored]);
+
+    useEffect(() => {
+        if (asyncResponseStored && asyncResponseStored.status < 400) {
             if (onSuccessHandler) onSuccessHandler();
             if (publishTopic && publishTopic.length > 0) {
-                PubSub.publish(publishTopic, asyncResponse.data);
+                PubSub.publish(publishTopic, asyncResponseStored.data);
             }
             setFieldInitialValue(fieldCurrentValue);
         }
-    }, [asyncResponse, onSuccessHandler, publishTopic, fieldCurrentValue]);
+    }, [asyncResponseStored, onSuccessHandler, publishTopic, fieldCurrentValue]);
 
     useEffect(() => {
         setWaiting(awaitingResponse);
