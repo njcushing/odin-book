@@ -24,13 +24,14 @@ export function generatePUTAsyncFunction<Response>(route: string, fieldName: str
                 const responseJSON = await apiResponse.json();
                 saveTokenFromAPIResponse(responseJSON);
 
+                if (responseJSON.data && "token" in responseJSON.data) {
+                    delete responseJSON.data.token;
+                }
+
                 return {
                     status: responseJSON.status,
                     message: responseJSON.message,
-                    data:
-                        responseJSON.data && "token" in responseJSON.data
-                            ? delete responseJSON.data.token
-                            : responseJSON.data,
+                    data: responseJSON.data,
                 };
             })
             .catch((error) => {
