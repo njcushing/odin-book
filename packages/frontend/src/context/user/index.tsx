@@ -23,6 +23,10 @@ export interface UserTypes {
             _id: extendedTypes.MongoDBObjectId;
             url: string;
         } | null;
+        headerImage: {
+            _id: extendedTypes.MongoDBObjectId;
+            url: string;
+        } | null;
         theme: string;
     };
     creationDate: string;
@@ -49,6 +53,7 @@ export const defaultUser: UserTypes = {
         displayName: "",
         bio: "",
         profileImage: null,
+        headerImage: null,
         theme: "default",
     },
     creationDate: "1900-01-01T00:00:00.000Z",
