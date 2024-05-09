@@ -30,7 +30,15 @@ function ChatParticipants({ participants }: TChatParticipants) {
                                 className={styles["participant-container"]}
                                 key={`infobar-participant-${participant.userId}`}
                             >
-                                <Images.Profile sizePx={48} />
+                                {participant.profileImage ? (
+                                    <Images.Profile
+                                        src={participant.profileImage.url}
+                                        alt={participant.profileImage.alt}
+                                        sizePx={48}
+                                    />
+                                ) : (
+                                    <Images.Profile sizePx={48} />
+                                )}
                                 <p className={styles["name"]}>{participant.inChatName}</p>
                                 <ul className={styles["symbols"]}>
                                     {role ? (
