@@ -1,8 +1,11 @@
-import { useState, useEffect, useRef } from "react";
-import PeopleYouMayKnow from "../PeopleYouMayKnow";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.module.css";
 
-function Regular() {
+type TRegular = {
+    children?: React.ReactNode;
+};
+
+function Regular({ children }: TRegular) {
     const [wrapperHeight, setWrapperHeight] = useState<number>(0);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -30,11 +33,7 @@ function Regular() {
 
     return (
         <div className={styles["wrapper"]} ref={wrapperRef} style={{ top: wrapperTop }}>
-            <div className={styles["container"]}>
-                <PeopleYouMayKnow />
-                <PeopleYouMayKnow />
-                <PeopleYouMayKnow />
-            </div>
+            <div className={styles["container"]}>{children}</div>
         </div>
     );
 }
