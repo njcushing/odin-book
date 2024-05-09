@@ -132,7 +132,7 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
     const info = (
         <Infobar.Wrapper
             style={{
-                maxHeight: "calc(100% - (2 * 0.4rem))",
+                height: "calc(100% - (2 * 0.4rem))",
                 padding: "0.4rem",
             }}
             key={0}
