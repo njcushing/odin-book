@@ -1,7 +1,7 @@
-import Regular from "./Regular";
+import Wrapper from "./Wrapper";
 
 const Infobar = {
-    Regular,
+    Wrapper,
 };
 
 export default Infobar;

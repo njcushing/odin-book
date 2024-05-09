@@ -33,7 +33,7 @@ function Profile() {
                     maxHeight: 999999,
                     areas: [
                         { size: "600px", children: [<Outlet key={0} />] },
-                        { size: "320px", children: [<Infobar.Regular key={0} />] },
+                        { size: "320px", children: [<Infobar.Wrapper key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",

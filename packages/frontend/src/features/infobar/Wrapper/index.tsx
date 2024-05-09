@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.module.css";
 
-type TRegular = {
+type TWrapper = {
     children?: React.ReactNode;
 };
 
-function Regular({ children }: TRegular) {
+function Wrapper({ children }: TWrapper) {
     const [wrapperHeight, setWrapperHeight] = useState<number>(0);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -38,4 +38,4 @@ function Regular({ children }: TRegular) {
     );
 }
 
-export default Regular;
+export default Wrapper;
