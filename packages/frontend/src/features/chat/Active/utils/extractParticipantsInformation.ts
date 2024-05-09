@@ -17,6 +17,8 @@ export type ReturnTypes = {
     [key: string]: {
         userId: mongoose.Types.ObjectId;
         inChatName: string;
+        role: "admin" | "moderator" | "guest";
+        muted: boolean;
         status: "online" | "away" | "busy" | "offline" | null;
     };
 };
@@ -36,6 +38,8 @@ const extractParticipantsInformation = (participants: Participants): ReturnTypes
                 }
                 return participant.user.accountTag;
             })(),
+            role: participant.role,
+            muted: participant.muted,
             status: null,
         };
     });
