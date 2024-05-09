@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import PeopleYouMayKnow from "../PeopleYouMayKnow";
 import styles from "./index.module.css";
 
-function Home() {
+function Regular() {
     const [wrapperHeight, setWrapperHeight] = useState<number>(0);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -39,4 +39,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Regular;

@@ -1,7 +1,7 @@
-import Home from "./Home";
+import Regular from "./Regular";
 
 const Infobar = {
-    Home,
+    Regular,
 };
 
 export default Infobar;
