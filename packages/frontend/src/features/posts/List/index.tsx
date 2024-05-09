@@ -187,7 +187,7 @@ function List() {
                                     {errorMessage}
                                 </p>
                             ) : (
-                                <p></p>
+                                <p ref={errorMessageRef}></p>
                             )}
                             <div
                                 className={styles["create-new-post-button-container"]}

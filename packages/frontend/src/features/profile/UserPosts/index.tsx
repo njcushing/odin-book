@@ -127,7 +127,7 @@ function UserPosts({ repliesOnly = false }: UserPostsTypes) {
                                     {errorMessage}
                                 </p>
                             ) : (
-                                <p></p>
+                                <p ref={errorMessageRef}></p>
                             )}
                         </div>
                     </div>

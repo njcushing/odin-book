@@ -119,7 +119,7 @@ function UserFollowers() {
                                     {errorMessage}
                                 </p>
                             ) : (
-                                <p></p>
+                                <p ref={errorMessageRef}></p>
                             )}
                         </div>
                     </div>

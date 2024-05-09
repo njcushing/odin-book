@@ -112,7 +112,7 @@ function UserLikes() {
                                     {errorMessage}
                                 </p>
                             ) : (
-                                <p></p>
+                                <p ref={errorMessageRef}></p>
                             )}
                         </div>
                     </div>
