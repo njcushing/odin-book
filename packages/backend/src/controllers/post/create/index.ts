@@ -44,22 +44,26 @@ export const regular = [
                     session.startTransaction();
 
                     // create images
-                    const images = await Promise.all(
-                        uploadResponses.map(async (url) => {
-                            const image = new Image({ url });
-                            await image
-                                .save({ session })
-                                .then(async (result) => result)
-                                .catch((saveErr) => {
-                                    throw saveErr;
-                                });
-                            return image;
-                        }),
-                    )
-                        .then((result) => result)
-                        .catch((err) => {
-                            throw err;
-                        });
+
+                    /*
+                     * I need to disable the linter rule here because I *do* need to perform each database
+                     * operation consecutively rather than concurrently. There is a problem with using
+                     * sessions in the .save method's options parameter if the documents are being saved
+                     * concurrently, which sometimes causes the transaction to fail.
+                     */
+
+                    const images = [];
+                    for (let i = 0; i < uploadResponses.length; i++) {
+                        const url = uploadResponses[i];
+                        /* eslint-disable-next-line no-await-in-loop */
+                        const image = await new Image({ url })
+                            .save({ session })
+                            .then(async (result) => result)
+                            .catch((saveErr) => {
+                                throw saveErr;
+                            });
+                        images.push(image);
+                    }
 
                     // create post
                     const post = new Post({
