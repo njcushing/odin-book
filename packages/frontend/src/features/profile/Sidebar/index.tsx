@@ -59,7 +59,15 @@ function Sidebar({ type }: SidebarTypes) {
     if (type === "thin") {
         return (
             <div className={styles["container"]}>
-                <Images.Profile src={new Uint8Array([])} sizePx={48} />
+                {extract("preferences.profileImage") ? (
+                    <Images.Profile
+                        src={(extract("preferences.profileImage") as { url: string }).url}
+                        alt={(extract("preferences.profileImage") as { alt: string }).alt}
+                        sizePx={40}
+                    />
+                ) : (
+                    <Images.Profile sizePx={40} />
+                )}
             </div>
         );
     }
