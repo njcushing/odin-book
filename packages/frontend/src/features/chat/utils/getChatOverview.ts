@@ -17,6 +17,8 @@ export type Response = {
             };
         };
         nickname: string;
+        role: "admin" | "moderator" | "guest";
+        muted: boolean;
     }[];
     name: string;
     image: {
