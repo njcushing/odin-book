@@ -29,7 +29,7 @@ export const overview = [
 
         const aggregationResult = await Chat.aggregate([
             { $match: { _id: new mongoose.Types.ObjectId(chatId) } },
-            // populate all participants.user documents
+            // populate all participants.user documents (including their 'preferences.profileImage' field)
             { $unwind: "$participants" },
             {
                 $lookup: {
@@ -40,6 +40,21 @@ export const overview = [
                 },
             },
             { $addFields: { "participants.user": { $arrayElemAt: ["$participants.user", 0] } } },
+            {
+                $lookup: {
+                    from: "images",
+                    localField: "participants.user.preferences.profileImage",
+                    foreignField: "_id",
+                    as: "participants.user.preferences.profileImage",
+                },
+            },
+            {
+                $addFields: {
+                    "participants.user.preferences.profileImage": {
+                        $arrayElemAt: ["$participants.user.preferences.profileImage", 0],
+                    },
+                },
+            },
             {
                 $group: {
                     _id: "$_id",
@@ -63,6 +78,20 @@ export const overview = [
                                     accountTag: "$$participant.user.accountTag",
                                     preferences: {
                                         displayName: "$$participant.user.preferences.displayName",
+                                        profileImage: {
+                                            $cond: {
+                                                if: {
+                                                    $eq: [
+                                                        {
+                                                            $type: "$$participant.user.preferences.profileImage",
+                                                        },
+                                                        "missing",
+                                                    ],
+                                                },
+                                                then: null,
+                                                else: "$$participant.user.preferences.profileImage",
+                                            },
+                                        },
                                     },
                                 },
                                 nickname: "$$participant.nickname",
