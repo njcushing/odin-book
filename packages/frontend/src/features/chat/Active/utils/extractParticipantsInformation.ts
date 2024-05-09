@@ -6,6 +6,11 @@ type Participants = {
         accountTag: string;
         preferences: {
             displayName: string;
+            profileImage: {
+                _id: mongoose.Types.ObjectId;
+                url: string;
+                alt: string;
+            } | null;
         };
     };
     nickname: string;
@@ -17,6 +22,11 @@ export type ReturnTypes = {
     [key: string]: {
         userId: mongoose.Types.ObjectId;
         inChatName: string;
+        profileImage: {
+            _id: mongoose.Types.ObjectId;
+            url: string;
+            alt: string;
+        } | null;
         role: "admin" | "moderator" | "guest";
         muted: boolean;
         status: "online" | "away" | "busy" | "offline" | null;
@@ -38,6 +48,7 @@ const extractParticipantsInformation = (participants: Participants): ReturnTypes
                 }
                 return participant.user.accountTag;
             })(),
+            profileImage: participant.user.preferences.profileImage,
             role: participant.role,
             muted: participant.muted,
             status: null,
