@@ -9,6 +9,8 @@ type Participants = {
         };
     };
     nickname: string;
+    role: "admin" | "moderator" | "guest";
+    muted: boolean;
 }[];
 
 export type ReturnTypes = {
