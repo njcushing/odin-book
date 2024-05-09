@@ -14,6 +14,11 @@ export type Response = {
             accountTag: string;
             preferences: {
                 displayName: string;
+                profileImage: {
+                    _id: mongoose.Types.ObjectId;
+                    url: string;
+                    alt: string;
+                } | null;
             };
         };
         nickname: string;
