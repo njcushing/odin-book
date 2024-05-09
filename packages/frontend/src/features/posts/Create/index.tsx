@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { UserContext } from "@/context/user";
 import Modals from "@/components/modals";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
@@ -34,6 +35,8 @@ function Create({
     onCloseClickHandler = null,
     onSuccessHandler = null,
 }: CreateTypes) {
+    const { extract } = useContext(UserContext);
+
     const [text, setText] = useState<string>(defaultText);
     const [images, setImages] = useState<Images>(defaultImages);
 
@@ -61,6 +64,23 @@ function Create({
     useEffect(() => {
         setWaiting(creatingPost);
     }, [creatingPost]);
+
+    const authorInfo = {
+        _id: (extract("_id") as mongoose.Types.ObjectId) || new mongoose.Types.ObjectId(),
+        accountTag: `${extract("accountTag")}` || "User",
+        preferences: {
+            displayName: `${extract("preferences.displayName")}` || "User",
+            profileImage: (extract("preferences.profileImage") as {
+                _id: mongoose.Types.ObjectId;
+                url: string;
+                alt: string;
+            }) || {
+                _id: new mongoose.Types.ObjectId(),
+                url: "",
+                alt: "",
+            },
+        },
+    };
 
     return (
         <Modals.Basic onCloseClickHandler={onCloseClickHandler}>
@@ -102,18 +122,7 @@ function Create({
                     <Posts.Post
                         overridePostData={{
                             _id: new mongoose.Types.ObjectId(),
-                            author: {
-                                _id: new mongoose.Types.ObjectId(),
-                                accountTag: "JohnSmith84",
-                                preferences: {
-                                    displayName: "John Smith",
-                                    profileImage: {
-                                        _id: new mongoose.Types.ObjectId(),
-                                        url: new Uint8Array([]),
-                                        alt: "",
-                                    },
-                                },
-                            },
+                            author: authorInfo,
                             text,
                             images: Object.keys(images).map((key) => {
                                 return {
