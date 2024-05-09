@@ -66,6 +66,8 @@ export const overview = [
                                     },
                                 },
                                 nickname: "$$participant.nickname",
+                                role: "$$participant.role",
+                                muted: "$$participant.muted",
                             },
                         },
                     },
