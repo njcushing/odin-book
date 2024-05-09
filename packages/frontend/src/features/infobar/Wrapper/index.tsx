@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.module.css";
 
 type TWrapper = {
+    style?: React.CSSProperties;
     children?: React.ReactNode;
 };
 
-function Wrapper({ children }: TWrapper) {
+function Wrapper({ style, children }: TWrapper) {
     const [wrapperHeight, setWrapperHeight] = useState<number>(0);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -32,7 +33,7 @@ function Wrapper({ children }: TWrapper) {
     const wrapperTop = `min(0px, calc(100vh - ${wrapperHeight}px))`;
 
     return (
-        <div className={styles["wrapper"]} ref={wrapperRef} style={{ top: wrapperTop }}>
+        <div className={styles["wrapper"]} ref={wrapperRef} style={{ ...style, top: wrapperTop }}>
             <div className={styles["container"]}>{children}</div>
         </div>
     );
