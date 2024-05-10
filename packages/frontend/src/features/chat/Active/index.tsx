@@ -100,6 +100,28 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
         setWaiting(gettingChatOverview);
     }, [gettingChatOverview]);
 
+    // subscribe to users being successfully added update
+    useEffect(() => {
+        PubSub.unsubscribe("chat-add-users-successful");
+        PubSub.subscribe("chat-add-users-successful", (msg, data) => {
+            const { participants } = data;
+            const existingParticipants = chatData ? chatData.participants : [];
+            if (chatData) {
+                setChatData(
+                    (oldChatData) =>
+                        ({
+                            ...oldChatData,
+                            participants: [...existingParticipants, ...participants],
+                        }) as Response,
+                );
+            }
+        });
+
+        return () => {
+            PubSub.unsubscribe("chat-add-users-successful");
+        };
+    }, [chatData, setChatData]);
+
     const provider = (
         <ChatContext.Provider
             value={useMemo(
