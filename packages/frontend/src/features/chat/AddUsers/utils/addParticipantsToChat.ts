@@ -10,7 +10,23 @@ export type Body = {
     participants: mongoose.Types.ObjectId[];
 };
 
-export type Response = null;
+export type Response = {
+    user: {
+        _id: mongoose.Types.ObjectId;
+        accountTag: string;
+        preferences: {
+            displayName: string;
+            profileImage: {
+                _id: mongoose.Types.ObjectId;
+                url: string;
+                alt: string;
+            } | null;
+        };
+    };
+    nickname: string;
+    role: "admin" | "moderator" | "guest";
+    muted: boolean;
+}[];
 
 const addParticipantsToChat: apiFunctionTypes.PUT<Params, Body, Response> = async (
     data,
@@ -54,7 +70,7 @@ const addParticipantsToChat: apiFunctionTypes.PUT<Params, Body, Response> = asyn
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: null,
+                data: responseJSON.data.participants,
             };
         })
         .catch((error) => {
