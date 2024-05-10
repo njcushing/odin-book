@@ -22,7 +22,7 @@ function ChatParticipants({ participants }: TChatParticipants) {
                 <ul className={styles["participants"]}>
                     {organiseParticipants(participants).map((participant) => {
                         let role;
-                        if (participant.role === "admin") role = "star";
+                        if (participant.role === "admin") role = "diamond";
                         if (participant.role === "moderator") role = "shield";
 
                         return (
@@ -41,6 +41,14 @@ function ChatParticipants({ participants }: TChatParticipants) {
                                 )}
                                 <p className={styles["name"]}>{participant.inChatName}</p>
                                 <ul className={styles["symbols"]}>
+                                    {participant.creator ? (
+                                        <p
+                                            className={`material-symbols-rounded no-select ${styles["creator"]}`}
+                                            aria-label="creator"
+                                        >
+                                            star
+                                        </p>
+                                    ) : null}
                                     {role ? (
                                         <p
                                             className={`material-symbols-rounded no-select ${styles["role"]}`}

@@ -79,7 +79,8 @@
     gap: 0.2rem;
 }
 
-.role {
+.role,
+.creator {
     color: var(--text-secondary);
     font-size: 1.4rem;
 }
