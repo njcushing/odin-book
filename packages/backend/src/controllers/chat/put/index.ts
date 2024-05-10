@@ -168,11 +168,111 @@ export const participants = [
 
             session.endSession();
 
+            const participantsIds = newParticipants.map(
+                (participant: string) => new mongoose.Types.ObjectId(`${participant}`),
+            );
+            // find and populate all new participants for the response
+            const aggregationResult = await Chat.aggregate([
+                { $match: { _id: new mongoose.Types.ObjectId(`${chat._id}`) } },
+                {
+                    $addFields: {
+                        participants: {
+                            $filter: {
+                                input: "$participants",
+                                as: "participant",
+                                cond: { $in: ["$$participant.user", participantsIds] },
+                            },
+                        },
+                    },
+                },
+                // populate all participants.user documents (including their 'preferences.profileImage' field)
+                { $unwind: "$participants" },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "participants.user",
+                        foreignField: "_id",
+                        as: "participants.user",
+                    },
+                },
+                {
+                    $addFields: {
+                        "participants.user": { $arrayElemAt: ["$participants.user", 0] },
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "images",
+                        localField: "participants.user.preferences.profileImage",
+                        foreignField: "_id",
+                        as: "participants.user.preferences.profileImage",
+                    },
+                },
+                {
+                    $addFields: {
+                        "participants.user.preferences.profileImage": {
+                            $arrayElemAt: ["$participants.user.preferences.profileImage", 0],
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$_id",
+                        otherFields: { $first: "$$ROOT" },
+                        participants: { $push: "$participants" },
+                    },
+                },
+                { $addFields: { "otherFields.participants": "$participants" } },
+                { $replaceRoot: { newRoot: "$otherFields" } },
+                // project
+                {
+                    $project: {
+                        participants: {
+                            $map: {
+                                input: "$participants",
+                                as: "participant",
+                                in: {
+                                    user: {
+                                        _id: "$$participant.user._id",
+                                        accountTag: "$$participant.user.accountTag",
+                                        preferences: {
+                                            displayName:
+                                                "$$participant.user.preferences.displayName",
+                                            profileImage: {
+                                                $cond: {
+                                                    if: {
+                                                        $eq: [
+                                                            {
+                                                                $type: "$$participant.user.preferences.profileImage",
+                                                            },
+                                                            "missing",
+                                                        ],
+                                                    },
+                                                    then: null,
+                                                    else: "$$participant.user.preferences.profileImage",
+                                                },
+                                            },
+                                        },
+                                    },
+                                    nickname: "$$participant.nickname",
+                                    role: "$$participant.role",
+                                    muted: "$$participant.muted",
+                                },
+                            },
+                        },
+                    },
+                },
+            ]).exec();
+
+            const participantsInfo =
+                aggregationResult.length > 0 ? aggregationResult[0].participants : [];
+
             // create token and send response
             const response = await generateToken(res.locals.user)
                 .then((token) => {
                     return sendResponse(res, 200, "Participants successfully added to chat", {
                         token,
+                        participants: participantsInfo,
                     });
                 })
                 .catch((tokenErr) => {
@@ -181,7 +281,7 @@ export const participants = [
                         500,
                         tokenErr.message ||
                             "Participants successfully added to chat, but token creation failed",
-                        null,
+                        { participants: participantsInfo },
                         tokenErr,
                     );
                 });
