@@ -1,22 +1,6 @@
 import mongoose from "mongoose";
 
-type Participants = {
-    user: {
-        _id: mongoose.Types.ObjectId;
-        accountTag: string;
-        preferences: {
-            displayName: string;
-            profileImage: {
-                _id: mongoose.Types.ObjectId;
-                url: string;
-                alt: string;
-            } | null;
-        };
-    };
-    nickname: string;
-    role: "admin" | "moderator" | "guest";
-    muted: boolean;
-}[];
+import { Response } from "@/features/chat/utils/getChatOverview";
 
 export type ReturnTypes = {
     [key: string]: {
@@ -28,12 +12,15 @@ export type ReturnTypes = {
             alt: string;
         } | null;
         role: "admin" | "moderator" | "guest";
+        creator: boolean;
         muted: boolean;
         status: "online" | "away" | "busy" | "offline" | null;
     };
 };
 
-const extractParticipantsInformation = (participants: Participants): ReturnTypes => {
+const extractParticipantsInformation = (chatData: Response): ReturnTypes => {
+    if (!chatData) return {};
+    const { createdBy, participants } = chatData;
     const info: ReturnTypes = {};
     participants.forEach((participant) => {
         const userId = `${participant.user._id}`;
@@ -50,6 +37,7 @@ const extractParticipantsInformation = (participants: Participants): ReturnTypes
             })(),
             profileImage: participant.user.preferences.profileImage,
             role: participant.role,
+            creator: createdBy === participant.user._id,
             muted: participant.muted,
             status: null,
         };

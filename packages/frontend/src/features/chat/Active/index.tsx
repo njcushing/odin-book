@@ -68,7 +68,7 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
     }, [response]);
 
     useEffect(() => {
-        setParticipantsInfo(chatData ? extractParticipantsInformation(chatData.participants) : {});
+        setParticipantsInfo(chatData ? extractParticipantsInformation(chatData) : {});
     }, [chatData]);
 
     useEffect(() => {
