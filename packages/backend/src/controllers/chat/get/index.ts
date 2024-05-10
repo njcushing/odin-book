@@ -24,7 +24,8 @@ export const overview = [
          *    'author', 'text' (hidden if the post is deleted), 'imageCount' (quantity of images in
          *    the message) and 'deleted' fields
          *  - 'participants' - projecting their 'user' and 'nickname' fields, with 'user' populated,
-         *    projecting its '_id', 'accountTag' and 'preferences.displayName' fields
+         *    projecting its '_id', 'accountTag', 'preferences.displayName' and
+         *    'preferences.profileImage' fields
          */
 
         const aggregationResult = await Chat.aggregate([
@@ -68,6 +69,7 @@ export const overview = [
             {
                 $project: {
                     _id: 1,
+                    createdBy: 1,
                     participants: {
                         $map: {
                             input: "$participants",
@@ -165,6 +167,7 @@ export const overview = [
             {
                 $project: {
                     _id: 1,
+                    createdBy: 1,
                     participants: 1,
                     name: 1,
                     image: {
