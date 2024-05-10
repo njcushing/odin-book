@@ -117,7 +117,7 @@ export const overview = [
                         $cond: {
                             if: { $eq: [{ $size: "$messages" }, 0] },
                             then: null,
-                            else: { $arrayElemAt: ["$messages", 0] },
+                            else: { $last: "$messages" },
                         },
                     },
                     createdAt: 1,
