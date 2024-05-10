@@ -128,6 +128,25 @@ function Header({ overrideChatName }: HeaderTypes) {
     }, [savedResponse, chatData, chatName, nameStored, extract]);
 
     useEffect(() => {
+        if (!editingName) {
+            setChatName(
+                determineChatName({
+                    chatData,
+                    ignoreActiveUser: true,
+                    activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+                }),
+            );
+        }
+        setNameStored(
+            determineChatName({
+                chatData,
+                ignoreActiveUser: true,
+                activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+            }),
+        );
+    }, [chatData, editingName, extract]);
+
+    useEffect(() => {
         setWaiting(settingChatName);
     }, [settingChatName]);
 
