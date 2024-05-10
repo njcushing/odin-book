@@ -27,6 +27,11 @@ const ChatSchema: Schema = new Schema(
             enum: ["individual", "group"],
             require: true,
         },
+        createdBy: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            require: true,
+        },
         participants: [
             {
                 user: {
