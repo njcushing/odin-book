@@ -124,10 +124,12 @@ export const participants = [
         try {
             session.startTransaction();
 
+            // set chat type to 'group'
             // add participants to chat's 'participants' array field
             const updatedChat = await Chat.updateOne(
                 { _id: chat._id },
                 {
+                    $set: { type: "group" },
                     $addToSet: {
                         participants: {
                             $each: newParticipants.map((participant: string) => ({
