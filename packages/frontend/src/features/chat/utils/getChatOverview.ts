@@ -8,6 +8,7 @@ export type Params = {
 
 export type Response = {
     _id: mongoose.Types.ObjectId;
+    createdBy: mongoose.Types.ObjectId;
     participants: {
         user: {
             _id: mongoose.Types.ObjectId;
