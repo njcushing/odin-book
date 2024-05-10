@@ -53,6 +53,7 @@ function AddUsers({
     useEffect(() => {
         if (response && response.status < 400) {
             if (onSuccessHandler) onSuccessHandler();
+            PubSub.publish("chat-add-users-successful", { participants: response.data });
         }
     }, [response, onSuccessHandler]);
 
