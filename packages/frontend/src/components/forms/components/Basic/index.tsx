@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import ButtonBasic, { BasicTypes as ButtonBasicTypes } from "@/components/buttons/components/Basic";
-import * as extendedTypes from "@shared/utils/extendedTypes";
 import * as validation from "@/components/inputs/utils/validation";
 import { getStyles } from "./styles";
 
