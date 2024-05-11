@@ -11,6 +11,8 @@ import createAccountPOST, { Body, Response } from "./utils/createAccount";
 function CreateAccount() {
     const navigate = useNavigate();
 
+    const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
+
     const [response, setParams, setAttempting] = useAsync.POST<null, Body, Response>(
         { func: createAccountPOST },
         false,
@@ -55,6 +57,7 @@ function CreateAccount() {
                                     labelText="Password"
                                     fieldId="password"
                                     fieldName="password"
+                                    errorMessage={!passwordsMatch ? "Passwords do not match" : ""}
                                     validator={{ func: validation.user.password }}
                                     required
                                     key={1}
@@ -64,6 +67,7 @@ function CreateAccount() {
                                     labelText="Confirm Password"
                                     fieldId="confirmPassword"
                                     fieldName="confirmPassword"
+                                    errorMessage={!passwordsMatch ? "Passwords do not match" : ""}
                                     validator={{ func: validation.user.confirmPassword }}
                                     required
                                     key={1}
@@ -71,6 +75,16 @@ function CreateAccount() {
                             ],
                         },
                     ]}
+                    additionalRules={{
+                        mustMatch: [
+                            {
+                                fields: ["password", "confirmPassword"],
+                                callback: (result, fieldsAreValid) => {
+                                    setPasswordsMatch(!(!result && fieldsAreValid));
+                                },
+                            },
+                        ],
+                    }}
                     onSubmitHandler={async (e: React.MouseEvent<HTMLButtonElement>) => {
                         const target = e.target as HTMLButtonElement;
                         if (target.form) {
