@@ -8,7 +8,7 @@ export type ProfileTypes = Types.Base & {
 };
 
 function Profile({
-    src = "",
+    src,
     alt = "",
     label = "profile image",
     status = null,
@@ -22,6 +22,9 @@ function Profile({
         } else {
             imgSrc = objectURLFromTypedArray(src);
         }
+    } else {
+        imgSrc =
+            "https://res.cloudinary.com/djzqtvl9l/image/upload/v1715426448/default_profile_image_kcvjq4.png";
     }
 
     return (
