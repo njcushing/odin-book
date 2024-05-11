@@ -69,7 +69,8 @@ function Create({
         _id: (extract("_id") as mongoose.Types.ObjectId) || new mongoose.Types.ObjectId(),
         accountTag: `${extract("accountTag")}` || "User",
         preferences: {
-            displayName: `${extract("preferences.displayName")}` || "User",
+            displayName:
+                `${extract("preferences.displayName")}` || `${extract("accountTag")}` || "User",
             profileImage: (extract("preferences.profileImage") as {
                 _id: mongoose.Types.ObjectId;
                 url: string;
