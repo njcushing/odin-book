@@ -606,21 +606,31 @@ export const option = [
         aggregation.push(
             { $match: { _id: new mongoose.Types.ObjectId(userId) } },
             {
+                $lookup: {
+                    from: "images",
+                    localField: "preferences.profileImage",
+                    foreignField: "_id",
+                    as: "preferences.profileImage",
+                },
+            },
+            {
+                $addFields: {
+                    "preferences.profileImage": {
+                        $cond: {
+                            if: { $isArray: "$preferences.profileImage" },
+                            then: { $arrayElemAt: ["$preferences.profileImage", 0] },
+                            else: null,
+                        },
+                    },
+                },
+            },
+            {
                 $project: {
                     _id: 1,
                     accountTag: 1,
                     preferences: {
                         displayName: "$preferences.displayName",
-                        // project profileImage even if it is not present in the document
-                        profileImage: {
-                            $cond: {
-                                if: {
-                                    $eq: [{ $type: "$preferences.profileImage" }, "missing"],
-                                },
-                                then: null,
-                                else: "$preferences.profileImage",
-                            },
-                        },
+                        profileImage: "$preferences.profileImage",
                     },
                     isFollowing: {
                         $in: [
