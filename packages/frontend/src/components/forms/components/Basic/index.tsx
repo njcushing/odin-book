@@ -20,6 +20,12 @@ type SectionTypes = {
 export type BasicTypes = {
     title?: string;
     sections?: SectionTypes[];
+    additionalRules?: {
+        mustMatch?: {
+            fields: string[];
+            callback?: (result: boolean, fieldsAreValid: boolean) => void;
+        }[];
+    };
     onChangeHandler?: (event: React.FormEvent<HTMLFormElement>, currentlyValid: boolean) => void;
     onSubmitHandler?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     button?: ButtonBasicTypes;
@@ -59,6 +65,7 @@ const createSection = (
 function Basic({
     title = "Form Title",
     sections = [],
+    additionalRules,
     onChangeHandler,
     onSubmitHandler,
     button,
@@ -97,6 +104,7 @@ function Basic({
     const calculateFormValidity = useCallback(
         (formData: CurrentFormDataType) => {
             let valid = true;
+            const validFields = new Set();
 
             // loop through all input-based components provided and validate their input values
             sections.forEach((section) =>
@@ -107,15 +115,43 @@ function Basic({
                         validator || null,
                         required || false,
                     );
-                    if (!validField.status) valid = false;
+                    if (!validField.status) {
+                        valid = false;
+                    } else {
+                        validFields.add(fieldName);
+                    }
                 }),
             );
+
+            // check additional rules
+            if (additionalRules) {
+                Object.keys(additionalRules).forEach((rule) => {
+                    switch (rule) {
+                        case "mustMatch":
+                            additionalRules[rule]?.forEach((option) => {
+                                const { fields, callback } = option;
+                                let fieldsMatch = true;
+                                let fieldsAreValid = true;
+                                for (let i = 0; i < fields.length; i++) {
+                                    if (i > 0 && formData[fields[i]] !== formData[fields[i - 1]]) {
+                                        fieldsMatch = false;
+                                    }
+                                    if (!validFields.has(fields[i])) fieldsAreValid = false;
+                                }
+                                if (!fieldsMatch) valid = false;
+                                if (callback) callback(fieldsMatch, fieldsAreValid);
+                            });
+                            break;
+                        default:
+                    }
+                });
+            }
 
             setDisabledButton(!valid && !enableButtonOnInvalidFields);
 
             return valid;
         },
-        [sections, enableButtonOnInvalidFields],
+        [sections, enableButtonOnInvalidFields, additionalRules],
     );
 
     // initialise & update currentFormData state
