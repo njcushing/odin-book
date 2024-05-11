@@ -1,0 +1,54 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+
+    overflow: hidden;
+
+    border: 1px solid var(--outline-primary);
+    border-radius: 8px;
+
+    width: calc(100% - (2 * 0.2rem));
+    height: min-content;
+    padding: 0.2rem;
+}
+
+.title {
+    color: var(--text-primary);
+    font-size: 1.4rem;
+    font-family: Gabarito;
+    font-weight: bold;
+
+    padding: 0.4rem 0rem;
+}
+
+.users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    list-style: none;
+
+    width: 100%;
+}
+
+.user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+
+    width: calc(100% - (2 * 0.4rem)); /* account for padding and margin */ 
+    height: min-content;
+    padding: 0.2rem 0.2rem;
+    margin: 0rem 0.2rem;
+}
+
+.no-users-message {
+    color: var(--text-secondary);
+    font-size: 1.0rem;
+    font-family: Gabarito;
+
+    margin-bottom: 0.4rem;
+}
