@@ -147,19 +147,24 @@ function Summary() {
 
     return (
         <div className={styles["container"]}>
-            <div className={styles["banner-image"]}>
-                <Accessibility.Skeleton waiting={currentlyWaiting} style={{ width: "100%" }}>
+            <Accessibility.Skeleton waiting={currentlyWaiting} style={{ width: "100%" }}>
+                <div
+                    className={styles["banner-image"]}
+                    style={{ width: "100%", aspectRatio: "21 / 9" }}
+                >
                     {userSummary && userSummary.preferences.headerImage ? (
                         <Images.Basic
                             src={userSummary.preferences.headerImage.url}
                             alt={userSummary.preferences.headerImage.alt}
-                            style={{ width: "100%", aspectRatio: "21 / 9" }}
+                            style={{ width: "100%", height: "100%" }}
                         />
                     ) : (
-                        <Images.Basic style={{ width: "100%", height: "240px" }} />
+                        <p className={styles["banner-image-message"]}>
+                            Your banner image will go here
+                        </p>
                     )}
-                </Accessibility.Skeleton>
-            </div>
+                </div>
+            </Accessibility.Skeleton>
             <div className={styles["main-content-container"]}>
                 <div className={styles["row-one"]}>
                     <div className={styles["row-one-left"]}>

@@ -8,6 +8,19 @@
     height: min-content;
 }
 
+.banner-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--background-tertiary);
+}
+
+.banner-image-message {
+    color: var(--text-tertiary);
+    font-size: 1.2rem;
+}
+
 .main-content-container {
     display: flex;
     flex-direction: column;
