@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import { UserContext } from "@/context/user";
 import { ChatContext } from "@/features/chat/Active";
 import * as useAsync from "@/hooks/useAsync";
-import Images from "@/components/images";
 import Buttons from "@/components/buttons";
 import determineChatName from "@/features/chat/utils/determineChatName";
 import validation from "@shared/validation";
@@ -11,6 +10,7 @@ import mongoose from "mongoose";
 import changeChatName, { Params, Body, Response } from "./utils/changeChatName";
 import { Response as ChatOverviewResponse } from "../utils/getChatOverview";
 import styles from "./index.module.css";
+import Chat from "..";
 
 const buttonStyles = { fontSize: "1.1rem", padding: "0.6rem" };
 
@@ -20,7 +20,7 @@ type HeaderTypes = {
 
 function Header({ overrideChatName }: HeaderTypes) {
     const { extract } = useContext(UserContext);
-    const { chatData, setChatData } = useContext(ChatContext);
+    const { chatData, setChatData, participantsInfo } = useContext(ChatContext);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -177,11 +177,7 @@ function Header({ overrideChatName }: HeaderTypes) {
                     });
                 }}
             >
-                <Images.Profile
-                    src={chatData && chatData.image ? chatData.image.url : ""}
-                    alt={chatData && chatData.image ? chatData.image.alt : ""}
-                    sizePx={64}
-                />
+                <Chat.Image chatData={chatData} participantsInfo={participantsInfo} />
             </button>
             <div className={styles["name-container"]}>
                 <div className={styles["name-container-top-row"]}>
