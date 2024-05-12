@@ -10,7 +10,7 @@
 
 .image-and-upload-button-container {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr auto;
     justify-items: flex-start;
     align-items: center;
     gap: 0.6rem;
