@@ -172,8 +172,8 @@ function Header({ overrideChatName }: HeaderTypes) {
                 className={styles["chat-image-button"]}
                 onClick={() => {
                     PubSub.publish("update-chat-image-button-click", {
-                        chatId: chatData && chatData._id,
-                        currentImage: chatData && chatData.image,
+                        chatData,
+                        participantsInfo,
                     });
                 }}
             >
