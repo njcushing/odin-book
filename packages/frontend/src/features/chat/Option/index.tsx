@@ -2,7 +2,6 @@ import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "@/context/user";
 import * as useAsync from "@/hooks/useAsync";
-import Images from "@/components/images";
 import Accessibility from "@/components/accessibility";
 import mongoose from "mongoose";
 import getChatOverview, { Params, Response } from "@/features/chat/utils/getChatOverview";
