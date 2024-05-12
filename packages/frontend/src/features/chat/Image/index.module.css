@@ -1,0 +1,19 @@
+.container {
+    position: relative;
+
+    gap: 1px;
+    border: 1px solid var(--outline-primary);
+
+    overflow: hidden;
+    
+    border-radius: 50%;
+    background-color: var(--outline-primary);
+}
+
+.chat-image {
+    object-fit: cover;
+    background-color: #cecece;
+
+    width: 100%;
+    height: 100%;
+}
