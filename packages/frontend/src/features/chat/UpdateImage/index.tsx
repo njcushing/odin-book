@@ -3,11 +3,13 @@ import * as useAsync from "@/hooks/useAsync";
 import Modals from "@/components/modals";
 import Buttons from "@/components/buttons";
 import Images from "@/components/images";
-import mongoose from "mongoose";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 import validation from "@shared/validation";
 import validateUploadedFile from "@/components/inputs/components/File/utils/validateUploadedFile";
 import { v4 as uuidv4 } from "uuid";
+import { Response as GetChatOverviewResponse } from "@/features/chat/utils/getChatOverview";
+import Chat from "..";
+import { ReturnTypes as extractedParticipantsInfo } from "../Active/utils/extractParticipantsInformation";
 import updateChatImage, { Params, Body, Response } from "./utils/updateChatImage";
 import styles from "./index.module.css";
 
@@ -19,15 +21,15 @@ type Images = {
 };
 
 type UpdateImageTypes = {
-    _id: mongoose.Types.ObjectId;
-    defaultImageURL?: string;
+    chatData: GetChatOverviewResponse;
+    participantsInfo: extractedParticipantsInfo;
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     onSuccessHandler?: (() => unknown) | null;
 };
 
 function UpdateImage({
-    _id,
-    defaultImageURL = "",
+    chatData,
+    participantsInfo,
     onCloseClickHandler = null,
     onSuccessHandler = null,
 }: UpdateImageTypes) {
@@ -42,7 +44,7 @@ function UpdateImage({
     >(
         {
             func: updateChatImage,
-            parameters: [{ params: { chatId: _id } }, null],
+            parameters: [{ params: { chatId: chatData && chatData._id } }, null],
         },
         false,
     );
@@ -61,9 +63,12 @@ function UpdateImage({
     useEffect(() => {
         if (response && response.status < 400) {
             if (onSuccessHandler) onSuccessHandler();
-            PubSub.publish("chat-image-update-successful", { _id, image: response.data });
+            PubSub.publish("chat-image-update-successful", {
+                _id: chatData && chatData._id,
+                image: response.data,
+            });
         }
-    }, [response, _id, onSuccessHandler]);
+    }, [response, chatData, onSuccessHandler]);
 
     useEffect(() => {
         setWaiting(updatingImage);
@@ -77,7 +82,15 @@ function UpdateImage({
             <div className={styles["container"]}>
                 <h2 className={styles["title"]}>Set a New Chat Image</h2>
                 <div className={styles["content"]}>
-                    <Images.Profile src={imageSrc || defaultImageURL} sizePx={144} />
+                    {images ? (
+                        <Images.Profile src={imageSrc || ""} sizePx={144} />
+                    ) : (
+                        <Chat.Image
+                            chatData={chatData}
+                            participantsInfo={participantsInfo}
+                            style={{ width: "144px", height: "144px", border: "none" }}
+                        />
+                    )}
                     <Buttons.Upload
                         labelText=""
                         fieldId="chat-image"
@@ -121,7 +134,13 @@ function UpdateImage({
                             if (images && Object.keys(images).length > 0) {
                                 const image = images[Object.keys(images)[0]].data;
                                 setErrorMessage("");
-                                setParams([{ params: { chatId: _id }, body: { image } }, null]);
+                                setParams([
+                                    {
+                                        params: { chatId: chatData && chatData._id },
+                                        body: { image },
+                                    },
+                                    null,
+                                ]);
                                 setAttempting(true);
                             }
                         }}
