@@ -1,47 +1,13 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import mongoose from "mongoose";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
+import { Response as GetChatOverviewResponse } from "@/features/chat/utils/getChatOverview";
 
 export type Params = {
     userId: mongoose.Types.ObjectId | null | undefined;
 };
 
-export type Response =
-    | {
-          _id: mongoose.Types.ObjectId;
-          createdBy: mongoose.Types.ObjectId;
-          participants: {
-              user: {
-                  _id: mongoose.Types.ObjectId;
-                  accountTag: string;
-                  preferences: {
-                      displayName: string;
-                      profileImage: {
-                          _id: mongoose.Types.ObjectId;
-                          url: string;
-                          alt: string;
-                      } | null;
-                  };
-              };
-              nickname: string;
-              role: "admin" | "moderator" | "guest";
-              muted: boolean;
-          }[];
-          name: string;
-          image: {
-              _id: mongoose.Types.ObjectId;
-              url: string;
-              alt: string;
-          } | null;
-          recentMessage: {
-              _id: mongoose.Types.ObjectId;
-              author: mongoose.Types.ObjectId;
-              text: string;
-              imageCount: number;
-              deleted: boolean;
-          } | null;
-      }[]
-    | null;
+export type Response = GetChatOverviewResponse[] | null;
 
 const getRecentChatActivity: apiFunctionTypes.GET<Params, Response> = async (
     data,
