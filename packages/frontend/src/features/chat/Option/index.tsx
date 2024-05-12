@@ -7,6 +7,10 @@ import Accessibility from "@/components/accessibility";
 import mongoose from "mongoose";
 import getChatOverview, { Params, Response } from "@/features/chat/utils/getChatOverview";
 import determineChatName from "@/features/chat/utils/determineChatName";
+import extractParticipantsInformation, {
+    ReturnTypes as extractedParticipantsInfo,
+} from "../Active/utils/extractParticipantsInformation";
+import Chat from "..";
 import styles from "./index.module.css";
 
 type OptionTypes = {
@@ -24,6 +28,7 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
 
     // get option api handling
     const [chatData, setChatData] = useState<Response>(null);
+    const [participantsInfo, setParticipantsInfo] = useState<extractedParticipantsInfo>({});
     const [
         getChatOverviewResponse /* setGetChatOverviewParams */,
         ,
@@ -42,6 +47,10 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
             setChatData(newState);
         }
     }, [overrideOptionData, getChatOverviewResponse]);
+
+    useEffect(() => {
+        setParticipantsInfo(chatData ? extractParticipantsInformation(chatData) : {});
+    }, [chatData]);
 
     // error message handling
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -120,11 +129,7 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
                             waiting={waiting}
                             style={{ borderRadius: "9999px" }}
                         >
-                            <Images.Profile
-                                src={chatData && chatData.image ? chatData.image.url : ""}
-                                alt={chatData && chatData.image ? chatData.image.alt : ""}
-                                sizePx={64}
-                            />
+                            <Chat.Image chatData={chatData} participantsInfo={participantsInfo} />
                         </Accessibility.Skeleton>
                     </div>
                     <div className={styles["name-and-message-container"]}>
