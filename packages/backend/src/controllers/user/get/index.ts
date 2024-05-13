@@ -998,3 +998,237 @@ export const chats = [
         }
     }),
 ];
+
+export const chatActivity = [
+    protectedRouteJWT,
+    validators.param.userId,
+    validators.query.limit,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const { limit } = req.query;
+
+        if (userId !== res.locals.user.id) {
+            sendResponse(res, 401, "Cannot view another user's recent chat activity");
+            return;
+        }
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        // match user, unwind & populate chats
+        aggregation.push(
+            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
+            { $unwind: { path: "$chats", preserveNullAndEmptyArrays: true } },
+            {
+                $addFields: {
+                    userChats: {
+                        $cond: {
+                            if: { $eq: [{ $type: "$chats" }, "missing"] },
+                            then: [],
+                            else: "$chats",
+                        },
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "chats",
+                    localField: "userChats",
+                    foreignField: "_id",
+                    as: "populatedChats",
+                },
+            },
+            { $unwind: { path: "$populatedChats", preserveNullAndEmptyArrays: true } },
+            { $replaceRoot: { newRoot: "$populatedChats" } },
+        );
+        // populate chats' 'image' field if possible
+        aggregation.push(
+            {
+                $lookup: {
+                    from: "images",
+                    localField: "image",
+                    foreignField: "_id",
+                    as: "image",
+                },
+            },
+            {
+                $addFields: {
+                    image: {
+                        $cond: {
+                            if: { $gt: [{ $size: "$image" }, 0] },
+                            then: { $arrayElemAt: ["$image", 0] },
+                            else: null,
+                        },
+                    },
+                },
+            },
+        );
+        // populate chats' 'messages' array
+        aggregation.push({
+            $lookup: {
+                from: "messages",
+                localField: "messages",
+                foreignField: "_id",
+                as: "populatedMessages",
+            },
+        });
+        // filter messages
+        aggregation.push({
+            $addFields: {
+                selectedMessage: {
+                    $filter: {
+                        input: "$populatedMessages",
+                        as: "message",
+                        cond: {
+                            $and: [
+                                { $eq: ["$$message.deleted", false] },
+                                {
+                                    $ne: ["$$message.author", new mongoose.Types.ObjectId(userId)],
+                                },
+                                {
+                                    $gte: [
+                                        "$$message.createdAt",
+                                        { $subtract: [new Date(), 604800000] },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+            },
+        });
+        // remove chats with no messages that satisfy conditions and sort chats
+        aggregation.push(
+            { $match: { selectedMessage: { $exists: true, $ne: [] } } },
+            {
+                $addFields: {
+                    selectedMessage: { $arrayElemAt: ["$selectedMessage", -1] },
+                },
+            },
+            { $sort: { "selectedMessage.createdAt": -1 } },
+        );
+        // limit chats
+        if (limit) aggregation.push({ $limit: Number(limit) });
+        // populate all participants.user documents (including their 'preferences.profileImage' field)
+        aggregation.push(
+            { $unwind: "$participants" },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "participants.user",
+                    foreignField: "_id",
+                    as: "participants.user",
+                },
+            },
+            { $addFields: { "participants.user": { $arrayElemAt: ["$participants.user", 0] } } },
+            {
+                $lookup: {
+                    from: "images",
+                    localField: "participants.user.preferences.profileImage",
+                    foreignField: "_id",
+                    as: "participants.user.preferences.profileImage",
+                },
+            },
+            {
+                $addFields: {
+                    "participants.user.preferences.profileImage": {
+                        $arrayElemAt: ["$participants.user.preferences.profileImage", 0],
+                    },
+                },
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    otherFields: { $first: "$$ROOT" },
+                    participants: { $push: "$participants" },
+                },
+            },
+            { $addFields: { "otherFields.participants": "$participants" } },
+            { $replaceRoot: { newRoot: "$otherFields" } },
+        );
+        // project
+        aggregation.push({
+            $project: {
+                _id: 1,
+                createdBy: 1,
+                participants: {
+                    $map: {
+                        input: "$participants",
+                        as: "participant",
+                        in: {
+                            user: {
+                                _id: "$$participant.user._id",
+                                accountTag: "$$participant.user.accountTag",
+                                preferences: {
+                                    displayName: "$$participant.user.preferences.displayName",
+                                    profileImage: {
+                                        $cond: {
+                                            if: {
+                                                $eq: [
+                                                    {
+                                                        $type: "$$participant.user.preferences.profileImage",
+                                                    },
+                                                    "missing",
+                                                ],
+                                            },
+                                            then: null,
+                                            else: "$$participant.user.preferences.profileImage",
+                                        },
+                                    },
+                                },
+                            },
+                            nickname: "$$participant.nickname",
+                            role: "$$participant.role",
+                            muted: "$$participant.muted",
+                        },
+                    },
+                },
+                name: 1,
+                image: {
+                    $cond: {
+                        if: { $eq: ["$image", null] },
+                        then: null,
+                        else: {
+                            _id: "$image._id",
+                            url: "$image.url",
+                            alt: "$image.alt",
+                        },
+                    },
+                },
+                recentMessage: {
+                    _id: "$selectedMessage._id",
+                    author: "$selectedMessage.author",
+                    text: "$selectedMessage.text",
+                    imageCount: { $size: "$selectedMessage.images" },
+                    deleted: "$selectedMessage.deleted",
+                    createdAt: "$selectedMessage.createdAt",
+                },
+                createdAt: 1,
+            },
+        });
+        // sort chats again (for some reason they fall out of order sometimes)
+        aggregation.push({ $sort: { "recentMessage.createdAt": -1 } });
+        // execute aggregation
+        const aggregationResult = await User.aggregate(aggregation).exec();
+        if (aggregationResult.length === 0) {
+            sendResponse(res, 404, "Could not find chat activity");
+        } else {
+            await generateToken(res.locals.user)
+                .then((token) => {
+                    sendResponse(res, 200, "Chat activity found", {
+                        token,
+                        chatActivity: aggregationResult,
+                    });
+                })
+                .catch((tokenErr) => {
+                    sendResponse(
+                        res,
+                        500,
+                        tokenErr.message || `Chat activity found, but token creation failed`,
+                        { chatActivity: aggregationResult },
+                        tokenErr,
+                    );
+                });
+        }
+    }),
+];
