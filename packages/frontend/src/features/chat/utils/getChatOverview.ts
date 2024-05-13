@@ -42,7 +42,9 @@ export type Response = {
             alt: string;
         } | null;
         deleted: boolean;
+        createdAt: string;
     } | null;
+    createdAt: string;
 } | null;
 
 const getChatOverview: apiFunctionTypes.GET<Params, Response> = async (
