@@ -203,6 +203,7 @@ export const overview = [
                                     },
                                 },
                                 deleted: "$recentMessage.deleted",
+                                createdAt: "$recentMessage.createdAt",
                             },
                         },
                     },
