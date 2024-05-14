@@ -1,0 +1,115 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+
+    overflow: hidden;
+
+    border: 1px solid var(--outline-primary);
+    border-radius: 8px;
+
+    width: calc(100% - (2 * 0.2rem));
+    height: min-content;
+    padding: 0.2rem;
+}
+
+.title {
+    color: var(--text-primary);
+    font-size: 1.4rem;
+    font-family: Gabarito;
+    font-weight: bold;
+
+    padding: 0.4rem 0rem;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    list-style: none;
+
+    width: 100%;
+    margin-bottom: 0.2rem;
+}
+
+.activity-container {
+    display: grid;
+    grid-template-columns: auto minmax(0, 100%);
+    align-items: center;
+    gap: 0.4rem;
+
+    border: none;
+    background-color: transparent;
+
+    width: calc(100% - (2 * 0.4rem)); /* account for padding and margin */ 
+    height: min-content;
+    padding: 0.2rem 0.2rem;
+    margin: 0rem 0.2rem;
+
+    transition: border-radius 0.3s ease-in-out 0s,
+                background-color 0.1s ease-in-out 0s;
+}
+
+@media (hover: hover) {
+    .activity-container:hover {
+        border-radius: 0.4rem;
+        outline-width: 1px;
+        outline-color: var(--chat-option-primary-outline);
+        background-color: var(--chat-option-primary-hover);
+
+        cursor: pointer;
+    }
+}
+
+.activity-container:focus {
+    border-radius: 0.4rem;
+    outline-width: 2px;
+    outline-color: var(--chat-option-primary-outline);
+    background-color: var(--chat-option-primary-focus);
+}
+
+.activity-content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.name {
+    color: var(--color-primary);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+    text-align: left;
+
+    padding: 0.1rem;
+}
+
+.name > strong {
+    font-weight: bold;
+}
+
+.message {
+    color: var(--color-primary);
+    font-family: Gabarito;
+    font-size: 0.9rem;
+    text-align: left;
+
+    padding: 0.1rem;
+}
+
+.no-activity-message {
+    color: var(--text-secondary);
+    font-size: 1.0rem;
+    font-family: Gabarito;
+
+    margin-bottom: 0.4rem;
+}
+
+.error-message {
+    color: var(--text-error);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-wrap:wrap;
+}
