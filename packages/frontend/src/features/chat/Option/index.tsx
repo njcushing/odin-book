@@ -117,8 +117,12 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
         <button
             className={styles["container"]}
             type="button"
-            onClick={() => {
+            onClick={(e) => {
                 navigate(`/chat/${_id}`);
+                e.currentTarget.blur();
+            }}
+            onMouseLeave={(e) => {
+                e.currentTarget.blur();
             }}
         >
             {skeleton || chatData ? (
