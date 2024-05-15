@@ -181,6 +181,17 @@ const validators = {
                     return true;
                 }
             }),
+        excludeActiveUser: query("excludeActiveUser")
+            .optional()
+            .custom((value) => {
+                if (value !== "true" && value !== "false") {
+                    throw new Error(
+                        "The provided 'excludeActiveUser' query parameter is not a valid boolean value",
+                    );
+                } else {
+                    return true;
+                }
+            }),
     },
 };
 
