@@ -32,7 +32,6 @@ function List() {
                     params: {
                         userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
                         after: null,
-                        repliesOnly: false,
                     },
                 },
                 null,
@@ -57,7 +56,6 @@ function List() {
                 params: {
                     userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
                     after: null,
-                    repliesOnly: false,
                 },
             },
             null,
@@ -111,7 +109,6 @@ function List() {
                         params: {
                             userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
                             after: posts[posts.length - 1]._id,
-                            repliesOnly: false,
                         },
                     },
                     null,
@@ -174,7 +171,14 @@ function List() {
                     <div style={{ height: errorMessageHeight }}></div>
                     {posts && posts.length > 0 ? (
                         posts.map((post) => {
-                            return <Posts.Post _id={post._id} canReply key={`post-${post._id}`} />;
+                            return (
+                                <Posts.Post
+                                    _id={post._id}
+                                    canReply
+                                    skeleton
+                                    key={`post-${post._id}`}
+                                />
+                            );
                         })
                     ) : (
                         <p className={styles["empty-message"]}>Nothing to see here!</p>
