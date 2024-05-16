@@ -120,13 +120,13 @@ function RecentChatActivity({ style }: TRecentChatActivity) {
 
                                 let recentMessage = "";
                                 if (chatData && chatData.recentMessage) {
-                                    recentMessage = `${username}: ${
-                                        !chatData.recentMessage.deleted
-                                            ? chatData.recentMessage.text
-                                            : "This message has been deleted."
-                                    }`;
-                                } else if (waiting) {
-                                    recentMessage = "placeholder";
+                                    if (chatData.recentMessage.deleted) {
+                                        recentMessage = "This message has been deleted.";
+                                    } else if (chatData.recentMessage.text.length > 0) {
+                                        recentMessage = chatData.recentMessage.text;
+                                    } else {
+                                        recentMessage = `Sent ${chatData.recentMessage.imageCount} images`;
+                                    }
                                 }
 
                                 return (
@@ -152,12 +152,16 @@ function RecentChatActivity({ style }: TRecentChatActivity) {
                                                 <strong>{`${username} `}</strong>replied to
                                                 <strong>{` ${chatName}`}</strong>
                                             </p>
-                                            <p
-                                                className={styles["message"]}
-                                                style={{ ...createMultilineTextTruncateStyles(2) }}
-                                            >
-                                                {recentMessage}
-                                            </p>
+                                            {recentMessage.length > 0 ? (
+                                                <p
+                                                    className={styles["message"]}
+                                                    style={{
+                                                        ...createMultilineTextTruncateStyles(2),
+                                                    }}
+                                                >
+                                                    {recentMessage}
+                                                </p>
+                                            ) : null}
                                         </div>
                                     </button>
                                 );
