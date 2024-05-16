@@ -1,0 +1,72 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+
+    font-family: Gabarito;
+
+    width: 100%;
+    height: min-content;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: auto minmax(0, 100%);
+    align-items: center;
+    gap: 0.4rem;
+
+    border: none;
+    background-color: transparent;
+
+    width: calc(100% - (2 * 0.4rem)); /* account for padding and margin */ 
+    height: min-content;
+    padding: 0.2rem 0.2rem;
+    margin: 0rem 0.2rem;
+
+    transition: border-radius 0.3s ease-in-out 0s,
+                background-color 0.1s ease-in-out 0s;
+}
+
+@media (hover: hover) {
+    .container[data-waiting |= "false"]:hover {
+        border-radius: 0.4rem;
+        outline-width: 1px;
+        outline-color: var(--chat-option-primary-outline);
+        background-color: var(--chat-option-primary-hover);
+
+        cursor: pointer;
+    }
+}
+
+.container[data-waiting |= "false"]:focus {
+    border-radius: 0.4rem;
+    outline-width: 2px;
+    outline-color: var(--chat-option-primary-outline);
+    background-color: var(--chat-option-primary-focus);
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.name {
+    color: var(--color-primary);
+    font-family: Gabarito;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: left;
+
+    width: calc(100% - (2 * 0.1rem));
+    padding: 0.1rem;
+}
+
+.text {
+    color: var(--color-primary);
+    font-family: Gabarito;
+    font-size: 0.9rem;
+    text-align: left;
+
+    width: calc(100% - (2 * 0.1rem));
+    padding: 0.1rem;
+}
