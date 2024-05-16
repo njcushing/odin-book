@@ -36,11 +36,7 @@ export type Response = {
         _id: mongoose.Types.ObjectId;
         author: mongoose.Types.ObjectId;
         text: string;
-        images: {
-            _id: mongoose.Types.ObjectId;
-            url: string;
-            alt: string;
-        } | null;
+        imageCount: number;
         deleted: boolean;
         createdAt: string;
     } | null;
