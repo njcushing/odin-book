@@ -54,7 +54,7 @@ function RecentPost({ _id, skeleton = true }: TRecentPost) {
     const errorMessageElement =
         errorMessage.length > 0 ? <p className={styles["error-message"]}>{errorMessage}</p> : null;
 
-    let username = "a";
+    let username = "User";
     if (postData) {
         if (postData.author.preferences.displayName) {
             username = postData.author.preferences.displayName;
@@ -63,13 +63,15 @@ function RecentPost({ _id, skeleton = true }: TRecentPost) {
         }
     }
 
-    let text = "a";
+    let text = "";
     if (postData) {
         if (postData.text) {
             text = postData.text;
         } else {
             text = `${postData.images.length} images`;
         }
+    } else if (waiting) {
+        text = "placeholder";
     }
 
     return (
@@ -103,14 +105,16 @@ function RecentPost({ _id, skeleton = true }: TRecentPost) {
                         <Accessibility.Skeleton waiting={waiting} style={{ width: "100%" }}>
                             <p className={`truncate-ellipsis ${styles["name"]}`}>{username}</p>
                         </Accessibility.Skeleton>
-                        <Accessibility.Skeleton waiting={waiting} style={{ width: "100%" }}>
-                            <p
-                                className={styles["text"]}
-                                style={{ ...createMultilineTextTruncateStyles(2) }}
-                            >
-                                {text}
-                            </p>
-                        </Accessibility.Skeleton>
+                        {text.length > 0 ? (
+                            <Accessibility.Skeleton waiting={waiting} style={{ width: "100%" }}>
+                                <p
+                                    className={styles["text"]}
+                                    style={{ ...createMultilineTextTruncateStyles(2) }}
+                                >
+                                    {text}
+                                </p>
+                            </Accessibility.Skeleton>
+                        ) : null}
                     </div>
                 </button>
             ) : null}
