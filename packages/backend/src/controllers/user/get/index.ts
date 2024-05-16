@@ -1232,3 +1232,135 @@ export const chatActivity = [
         }
     }),
 ];
+
+export const recommendedPosts = [
+    protectedRouteJWT,
+    validators.param.userId,
+    validators.query.excludeActiveUser,
+    validators.query.limit,
+    validators.query.after,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const { limit, after, excludeActiveUser } = req.query;
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        // match user
+        aggregation.push({ $match: { _id: new mongoose.Types.ObjectId(userId) } });
+        // create new array field containing active user's _id and elements in following.users array
+        aggregation.push({
+            $addFields: {
+                concatenatedUsers: !excludeActiveUser
+                    ? { $concatArrays: [["$_id"], "$following.users"] }
+                    : "$following.users",
+            },
+        });
+        // populate users
+        aggregation.push({
+            $lookup: {
+                from: "users",
+                localField: "concatenatedUsers",
+                foreignField: "_id",
+                as: "populatedUsers",
+            },
+        });
+        // populate posts for every user and add those documents to root
+        aggregation.push({
+            $group: {
+                _id: "$_id",
+                otherFields: { $first: "$$ROOT" },
+                posts: { $push: "$populatedUsers.posts" },
+            },
+        });
+        // Unwind posts and flatten them into a single array
+        aggregation.push({ $unwind: "$posts" });
+        aggregation.push({
+            $addFields: {
+                posts: {
+                    $reduce: {
+                        input: "$posts",
+                        initialValue: [],
+                        in: { $concatArrays: ["$$value", "$$this"] },
+                    },
+                },
+            },
+        });
+        // if 'after' query parameter is specified, check post is within 'posts' array
+        if (after) aggregation.push({ $match: { posts: new mongoose.Types.ObjectId(`${after}`) } });
+        // populate posts
+        aggregation.push({
+            $lookup: {
+                from: "posts",
+                localField: "posts",
+                foreignField: "_id",
+                as: "populatedPosts",
+            },
+        });
+        // if 'after' query parameter is specified, check post exists
+        let responding = false;
+        if (after) {
+            const afterPost = await Post.findById(after);
+            if (!afterPost) {
+                sendResponse(res, 404, "Specified 'after' post not found in the database");
+                responding = true;
+            } else {
+                // and filter posts based on their creation date being after the 'after' post
+                aggregation.push({
+                    $addFields: {
+                        populatedPosts: {
+                            $filter: {
+                                input: "$populatedPosts",
+                                cond: {
+                                    $lt: ["$$this.createdAt", afterPost.createdAt],
+                                },
+                            },
+                        },
+                    },
+                });
+            }
+        }
+        if (!responding) {
+            // sort and limit posts
+            aggregation.push({
+                $project: {
+                    populatedPosts: {
+                        $sortArray: {
+                            input: "$populatedPosts",
+                            sortBy: { createdAt: -1 },
+                        },
+                    },
+                },
+            });
+            if (limit) {
+                aggregation.push({
+                    $project: {
+                        populatedPosts: {
+                            $slice: ["$populatedPosts", Number(limit)],
+                        },
+                    },
+                });
+            }
+            // execute aggregation
+            const aggregationResult = await User.aggregate(aggregation).exec();
+            if (aggregationResult.length === 0) {
+                sendResponse(res, 404, "Could not find posts");
+            } else {
+                const recPosts = aggregationResult[0].populatedPosts;
+                await generateToken(res.locals.user)
+                    .then((token) => {
+                        sendResponse(res, 200, "Posts found", { token, posts: recPosts });
+                    })
+                    .catch((tokenErr) => {
+                        sendResponse(
+                            res,
+                            500,
+                            tokenErr.message || `Posts found, but token creation failed`,
+                            { posts: recPosts },
+                            tokenErr,
+                        );
+                    });
+            }
+        }
+    }),
+];
