@@ -4,14 +4,16 @@ import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
     userId: mongoose.Types.ObjectId | null | undefined;
-    after: mongoose.Types.ObjectId | null | undefined;
-    repliesOnly: boolean;
+    excludeActiveUser?: boolean;
+    after?: mongoose.Types.ObjectId | null | undefined;
+    limit?: number;
 };
 
 export type Response =
     | {
           _id: mongoose.Types.ObjectId;
           replyingTo: mongoose.Types.ObjectId | null;
+          createdAt: string;
       }[]
     | null;
 
@@ -19,7 +21,7 @@ const getRecommendedPosts: apiFunctionTypes.GET<Params, Response> = async (
     data,
     abortController = null,
 ) => {
-    const { userId, after, repliesOnly } = data.params as Params;
+    const { userId, excludeActiveUser, after, limit = "10" } = data.params as Params;
 
     if (!userId) {
         return {
@@ -29,7 +31,7 @@ const getRecommendedPosts: apiFunctionTypes.GET<Params, Response> = async (
         };
     }
 
-    const queryObject = { limit: "10", after, repliesOnly: repliesOnly ? `${repliesOnly}` : "" };
+    const queryObject = { excludeActiveUser, after, limit };
     const urlParams = new URLSearchParams();
     Object.entries(queryObject).forEach(([key, value]) => {
         if (value !== "" && value !== undefined && value !== null) {
