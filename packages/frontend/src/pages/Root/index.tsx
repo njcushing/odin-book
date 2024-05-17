@@ -142,15 +142,7 @@ function Root() {
                     areas: [
                         { size: "280px", children: [<Sidebar.Generic type="wide" key={0} />] },
                         { size: "1fr", children: [<Outlet key={0} />] },
-                        {
-                            size: "auto",
-                            children: [
-                                <Infobar.Wrapper
-                                    style={{ gap: "0.4rem", padding: "0.4rem" }}
-                                    key={0}
-                                />,
-                            ],
-                        },
+                        { size: "auto", children: [<Infobar.Wrapper key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
@@ -169,15 +161,7 @@ function Root() {
                     areas: [
                         { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
                         { size: "1fr", children: [<Outlet key={0} />] },
-                        {
-                            size: "auto",
-                            children: [
-                                <Infobar.Wrapper
-                                    style={{ gap: "0.4rem", padding: "0.4rem" }}
-                                    key={0}
-                                />,
-                            ],
-                        },
+                        { size: "auto", children: [<Infobar.Wrapper key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
