@@ -164,6 +164,10 @@ function List() {
         };
     }, [posts, errorMessage, errorMessageRef, createNewPostButtonRef]);
 
+    useEffect(() => {
+        PubSub.publish("sidebar-set-choices", ["RecommendedUsers", "RecentChatActivity"]);
+    }, []);
+
     return (
         <div className={styles["container"]}>
             {!initialWaiting ? (
