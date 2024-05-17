@@ -8,12 +8,7 @@ import styles from "./index.module.css";
 export const routes = [
     {
         path: "",
-        element: <Navigate to="account" />,
-        errorElement: <div></div>,
-    },
-    {
-        path: "account",
-        element: null,
+        element: <Navigate to="profile" />,
         errorElement: <div></div>,
     },
     {
@@ -36,7 +31,6 @@ function Main() {
     };
 
     const navigationOptions = [
-        { text: "Account", symbol: "lock", link: "account", style: optionStyles },
         { text: "Preferences", symbol: "palette", link: "preferences", style: optionStyles },
         { text: "Profile", symbol: "person", link: "profile", style: optionStyles },
     ];
