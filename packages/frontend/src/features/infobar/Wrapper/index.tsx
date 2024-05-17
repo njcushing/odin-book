@@ -65,7 +65,7 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
     return (choices && choices.length > 0) || childrenState ? (
         <div className={styles["wrapper"]} ref={wrapperRef} style={{ ...style, top: wrapperTop }}>
             <div className={styles["container"]}>
-                {chosenElements}
+                {...chosenElements}
                 {children}
             </div>
         </div>
