@@ -4,8 +4,6 @@ import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
 import Accessibility from "@/components/accessibility";
 import getChatOverview, { Params, Response } from "@/features/chat/utils/getChatOverview";
-import LayoutUI from "@/layouts";
-import Infobar from "@/features/infobar";
 import extractParticipantsInformation, {
     ReturnTypes as extractedParticipantsInfo,
 } from "./utils/extractParticipantsInformation";
@@ -122,7 +120,7 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
         };
     }, [chatData, setChatData]);
 
-    const provider = (
+    return (
         <ChatContext.Provider
             value={useMemo(
                 () => ({ chatData, setChatData, participantsInfo, awaitingResponse: waiting }),
@@ -149,90 +147,6 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
                 <Accessibility.WaitingWheel />
             )}
         </ChatContext.Provider>
-    );
-
-    const info = (
-        <Infobar.Wrapper
-            style={{
-                height: "calc(100% - (2 * 0.4rem))",
-                padding: "0.4rem",
-            }}
-            key={0}
-        >
-            <Infobar.ChatParticipants participants={participantsInfo} />
-        </Infobar.Wrapper>
-    );
-
-    return (
-        <LayoutUI.Spatial
-            width="100%"
-            height="auto"
-            arrangements={[
-                {
-                    type: "columns",
-                    minWidth: 920,
-                    maxWidth: 999999,
-                    minHeight: 0,
-                    maxHeight: 999999,
-                    areas: [
-                        { size: "600px", children: [provider] },
-                        { size: "320px", children: [info] },
-                    ],
-                    style: {
-                        justifySelf: "flex-start",
-                        alignSelf: "flex-start",
-                        width: "1200px",
-                        height: "auto",
-                        padding: "0rem",
-                    },
-                },
-                {
-                    type: "columns",
-                    minWidth: 600,
-                    maxWidth: 920,
-                    minHeight: 0,
-                    maxHeight: 999999,
-                    areas: [{ size: "600px", children: [provider] }],
-                    style: {
-                        justifySelf: "flex-start",
-                        alignSelf: "flex-start",
-                        width: "660px",
-                        height: "auto",
-                        padding: "0rem",
-                    },
-                },
-                {
-                    type: "columns",
-                    minWidth: 300,
-                    maxWidth: 600,
-                    minHeight: 0,
-                    maxHeight: 999999,
-                    areas: [{ size: "300px", children: [provider] }],
-                    style: {
-                        justifySelf: "flex-start",
-                        alignSelf: "flex-start",
-                        width: "360px",
-                        height: "auto",
-                        padding: "0rem",
-                    },
-                },
-                {
-                    type: "columns",
-                    minWidth: 0,
-                    maxWidth: 360,
-                    minHeight: 0,
-                    maxHeight: 999999,
-                    areas: [{ size: "1fr", children: [provider] }],
-                    style: {
-                        justifySelf: "flex-start",
-                        alignSelf: "flex-start",
-                        width: "100%",
-                        height: "auto",
-                        padding: "0rem",
-                    },
-                },
-            ]}
-        />
     );
 }
 
