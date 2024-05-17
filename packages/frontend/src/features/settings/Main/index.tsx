@@ -26,7 +26,16 @@ export const routes = [
 
 function Main() {
     useEffect(() => {
-        PubSub.publish("sidebar-set-choices", []);
+        const publish = () => {
+            PubSub.publish("infobar-set-choices", []);
+        };
+
+        PubSub.subscribe("infobar-ready", () => publish());
+        publish();
+
+        return () => {
+            PubSub.unsubscribe("infobar-ready");
+        };
     }, []);
 
     const optionStyles = {
