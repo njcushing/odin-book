@@ -4,6 +4,7 @@ import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
 import Accessibility from "@/components/accessibility";
 import getChatOverview, { Params, Response } from "@/features/chat/utils/getChatOverview";
+import Infobar from "@/features/infobar";
 import extractParticipantsInformation, {
     ReturnTypes as extractedParticipantsInfo,
 } from "./utils/extractParticipantsInformation";
@@ -119,6 +120,17 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
             PubSub.unsubscribe("chat-add-users-successful");
         };
     }, [chatData, setChatData]);
+
+    useEffect(() => {
+        PubSub.publish("sidebar-set-choices", []);
+        PubSub.publish("sidebar-set-children", [
+            <Infobar.ChatParticipants participants={participantsInfo} key={0} />,
+        ]);
+
+        return () => {
+            PubSub.publish("sidebar-set-children", []);
+        };
+    }, [chatData, participantsInfo]);
 
     return (
         <ChatContext.Provider
