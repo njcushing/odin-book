@@ -132,6 +132,7 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
         ]);
 
         return () => {
+            PubSub.publish("sidebar-set-style");
             PubSub.publish("sidebar-set-children", []);
         };
     }, [chatData, participantsInfo]);
