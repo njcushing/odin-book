@@ -77,7 +77,7 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
         <div
             className={styles["wrapper"]}
             ref={wrapperRef}
-            style={{ ...styleState, top: wrapperTop }}
+            style={{ ...defaultStyles, ...styleState, top: wrapperTop }}
         >
             <div className={styles["container"]}>
                 {...chosenElements}
