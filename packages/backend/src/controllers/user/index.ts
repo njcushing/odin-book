@@ -12,6 +12,7 @@ router.get("/:userId/option", get.option);
 router.get("/:userId/followers/users", get.followers);
 router.get("/:userId/following/users", get.following);
 router.get("/:userId/chats", get.chats);
+router.get("/:userId/recommended-users", get.recommendedUsers);
 router.get("/:userId/chat-activity", get.chatActivity);
 router.get("/:userId/recommended-posts", get.recommendedPosts);
 router.get("/id", get.idFromTag);
