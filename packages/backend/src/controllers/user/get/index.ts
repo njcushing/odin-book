@@ -418,17 +418,24 @@ export const posts = [
         // if 'repliesOnly' query parameter is specified as 'true', filter out non-replies
         if (repliesOnly === "true") {
             aggregation.push({
-                $match: {
-                    $or: [
-                        {
-                            populatedPosts: {
-                                $elemMatch: {
-                                    replyingTo: { $ne: null, $type: "objectId" },
-                                },
+                $addFields: {
+                    populatedPosts: {
+                        $filter: {
+                            input: "$populatedPosts",
+                            as: "post",
+                            cond: {
+                                $or: [
+                                    {
+                                        $and: [
+                                            { $ne: ["$$post.replyingTo", null] },
+                                            { $eq: [{ $type: "$$post.replyingTo" }, "objectId"] },
+                                        ],
+                                    },
+                                    { $eq: ["$populatedPosts", []] },
+                                ],
                             },
                         },
-                        { populatedPosts: [] },
-                    ],
+                    },
                 },
             });
         }
