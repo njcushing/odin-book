@@ -10,7 +10,13 @@ type TWrapper = {
     children?: React.ReactNode;
 };
 
+const defaultStyles = {
+    gap: "0.4rem",
+    padding: "0.4rem",
+};
+
 function Wrapper({ initialChoices, style, children }: TWrapper) {
+    const [styleState, setStyleState] = useState<React.CSSProperties | null>(style || null);
     const [choices, setChoices] = useState<string[] | null>(initialChoices || null);
     const [childrenState, setChildrenState] = useState<React.ReactNode | null>(children || null);
 
@@ -38,9 +44,13 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
 
     // subscribe to topics for customising sidebar
     useEffect(() => {
+        PubSub.unsubscribe("sidebar-set-style");
         PubSub.unsubscribe("sidebar-set-choices");
         PubSub.unsubscribe("sidebar-set-children");
 
+        PubSub.subscribe("sidebar-set-style", (msg, data) => {
+            setStyleState(data || defaultStyles);
+        });
         PubSub.subscribe("sidebar-set-choices", (msg, data) => {
             setChoices(data);
         });
@@ -49,6 +59,7 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
         });
 
         return () => {
+            PubSub.unsubscribe("sidebar-set-style");
             PubSub.unsubscribe("sidebar-set-choices");
             PubSub.unsubscribe("sidebar-set-children");
         };
@@ -63,7 +74,11 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
     }
 
     return (choices && choices.length > 0) || childrenState ? (
-        <div className={styles["wrapper"]} ref={wrapperRef} style={{ ...style, top: wrapperTop }}>
+        <div
+            className={styles["wrapper"]}
+            ref={wrapperRef}
+            style={{ ...styleState, top: wrapperTop }}
+        >
             <div className={styles["container"]}>
                 {...chosenElements}
                 {childrenState}
