@@ -2,8 +2,6 @@ import { useContext, useState, useEffect, useRef } from "react";
 import * as useAsync from "@/hooks/useAsync";
 import { UserContext } from "@/context/user";
 import Buttons from "@/components/buttons";
-import Infobar from "@/features/infobar";
-import LayoutUI from "@/layouts";
 import PubSub from "pubsub-js";
 import Accessibility from "@/components/accessibility";
 import mongoose from "mongoose";
@@ -155,7 +153,7 @@ function List() {
         };
     }, [chats, errorMessage, errorMessageRef, createNewChatButtonRef]);
 
-    const list = (
+    return (
         <div className={styles["container"]} key={0}>
             {!initialWaiting ? (
                 <>
@@ -205,93 +203,6 @@ function List() {
                 <Accessibility.WaitingWheel />
             )}
         </div>
-    );
-
-    const info = (
-        <Infobar.Wrapper
-            style={{
-                height: "calc(100% - (2 * 0.4rem))",
-                minHeight: "500px",
-                padding: "0.4rem",
-                gap: "0.4rem",
-            }}
-            key={0}
-        >
-            <Infobar.RecommendedUsers />
-            <Infobar.RecentPosts />
-        </Infobar.Wrapper>
-    );
-
-    return (
-        <LayoutUI.Spatial
-            width="100%"
-            height="auto"
-            arrangements={[
-                {
-                    type: "columns",
-                    minWidth: 920,
-                    maxWidth: 999999,
-                    minHeight: 0,
-                    maxHeight: 999999,
-                    areas: [
-                        { size: "600px", children: [list] },
-                        { size: "320px", children: [info] },
-                    ],
-                    style: {
-                        justifySelf: "flex-start",
-                        alignSelf: "flex-start",
-                        width: "1200px",
-                        height: "auto",
-                        padding: "0rem",
-                    },
-                },
-                {
-                    type: "columns",
-                    minWidth: 600,
-                    maxWidth: 920,
-                    minHeight: 0,
-                    maxHeight: 999999,
-                    areas: [{ size: "600px", children: [list] }],
-                    style: {
-                        justifySelf: "flex-start",
-                        alignSelf: "flex-start",
-                        width: "660px",
-                        height: "auto",
-                        padding: "0rem",
-                    },
-                },
-                {
-                    type: "columns",
-                    minWidth: 300,
-                    maxWidth: 600,
-                    minHeight: 0,
-                    maxHeight: 999999,
-                    areas: [{ size: "300px", children: [list] }],
-                    style: {
-                        justifySelf: "flex-start",
-                        alignSelf: "flex-start",
-                        width: "360px",
-                        height: "auto",
-                        padding: "0rem",
-                    },
-                },
-                {
-                    type: "columns",
-                    minWidth: 0,
-                    maxWidth: 360,
-                    minHeight: 0,
-                    maxHeight: 999999,
-                    areas: [{ size: "1fr", children: [list] }],
-                    style: {
-                        justifySelf: "flex-start",
-                        alignSelf: "flex-start",
-                        width: "100%",
-                        height: "auto",
-                        padding: "0rem",
-                    },
-                },
-            ]}
-        />
     );
 }
 
