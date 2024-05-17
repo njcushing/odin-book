@@ -10,7 +10,7 @@ type TWrapper = {
     children?: React.ReactNode;
 };
 
-function Wrapper({ initialChoices = ["RecommendedUsers"], style, children }: TWrapper) {
+function Wrapper({ initialChoices, style, children }: TWrapper) {
     const [choices, setChoices] = useState<string[] | null>(initialChoices || null);
     const [childrenState, setChildrenState] = useState<React.ReactNode | null>(children || null);
 
