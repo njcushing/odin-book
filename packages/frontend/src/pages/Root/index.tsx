@@ -6,42 +6,65 @@ import UserContextProvider from "@/context/user";
 import Sidebar from "@/features/sidebar";
 import Posts from "@/features/posts";
 import Chat from "@/features/chat";
+import Infobar from "@/features/infobar";
 import mongoose from "mongoose";
-import Home, { routes as HomeRoutes } from "../Home";
-import Profile, { routes as ProfileRoutes } from "../Profile";
-import Chats, { routes as ChatsRoutes } from "../Chats";
-import Post, { routes as PostRoutes } from "../Post";
-import Settings, { routes as SettingsRoutes } from "../Settings";
+import Profile from "@/features/profile";
+import { routes as ProfileRoutes } from "@/features/profile/Main";
+import Settings from "@/features/settings";
+import { routes as SettingsRoutes } from "@/features/settings/Main";
 import styles from "./index.module.css";
 
 export const routes = [
     {
         path: "",
-        element: <Home />,
-        children: HomeRoutes,
+        element: <Posts.List />,
         errorElement: <div></div>,
     },
     {
         path: "user/:accountTag",
-        element: <Profile />,
+        element: <Profile.Main />,
         children: ProfileRoutes,
         errorElement: <div></div>,
     },
     {
         path: "",
-        element: <Chats />,
-        children: ChatsRoutes,
+        children: [
+            {
+                path: "chats",
+                element: <Chat.List />,
+                errorElement: <div></div>,
+            },
+            {
+                path: "chat/:chatId",
+                element: <Chat.Active getIdFromURLParam />,
+                errorElement: <div></div>,
+            },
+        ],
         errorElement: <div></div>,
     },
     {
         path: "post",
-        element: <Post />,
-        children: PostRoutes,
+        children: [
+            {
+                path: ":postId",
+                element: (
+                    <div className={styles["post-container"]}>
+                        <Posts.Replies getIdFromURLParam canLoadMoreReplies disableRepliesLink />
+                    </div>
+                ),
+                errorElement: <div></div>,
+            },
+            {
+                path: ":postId/likes",
+                element: <Posts.Likes getIdFromURLParam />,
+                errorElement: <div></div>,
+            },
+        ],
         errorElement: <div></div>,
     },
     {
         path: "settings",
-        element: <Settings />,
+        element: <Settings.Main />,
         children: SettingsRoutes,
         errorElement: <div></div>,
     },
@@ -118,7 +141,8 @@ function Root() {
                     maxHeight: 999999,
                     areas: [
                         { size: "280px", children: [<Sidebar.Generic type="wide" key={0} />] },
-                        { size: "920px", children: [<Outlet key={0} />] },
+                        { size: "1fr", children: [<Outlet key={0} />] },
+                        { size: "auto", children: [<Infobar.Wrapper key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
@@ -136,7 +160,8 @@ function Root() {
                     maxHeight: 999999,
                     areas: [
                         { size: "60px", children: [<Sidebar.Generic type="thin" key={0} />] },
-                        { size: "920px", children: [<Outlet key={0} />] },
+                        { size: "1fr", children: [<Outlet key={0} />] },
+                        { size: "auto", children: [<Infobar.Wrapper key={0} />] },
                     ],
                     style: {
                         justifySelf: "flex-start",
