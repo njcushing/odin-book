@@ -999,6 +999,117 @@ export const chats = [
     }),
 ];
 
+export const recommendedUsers = [
+    protectedRouteJWT,
+    validators.param.userId,
+    validators.query.limit,
+    checkRequestValidationError,
+    asyncHandler(async (req: Request, res: Response) => {
+        const { userId } = req.params;
+        const { limit } = req.query;
+
+        if (userId !== res.locals.user.id) {
+            sendResponse(res, 401, "Cannot view another user's recommendations");
+            return;
+        }
+
+        /// create aggregation pipeline
+        const aggregation: mongoose.PipelineStage[] = [];
+        // match user
+        aggregation.push({ $match: { _id: new mongoose.Types.ObjectId(userId) } });
+        // populate users
+        aggregation.push({
+            $lookup: {
+                from: "users",
+                localField: "following.users",
+                foreignField: "_id",
+                as: "populatedUsers",
+            },
+        });
+        // populate users for every user and add those documents to root
+        aggregation.push({
+            $group: {
+                _id: "$_id",
+                otherFields: { $first: "$$ROOT" },
+                allUsers: { $push: "$populatedUsers.following.users" },
+            },
+        });
+        // Unwind users and flatten them into a single array
+        aggregation.push({ $unwind: "$allUsers" });
+        aggregation.push({
+            $addFields: {
+                users: {
+                    $reduce: {
+                        input: "$allUsers",
+                        initialValue: [],
+                        in: { $concatArrays: ["$$value", "$$this"] },
+                    },
+                },
+            },
+        });
+        // Filter out the active user and any users being followed by the active user
+        aggregation.push({
+            $addFields: {
+                users: {
+                    $filter: {
+                        input: "$users",
+                        cond: {
+                            $and: [
+                                { $ne: ["$$this", new mongoose.Types.ObjectId(userId)] },
+                                { $not: { $in: ["$$this", "$otherFields.following.users"] } },
+                            ],
+                        },
+                    },
+                },
+            },
+        });
+        // Unwind and group the 'users' array, counting how many times each user is present
+        aggregation.push({ $unwind: { path: "$users", preserveNullAndEmptyArrays: true } });
+        aggregation.push({
+            $group: {
+                _id: "$users",
+                count: { $sum: 1 },
+            },
+        });
+        // Sort and limit users
+        aggregation.push({ $sort: { count: -1 } });
+        if (limit) aggregation.push({ $limit: Number(limit) });
+        // Group result to a new field
+        aggregation.push({
+            $group: {
+                _id: null,
+                topUsers: { $push: "$_id" },
+            },
+        });
+        // execute aggregation
+        const aggregationResult = await User.aggregate(aggregation);
+        if (aggregationResult.length === 0) {
+            sendResponse(res, 404, "Could not find recommended users");
+        } else {
+            let { topUsers } = aggregationResult[0];
+            // when no results are found, the topUsers array will contain one entry: 'null', so
+            // return an empty array instead
+            if (!topUsers[0]) topUsers = [];
+            await generateToken(res.locals.user)
+                .then((token) => {
+                    sendResponse(res, 200, "Recommended users found", {
+                        token,
+                        recommendedUsers: topUsers,
+                    });
+                })
+                .catch((tokenErr) => {
+                    sendResponse(
+                        res,
+                        500,
+                        tokenErr.message || `Recommended users found, but token creation failed`,
+                        { recommendedUsers: topUsers },
+                        tokenErr,
+                    );
+                });
+        }
+    }),
+];
+
 export const chatActivity = [
     protectedRouteJWT,
     validators.param.userId,
