@@ -88,6 +88,14 @@ function Main() {
         setParams([{ params: { accountTag: accountTag || "" } }, null]);
     }, [accountTag, setAttempting, setParams]);
 
+    useEffect(() => {
+        PubSub.publish("sidebar-set-choices", [
+            "RecommendedUsers",
+            "RecentPosts",
+            "RecentChatActivity",
+        ]);
+    }, []);
+
     const location = useLocation();
     const path = location.pathname.split("/");
 
