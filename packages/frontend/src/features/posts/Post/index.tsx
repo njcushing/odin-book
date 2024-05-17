@@ -41,8 +41,8 @@ function Post({
 
     const navigate = useNavigate();
 
-    const [initialWaiting, setInitialWaiting] = useState(true);
-    const [, /* waiting */ setWaiting] = useState(true);
+    const [initialWaiting, setInitialWaiting] = useState(!overridePostData);
+    const [, /* waiting */ setWaiting] = useState(!overridePostData);
 
     const [postData, setPostData] = useState<GetPostResponse>(null);
 
