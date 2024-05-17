@@ -122,6 +122,10 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
     }, [chatData, setChatData]);
 
     useEffect(() => {
+        PubSub.publish("sidebar-set-style", {
+            height: "calc(100% - (2 * 0.4rem))",
+            padding: "0.4rem",
+        });
         PubSub.publish("sidebar-set-choices", []);
         PubSub.publish("sidebar-set-children", [
             <Infobar.ChatParticipants participants={participantsInfo} key={0} />,
