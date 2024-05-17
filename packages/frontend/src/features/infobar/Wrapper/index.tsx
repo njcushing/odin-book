@@ -42,26 +42,28 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
     }, []);
     const wrapperTop = `min(0px, calc(100vh - ${wrapperHeight}px))`;
 
-    // subscribe to topics for customising sidebar
+    // subscribe to topics for customising infobar
     useEffect(() => {
-        PubSub.unsubscribe("sidebar-set-style");
-        PubSub.unsubscribe("sidebar-set-choices");
-        PubSub.unsubscribe("sidebar-set-children");
+        PubSub.unsubscribe("infobar-set-style");
+        PubSub.unsubscribe("infobar-set-choices");
+        PubSub.unsubscribe("infobar-set-children");
 
-        PubSub.subscribe("sidebar-set-style", (msg, data) => {
+        PubSub.subscribe("infobar-set-style", (msg, data) => {
             setStyleState(data || defaultStyles);
         });
-        PubSub.subscribe("sidebar-set-choices", (msg, data) => {
+        PubSub.subscribe("infobar-set-choices", (msg, data) => {
             setChoices(data);
         });
-        PubSub.subscribe("sidebar-set-children", (msg, data) => {
+        PubSub.subscribe("infobar-set-children", (msg, data) => {
             setChildrenState(data);
         });
 
+        PubSub.publish("infobar-ready");
+
         return () => {
-            PubSub.unsubscribe("sidebar-set-style");
-            PubSub.unsubscribe("sidebar-set-choices");
-            PubSub.unsubscribe("sidebar-set-children");
+            PubSub.unsubscribe("infobar-set-style");
+            PubSub.unsubscribe("infobar-set-choices");
+            PubSub.unsubscribe("infobar-set-children");
         };
     }, []);
 
