@@ -13,6 +13,13 @@ export const routes = [
 ];
 
 function Home() {
+    const info = (
+        <Infobar.Wrapper style={{ padding: "0.4rem", gap: "0.4rem" }} key={0}>
+            <Infobar.RecommendedUsers />
+            <Infobar.RecentChatActivity />
+        </Infobar.Wrapper>
+    );
+
     const layout = (
         <LayoutUI.Spatial
             width="100%"
@@ -26,7 +33,7 @@ function Home() {
                     maxHeight: 999999,
                     areas: [
                         { size: "600px", children: [<Outlet key={0} />] },
-                        { size: "320px", children: [<Infobar.Wrapper key={0} />] },
+                        { size: "320px", children: [info] },
                     ],
                     style: {
                         justifySelf: "flex-start",
