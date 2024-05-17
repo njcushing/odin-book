@@ -154,7 +154,16 @@ function List() {
     }, [chats, errorMessage, errorMessageRef, createNewChatButtonRef]);
 
     useEffect(() => {
-        PubSub.publish("sidebar-set-choices", ["RecommendedUsers", "RecentPosts"]);
+        const publish = () => {
+            PubSub.publish("infobar-set-choices", ["RecommendedUsers", "RecentPosts"]);
+        };
+
+        PubSub.subscribe("infobar-ready", () => publish());
+        publish();
+
+        return () => {
+            PubSub.unsubscribe("infobar-ready");
+        };
     }, []);
 
     return (
