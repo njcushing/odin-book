@@ -20,6 +20,22 @@ export const routes = [
 ];
 
 function Profile() {
+    const info = (
+        <Infobar.Wrapper
+            style={{
+                height: "calc(100% - (2 * 0.4rem))",
+                minHeight: "500px",
+                padding: "0.4rem",
+                gap: "0.4rem",
+            }}
+            key={0}
+        >
+            <Infobar.RecommendedUsers />
+            <Infobar.RecentPosts />
+            <Infobar.RecentChatActivity />
+        </Infobar.Wrapper>
+    );
+
     const layout = (
         <LayoutUI.Spatial
             width="100%"
@@ -33,7 +49,7 @@ function Profile() {
                     maxHeight: 999999,
                     areas: [
                         { size: "600px", children: [<Outlet key={0} />] },
-                        { size: "320px", children: [<Infobar.Wrapper key={0} />] },
+                        { size: "320px", children: [info] },
                     ],
                     style: {
                         justifySelf: "flex-start",
