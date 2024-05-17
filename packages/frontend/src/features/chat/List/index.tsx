@@ -153,6 +153,10 @@ function List() {
         };
     }, [chats, errorMessage, errorMessageRef, createNewChatButtonRef]);
 
+    useEffect(() => {
+        PubSub.publish("sidebar-set-choices", ["RecommendedUsers", "RecentPosts"]);
+    }, []);
+
     return (
         <div className={styles["container"]} key={0}>
             {!initialWaiting ? (
