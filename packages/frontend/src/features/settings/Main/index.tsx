@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import LayoutUI from "@/layouts";
 import Navigation from "@/components/navigation";
@@ -24,6 +25,10 @@ export const routes = [
 ];
 
 function Main() {
+    useEffect(() => {
+        PubSub.publish("sidebar-set-choices", []);
+    }, []);
+
     const optionStyles = {
         gap: "0.4rem",
         fontSize: "1.2rem",
