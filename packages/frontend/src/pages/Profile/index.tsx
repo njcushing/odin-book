@@ -21,15 +21,7 @@ export const routes = [
 
 function Profile() {
     const info = (
-        <Infobar.Wrapper
-            style={{
-                height: "calc(100% - (2 * 0.4rem))",
-                minHeight: "500px",
-                padding: "0.4rem",
-                gap: "0.4rem",
-            }}
-            key={0}
-        >
+        <Infobar.Wrapper style={{ padding: "0.4rem", gap: "0.4rem" }} key={0}>
             <Infobar.RecommendedUsers />
             <Infobar.RecentPosts />
             <Infobar.RecentChatActivity />
