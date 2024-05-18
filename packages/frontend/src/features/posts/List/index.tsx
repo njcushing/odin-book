@@ -11,7 +11,7 @@ import Posts from "..";
 import styles from "./index.module.css";
 
 function List() {
-    const { user, extract } = useContext(UserContext);
+    const { user, extract, awaitingResponse } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -20,10 +20,9 @@ function List() {
     const createNewPostButtonRef = useRef(null);
     const [createNewPostButtonHeight, setCreateNewPostButtonHeight] = useState<number>(0);
 
-    const [initialWaiting, setInitialWaiting] = useState(true);
-    const [waiting, setWaiting] = useState(true);
+    const [waiting, setWaiting] = useState(false);
 
-    const [posts, setPosts] = useState<Response>([]);
+    const [posts, setPosts] = useState<Response>(null);
     const [response, setParams, setAttempting, gettingPosts] = useAsync.GET<Params, Response>(
         {
             func: getRecommendedPosts,
@@ -37,30 +36,32 @@ function List() {
                 null,
             ],
         },
-        true,
+        false,
     );
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        const newState = response ? response.data : [];
+        const newState = response ? response.data : null;
         setPosts((currentPosts) => {
-            return currentPosts ? currentPosts.concat(newState || []) : newState || [];
+            return currentPosts ? currentPosts.concat(newState || []) : newState || null;
         });
     }, [response]);
 
     useEffect(() => {
-        setAttempting(true);
-        setErrorMessage("");
-        setParams([
-            {
-                params: {
-                    userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
-                    after: null,
+        if (!awaitingResponse) {
+            setAttempting(true);
+            setErrorMessage("");
+            setParams([
+                {
+                    params: {
+                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        after: null,
+                    },
                 },
-            },
-            null,
-        ]);
-    }, [user, extract, setParams, setAttempting]);
+                null,
+            ]);
+        }
+    }, [user, extract, awaitingResponse, setParams, setAttempting]);
 
     useEffect(() => {
         if (response) {
@@ -71,10 +72,6 @@ function List() {
             }
         }
     }, [response]);
-
-    useEffect(() => {
-        if (!gettingPosts) setInitialWaiting(gettingPosts);
-    }, [gettingPosts]);
 
     useEffect(() => {
         setWaiting(gettingPosts);
@@ -179,7 +176,7 @@ function List() {
 
     return (
         <div className={styles["container"]}>
-            {!initialWaiting ? (
+            {!(waiting && (!posts || posts.length === 0)) ? (
                 <>
                     <div style={{ height: errorMessageHeight }}></div>
                     {posts && posts.length > 0 ? (
@@ -194,7 +191,9 @@ function List() {
                             );
                         })
                     ) : (
-                        <p className={styles["empty-message"]}>Nothing to see here!</p>
+                        <p className={styles["empty-message"]}>
+                            {posts && posts.length === 0 ? "Nothing to see here!" : ""}
+                        </p>
                     )}
                     <div style={{ height: createNewPostButtonHeight }}></div>
                     <div className={styles["sticky-wrapper"]}>
