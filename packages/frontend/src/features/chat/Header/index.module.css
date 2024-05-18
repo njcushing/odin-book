@@ -44,8 +44,7 @@
     gap: 0.4rem;
 }
 
-.name,
-.edit-name {
+.name {
     color: var(--text-primary);
     font-family: Gabarito;
     font-weight: var(--text-bold-font-weight);
@@ -60,16 +59,47 @@
 }
 
 .edit-name {
+    color: var(--text-primary);
     font-size: 1.6rem;
+    font-family: Gabarito;
+    font-weight: var(--text-bold-font-weight);
+    text-align: left;
+    text-wrap: nowrap;
+    border: none;
+    border-radius: 2px;
+    outline-width: 2px;
+    outline-style: solid;
+    outline-color: var(--input-outline);
+    background-color: var(--input-background);
 
     width: 100%;
     max-width: 100%;
+
+    transition: border-radius 0.25s ease-in-out 0s;
+}
+
+@media (hover: hover) {
+    .edit-name:hover:not(:disabled) {
+        border-radius: 4px;
+    }
+}
+
+.edit-name:focus {
+    border-radius: 8px;
 }
 
 .edit-name:disabled {
     color: var(--input-text-disabled);
     outline-color: var(--input-outline-disabled);
     background-color: rgba(200, 200, 200, 1.0);
+}
+
+.edit-name::placeholder {
+    color: var(--input-placeholder);
+}
+
+.edit-name:disabled::placeholder {
+    color: var(--input-placeholder-disabled);
 }
 
 .edit-chat-name-options {
