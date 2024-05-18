@@ -7,8 +7,13 @@ export const options = () => [
 export const optionNames = () => options().map((option) => option.name);
 
 export const setTheme = (theme: string) => {
-    if (optionNames().includes(theme)) {
+    let mutableTheme = theme;
+    if (optionNames().includes(mutableTheme)) {
+        if (mutableTheme === "default") {
+            const prefersDarkColorScheme = window.matchMedia("(prefers-color-scheme: dark)");
+            mutableTheme = prefersDarkColorScheme.matches ? "dark" : "light";
+        }
         const root = document.querySelector(":root");
-        if (root !== null) root.setAttribute("theme", theme);
+        if (root !== null) root.setAttribute("theme", mutableTheme);
     }
 };
