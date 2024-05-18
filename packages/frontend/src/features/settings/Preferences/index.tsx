@@ -3,13 +3,14 @@ import { UserContext } from "@/context/user";
 import { v4 as uuidv4 } from "uuid";
 import Inputs from "@/components/inputs";
 import { theme, themeOptions } from "@shared/validation/user";
+import { setTheme } from "@/themes";
 import List from "../List";
 import FieldUpdater from "../FieldUpdater";
 import generatePUTAsyncFunction from "../utils/generatePUTAsyncFunction";
 import styles from "./index.module.css";
 
 function Preferences() {
-    const { user, extract, awaitingResponse } = useContext(UserContext);
+    const { user, setUser, extract, awaitingResponse } = useContext(UserContext);
 
     const [waiting, setWaiting] = useState<boolean>(true);
     const [generateKey, setGenerateKey] = useState(uuidv4());
@@ -41,7 +42,10 @@ function Preferences() {
                 `${import.meta.env.VITE_SERVER_DOMAIN}/user/${extract("_id")}/preferences/theme`,
                 "theme",
             )}
-            publishTopic="successful-settings-update-user-preferences-theme"
+            onSuccessHandler={(value) => {
+                setTheme(`${value}`);
+                setUser({ ...user, preferences: { ...user.preferences, theme: `${value}` } });
+            }}
         />,
     ];
     /* eslint-enable react/jsx-key */
