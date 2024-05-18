@@ -51,7 +51,7 @@
 }
 
 .name {
-    color: var(--color-primary);
+    color: var(--text-primary);
     font-family: Gabarito;
     font-size: 1.1rem;
     font-weight: bold;
@@ -62,7 +62,7 @@
 }
 
 .text {
-    color: var(--color-primary);
+    color: var(--text-primary);
     font-family: Gabarito;
     font-size: 0.9rem;
     text-align: left;
