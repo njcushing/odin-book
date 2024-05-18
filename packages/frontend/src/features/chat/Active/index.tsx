@@ -138,6 +138,8 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
 
         return () => {
             PubSub.unsubscribe("infobar-ready");
+            PubSub.publish("infobar-set-style");
+            PubSub.publish("infobar-set-children");
         };
     }, [participantsInfo]);
 
