@@ -12,9 +12,10 @@ type Users = {
 export type SelectorTypes = {
     onChangeHandler?: ((selectedUsers: Users) => void) | null;
     disabled?: boolean;
+    disableUserLinks?: boolean;
 };
 
-function Selector({ onChangeHandler, disabled = false }: SelectorTypes) {
+function Selector({ onChangeHandler, disabled = false, disableUserLinks = false }: SelectorTypes) {
     const [selectedUsers, setSelectedUsers] = useState<Users>({});
 
     const addButton: ButtonBasicTypes = {
@@ -36,8 +37,9 @@ function Selector({ onChangeHandler, disabled = false }: SelectorTypes) {
                     setSelectedUsers({ ...selectedUsers, ...newSelectedUsers });
                     if (onChangeHandler) onChangeHandler({ ...selectedUsers, ...newSelectedUsers });
                 }}
-                disabled={disabled}
                 clearFindOnClick
+                disabled={disabled}
+                disableUserLinks={disableUserLinks}
             />
             {Object.keys(selectedUsers).length > 0 && (
                 <ul className={styles["selected-users"]}>
