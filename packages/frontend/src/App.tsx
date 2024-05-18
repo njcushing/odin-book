@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import Router from "@/routes";
+import { saveTheme, loadTheme } from "./themes";
 import useScrollableElement from "./hooks/useScrollableElement";
 
 function App() {
@@ -28,6 +29,10 @@ function App() {
             PubSub.unsubscribe("page-scrollable-area-shift-down");
         };
     }, []);
+
+    // load theme
+    if (localStorage.getItem("odin-book-theme") === null) saveTheme("default");
+    loadTheme();
 
     return (
         <div
