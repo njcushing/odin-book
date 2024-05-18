@@ -160,7 +160,9 @@ function Summary() {
                         />
                     ) : (
                         <p className={styles["banner-image-message"]}>
-                            Your banner image will go here
+                            {userSummary && extract("accountTag") === userSummary.accountTag
+                                ? "Your banner image will go here"
+                                : ""}
                         </p>
                     )}
                 </div>
