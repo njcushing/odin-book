@@ -8,7 +8,7 @@
     color: var(--text-primary);
     font-size: 1.6rem;
     font-family: Gabarito;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     text-wrap: wrap;
 }
 

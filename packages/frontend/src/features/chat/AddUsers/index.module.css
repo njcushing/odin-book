@@ -11,7 +11,7 @@
     color: var(--text-primary);
     font-size: 1.6rem;
     font-family: Gabarito;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     text-align: center;
 
     width: 100%;
@@ -21,7 +21,7 @@
     color: var(--text-error);
     font-family: Gabarito;
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     text-wrap: wrap;
 }
 

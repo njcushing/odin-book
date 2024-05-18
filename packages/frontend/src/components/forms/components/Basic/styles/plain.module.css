@@ -11,7 +11,7 @@
     color: var(--text-primary);
     font-family: Gabarito;
     font-size: 1.6rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     text-align: left;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .requirement-message > strong {
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 }
 
 .section {
@@ -50,7 +50,7 @@
     color: var(--text-secondary);
     font-family: Gabarito;
     font-size: 1.25rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     border-radius: 8px;
     background-color: var(--outline-secondary);
 

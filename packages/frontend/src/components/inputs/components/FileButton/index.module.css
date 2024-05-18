@@ -26,7 +26,7 @@
 .file-name {
     color: var(--text-secondary);
     font-family: Gabarito;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     text-align: left;
 }
 

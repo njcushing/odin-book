@@ -15,7 +15,7 @@
     color: var(--text-error);
     font-family: Gabarito;
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 }
 
 .error-message-small {

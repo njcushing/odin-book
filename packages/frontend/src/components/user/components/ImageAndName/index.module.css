@@ -39,7 +39,7 @@
 .display-name-button {
     color: var(--text-primary);
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 }
 
 .account-tag-button {

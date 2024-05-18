@@ -48,7 +48,7 @@
 .edit-name {
     color: var(--text-primary);
     font-family: Gabarito;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     text-align: left;
     text-wrap: nowrap;
 }
@@ -83,7 +83,7 @@
     color: var(--text-error);
     font-family: Gabarito;
     font-size: 0.8rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     text-align: left;
 }
 

@@ -18,7 +18,7 @@
     color: var(--text-primary);
     font-size: 1.4rem;
     font-family: Gabarito;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 
     padding: 0.4rem 0rem;
 }
@@ -58,6 +58,6 @@
     color: var(--text-error);
     font-family: Gabarito;
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     text-wrap:wrap;
 }

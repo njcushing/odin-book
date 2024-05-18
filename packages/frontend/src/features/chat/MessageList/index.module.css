@@ -13,7 +13,7 @@
     color: var(--text-error);
     font-family: Gabarito;
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 
     border-bottom: 1px solid var(--outline-primary);
 
@@ -58,7 +58,7 @@
     color: var(--text-inactive);
     font-family: Gabarito;
     font-size: 1.4rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 
     width: calc(100% - (2 * 0.4rem));
     height: calc(100% - (2 * 0.4rem));

@@ -171,14 +171,14 @@
 
 .likes-count > strong,
 .replies-count > strong {
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 }
 
 .error-message {
     color: var(--text-error);
     font-family: Gabarito;
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     
     border-bottom: 1px solid var(--outline-primary);
     background-color: var(--background-primary);

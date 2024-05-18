@@ -23,7 +23,7 @@
 
     color: var(--text-primary);
     font-size: 1.4rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 
     max-width: 100%;
 }
@@ -67,7 +67,7 @@
 .followers-count > strong,
 .likes-count > strong {
     font-size: 1.2rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 }
 
 .row-four {

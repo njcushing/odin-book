@@ -54,7 +54,7 @@
 
     color: var(--text-primary);
     font-size: 1.7rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 
     max-width: 100%;
 }
@@ -108,14 +108,14 @@
 .followers-count > strong,
 .likes-count > strong {
     font-size: 1.2rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 }
 
 .error-message {
     color: var(--text-error);
     font-family: Gabarito;
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     
     padding: 0.8rem 0.2rem;
 }

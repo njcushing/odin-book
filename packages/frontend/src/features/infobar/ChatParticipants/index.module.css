@@ -18,7 +18,7 @@
     color: var(--text-primary);
     font-size: 1.4rem;
     font-family: Gabarito;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 
     padding: 0.4rem 0rem;
 }
@@ -68,7 +68,7 @@
     color: var(--text-primary);
     font-size: 1.0rem;
     font-family: Gabarito;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     text-align: left;
 }
 

@@ -17,7 +17,7 @@
     color: var(--text-error);
     font-family: Gabarito;
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
 }
 
 .wrapper[data-position |= "left"] .error-message {
@@ -164,7 +164,7 @@
     color: rgba(0, 0, 0);
     font-size: 0.8rem;
     font-family: Gabarito;
-    font-weight: bold;
+    font-weight: var(--text-bold-font-weight);
     line-height: 1.1rem;
     text-align: left;
 
