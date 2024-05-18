@@ -62,6 +62,10 @@ function Message({
                             disabled={sending}
                             maxLength={500}
                             placeholder={placeholder}
+                            style={{
+                                borderBottomLeftRadius: "0px",
+                                borderBottomRightRadius: "0px",
+                            }}
                         />
                     </div>
                     <div className={styles["file-container"]}>
