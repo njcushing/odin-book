@@ -48,7 +48,7 @@
 .input-error:disabled {
     color: var(--input-text-disabled);
     outline-color: var(--input-outline-disabled);
-    background-color: rgba(200, 200, 200, 1.0);
+    background-color: var(--input-background-disabled);
 }
 
 .input::placeholder {
