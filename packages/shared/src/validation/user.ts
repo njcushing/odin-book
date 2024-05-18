@@ -218,6 +218,7 @@ export const imageBase64 = (value: string, messageType: "front" | "back"): Retur
 };
 
 export const themeOptions = [
+    { text: "Default", value: "default" },
     { text: "Light", value: "light" },
     { text: "Dark", value: "dark" },
 ];
