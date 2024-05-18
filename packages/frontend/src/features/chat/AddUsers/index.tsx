@@ -73,6 +73,7 @@ function AddUsers({
                             )
                         }
                         disabled={waiting}
+                        disableUserLinks
                     />
                 </div>
                 {errorMessage.length > 0 ? (
