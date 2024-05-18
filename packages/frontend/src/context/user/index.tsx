@@ -91,7 +91,12 @@ function UserContextProvider({ children }: UserContextProviderTypes) {
         const newState = response ? response.data : defaultUser;
         setState(newState || defaultUser);
         setAwaitingResponse(false);
-        if (newState) setTheme(newState.preferences.theme);
+        if (newState) {
+            setTheme(newState.preferences.theme);
+            if (newState.preferences.theme !== localStorage.getItem("odin-book-theme")) {
+                localStorage.setItem("odin-book-theme", newState.preferences.theme);
+            }
+        }
     }, [response]);
 
     useEffect(() => {
