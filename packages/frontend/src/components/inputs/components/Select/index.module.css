@@ -10,7 +10,7 @@
 
 .select,
 .select-error {
-    color: rgba(0, 0, 0, 1.0);
+    color: var(--input-text);
     font-size: 1.0rem;
     font-family: Gabarito;
     text-transform: capitalize;
@@ -46,11 +46,11 @@
 }
 
 .select-option:nth-child(2n-1) {
-    background-color: rgba(255, 255, 255, 1.0);
+    background-color: var(--input-select-option-odd-background);
 }
 
 .select-option:nth-child(2n) {
-    background-color: rgb(230, 253, 255);
+    background-color: var(--input-select-option-even-background);
 }
 
 .select:hover:not(:disabled),
@@ -69,7 +69,7 @@
 .select-error:disabled {
     color: var(--input-text-disabled);
     outline-color: var(--input-outline-disabled);
-    background-color: rgba(200, 200, 200, 1.0);
+    background-color: var(--input-background-disabled);
 }
 
 .select::placeholder {
@@ -86,7 +86,7 @@
 }
 
 .select:disabled::placeholder {
-    color: rgba(60, 60, 60, 1.0);
+    color: var(--input-placeholder-disabled);
 }
 
 .error {
