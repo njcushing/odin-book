@@ -52,6 +52,8 @@
 }
 
 .option-icon, .option-icon svg {
+    fill: var(--text-primary);
+    
     width: 2.4rem;
     height: 2.4rem;
 }
