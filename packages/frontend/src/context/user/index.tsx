@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useCallback, useMemo } from "react";
 import * as useAsync from "@/hooks/useAsync";
 import * as extendedTypes from "@shared/utils/extendedTypes";
+import { setTheme } from "@/themes";
 import getActiveUser from "./utils/getActiveUser";
 import extractUserProperty from "./utils/extractUserProperty";
 
@@ -90,6 +91,7 @@ function UserContextProvider({ children }: UserContextProviderTypes) {
         const newState = response ? response.data : defaultUser;
         setState(newState || defaultUser);
         setAwaitingResponse(false);
+        if (newState) setTheme(newState.preferences.theme);
     }, [response]);
 
     useEffect(() => {
