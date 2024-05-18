@@ -1,6 +1,7 @@
 /* Default */
 :root,
-:root[theme |="default"] {
+:root[theme |= "default"],
+:root[theme |= "light"] {
     /* Text */
     --text-primary: rgb(0, 0, 0);
     --text-primary-hover: rgb(255, 255, 255);
@@ -17,6 +18,7 @@
     --text-visited: rgb(255, 255, 255);
     --text-error: rgb(235, 2, 2);
     --text-infopanel: rgb(255, 255, 255);
+    --text-bold-font-weight: bold;
 
     /* Background */
     --background-primary: rgb(255, 255, 255);
@@ -48,6 +50,8 @@
     --input-placeholder-invalid: rgb(77, 77, 77);
     --input-placeholder-valid: rgb(77, 77, 77);
     --input-placeholder-disabled: rgb(77, 77, 77);
+    --input-select-option-odd-background: rgb(255, 255, 255);
+    --input-select-option-even-background: rgb(230, 253, 255);
 
     /* Scrollbar */
     --scrollbar-track: rgba(0, 0, 0, 0.16);
@@ -89,7 +93,136 @@
     --chat-option-primary-outline: transparent;
     --chat-option-primary-image-outline: rgb(0, 0, 0);
     --chat-option-secondary-text: rgb(47, 47, 47);
-    --text-secondary: rgb(48, 48, 48);
+    --button-red: rgb(228, 28, 28);
+    --button-red-text: rgb(255, 255, 255);
+    --button-red-hover: rgb(255, 51, 51);
+    --button-red-focus: rgb(196, 16, 16);
+    --button-red-disabled: rgb(128, 128, 128);
+    --button-red-border: transparent;
+    --button-orange: rgb(252, 127, 11);
+    --button-orange-text: rgb(255, 255, 255);
+    --button-orange-hover: rgb(255, 150, 51);
+    --button-orange-focus: rgb(228, 114, 8);
+    --button-orange-disabled: rgb(128, 128, 128);
+    --button-orange-border: transparent;
+    --button-gold: rgb(238, 156, 5);
+    --button-gold-text: rgb(255, 255, 255);
+    --button-gold-hover: rgb(216, 143, 7);
+    --button-gold-focus: rgb(196, 129, 4);
+    --button-gold-disabled: rgb(128, 128, 128);
+    --button-gold-border: transparent;
+    --button-green: rgb(12, 214, 22);
+    --button-green-text: rgb(255, 255, 255);
+    --button-green-hover: rgb(47, 240, 57);
+    --button-green-focus: rgb(5, 185, 14);
+    --button-green-disabled: rgb(128, 128, 128);
+    --button-green-border: transparent;
+    --button-blue: rgb(15, 185, 236);
+    --button-blue-text: rgb(255, 255, 255);
+    --button-blue-hover: rgb(45, 206, 255);
+    --button-blue-focus: rgb(7, 159, 206);
+    --button-blue-disabled: rgb(128, 128, 128);
+    --button-blue-border: transparent;
+    --button-black: rgb(0, 0, 0);
+    --button-black-text: rgb(255, 255, 255);
+    --button-black-hover: rgb(41, 41, 41);
+    --button-black-focus: rgb(0, 0, 0);
+    --button-black-disabled: rgb(128, 128, 128);
+    --button-black-border: transparent;
+}
+
+:root[theme |= "dark"] {
+    /* Text */
+    --text-primary: rgb(226, 226, 226);
+    --text-primary-hover: rgb(255, 255, 255);
+    --text-primary-focus: rgb(255, 255, 255);
+    --text-secondary: rgb(216, 216, 216);
+    --text-secondary-hover: rgb(255, 255, 255);
+    --text-secondary-focus: rgb(255, 255, 255);
+    --text-tertiary: rgb(255, 255, 255);
+    --text-tertiary-hover: rgb(255, 255, 255);
+    --text-tertiary-focus: rgb(255, 255, 255);
+    --text-active: rgb(255, 255, 255);
+    --text-inactive: rgb(128, 128, 128);
+    --text-link: rgb(255, 255, 255);
+    --text-visited: rgb(255, 255, 255);
+    --text-error: rgb(235, 2, 2);
+    --text-infopanel: rgb(255, 255, 255);
+    --text-bold-font-weight: normal;
+
+    /* Background */
+    --background-primary: rgb(20, 20, 20);
+    --background-secondary: rgb(20, 20, 20);
+    --background-tertiary: rgb(49, 49, 49);
+    --background-infopanel: rgb(208, 248, 255);
+
+    /* Borders & Outlines */
+    --border-primary: rgb(255, 255, 255);
+    --border-secondary: rgb(255, 255, 255);
+    --outline-primary: rgb(80, 80, 80);
+    --outline-secondary: rgb(110, 110, 110);
+    --layout-outline: rgba(255, 255, 255, 0.5);
+
+    /* Inputs */
+    --input-text: rgb(212, 212, 212);
+    --input-text-invalid: rgb(139, 1, 1);
+    --input-text-valid: rgb(0, 126, 0);
+    --input-text-disabled: rgb(47, 47, 47);
+    --input-background: rgba(0, 0, 0, 0.0);
+    --input-background-invalid: rgb(255, 185, 185);
+    --input-background-valid: rgb(193, 255, 185);
+    --input-background-disabled: rgb(207, 207, 207);
+    --input-outline: rgb(80, 80, 80);
+    --input-outline-invalid: rgb(102, 0, 0);
+    --input-outline-valid: rgb(10, 87, 0);
+    --input-outline-disabled: rgb(66, 66, 66);
+    --input-placeholder: rgb(182, 182, 182);
+    --input-placeholder-invalid: rgb(156, 156, 156);
+    --input-placeholder-valid: rgb(156, 156, 156);
+    --input-placeholder-disabled: rgb(156, 156, 156);
+    --input-select-option-odd-background: rgb(20, 20, 20);
+    --input-select-option-even-background: rgb(34, 34, 34);
+
+    /* Scrollbar */
+    --scrollbar-track: rgba(255, 255, 255, 0.16);
+    --scrollbar-track-hover: rgba(255, 255, 255, 0.24);
+    --scrollbar-thumb: rgba(255, 255, 255, 0.56);
+    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.7);
+
+    /* Buttons */
+    --button-primary: transparent;
+    --button-primary-text: rgb(230, 230, 230);
+    --button-primary-hover: rgba(230, 230, 230, 0.15);
+    --button-primary-focus: rgba(230, 230, 230, 0.25);
+    --button-primary-disabled: transparent;
+    --button-primary-border: transparent;
+    --button-secondary: rgb(255, 255, 255);
+    --button-secondary-text: rgb(255, 255, 255);
+    --button-secondary-hover: rgb(255, 255, 255);
+    --button-secondary-focus: rgb(255, 255, 255);
+    --button-secondary-disabled: rgb(255, 255, 255);
+    --button-secondary-border: rgb(255, 255, 255);
+    --navigation-option-primary: rgb(20, 20, 20);
+    --navigation-option-primary-text: rgb(212, 212, 212);
+    --navigation-option-primary-hover: rgb(50, 50, 50);
+    --navigation-option-primary-focus: rgb(36, 36, 36);
+    --navigation-option-primary-disabled: rgb(128, 128, 128);
+    --navigation-option-primary-outline: transparent;
+    --navigation-horizontal-option-primary: rgb(20, 20, 20);
+    --navigation-horizontal-option-primary-text: rgb(212, 212, 212);
+    --navigation-horizontal-option-primary-hover: rgb(50, 50, 50);
+    --navigation-horizontal-option-primary-focus: rgb(36, 36, 36);
+    --navigation-horizontal-option-primary-disabled: rgb(128, 128, 128);
+    --navigation-horizontal-option-primary-highlight: rgb(28, 180, 207);
+    --navigation-horizontal-option-primary-highlight-active: rgb(32, 197, 54);
+    --chat-option-primary: rgb(20, 20, 20);
+    --chat-option-primary-text: rgb(212, 212, 212);
+    --chat-option-primary-hover: rgb(50, 50, 50);
+    --chat-option-primary-focus: rgb(36, 36, 36);
+    --chat-option-primary-disabled: rgb(128, 128, 128);
+    --chat-option-primary-outline: transparent;
+    --chat-option-primary-image-outline: rgb(255, 255, 255);
+    --chat-option-secondary-text: rgb(190, 190, 190);
     --button-red: rgb(228, 28, 28);
     --button-red-text: rgb(255, 255, 255);
     --button-red-hover: rgb(255, 51, 51);
