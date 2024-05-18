@@ -13,6 +13,7 @@ export type FinderTypes = {
     clearFindOnClick?: boolean;
     onClickHandler?: ((user: Exclude<Response, null>) => void) | null;
     disabled?: boolean;
+    disableUserLinks?: boolean;
 };
 
 function Finder({
@@ -21,6 +22,7 @@ function Finder({
     onClickHandler,
     clearFindOnClick,
     disabled = false,
+    disableUserLinks = false,
 }: FinderTypes) {
     const [currentAccountTag, setCurrentAccountTag] = useState<string>("");
 
@@ -67,6 +69,7 @@ function Finder({
                         }
                         displayName={foundUser.preferences.displayName}
                         accountTag={foundUser.accountTag}
+                        disableLinks={disableUserLinks}
                         size="m"
                     />
                     {button && (
