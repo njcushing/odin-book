@@ -10,17 +10,16 @@ import getUserChats, { Params, Response } from "./utils/getUserChats";
 import styles from "./index.module.css";
 
 function List() {
-    const { user, extract } = useContext(UserContext);
+    const { user, extract, awaitingResponse } = useContext(UserContext);
 
     const errorMessageRef = useRef(null);
     const [errorMessageHeight, setErrorMessageHeight] = useState<number>(0);
     const createNewChatButtonRef = useRef(null);
     const [createNewChatButtonHeight, setCreateNewChatButtonHeight] = useState<number>(0);
 
-    const [initialWaiting, setInitialWaiting] = useState(true);
-    const [waiting, setWaiting] = useState(true);
+    const [waiting, setWaiting] = useState(false);
 
-    const [chats, setChats] = useState<Response>([]);
+    const [chats, setChats] = useState<Response>(null);
     const [response, setParams, setAttempting, gettingChats] = useAsync.GET<Params, Response>(
         {
             func: getUserChats,
@@ -34,30 +33,32 @@ function List() {
                 null,
             ],
         },
-        true,
+        false,
     );
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        const newState = response ? response.data : [];
+        const newState = response ? response.data : null;
         setChats((currentChats) => {
-            return currentChats ? currentChats.concat(newState || []) : newState || [];
+            return currentChats ? currentChats.concat(newState || []) : newState || null;
         });
     }, [response]);
 
     useEffect(() => {
-        setAttempting(true);
-        setErrorMessage("");
-        setParams([
-            {
-                params: {
-                    userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
-                    after: null,
+        if (!awaitingResponse) {
+            setAttempting(true);
+            setErrorMessage("");
+            setParams([
+                {
+                    params: {
+                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        after: null,
+                    },
                 },
-            },
-            null,
-        ]);
-    }, [user, extract, setParams, setAttempting]);
+                null,
+            ]);
+        }
+    }, [user, extract, awaitingResponse, setParams, setAttempting]);
 
     useEffect(() => {
         if (response) {
@@ -70,7 +71,6 @@ function List() {
     }, [response]);
 
     useEffect(() => {
-        if (!gettingChats) setInitialWaiting(gettingChats);
         setWaiting(gettingChats);
     }, [gettingChats]);
 
@@ -168,7 +168,7 @@ function List() {
 
     return (
         <div className={styles["container"]} key={0}>
-            {!initialWaiting ? (
+            {!(waiting && (!chats || chats.length === 0)) ? (
                 <>
                     <div style={{ height: errorMessageHeight }}></div>
                     {chats && chats.length > 0 ? (
@@ -180,7 +180,9 @@ function List() {
                             })}
                         </div>
                     ) : (
-                        <p className={styles["empty-message"]}>Nothing to see here!</p>
+                        <p className={styles["empty-message"]}>
+                            {chats && chats.length === 0 ? "Nothing to see here!" : ""}
+                        </p>
                     )}
                     <div style={{ height: createNewChatButtonHeight }}></div>
                     <div className={styles["sticky-wrapper"]}>
