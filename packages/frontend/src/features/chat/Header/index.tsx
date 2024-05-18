@@ -263,6 +263,7 @@ function Header({ overrideChatName }: HeaderTypes) {
                     text=""
                     symbol="call"
                     label="call"
+                    disabled
                     palette="blue"
                     otherStyles={{ ...buttonStyles }}
                 />
@@ -270,6 +271,7 @@ function Header({ overrideChatName }: HeaderTypes) {
                     text=""
                     symbol="videocam"
                     label="call with video"
+                    disabled
                     palette="blue"
                     otherStyles={{ ...buttonStyles }}
                 />
