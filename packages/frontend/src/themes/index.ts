@@ -17,3 +17,14 @@ export const setTheme = (theme: string) => {
         if (root !== null) root.setAttribute("theme", mutableTheme);
     }
 };
+
+export const saveTheme = (theme: string) => {
+    if (optionNames().includes(theme)) {
+        localStorage.setItem("odin-book-theme", theme);
+    }
+};
+
+export const loadTheme = () => {
+    const theme = localStorage.getItem("odin-book-theme") || "";
+    if (optionNames().includes(theme)) setTheme(theme);
+};
