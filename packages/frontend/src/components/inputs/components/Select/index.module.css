@@ -41,6 +41,13 @@
     background-color: var(--input-background-invalid);
 }
 
+@media (hover: hover) {
+    .select:hover,
+    .select-error:hover {
+        cursor: pointer;
+    }
+}
+
 .select-option {
     font-family: Gabarito;
 }
