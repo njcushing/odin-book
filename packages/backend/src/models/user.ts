@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 import * as validateUser from "@shared/validation/user";
 
 export type TUser = {
+    type: "regular" | "guest";
     accountTag: string;
     githubId?: string;
     email?: string;
@@ -38,6 +39,11 @@ export interface IUser extends TUser, Document {}
 
 const UserSchema: Schema = new Schema(
     {
+        type: {
+            type: String,
+            enum: ["regular", "guest"],
+            require: true,
+        },
         accountTag: {
             type: String,
             trim: true,
