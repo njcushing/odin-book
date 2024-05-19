@@ -18,13 +18,13 @@ export type TRecentChatActivity = {
 };
 
 function RecentChatActivity({ style }: TRecentChatActivity) {
-    const { user, extract } = useContext(UserContext);
+    const { user, extract, awaitingResponse } = useContext(UserContext);
 
     const navigate = useNavigate();
 
-    const [waiting, setWaiting] = useState(true);
+    const [waiting, setWaiting] = useState(false);
 
-    const [recentChatActivity, setRecentChatActivity] = useState<Response>([]);
+    const [recentChatActivity, setRecentChatActivity] = useState<Response>(null);
     const [participantsInfo, setParticipantsInfo] = useState<extractedParticipantsInfo[]>([]);
     const [response, setParams, setAttempting, creatingMessage] = useAsync.GET<Params, Response>(
         {
@@ -43,22 +43,24 @@ function RecentChatActivity({ style }: TRecentChatActivity) {
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        const newState = response ? response.data : [];
+        const newState = response ? response.data : null;
         setRecentChatActivity(() => newState);
     }, [response]);
 
     useEffect(() => {
-        setAttempting(true);
-        setErrorMessage("");
-        setParams([
-            {
-                params: {
-                    userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+        if (!awaitingResponse) {
+            setAttempting(true);
+            setErrorMessage("");
+            setParams([
+                {
+                    params: {
+                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                    },
                 },
-            },
-            null,
-        ]);
-    }, [user, extract, setParams, setAttempting]);
+                null,
+            ]);
+        }
+    }, [user, extract, awaitingResponse, setParams, setAttempting]);
 
     useEffect(() => {
         if (response) {
@@ -86,10 +88,13 @@ function RecentChatActivity({ style }: TRecentChatActivity) {
 
     return (
         <div className={styles["container"]} style={style}>
-            {!waiting ? (
+            <h4 className={styles["title"]}>Recent Chat Activity</h4>
+            {!(waiting && (!recentChatActivity || recentChatActivity.length === 0)) ? (
                 <>
-                    <h4 className={styles["title"]}>Recent Chat Activity</h4>
-                    {recentChatActivity && recentChatActivity.length > 0 ? (
+                    {recentChatActivity &&
+                    recentChatActivity.length > 0 &&
+                    participantsInfo &&
+                    participantsInfo.length === recentChatActivity.length ? (
                         <ul className={styles["activity-list"]}>
                             {recentChatActivity.map((chatData, i) => {
                                 if (!chatData) return null;
@@ -169,7 +174,9 @@ function RecentChatActivity({ style }: TRecentChatActivity) {
                         </ul>
                     ) : (
                         <p className={styles["no-activity-message"]}>
-                            There is no chat activity to display yet.
+                            {recentChatActivity && recentChatActivity.length === 0
+                                ? "There is no chat activity to display yet."
+                                : ""}
                         </p>
                     )}
                     {errorMessage.length > 0 ? (
