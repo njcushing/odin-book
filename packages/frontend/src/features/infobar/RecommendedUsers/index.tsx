@@ -12,11 +12,11 @@ export type TRecommendedUsers = {
 };
 
 function RecommendedUsers({ style }: TRecommendedUsers) {
-    const { user, extract } = useContext(UserContext);
+    const { user, extract, awaitingResponse } = useContext(UserContext);
 
     const [waiting, setWaiting] = useState(true);
 
-    const [users, setUsers] = useState<Response>([]);
+    const [users, setUsers] = useState<Response>(null);
     const [response, setParams, setAttempting, creatingMessage] = useAsync.GET<Params, Response>(
         {
             func: getRecommendedUsers,
@@ -34,22 +34,24 @@ function RecommendedUsers({ style }: TRecommendedUsers) {
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        const newState = response ? response.data : [];
+        const newState = response ? response.data : null;
         setUsers(() => newState);
     }, [response]);
 
     useEffect(() => {
-        setAttempting(true);
-        setErrorMessage("");
-        setParams([
-            {
-                params: {
-                    userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+        if (!awaitingResponse) {
+            setAttempting(true);
+            setErrorMessage("");
+            setParams([
+                {
+                    params: {
+                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                    },
                 },
-            },
-            null,
-        ]);
-    }, [user, extract, setParams, setAttempting]);
+                null,
+            ]);
+        }
+    }, [user, extract, awaitingResponse, setParams, setAttempting]);
 
     useEffect(() => {
         if (response) {
@@ -65,34 +67,38 @@ function RecommendedUsers({ style }: TRecommendedUsers) {
         setWaiting(creatingMessage);
     }, [creatingMessage]);
 
-    const errorMessageElement =
-        errorMessage.length > 0 ? <p className={styles["error-message"]}>{errorMessage}</p> : null;
-
-    const userList =
-        users && users.length > 0 ? (
-            <ul className={styles["user-list"]}>
-                {users.map((userId) => {
-                    return (
-                        <div
-                            className={styles["user-container"]}
-                            key={`recommended-user-${userId}`}
-                        >
-                            <User.Option _id={userId} skeleton />
-                        </div>
-                    );
-                })}
-            </ul>
-        ) : (
-            <p className={styles["no-users-message"]}>
-                We don&apos;t have any users to recommend right now.
-            </p>
-        );
-
     return (
         <div className={styles["container"]} style={style}>
-            {errorMessageElement}
             <h4 className={styles["title"]}>Recommended Users</h4>
-            {!waiting ? userList : <Accessibility.WaitingWheel />}
+            {!(waiting && (!users || users.length === 0)) ? (
+                <>
+                    {users && users.length > 0 ? (
+                        <ul className={styles["user-list"]}>
+                            {users.map((userId) => {
+                                return (
+                                    <div
+                                        className={styles["user-container"]}
+                                        key={`recommended-user-${userId}`}
+                                    >
+                                        <User.Option _id={userId} skeleton />
+                                    </div>
+                                );
+                            })}
+                        </ul>
+                    ) : (
+                        <p className={styles["no-users-message"]}>
+                            {users && users.length === 0
+                                ? "We don't have any users to recommend right now."
+                                : ""}
+                        </p>
+                    )}
+                    {errorMessage.length > 0 ? (
+                        <p className={styles["error-message"]}>{errorMessage}</p>
+                    ) : null}
+                </>
+            ) : (
+                <Accessibility.WaitingWheel />
+            )}
         </div>
     );
 }
