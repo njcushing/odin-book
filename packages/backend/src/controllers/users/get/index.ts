@@ -111,7 +111,7 @@ export const all = [
         if (!responding) {
             // limit users
             if (limit) {
-                aggregation.push({ $project: { users: { $slice: ["$users", Number(3)] } } });
+                aggregation.push({ $project: { users: { $slice: ["$users", Number(limit)] } } });
             }
             // final projection
             aggregation.push({
