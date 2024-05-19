@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import { body } from "express-validator";
+import User from "@/models/user";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
 import validateCredentialsFromToken from "@/utils/validateCredentialsFromToken";
 import generateToken from "@/utils/generateToken";
@@ -46,4 +47,17 @@ export const post = [
             sendResponse(res, 200, "Successful login with credentials", { token });
         }
     }),
+];
+
+export const asGuest = [
+    async (req: Request, res: Response) => {
+        const guestUser = await User.findOne({ accountTag: "guest" });
+        if (!guestUser) return sendResponse(res, 404, "Guest account not found in database");
+        const credentials = {
+            accountTag: guestUser.accountTag,
+            password: guestUser.password,
+        };
+        const token = await generateToken(credentials);
+        return sendResponse(res, 200, "Successful login with credentials", { token });
+    },
 ];
