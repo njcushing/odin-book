@@ -120,7 +120,7 @@ function List() {
                 parseFloat(window.getComputedStyle(entries[0].target).paddingTop) +
                 parseFloat(window.getComputedStyle(entries[0].target).paddingBottom);
             const totalHeight = contentHeight + padding;
-            setErrorMessageHeight(totalHeight);
+            setErrorMessageHeight(totalHeight || 0);
             PubSub.publish("page-scrollable-area-shift-down", totalHeight);
         });
         if (errorMessageRef.current) {
@@ -135,7 +135,7 @@ function List() {
                 parseFloat(window.getComputedStyle(entries[0].target).paddingTop) +
                 parseFloat(window.getComputedStyle(entries[0].target).paddingBottom);
             const totalHeight = contentHeight + padding;
-            setCreateNewChatButtonHeight(totalHeight);
+            setCreateNewChatButtonHeight(totalHeight || 0);
         });
         if (createNewChatButtonRef.current) {
             createNewChatButtonRefCurrent = createNewChatButtonRef.current;
