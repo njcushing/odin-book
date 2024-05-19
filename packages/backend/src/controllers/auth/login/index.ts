@@ -40,7 +40,7 @@ export const post = [
         };
         const [status, user, message] = await validateCredentialsFromToken(credentials);
         if (!status) sendResponse(res, 401, message || undefined);
-        else if (!user) sendResponse(res, 404, "User not found from credentials in token");
+        else if (!user) sendResponse(res, 401, "User not found from credentials in token");
         else {
             const token = await generateToken(credentials);
             sendResponse(res, 200, "Successful login with credentials", { token });
