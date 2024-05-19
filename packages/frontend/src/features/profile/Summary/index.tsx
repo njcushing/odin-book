@@ -43,10 +43,6 @@ function Summary() {
         setUserSummary(newState);
     }, [getUserSummaryResponse]);
 
-    if (getUserSummaryResponse && getUserSummaryResponse.status === 401) {
-        window.location.assign("/");
-    }
-
     // follow user api handling
     const [followUserResponse, setFollowUserParams, followUserAgain, followingUser] = useAsync.PUT<
         FollowUserParams,

@@ -76,8 +76,6 @@ const createMessage: apiFunctionTypes.POST<Params, Body, Response> = async (
             };
         });
 
-    if (result.status === 401) window.location.href = "/";
-
     return result;
 };
 

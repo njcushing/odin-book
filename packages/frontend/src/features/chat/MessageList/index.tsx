@@ -62,8 +62,6 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
         ]);
     }, [_id, getIdFromURLParam, chatId, setParams, setAttempting]);
 
-    if (response && response.status === 401) window.location.assign("/");
-
     useEffect(() => {
         if (response) {
             if (response.status >= 400 && response.message && response.message.length > 0) {

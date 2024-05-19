@@ -85,8 +85,6 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
         ]);
     }, [_id, getIdFromURLParam, chatId, setParams, setAttempting]);
 
-    if (response && response.status === 401) window.location.assign("/");
-
     useEffect(() => {
         if (response && response.status >= 400 && response.message && response.message.length > 0) {
             setErrorMessage(response.message);
