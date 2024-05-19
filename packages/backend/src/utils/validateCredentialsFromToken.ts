@@ -11,14 +11,17 @@ const validateCredentialsFromToken = async (
     if (githubId) {
         // for a provider login, only the id needs to be verified
         let error;
-        user = await User.findOne({ githubId }, { _id: 1, githubId: 1 }).catch((err) => {
+        user = await User.findOne({ githubId }, { _id: 1, type: 1, githubId: 1 }).catch((err) => {
             error = [false, null, `${err.message}`];
         });
         if (error) return error;
         if (!user) return [false, null, `User with provided githubId not found.`];
     } else if (accountTag && password) {
         // for an account tag + password login, both need to be verified
-        user = await User.findOne({ accountTag }, { _id: 1, accountTag: 1, password: 1 }).exec();
+        user = await User.findOne(
+            { accountTag },
+            { _id: 1, type: 1, accountTag: 1, password: 1 },
+        ).exec();
         if (!user) return [false, null, "Incorrect account tag."];
         const match = await bcrypt.compare(password, user.password as string);
         if (!match) return [false, null, "Incorrect password."];
