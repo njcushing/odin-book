@@ -22,6 +22,7 @@ export const regular = [
                 });
             } else {
                 const newUser = new User({
+                    type: "regular",
                     accountTag: req.body.accountTag,
                     email: req.body.email,
                     password: hashedPassword,
