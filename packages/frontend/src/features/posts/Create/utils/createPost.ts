@@ -53,7 +53,7 @@ const createPost: apiFunctionTypes.POST<null, Body, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.post,
+                data: responseJSON.data ? responseJSON.data.post : null,
             };
         })
         .catch((error) => {

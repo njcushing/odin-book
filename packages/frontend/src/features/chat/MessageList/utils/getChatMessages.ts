@@ -58,7 +58,7 @@ const getChatMessages: apiFunctionTypes.GET<Params, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.messages,
+                data: responseJSON.data ? responseJSON.data.messages : null,
             };
         })
         .catch((error) => {

@@ -21,7 +21,7 @@ const getActiveUser: apiFunctionTypes.GET<null, UserTypes> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.user,
+                data: responseJSON.data ? responseJSON.data.user : null,
             };
         })
         .catch((error) => {

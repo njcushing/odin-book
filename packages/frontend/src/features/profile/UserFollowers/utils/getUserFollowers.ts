@@ -49,7 +49,7 @@ const getUserFollowers: apiFunctionTypes.GET<Params, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.followers,
+                data: responseJSON.data ? responseJSON.data.followers : null,
             };
         })
         .catch((error) => {

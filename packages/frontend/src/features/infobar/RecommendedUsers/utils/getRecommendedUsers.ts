@@ -48,7 +48,7 @@ const getRecommendedUsers: apiFunctionTypes.GET<Params, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.recommendedUsers,
+                data: responseJSON.data ? responseJSON.data.recommendedUsers : null,
             };
         })
         .catch((error) => {

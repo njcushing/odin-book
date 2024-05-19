@@ -31,7 +31,7 @@ export function generatePUTAsyncFunction<Response>(route: string, fieldName: str
                 return {
                     status: responseJSON.status,
                     message: responseJSON.message,
-                    data: responseJSON.data,
+                    data: responseJSON.data ? responseJSON.data : null,
                 };
             })
             .catch((error) => {

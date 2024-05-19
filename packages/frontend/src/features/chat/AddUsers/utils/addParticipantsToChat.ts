@@ -70,7 +70,7 @@ const addParticipantsToChat: apiFunctionTypes.PUT<Params, Body, Response> = asyn
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.participants,
+                data: responseJSON.data ? responseJSON.data.participants : null,
             };
         })
         .catch((error) => {

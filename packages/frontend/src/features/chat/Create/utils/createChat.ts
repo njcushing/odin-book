@@ -37,7 +37,7 @@ const createChat: apiFunctionTypes.POST<null, Body, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.chatId,
+                data: responseJSON.data ? responseJSON.data.chatId : null,
             };
         })
         .catch((error) => {

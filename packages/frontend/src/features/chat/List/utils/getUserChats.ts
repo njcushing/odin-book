@@ -49,7 +49,7 @@ const getUserChats: apiFunctionTypes.GET<Params, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.chats,
+                data: responseJSON.data ? responseJSON.data.chats : null,
             };
         })
         .catch((error) => {

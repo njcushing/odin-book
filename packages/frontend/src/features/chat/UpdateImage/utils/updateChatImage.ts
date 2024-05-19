@@ -56,7 +56,7 @@ const createChat: apiFunctionTypes.PUT<Params, Body, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.image,
+                data: responseJSON.data ? responseJSON.data.image : null,
             };
         })
         .catch((error) => {

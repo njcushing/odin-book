@@ -62,7 +62,7 @@ const getUserSummary: apiFunctionTypes.GET<Params, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.user,
+                data: responseJSON.data ? responseJSON.data.user : null,
             };
         })
         .catch((error) => {

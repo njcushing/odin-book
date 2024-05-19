@@ -49,7 +49,7 @@ const getRecentChatActivity: apiFunctionTypes.GET<Params, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.chatActivity,
+                data: responseJSON.data ? responseJSON.data.chatActivity : null,
             };
         })
         .catch((error) => {

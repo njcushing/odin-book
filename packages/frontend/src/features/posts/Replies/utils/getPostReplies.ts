@@ -50,7 +50,7 @@ const getPostReplies: apiFunctionTypes.GET<Params, Response> = async (
             return {
                 status: responseJSON.status,
                 message: responseJSON.message,
-                data: responseJSON.data.replies,
+                data: responseJSON.data ? responseJSON.data.replies : null,
             };
         })
         .catch((error) => {
