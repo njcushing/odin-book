@@ -128,7 +128,7 @@ function List() {
                 parseFloat(window.getComputedStyle(entries[0].target).paddingTop) +
                 parseFloat(window.getComputedStyle(entries[0].target).paddingBottom);
             const totalHeight = contentHeight + padding;
-            setErrorMessageHeight(totalHeight);
+            setErrorMessageHeight(totalHeight || 0);
             PubSub.publish("page-scrollable-area-shift-down", totalHeight);
         });
         if (errorMessageRef.current) {
@@ -143,7 +143,7 @@ function List() {
                 parseFloat(window.getComputedStyle(entries[0].target).paddingTop) +
                 parseFloat(window.getComputedStyle(entries[0].target).paddingBottom);
             const totalHeight = contentHeight + padding;
-            setCreateNewPostButtonHeight(totalHeight);
+            setCreateNewPostButtonHeight(totalHeight || 0);
         });
         if (createNewPostButtonRef.current) {
             createNewPostButtonRefCurrent = createNewPostButtonRef.current;
