@@ -160,6 +160,7 @@ export const regular = [
                         await Post.deleteMany({ session });
                         await Image.deleteMany({ session });
                     } catch (error) {
+                        // eslint-disable-next-line no-console
                         console.error("Error occurred while deleting documents:", error);
                     }
                 });
