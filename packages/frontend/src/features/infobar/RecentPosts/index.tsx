@@ -15,11 +15,11 @@ export type TRecentPosts = {
 };
 
 function RecentPosts({ style }: TRecentPosts) {
-    const { user, extract } = useContext(UserContext);
+    const { user, extract, awaitingResponse } = useContext(UserContext);
 
-    const [waiting, setWaiting] = useState(true);
+    const [waiting, setWaiting] = useState(false);
 
-    const [posts, setPosts] = useState<Response>([]);
+    const [posts, setPosts] = useState<Response>(null);
     const [response, setParams, setAttempting, creatingMessage] = useAsync.GET<Params, Response>(
         {
             func: getRecommendedPosts,
@@ -39,24 +39,26 @@ function RecentPosts({ style }: TRecentPosts) {
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        const newState = response ? response.data : [];
+        const newState = response ? response.data : null;
         setPosts(() => newState);
     }, [response]);
 
     useEffect(() => {
-        setAttempting(true);
-        setErrorMessage("");
-        setParams([
-            {
-                params: {
-                    userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
-                    excludeActiveUser: true,
-                    limit: 3,
+        if (!awaitingResponse) {
+            setAttempting(true);
+            setErrorMessage("");
+            setParams([
+                {
+                    params: {
+                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        excludeActiveUser: true,
+                        limit: 3,
+                    },
                 },
-            },
-            null,
-        ]);
-    }, [user, extract, setParams, setAttempting]);
+                null,
+            ]);
+        }
+    }, [user, extract, awaitingResponse, setParams, setAttempting]);
 
     useEffect(() => {
         if (response) {
@@ -74,9 +76,9 @@ function RecentPosts({ style }: TRecentPosts) {
 
     return (
         <div className={styles["container"]} style={style}>
-            {!waiting ? (
+            <h4 className={styles["title"]}>Recent Posts</h4>
+            {!(waiting && (!posts || posts.length === 0)) ? (
                 <>
-                    <h4 className={styles["title"]}>Recent Posts</h4>
                     {posts && posts.length > 0 ? (
                         <ul className={styles["post-list"]}>
                             {posts.map((postData) => {
@@ -93,7 +95,9 @@ function RecentPosts({ style }: TRecentPosts) {
                         </ul>
                     ) : (
                         <p className={styles["no-posts-message"]}>
-                            There are no recent posts to display right now.
+                            {posts && posts.length === 0
+                                ? "There are no recent posts to display right now."
+                                : ""}
                         </p>
                     )}
                     {errorMessage.length > 0 ? (
