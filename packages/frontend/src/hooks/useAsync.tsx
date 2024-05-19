@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import * as extendedTypes from "@shared/utils/extendedTypes";
 
@@ -16,6 +17,8 @@ export function GET<Params, Response>(
     React.Dispatch<React.SetStateAction<boolean>>,
     boolean,
 ] {
+    const navigate = useNavigate();
+
     const [params, setParams] = useState<
         Parameters<apiFunctionTypes.GET<Params, Response>> | undefined
     >(functionInfo.parameters);
@@ -59,6 +62,10 @@ export function GET<Params, Response>(
     }, [params, abortController, attempting, functionInfo]);
 
     useEffect(() => {
+        if (response && response.status === 401) navigate("/login");
+    }, [response, navigate]);
+
+    useEffect(() => {
         if (attempting) {
             setAwaiting(true);
         } else if (response && response.message !== "Client cancelled request") {
@@ -93,6 +100,8 @@ export function POST<Params, Body, Response>(
     React.Dispatch<React.SetStateAction<boolean>>,
     boolean,
 ] {
+    const navigate = useNavigate();
+
     const [params, setParams] = useState<
         Parameters<apiFunctionTypes.POST<Params, Body, Response>> | undefined
     >(functionInfo.parameters);
@@ -134,6 +143,10 @@ export function POST<Params, Body, Response>(
             }
         };
     }, [params, abortController, attempting, functionInfo]);
+
+    useEffect(() => {
+        if (response && response.status === 401) navigate("/login");
+    }, [response, navigate]);
 
     useEffect(() => {
         if (attempting) {
