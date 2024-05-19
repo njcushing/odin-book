@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import generateToken from "@/utils/generateToken";
 import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
+import forbidGuest from "@/utils/forbidGuest";
 import { multiple } from "@/utils/uploadImage";
 import User from "@/models/user";
 import Chat from "@/models/chat";
@@ -17,6 +18,7 @@ import validators from "../validators";
 
 export const regular = [
     protectedRouteJWT,
+    forbidGuest,
     validators.body.participants,
     checkRequestValidationError,
     asyncHandler(async (req: Request, res: Response) => {
@@ -162,6 +164,7 @@ export const regular = [
 
 export const message = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.chatId,
     validators.body.text,
     validators.body.images,

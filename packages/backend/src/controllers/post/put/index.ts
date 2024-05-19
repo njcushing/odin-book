@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import generateToken from "@/utils/generateToken";
 import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
+import forbidGuest from "@/utils/forbidGuest";
 import * as types from "@/utils/types";
 import User from "@/models/user";
 import Post from "@/models/post";
@@ -11,6 +12,7 @@ import validators from "../validators";
 
 export const like = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.postId,
     checkRequestValidationError,
     async (req: Request, res: Response) => {

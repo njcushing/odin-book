@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import generateToken from "@/utils/generateToken";
 import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
+import forbidGuest from "@/utils/forbidGuest";
 import Chat from "@/models/chat";
 import Message from "@/models/message";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
@@ -10,6 +11,7 @@ import validators from "../validators";
 
 export const message = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.chatId,
     validators.param.messageId,
     checkRequestValidationError,

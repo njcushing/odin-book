@@ -3,6 +3,7 @@ import * as types from "@/utils/types";
 import generateToken from "@/utils/generateToken";
 import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
+import forbidGuest from "@/utils/forbidGuest";
 import User from "@/models/user";
 import Chat from "@/models/chat";
 import Image from "@/models/image";
@@ -14,6 +15,7 @@ import validators from "../validators";
 
 export const name = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.chatId,
     validators.body.name,
     checkRequestValidationError,
@@ -69,6 +71,7 @@ export const name = [
 
 export const participants = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.chatId,
     validators.body.participants,
     checkRequestValidationError,
@@ -305,6 +308,7 @@ export const participants = [
 
 export const image = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.chatId,
     validators.body.image,
     checkRequestValidationError,

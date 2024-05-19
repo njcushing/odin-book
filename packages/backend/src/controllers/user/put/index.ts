@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import generateToken from "@/utils/generateToken";
 import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
+import forbidGuest from "@/utils/forbidGuest";
 import * as types from "@/utils/types";
 import User from "@/models/user";
 import Image from "@/models/image";
@@ -12,6 +13,7 @@ import validators from "../validators";
 
 export const follow = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.userId,
     checkRequestValidationError,
     async (req: Request, res: Response) => {
@@ -149,6 +151,7 @@ export const follow = [
 
 export const preferencesDisplayName = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.userId,
     validators.body.preferences.displayName,
     checkRequestValidationError,
@@ -187,6 +190,7 @@ export const preferencesDisplayName = [
 
 export const preferencesBio = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.userId,
     validators.body.preferences.bio,
     checkRequestValidationError,
@@ -225,6 +229,7 @@ export const preferencesBio = [
 
 export const preferencesProfileImage = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.userId,
     validators.body.preferences.profileImage,
     checkRequestValidationError,
@@ -357,6 +362,7 @@ export const preferencesProfileImage = [
 
 export const preferencesHeaderImage = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.userId,
     validators.body.preferences.headerImage,
     checkRequestValidationError,
@@ -489,6 +495,7 @@ export const preferencesHeaderImage = [
 
 export const preferencesTheme = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.userId,
     validators.body.preferences.theme,
     checkRequestValidationError,

@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import generateToken from "@/utils/generateToken";
 import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
+import forbidGuest from "@/utils/forbidGuest";
 import User from "@/models/user";
 import Post from "@/models/post";
 import checkRequestValidationError from "@/utils/checkRequestValidationError";
@@ -10,6 +11,7 @@ import validators from "../validators";
 
 export const regular = [
     protectedRouteJWT,
+    forbidGuest,
     validators.param.postId,
     checkRequestValidationError,
     asyncHandler(async (req: Request, res: Response) => {

@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import generateToken from "@/utils/generateToken";
 import sendResponse from "@/utils/sendResponse";
 import protectedRouteJWT from "@/utils/protectedRouteJWT";
+import forbidGuest from "@/utils/forbidGuest";
 import { multiple } from "@/utils/uploadImage";
 import User from "@/models/user";
 import Post from "@/models/post";
@@ -15,6 +16,7 @@ import validators from "../validators";
 
 export const regular = [
     protectedRouteJWT,
+    forbidGuest,
     validators.body.text,
     validators.body.images,
     validators.body.replyingTo,
