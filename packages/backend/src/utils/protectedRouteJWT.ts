@@ -17,7 +17,8 @@ const protectedRouteJWT = (req: Request, res: Response, next: NextFunction) => {
                 res.locals.user = user;
                 return next();
             }
-            return next(sendResponse(res, 500, (info && info.message) || "Something went wrong"));
+            // no error, no user - token must be missing or invalid; signal redirect
+            return next(sendResponse(res, 401, (info && info.message) || "Something went wrong"));
         },
     )(req, res, next);
 };
