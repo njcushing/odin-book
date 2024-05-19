@@ -902,7 +902,7 @@ export const chats = [
         const { limit, after } = req.query;
 
         if (userId !== res.locals.user.id) {
-            sendResponse(res, 401, "Cannot view another user's chat list");
+            sendResponse(res, 403, "Cannot view another user's chat list");
             return;
         }
 
@@ -1016,7 +1016,7 @@ export const recommendedUsers = [
         const { limit } = req.query;
 
         if (userId !== res.locals.user.id) {
-            sendResponse(res, 401, "Cannot view another user's recommendations");
+            sendResponse(res, 403, "Cannot view another user's recommendations");
             return;
         }
 
@@ -1127,7 +1127,7 @@ export const chatActivity = [
         const { limit } = req.query;
 
         if (userId !== res.locals.user.id) {
-            sendResponse(res, 401, "Cannot view another user's recent chat activity");
+            sendResponse(res, 403, "Cannot view another user's recent chat activity");
             return;
         }
 

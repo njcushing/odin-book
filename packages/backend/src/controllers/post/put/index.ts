@@ -59,7 +59,7 @@ export const like = [
                 const error = new Error(
                     `Could not like/remove like from post`,
                 ) as types.ResponseError;
-                error.status = 401;
+                error.status = 500;
                 throw error;
             }
 
@@ -95,7 +95,7 @@ export const like = [
                 const error = new Error(
                     `Could not add/remove post to/from user's posts`,
                 ) as types.ResponseError;
-                error.status = 401;
+                error.status = 500;
                 throw error;
             }
 

@@ -64,7 +64,7 @@ export const follow = [
                     const error = new Error(
                         `Could not follow/unfollow target user`,
                     ) as types.ResponseError;
-                    error.status = 401;
+                    error.status = 500;
                     throw error;
                 }
 
@@ -104,7 +104,7 @@ export const follow = [
                 ]);
                 if (!updatedActiveUser.acknowledged) {
                     const error = new Error(`Could not update active user`) as types.ResponseError;
-                    error.status = 401;
+                    error.status = 500;
                     throw error;
                 }
 
@@ -157,7 +157,7 @@ export const preferencesDisplayName = [
         const { displayName } = req.body;
 
         if (userId !== res.locals.user.id) {
-            return sendResponse(res, 401, "User is not authorised to perform this action");
+            return sendResponse(res, 403, "User is not authorised to perform this action");
         }
 
         const updatedTargetUser = await User.updateOne({ _id: userId }, [
@@ -195,7 +195,7 @@ export const preferencesBio = [
         const { bio } = req.body;
 
         if (userId !== res.locals.user.id) {
-            return sendResponse(res, 401, "User is not authorised to perform this action");
+            return sendResponse(res, 403, "User is not authorised to perform this action");
         }
 
         const updatedTargetUser = await User.updateOne({ _id: userId }, [
@@ -233,7 +233,7 @@ export const preferencesProfileImage = [
         const { profileImage } = req.body;
 
         if (userId !== res.locals.user.id) {
-            return sendResponse(res, 401, "User is not authorised to perform this action");
+            return sendResponse(res, 403, "User is not authorised to perform this action");
         }
 
         const user = await User.findById(userId);
@@ -364,7 +364,7 @@ export const preferencesHeaderImage = [
         const { headerImage } = req.body;
 
         if (userId !== res.locals.user.id) {
-            return sendResponse(res, 401, "User is not authorised to perform this action");
+            return sendResponse(res, 403, "User is not authorised to perform this action");
         }
 
         const user = await User.findById(userId);
@@ -495,7 +495,7 @@ export const preferencesTheme = [
         const { theme } = req.body;
 
         if (userId !== res.locals.user.id) {
-            return sendResponse(res, 401, "User is not authorised to perform this action");
+            return sendResponse(res, 403, "User is not authorised to perform this action");
         }
 
         const updatedTargetUser = await User.updateOne({ _id: userId }, [

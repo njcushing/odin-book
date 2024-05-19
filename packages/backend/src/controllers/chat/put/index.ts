@@ -42,7 +42,7 @@ export const name = [
             true,
             "guest",
         );
-        if (!userAuthorised) return sendResponse(res, 401, authMessage);
+        if (!userAuthorised) return sendResponse(res, 403, authMessage);
 
         const updatedChat = await Chat.findByIdAndUpdate(chatId, { $set: { name: newName } });
         if (updatedChat === null) {
@@ -118,7 +118,7 @@ export const participants = [
             true,
             "guest",
         );
-        if (!userAuthorised) return sendResponse(res, 401, authMessage);
+        if (!userAuthorised) return sendResponse(res, 403, authMessage);
 
         const session = await mongoose.startSession();
         try {

@@ -191,7 +191,7 @@ export const message = [
             true,
             "guest",
         );
-        if (!userAuthorised) return sendResponse(res, 401, authMessage);
+        if (!userAuthorised) return sendResponse(res, 403, authMessage);
 
         // attempt to upload all images
         const [uploadResult, uploadResponses] = await multiple(req.body.images);
