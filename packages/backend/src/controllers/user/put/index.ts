@@ -259,6 +259,7 @@ export const preferencesProfileImage = [
                 await Image.deleteMany({ session });
                 await destroy(url); // destroy uploaded image too
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error("Error occurred while deleting documents:", error);
             }
         });
@@ -390,6 +391,7 @@ export const preferencesHeaderImage = [
                 await Image.deleteMany({ session });
                 await destroy(url); // destroy uploaded image too
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error("Error occurred while deleting documents:", error);
             }
         });

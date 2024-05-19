@@ -153,6 +153,7 @@ export const regular = [
             try {
                 await Chat.deleteMany({ session });
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error("Error occurred while deleting documents:", error);
             }
         });
@@ -205,6 +206,7 @@ export const message = [
                 await Message.deleteMany({ session });
                 await Image.deleteMany({ session });
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.error("Error occurred while deleting documents:", error);
             }
         });
