@@ -4,6 +4,7 @@ import * as github from "./github";
 
 const router = express.Router();
 
+router.get("/login-as-guest", login.asGuest);
 router.post("/login", login.post);
 
 router.get("/github", github.get);
