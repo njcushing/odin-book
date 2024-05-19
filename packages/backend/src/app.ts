@@ -84,6 +84,7 @@ app.use("*", cors(getCorsOpts));
 app.use("/", routes.index);
 app.use("/auth", routes.auth);
 app.use("/user", routes.user);
+app.use("/users", routes.users);
 app.use("/post", routes.post);
 app.use("/chat", routes.chat);
 
