@@ -6,6 +6,7 @@ import UserContextProvider from "@/context/user";
 import Sidebar from "@/features/sidebar";
 import Posts from "@/features/posts";
 import Chat from "@/features/chat";
+import Users from "@/features/users";
 import Infobar from "@/features/infobar";
 import mongoose from "mongoose";
 import Profile from "@/features/profile";
@@ -24,6 +25,11 @@ export const routes = [
         path: "user/:accountTag",
         element: <Profile.Main />,
         children: ProfileRoutes,
+        errorElement: <div></div>,
+    },
+    {
+        path: "users/all",
+        element: <Users.List />,
         errorElement: <div></div>,
     },
     {
