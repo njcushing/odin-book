@@ -28,7 +28,8 @@
     font-weight: var(--text-bold-font-weight);
 }
 
-.alternate-login-container {
+.alternate-login-container,
+.guest-login-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,6 +38,7 @@
 }
 
 .alternate-login-message,
+.guest-login-message,
 .create-account-message {
     color: var(--text-primary);
     font-family: Gabarito;

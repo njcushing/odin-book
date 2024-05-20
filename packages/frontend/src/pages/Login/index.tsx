@@ -82,6 +82,10 @@ function Login() {
                         </a>
                     </div>
                 </div>
+                <div className={styles["guest-login-container"]}>
+                    <p className={styles["guest-login-message"]}>You can even log in as a guest!</p>
+                    <Buttons.Basic text="Guest Login" palette="green" />
+                </div>
                 <p className={styles["create-account-message"]}>
                     {`Don't have an account? `}
                     <strong>Create one now</strong>
