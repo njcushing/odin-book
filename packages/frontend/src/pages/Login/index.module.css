@@ -59,6 +59,9 @@
     width: 2.4rem;
     height: 2.4rem;
 }
+.option-icon[aria-disabled |= "true"] svg {
+    fill: var(--text-inactive);
+}
 
 .create-account-message > strong {
     font-weight: var(--text-bold-font-weight);
