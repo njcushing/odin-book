@@ -55,7 +55,7 @@ export const asGuest = [
         if (!guestUser) return sendResponse(res, 404, "Guest account not found in database");
         const credentials = {
             accountTag: guestUser.accountTag,
-            password: guestUser.password,
+            password: process.env.GUEST_PASSWORD,
         };
         const token = await generateToken(credentials);
         return sendResponse(res, 200, "Successful login with credentials", { token });
