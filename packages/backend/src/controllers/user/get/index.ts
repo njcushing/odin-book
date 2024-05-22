@@ -1136,7 +1136,6 @@ export const chatActivity = [
         // match user, unwind & populate chats
         aggregation.push(
             { $match: { _id: new mongoose.Types.ObjectId(userId) } },
-            { $unwind: { path: "$chats", preserveNullAndEmptyArrays: true } },
             {
                 $addFields: {
                     userChats: {
@@ -1156,58 +1155,64 @@ export const chatActivity = [
                     as: "populatedChats",
                 },
             },
-            { $unwind: { path: "$populatedChats", preserveNullAndEmptyArrays: true } },
-            { $replaceRoot: { newRoot: "$populatedChats" } },
-        );
-        // populate chats' 'image' field if possible
-        aggregation.push(
-            {
-                $lookup: {
-                    from: "images",
-                    localField: "image",
-                    foreignField: "_id",
-                    as: "image",
-                },
-            },
-            {
-                $addFields: {
-                    image: {
-                        $cond: {
-                            if: { $gt: [{ $size: "$image" }, 0] },
-                            then: { $arrayElemAt: ["$image", 0] },
-                            else: null,
-                        },
-                    },
-                },
-            },
         );
         // populate chats' 'messages' array
-        aggregation.push({
-            $lookup: {
-                from: "messages",
-                localField: "messages",
-                foreignField: "_id",
-                as: "populatedMessages",
+        aggregation.push(
+            {
+                $unwind: {
+                    path: "$populatedChats",
+                    preserveNullAndEmptyArrays: true,
+                },
             },
-        });
+            {
+                $lookup: {
+                    from: "messages",
+                    localField: "populatedChats.messages",
+                    foreignField: "_id",
+                    as: "populatedChats.messages",
+                },
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    populatedChats: { $push: "$populatedChats" },
+                },
+            },
+        );
         // filter messages
         aggregation.push({
             $addFields: {
-                selectedMessage: {
-                    $filter: {
-                        input: "$populatedMessages",
-                        as: "message",
-                        cond: {
-                            $and: [
-                                { $eq: ["$$message.deleted", false] },
+                populatedChats: {
+                    $map: {
+                        input: "$populatedChats",
+                        as: "chat",
+                        in: {
+                            $mergeObjects: [
+                                "$$chat",
                                 {
-                                    $ne: ["$$message.author", new mongoose.Types.ObjectId(userId)],
-                                },
-                                {
-                                    $gte: [
-                                        "$$message.createdAt",
-                                        { $subtract: [new Date(), 604800000] },
-                                    ],
+                                    filteredMessages: {
+                                        $filter: {
+                                            input: "$$chat.messages",
+                                            as: "message",
+                                            cond: {
+                                                $and: [
+                                                    { $eq: ["$$message.deleted", false] },
+                                                    {
+                                                        $ne: [
+                                                            "$$message.author",
+                                                            new mongoose.Types.ObjectId(userId),
+                                                        ],
+                                                    },
+                                                    {
+                                                        $gte: [
+                                                            "$$message.createdAt",
+                                                            { $subtract: [new Date(), 604800000] },
+                                                        ],
+                                                    },
+                                                ],
+                                            },
+                                        },
+                                    },
                                 },
                             ],
                         },
@@ -1215,127 +1220,274 @@ export const chatActivity = [
                 },
             },
         });
-        // remove chats with no messages that satisfy conditions and sort chats
-        aggregation.push(
-            { $match: { selectedMessage: { $exists: true, $ne: [] } } },
-            {
-                $addFields: {
-                    selectedMessage: { $arrayElemAt: ["$selectedMessage", -1] },
+        // remove chats with no messages that satisfy conditions
+        aggregation.push({
+            $addFields: {
+                populatedChats: {
+                    $filter: {
+                        input: "$populatedChats",
+                        as: "chat",
+                        cond: {
+                            $gt: [{ $size: "$$chat.filteredMessages" }, 0],
+                        },
+                    },
                 },
             },
-            { $sort: { "selectedMessage.createdAt": -1 } },
-        );
-        // limit chats
-        if (limit) aggregation.push({ $limit: Number(limit) });
-        // populate all participants.user documents (including their 'preferences.profileImage' field)
-        aggregation.push(
-            { $unwind: "$participants" },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "participants.user",
-                    foreignField: "_id",
-                    as: "participants.user",
+        });
+        // use only the most recent message for each chat
+        aggregation.push({
+            $addFields: {
+                populatedChats: {
+                    $map: {
+                        input: "$populatedChats",
+                        as: "chat",
+                        in: {
+                            $mergeObjects: [
+                                "$$chat",
+                                {
+                                    recentMessage: {
+                                        $arrayElemAt: ["$$chat.filteredMessages", 0],
+                                    },
+                                },
+                            ],
+                        },
+                    },
                 },
             },
-            { $addFields: { "participants.user": { $arrayElemAt: ["$participants.user", 0] } } },
+        });
+        // sort and limit chats
+        aggregation.push({
+            $project: {
+                populatedChats: {
+                    $sortArray: {
+                        input: "$populatedChats",
+                        sortBy: { "recentMessage.createdAt": -1 },
+                    },
+                },
+            },
+        });
+        if (limit) {
+            aggregation.push({
+                $project: {
+                    populatedChats: {
+                        $slice: ["$populatedChats", Number(limit)],
+                    },
+                },
+            });
+        }
+        // populate chats' 'image' field if possible
+        aggregation.push(
+            {
+                $unwind: {
+                    path: "$populatedChats",
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
             {
                 $lookup: {
                     from: "images",
-                    localField: "participants.user.preferences.profileImage",
+                    localField: "populatedChats.image",
                     foreignField: "_id",
-                    as: "participants.user.preferences.profileImage",
+                    as: "populatedChats.image",
                 },
             },
             {
                 $addFields: {
-                    "participants.user.preferences.profileImage": {
-                        $arrayElemAt: ["$participants.user.preferences.profileImage", 0],
+                    "populatedChats.image": {
+                        $cond: {
+                            if: { $eq: [{ $size: "$populatedChats.image" }, 0] },
+                            then: null,
+                            else: { $arrayElemAt: ["$populatedChats.image", 0] },
+                        },
                     },
                 },
             },
             {
                 $group: {
                     _id: "$_id",
-                    otherFields: { $first: "$$ROOT" },
-                    participants: { $push: "$participants" },
+                    populatedChats: { $push: "$populatedChats" },
                 },
             },
-            { $addFields: { "otherFields.participants": "$participants" } },
-            { $replaceRoot: { newRoot: "$otherFields" } },
         );
-        // project
+        // populate all participants.user documents (including their 'preferences.profileImage' field)
+        aggregation.push(
+            { $unwind: { path: "$populatedChats", preserveNullAndEmptyArrays: true } },
+            { $unwind: { path: "$populatedChats.participants", preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "populatedChats.participants.user",
+                    foreignField: "_id",
+                    as: "userDetails",
+                },
+            },
+            { $unwind: { path: "$userDetails", preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: "images",
+                    localField: "userDetails.preferences.profileImage",
+                    foreignField: "_id",
+                    as: "userDetails.preferences.profileImage",
+                },
+            },
+            {
+                $addFields: {
+                    "userDetails.preferences.profileImage": {
+                        $cond: {
+                            if: { $eq: [{ $size: "$userDetails.preferences.profileImage" }, 0] },
+                            then: null,
+                            else: { $arrayElemAt: ["$userDetails.preferences.profileImage", 0] },
+                        },
+                    },
+                },
+            },
+            {
+                $addFields: {
+                    "populatedChats.participants.user": "$userDetails",
+                },
+            },
+            {
+                $group: {
+                    _id: {
+                        chatId: "$_id",
+                        populatedChatId: "$populatedChats._id",
+                    },
+                    participants: { $push: "$populatedChats.participants" },
+                    chatDetails: { $first: "$populatedChats" },
+                },
+            },
+            {
+                $group: {
+                    _id: "$_id.chatId",
+                    populatedChats: {
+                        $push: {
+                            _id: "$_id.populatedChatId",
+                            createdBy: "$chatDetails.createdBy",
+                            participants: "$participants",
+                            name: "$chatDetails.name",
+                            image: "$chatDetails.image",
+                            recentMessage: "$chatDetails.recentMessage",
+                            createdAt: "$chatDetails.createdAt",
+                        },
+                    },
+                },
+            },
+        );
+        // final projection
         aggregation.push({
             $project: {
-                _id: 1,
-                createdBy: 1,
-                participants: {
+                _id: 0,
+                populatedChats: {
                     $map: {
-                        input: "$participants",
-                        as: "participant",
+                        input: "$populatedChats",
+                        as: "chat",
                         in: {
-                            user: {
-                                _id: "$$participant.user._id",
-                                accountTag: "$$participant.user.accountTag",
-                                preferences: {
-                                    displayName: "$$participant.user.preferences.displayName",
-                                    profileImage: {
-                                        $cond: {
-                                            if: {
-                                                $eq: [
-                                                    {
-                                                        $type: "$$participant.user.preferences.profileImage",
-                                                    },
-                                                    "missing",
-                                                ],
+                            _id: "$$chat._id",
+                            createdBy: "$$chat.createdBy",
+                            participants: {
+                                $map: {
+                                    input: "$$chat.participants",
+                                    as: "participant",
+                                    in: {
+                                        user: {
+                                            _id: "$$participant.user._id",
+                                            accountTag: "$$participant.user.accountTag",
+                                            preferences: {
+                                                displayName:
+                                                    "$$participant.user.preferences.displayName",
+                                                profileImage:
+                                                    "$$participant.user.preferences.profileImage",
                                             },
-                                            then: null,
-                                            else: "$$participant.user.preferences.profileImage",
                                         },
+                                        nickname: "$$participant.nickname",
+                                        role: "$$participant.role",
+                                        muted: "$$participant.muted",
                                     },
                                 },
                             },
-                            nickname: "$$participant.nickname",
-                            role: "$$participant.role",
-                            muted: "$$participant.muted",
+                            name: "$$chat.name",
+                            image: "$$chat.image",
+                            recentMessage: {
+                                _id: "$$chat.recentMessage._id",
+                                author: "$$chat.recentMessage.author",
+                                text: {
+                                    $cond: {
+                                        if: "$$chat.recentMessage.deleted",
+                                        then: "",
+                                        else: "$$chat.recentMessage.text",
+                                    },
+                                },
+                                imageCount: {
+                                    $cond: {
+                                        if: {
+                                            $or: [
+                                                {
+                                                    $eq: [
+                                                        { $type: "$$chat.recentMessage.image" },
+                                                        "missing",
+                                                    ],
+                                                },
+                                                "$$chat.recentMessage.deleted",
+                                            ],
+                                        },
+                                        then: 0,
+                                        else: { $size: "$$chat.recentMessage.images" },
+                                    },
+                                },
+                                deleted: "$$chat.recentMessage.deleted",
+                                createdAt: "$$chat.recentMessage.createdAt",
+                            },
+                            createdAt: "$$chat.createdAt",
                         },
                     },
                 },
-                name: 1,
-                image: {
-                    $cond: {
-                        if: { $eq: ["$image", null] },
-                        then: null,
-                        else: {
-                            _id: "$image._id",
-                            url: "$image.url",
-                            alt: "$image.alt",
-                        },
-                    },
-                },
-                recentMessage: {
-                    _id: "$selectedMessage._id",
-                    author: "$selectedMessage.author",
-                    text: "$selectedMessage.text",
-                    imageCount: { $size: "$selectedMessage.images" },
-                    deleted: "$selectedMessage.deleted",
-                    createdAt: "$selectedMessage.createdAt",
-                },
-                createdAt: 1,
             },
         });
         // sort chats again (for some reason they fall out of order sometimes)
-        aggregation.push({ $sort: { "recentMessage.createdAt": -1 } });
+        aggregation.push({
+            $project: {
+                populatedChats: {
+                    $sortArray: {
+                        input: "$populatedChats",
+                        sortBy: { "recentMessage.createdAt": -1 },
+                    },
+                },
+            },
+        });
+        /*
+         * if there has not been a valid chat found in the pipeline, due to the way the pipeline
+         * works there will have been a single object added to the 'populatedChats' array with some
+         * of a typical chat document's fields present within it. To correctly respond with an empty
+         * array of recent chat activity, we can easily filter out this 'template' object using one
+         * of the fields that aren't present on it: '_id'
+         */
+        aggregation.push({
+            $addFields: {
+                populatedChats: {
+                    $filter: {
+                        input: "$populatedChats",
+                        as: "chat",
+                        cond: {
+                            $and: [
+                                { $ne: ["$$chat._id", null] },
+                                { $ne: [{ $type: "$$chat._id" }, "missing"] },
+                            ],
+                        },
+                    },
+                },
+            },
+        });
         // execute aggregation
         const aggregationResult = await User.aggregate(aggregation).exec();
         if (aggregationResult.length === 0) {
             sendResponse(res, 404, "Could not find chat activity");
         } else {
+            const result = aggregationResult[0].populatedChats;
             await generateToken(res.locals.user)
                 .then((token) => {
                     sendResponse(res, 200, "Chat activity found", {
                         token,
-                        chatActivity: aggregationResult,
+                        chatActivity: result,
                     });
                 })
                 .catch((tokenErr) => {
@@ -1343,7 +1495,7 @@ export const chatActivity = [
                         res,
                         500,
                         tokenErr.message || `Chat activity found, but token creation failed`,
-                        { chatActivity: aggregationResult },
+                        { chatActivity: result },
                         tokenErr,
                     );
                 });
