@@ -1,15 +1,30 @@
-import { useEffect } from "react";
+import { createContext, useEffect, useMemo } from "react";
 import Router from "@/routes";
 import { saveTheme, loadTheme } from "./themes";
 import useScrollableElement from "./hooks/useScrollableElement";
 
+interface AppState {
+    isScrollable: boolean;
+}
+
+const defaultState: AppState = {
+    isScrollable: false,
+};
+
+export const AppContext = createContext<AppState>(defaultState);
+
 function App() {
-    const { current, refCallback } = useScrollableElement({
+    const { isScrollable, current, refCallback } = useScrollableElement({
         atTopCallback: () => PubSub.publish("page-scroll-reached-top"),
         atBottomCallback: () => PubSub.publish("page-scroll-reached-bottom"),
         isInverted: false,
         onlyCallbackOnCorrectDirectionalScroll: true,
     });
+
+    // publish whether page is scrollable
+    useEffect(() => {
+        PubSub.publish("page-scrollable", isScrollable);
+    }, [isScrollable]);
 
     // subscribe to relevant scroll topics
     useEffect(() => {
@@ -33,16 +48,18 @@ function App() {
     loadTheme();
 
     return (
-        <div
-            className="app"
-            style={{
-                placeContent: "center",
-                textAlign: "center",
-            }}
-            ref={refCallback}
-        >
-            <Router />
-        </div>
+        <AppContext.Provider value={useMemo(() => ({ isScrollable }), [isScrollable])} key={0}>
+            <div
+                className="app"
+                style={{
+                    placeContent: "center",
+                    textAlign: "center",
+                }}
+                ref={refCallback}
+            >
+                <Router />
+            </div>
+        </AppContext.Provider>
     );
 }
 
