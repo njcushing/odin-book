@@ -1,7 +1,6 @@
-import React, { useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 type Params = {
-    ref: React.RefObject<HTMLElement>;
     atTopCallback?: () => unknown;
     atBottomCallback?: () => unknown;
     isInverted?: boolean;
@@ -11,7 +10,6 @@ type Params = {
 
 function useScrollableElement(params: Params, dependencies: unknown[] | undefined = undefined) {
     const {
-        ref,
         atTopCallback = null,
         atBottomCallback = null,
         isInverted,
@@ -19,12 +17,30 @@ function useScrollableElement(params: Params, dependencies: unknown[] | undefine
         onlyCallbackOnCorrectDirectionalScroll,
     } = params;
 
+    const [isScrollable, setIsScrollable] = useState<boolean>(false);
+    const [current, setCurrent] = useState<HTMLElement | null>(null);
+
     const isAtTop = useRef<boolean>(false);
     const isAtBottom = useRef<boolean>(false);
     const previousScrollTopRef = useRef<number>(0);
 
+    const refCallback = useCallback((node: HTMLElement | null) => {
+        if (node) setIsScrollable(node.scrollHeight > node.clientHeight);
+        setCurrent(node);
+    }, []);
+
+    useEffect(() => {
+        const observer = new ResizeObserver(() => {
+            if (current) setIsScrollable(current.scrollHeight > current.clientHeight);
+        });
+        if (current) Array.from(current.children).forEach((child) => observer.observe(child));
+        return () => {
+            if (current) Array.from(current.children).forEach((child) => observer.unobserve(child));
+            observer.disconnect();
+        };
+    }, [current]);
+
     const handleScroll = useCallback(() => {
-        const { current } = ref;
         const previousScrollTop = previousScrollTopRef.current;
 
         if (current) {
@@ -72,7 +88,7 @@ function useScrollableElement(params: Params, dependencies: unknown[] | undefine
             previousScrollTopRef.current = scrollStart;
         }
     }, [
-        ref,
+        current,
         atTopCallback,
         atBottomCallback,
         isInverted,
@@ -82,23 +98,27 @@ function useScrollableElement(params: Params, dependencies: unknown[] | undefine
     ]);
 
     useEffect(() => {
-        const scrollElement = ref.current;
-        if (scrollElement) {
-            scrollElement.removeEventListener("scroll", handleScroll);
-            scrollElement.addEventListener("scroll", handleScroll);
+        if (current) {
+            current.removeEventListener("scroll", handleScroll);
+            current.addEventListener("scroll", handleScroll);
         }
 
         return () => {
-            if (scrollElement) scrollElement.removeEventListener("scroll", handleScroll);
+            if (current) current.removeEventListener("scroll", handleScroll);
         };
-    }, [ref, dependencies, handleScroll]);
+    }, [current, dependencies, handleScroll]);
 
     useEffect(() => {
-        const { current } = ref;
         if (current) previousScrollTopRef.current = Math.abs(current.scrollTop);
-    }, [ref]);
+    }, [current]);
 
-    return [isAtTop.current, isAtBottom.current];
+    return {
+        isScrollable,
+        current,
+        refCallback,
+        isAtTop: isAtTop.current,
+        isAtBottom: isAtBottom.current,
+    };
 }
 
 export default useScrollableElement;

@@ -1,12 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Router from "@/routes";
 import { saveTheme, loadTheme } from "./themes";
 import useScrollableElement from "./hooks/useScrollableElement";
 
 function App() {
-    const scrollableWrapperRef = useRef<HTMLDivElement>(null);
-    useScrollableElement({
-        ref: scrollableWrapperRef,
+    const { current, refCallback } = useScrollableElement({
         atTopCallback: () => PubSub.publish("page-scroll-reached-top"),
         atBottomCallback: () => PubSub.publish("page-scroll-reached-bottom"),
         isInverted: false,
@@ -17,18 +15,18 @@ function App() {
     useEffect(() => {
         PubSub.unsubscribe("page-scrollable-area-shift-up");
         PubSub.subscribe("page-scrollable-area-shift-up", (msg, data) => {
-            if (scrollableWrapperRef.current) scrollableWrapperRef.current.scrollTop -= data;
+            if (current) current.scrollTop -= data;
         });
         PubSub.unsubscribe("page-scrollable-area-shift-down");
         PubSub.subscribe("page-scrollable-area-shift-down", (msg, data) => {
-            if (scrollableWrapperRef.current) scrollableWrapperRef.current.scrollTop += data;
+            if (current) current.scrollTop += data;
         });
 
         return () => {
             PubSub.unsubscribe("page-scrollable-area-shift-up");
             PubSub.unsubscribe("page-scrollable-area-shift-down");
         };
-    }, []);
+    }, [current]);
 
     // load theme
     if (localStorage.getItem("odin-book-theme") === null) saveTheme("default");
@@ -41,7 +39,7 @@ function App() {
                 placeContent: "center",
                 textAlign: "center",
             }}
-            ref={scrollableWrapperRef}
+            ref={refCallback}
         >
             <Router />
         </div>

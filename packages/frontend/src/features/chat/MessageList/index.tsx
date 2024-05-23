@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
@@ -93,9 +93,7 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
         };
     }, []);
 
-    const scrollableWrapperRef = useRef<HTMLDivElement>(null);
-    useScrollableElement({
-        ref: scrollableWrapperRef,
+    const { refCallback } = useScrollableElement({
         atTopCallback: () => {
             if (!gettingMessages && messages) {
                 setAttempting(true);
@@ -122,7 +120,7 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
                 <p className={styles["error-message"]}>{errorMessage}</p>
             ) : null}
             {messages && messages.length > 0 ? (
-                <div className={styles["scrollable-wrapper"]} ref={scrollableWrapperRef}>
+                <div className={styles["scrollable-wrapper"]} ref={refCallback}>
                     <li className={styles["message-list"]}>
                         {messages.map((message) => {
                             return (
