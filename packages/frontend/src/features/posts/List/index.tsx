@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
+import { AppContext } from "@/App";
 import { UserContext } from "@/context/user";
 import Buttons from "@/components/buttons";
 import PubSub from "pubsub-js";
@@ -11,6 +12,7 @@ import Posts from "..";
 import styles from "./index.module.css";
 
 function List() {
+    const { isScrollable } = useContext(AppContext);
     const { user, extract, awaitingResponse } = useContext(UserContext);
 
     const navigate = useNavigate();
@@ -23,6 +25,7 @@ function List() {
     const [waiting, setWaiting] = useState(false);
 
     const [posts, setPosts] = useState<Response>(null);
+    const [postsQuantityFromLastRequest, setPostsQuantityFromLastRequest] = useState<number>(0);
     const [response, setParams, setAttempting, gettingPosts] = useAsync.GET<Params, Response>(
         {
             func: getRecommendedPosts,
@@ -45,7 +48,23 @@ function List() {
         setPosts((currentPosts) => {
             return currentPosts ? currentPosts.concat(newState || []) : newState || null;
         });
+        setPostsQuantityFromLastRequest(newState ? newState.length : 0);
     }, [response]);
+
+    useEffect(() => {
+        if (!isScrollable && postsQuantityFromLastRequest > 0 && posts) {
+            setAttempting(true);
+            setParams([
+                {
+                    params: {
+                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        after: posts[posts.length - 1]._id,
+                    },
+                },
+                null,
+            ]);
+        }
+    }, [isScrollable, postsQuantityFromLastRequest, posts, setAttempting, setParams, extract]);
 
     useEffect(() => {
         if (!awaitingResponse) {
