@@ -26,11 +26,14 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
     useEffect(() => {
         if (wrapperRef.current) setWrapperHeight(wrapperRef.current.clientHeight);
         else setWrapperHeight(0);
-    }, [wrapperRef, wrapperHeight]);
+    }, [wrapperRef]);
     useEffect(() => {
         let wrapperRefCurrent: Element;
         const observer = new ResizeObserver((entries) => {
-            setWrapperHeight(entries[0].contentRect.height);
+            const padding =
+                parseFloat(window.getComputedStyle(entries[0].target).paddingTop) +
+                parseFloat(window.getComputedStyle(entries[0].target).paddingBottom);
+            setWrapperHeight(entries[0].contentRect.height + padding);
         });
         if (wrapperRef.current) {
             wrapperRefCurrent = wrapperRef.current;
@@ -39,7 +42,7 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
         return () => {
             if (wrapperRefCurrent instanceof Element) observer.unobserve(wrapperRefCurrent);
         };
-    }, []);
+    }, [wrapperRef, choices, childrenState]);
     const wrapperTop = `min(0px, calc(100vh - ${wrapperHeight}px))`;
 
     // subscribe to topics for customising infobar
@@ -81,10 +84,8 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
             ref={wrapperRef}
             style={{ ...defaultStyles, ...styleState, top: wrapperTop }}
         >
-            <div className={styles["container"]}>
-                {...chosenElements}
-                {childrenState}
-            </div>
+            {...chosenElements}
+            {childrenState}
         </div>
     ) : null;
 }
