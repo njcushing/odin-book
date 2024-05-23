@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import * as useAsync from "@/hooks/useAsync";
+import { AppContext } from "@/App";
 import { UserContext } from "@/context/user";
 import Buttons from "@/components/buttons";
 import PubSub from "pubsub-js";
@@ -10,6 +11,7 @@ import getUserChats, { Params, Response } from "./utils/getUserChats";
 import styles from "./index.module.css";
 
 function List() {
+    const { isScrollable } = useContext(AppContext);
     const { user, extract, awaitingResponse } = useContext(UserContext);
 
     const errorMessageRef = useRef(null);
@@ -20,6 +22,7 @@ function List() {
     const [waiting, setWaiting] = useState(false);
 
     const [chats, setChats] = useState<Response>(null);
+    const [chatsQuantityFromLastRequest, setChatsQuantityFromLastRequest] = useState<number>(0);
     const [response, setParams, setAttempting, gettingChats] = useAsync.GET<Params, Response>(
         {
             func: getUserChats,
@@ -42,7 +45,23 @@ function List() {
         setChats((currentChats) => {
             return currentChats ? currentChats.concat(newState || []) : newState || null;
         });
+        setChatsQuantityFromLastRequest(newState ? newState.length : 0);
     }, [response]);
+
+    useEffect(() => {
+        if (!isScrollable && chatsQuantityFromLastRequest > 0 && chats) {
+            setAttempting(true);
+            setParams([
+                {
+                    params: {
+                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        after: chats[chats.length - 1],
+                    },
+                },
+                null,
+            ]);
+        }
+    }, [isScrollable, chatsQuantityFromLastRequest, chats, setAttempting, setParams, extract]);
 
     useEffect(() => {
         if (!awaitingResponse) {
@@ -174,9 +193,7 @@ function List() {
                     {chats && chats.length > 0 ? (
                         <div className={styles["chats"]}>
                             {chats.map((chatId) => {
-                                return (
-                                    <Chat.Option _id={chatId} skeleton key={`follower-${chatId}`} />
-                                );
+                                return <Chat.Option _id={chatId} skeleton key={`chat-${chatId}`} />;
                             })}
                         </div>
                     ) : (
