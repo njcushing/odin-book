@@ -5,17 +5,21 @@ import RecentChatActivity from "../RecentChatActivity";
 import styles from "./index.module.css";
 
 type TWrapper = {
+    type?: "sticky" | "scrollable";
     initialChoices?: string[];
     style?: React.CSSProperties;
     children?: React.ReactNode;
 };
 
-const defaultStyles = {
+const defaultStyles: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+
     gap: "0.4rem",
     padding: "0.4rem",
 };
 
-function Wrapper({ initialChoices, style, children }: TWrapper) {
+function Wrapper({ type = "sticky", initialChoices, style, children }: TWrapper) {
     const [styleState, setStyleState] = useState<React.CSSProperties | null>(style || null);
     const [choices, setChoices] = useState<string[] | null>(initialChoices || null);
     const [childrenState, setChildrenState] = useState<React.ReactNode | null>(children || null);
@@ -43,7 +47,8 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
             if (wrapperRefCurrent instanceof Element) observer.unobserve(wrapperRefCurrent);
         };
     }, [wrapperRef, choices, childrenState]);
-    const wrapperTop = `min(0px, calc(100vh - ${wrapperHeight}px))`;
+    let wrapperTop = "0px";
+    if (type === "sticky") wrapperTop = `min(0px, calc(100vh - ${wrapperHeight}px))`;
 
     // subscribe to topics for customising infobar
     useEffect(() => {
@@ -78,14 +83,34 @@ function Wrapper({ initialChoices, style, children }: TWrapper) {
         if (choices.includes("RecentChatActivity")) chosenElements.push(<RecentChatActivity />);
     }
 
+    const scrollableStyles: React.CSSProperties =
+        type === "scrollable"
+            ? {
+                  overflowX: "hidden",
+                  overflowY: "auto",
+                  height: "100vh",
+              }
+            : {};
+
     return (choices && choices.length > 0) || childrenState ? (
         <div
             className={styles["wrapper"]}
             ref={wrapperRef}
-            style={{ ...defaultStyles, ...styleState, top: wrapperTop }}
+            style={{
+                ...scrollableStyles,
+                top: wrapperTop,
+            }}
         >
-            {...chosenElements}
-            {childrenState}
+            <div
+                className={styles["container"]}
+                style={{
+                    ...defaultStyles,
+                    ...styleState,
+                }}
+            >
+                {...chosenElements}
+                {childrenState}
+            </div>
         </div>
     ) : null;
 }
