@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import * as useAsync from "@/hooks/useAsync";
+import { AppContext } from "@/App";
 import { ProfileContext } from "@/features/profile/Main";
 import User from "@/components/user";
 import Accessibility from "@/components/accessibility";
@@ -7,6 +8,7 @@ import getUserFollowers, { Params, Response } from "./utils/getUserFollowers";
 import styles from "./index.module.css";
 
 function UserFollowers() {
+    const { isScrollable } = useContext(AppContext);
     const { _id } = useContext(ProfileContext);
 
     const errorMessageRef = useRef(null);
@@ -16,6 +18,8 @@ function UserFollowers() {
     const [waiting, setWaiting] = useState(true);
 
     const [followers, setFollowers] = useState<Response>([]);
+    const [followersQuantityFromLastRequest, setFollowersQuantityFromLastRequest] =
+        useState<number>(0);
     const [response, setParams, setAttempting, gettingFollowers] = useAsync.GET<Params, Response>(
         {
             func: getUserFollowers,
@@ -30,7 +34,15 @@ function UserFollowers() {
         setFollowers((currentFollowers) => {
             return currentFollowers ? currentFollowers.concat(newState || []) : newState || [];
         });
+        setFollowersQuantityFromLastRequest(newState ? newState.length : 0);
     }, [response]);
+
+    useEffect(() => {
+        if (!isScrollable && followersQuantityFromLastRequest > 0 && followers) {
+            setAttempting(true);
+            setParams([{ params: { userId: _id, after: followers[followers.length - 1] } }, null]);
+        }
+    }, [isScrollable, followersQuantityFromLastRequest, followers, _id, setAttempting, setParams]);
 
     useEffect(() => {
         setAttempting(true);
