@@ -166,6 +166,15 @@ function Post({
     const errorMessageElement =
         errorMessage.length > 0 ? <p className={styles["error-message"]}>{errorMessage}</p> : null;
 
+    let currentDateText = "";
+    if (postData) {
+        currentDateText = formatPostDate(postData.createdAt);
+    } else if (initialWaiting) {
+        const currentDate = new Date();
+        currentDate.toISOString();
+        currentDateText = formatPostDate(`${currentDate}`);
+    }
+
     return (
         <div className={styles["wrapper"]}>
             {errorMessageElement}
@@ -195,10 +204,8 @@ function Post({
                         ) : (
                             <div></div>
                         )}
-                        <Accessibility.Skeleton waiting={initialWaiting} style={{ width: "100%" }}>
-                            <p className={styles["date-and-time"]}>
-                                {postData ? formatPostDate(postData.createdAt) : "a"}
-                            </p>
+                        <Accessibility.Skeleton waiting={initialWaiting}>
+                            <p className={styles["date-and-time"]}>{currentDateText}</p>
                         </Accessibility.Skeleton>
                     </div>
                     <div className={styles["row-two"]}>
