@@ -133,7 +133,10 @@ function Create({
                                 };
                             }),
                             replyingTo: null,
-                            createdAt: Date.now().toString(),
+                            createdAt: (() => {
+                                const newDate = new Date();
+                                return newDate.toISOString();
+                            })(),
                             likesCount: 0,
                             repliesCount: 0,
                             likedByUser: false,
