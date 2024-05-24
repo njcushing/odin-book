@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import * as useAsync from "@/hooks/useAsync";
+import { AppContext } from "@/App";
 import { ProfileContext } from "@/features/profile/Main";
 import Posts from "@/features/posts";
 import Accessibility from "@/components/accessibility";
@@ -7,6 +8,7 @@ import getUserLikes, { Params, Response } from "./utils/getUserLikes";
 import styles from "./index.module.css";
 
 function UserLikes() {
+    const { isScrollable } = useContext(AppContext);
     const { _id } = useContext(ProfileContext);
 
     const errorMessageRef = useRef(null);
@@ -16,6 +18,7 @@ function UserLikes() {
     const [waiting, setWaiting] = useState(true);
 
     const [likes, setLikes] = useState<Response>([]);
+    const [likesQuantityFromLastRequest, setLikesQuantityFromLastRequest] = useState<number>(0);
     const [response, setParams, setAttempting, gettingLikes] = useAsync.GET<Params, Response>(
         {
             func: getUserLikes,
@@ -30,7 +33,15 @@ function UserLikes() {
         setLikes((currentLikes) => {
             return currentLikes ? currentLikes.concat(newState || []) : newState || [];
         });
+        setLikesQuantityFromLastRequest(newState ? newState.length : 0);
     }, [response]);
+
+    useEffect(() => {
+        if (!isScrollable && likesQuantityFromLastRequest > 0 && likes) {
+            setAttempting(true);
+            setParams([{ params: { userId: _id, after: likes[likes.length - 1]._id } }, null]);
+        }
+    }, [isScrollable, likesQuantityFromLastRequest, likes, _id, setAttempting, setParams]);
 
     useEffect(() => {
         setAttempting(true);
