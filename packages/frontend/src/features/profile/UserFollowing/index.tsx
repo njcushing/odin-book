@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import * as useAsync from "@/hooks/useAsync";
+import { AppContext } from "@/App";
 import { ProfileContext } from "@/features/profile/Main";
 import User from "@/components/user";
 import Accessibility from "@/components/accessibility";
@@ -7,6 +8,7 @@ import getUserFollowing, { Params, Response } from "./utils/getUserFollowing";
 import styles from "./index.module.css";
 
 function UserFollowing() {
+    const { isScrollable } = useContext(AppContext);
     const { _id } = useContext(ProfileContext);
 
     const errorMessageRef = useRef(null);
@@ -16,6 +18,8 @@ function UserFollowing() {
     const [waiting, setWaiting] = useState(true);
 
     const [following, setFollowing] = useState<Response>([]);
+    const [followingQuantityFromLastRequest, setFollowingQuantityFromLastRequest] =
+        useState<number>(0);
     const [response, setParams, setAttempting, gettingFollowing] = useAsync.GET<Params, Response>(
         {
             func: getUserFollowing,
@@ -30,7 +34,15 @@ function UserFollowing() {
         setFollowing((currentFollowing) => {
             return currentFollowing ? currentFollowing.concat(newState || []) : newState || [];
         });
+        setFollowingQuantityFromLastRequest(newState ? newState.length : 0);
     }, [response]);
+
+    useEffect(() => {
+        if (!isScrollable && followingQuantityFromLastRequest > 0 && following) {
+            setAttempting(true);
+            setParams([{ params: { userId: _id, after: following[following.length - 1] } }, null]);
+        }
+    }, [isScrollable, followingQuantityFromLastRequest, following, _id, setAttempting, setParams]);
 
     useEffect(() => {
         setAttempting(true);
