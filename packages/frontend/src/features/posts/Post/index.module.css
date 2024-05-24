@@ -18,6 +18,14 @@
     padding: 0.6rem;
 }
 
+.row-one {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
 .replying-to {
     align-self: start;
 
@@ -60,7 +68,14 @@
     font-size: 120%;
 }
 
-.row-two {
+.date-and-time {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-family: Gabarito;
+    text-wrap: nowrap;
+}
+
+.row-three {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -112,7 +127,7 @@
     max-height: 100%;
 }
 
-.row-three {
+.row-four {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -120,7 +135,7 @@
     gap: 0.2rem;
 }
 
-.row-three-left {
+.row-four-left {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -146,7 +161,7 @@
     text-decoration: underline;
 }
 
-.row-three-buttons {
+.row-four-buttons {
     align-self: end;
 
     display: flex;

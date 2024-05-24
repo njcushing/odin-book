@@ -8,6 +8,7 @@ import Accessibility from "@/components/accessibility";
 import formatNumber from "@/utils/formatNumber";
 import * as useAsync from "@/hooks/useAsync";
 import mongoose from "mongoose";
+import formatPostDate from "./utils/formatPostDate";
 import getPost, { Params as GetPostParams, Response as GetPostResponse } from "./utils/getPost";
 import likePost, { Params as LikePostParams } from "./utils/likePost";
 import styles from "./index.module.css";
@@ -170,28 +171,37 @@ function Post({
             {errorMessageElement}
             {skeleton || postData ? (
                 <div className={styles["container"]} style={{ gap: sizes.rowGap }}>
-                    {!removeLinkToReply && postData && postData.replyingTo ? (
-                        <button
-                            type="button"
-                            className={styles["replying-to"]}
-                            onClick={(e) => {
-                                navigate(`/post/${postData.replyingTo}`);
-                                e.currentTarget.blur();
-                                e.preventDefault();
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.blur();
-                            }}
-                        >
-                            <p
-                                className={`material-symbols-rounded ${styles["replying-to-arrow"]}`}
-                            >
-                                arrow_back
-                            </p>
-                            <p className={styles["replying-to-text"]}>Replying To...</p>
-                        </button>
-                    ) : null}
                     <div className={styles["row-one"]}>
+                        {!removeLinkToReply && postData && postData.replyingTo ? (
+                            <button
+                                type="button"
+                                className={styles["replying-to"]}
+                                onClick={(e) => {
+                                    navigate(`/post/${postData.replyingTo}`);
+                                    e.currentTarget.blur();
+                                    e.preventDefault();
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.blur();
+                                }}
+                            >
+                                <p
+                                    className={`material-symbols-rounded ${styles["replying-to-arrow"]}`}
+                                >
+                                    arrow_back
+                                </p>
+                                <p className={styles["replying-to-text"]}>Replying To...</p>
+                            </button>
+                        ) : (
+                            <div></div>
+                        )}
+                        <Accessibility.Skeleton waiting={initialWaiting} style={{ width: "100%" }}>
+                            <p className={styles["date-and-time"]}>
+                                {postData ? formatPostDate(postData.createdAt) : "a"}
+                            </p>
+                        </Accessibility.Skeleton>
+                    </div>
+                    <div className={styles["row-two"]}>
                         <User.ImageAndName
                             image={
                                 postData && postData.author.preferences.profileImage
@@ -208,7 +218,7 @@ function Post({
                             size={sizes.imageAndName as "s" | "l"}
                         />
                     </div>
-                    <div className={styles["row-two"]}>
+                    <div className={styles["row-three"]}>
                         <Accessibility.Skeleton waiting={initialWaiting} style={{ width: "100%" }}>
                             <p
                                 className={styles["text"]}
@@ -243,8 +253,8 @@ function Post({
                             </ul>
                         )}
                     </div>
-                    <div className={styles["row-three"]}>
-                        <div className={styles["row-three-left"]}>
+                    <div className={styles["row-four"]}>
+                        <div className={styles["row-four-left"]}>
                             <Accessibility.Skeleton waiting={initialWaiting}>
                                 <p className={styles["likes-count"]}>
                                     <strong style={{ fontSize: sizes.linksAndButtonsStrong }}>
@@ -298,7 +308,7 @@ function Post({
                                 </p>
                             </Accessibility.Skeleton>
                         </div>
-                        <div className={styles["row-three-buttons"]}>
+                        <div className={styles["row-four-buttons"]}>
                             <Accessibility.Skeleton
                                 waiting={initialWaiting}
                                 style={{ borderRadius: "9999px" }}
