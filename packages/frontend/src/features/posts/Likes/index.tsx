@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
+import { AppContext } from "@/App";
 import mongoose from "mongoose";
 import User from "@/components/user";
 import Accessibility from "@/components/accessibility";
@@ -14,6 +15,8 @@ type LikesTypes = {
 };
 
 function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
+    const { isScrollable } = useContext(AppContext);
+
     const { postId } = useParams();
 
     const navigate = useNavigate();
@@ -27,6 +30,7 @@ function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
     const [waiting, setWaiting] = useState(true);
 
     const [likes, setLikes] = useState<Response>([]);
+    const [likesQuantityFromLastRequest, setLikesQuantityFromLastRequest] = useState<number>(0);
     const [response, setParams, setAttempting, gettingLikes] = useAsync.GET<Params, Response>(
         {
             func: getPostLikes,
@@ -51,7 +55,34 @@ function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
         setLikes((currentLikes) => {
             return currentLikes ? currentLikes.concat(newState || []) : newState || [];
         });
+        setLikesQuantityFromLastRequest(newState ? newState.length : 0);
     }, [response]);
+
+    useEffect(() => {
+        if (!isScrollable && likesQuantityFromLastRequest > 0 && likes) {
+            setAttempting(true);
+            setParams([
+                {
+                    params: {
+                        postId: !getIdFromURLParam
+                            ? _id
+                            : (postId as unknown as mongoose.Types.ObjectId),
+                        after: likes[likes.length - 1],
+                    },
+                },
+                null,
+            ]);
+        }
+    }, [
+        isScrollable,
+        likesQuantityFromLastRequest,
+        likes,
+        _id,
+        getIdFromURLParam,
+        postId,
+        setAttempting,
+        setParams,
+    ]);
 
     useEffect(() => {
         setAttempting(true);
