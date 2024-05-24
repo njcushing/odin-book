@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import * as useAsync from "@/hooks/useAsync";
+import { AppContext } from "@/App";
 import { UserContext } from "@/context/user";
 import PubSub from "pubsub-js";
 import Accessibility from "@/components/accessibility";
@@ -8,6 +9,7 @@ import getAllUsers, { Params, Response } from "./utils/getAllUsers";
 import styles from "./index.module.css";
 
 function List() {
+    const { isScrollable } = useContext(AppContext);
     const { user, extract, awaitingResponse } = useContext(UserContext);
 
     const errorMessageRef = useRef(null);
@@ -16,6 +18,7 @@ function List() {
     const [waiting, setWaiting] = useState(false);
 
     const [users, setUsers] = useState<Response>(null);
+    const [usersQuantityFromLastRequest, setUsersQuantityFromLastRequest] = useState<number>(0);
     const [response, setParams, setAttempting, gettingPosts] = useAsync.GET<Params, Response>(
         {
             func: getAllUsers,
@@ -30,7 +33,18 @@ function List() {
         setUsers((currentUsers) => {
             return currentUsers ? currentUsers.concat(newState || []) : newState || null;
         });
+        setUsersQuantityFromLastRequest(newState ? newState.length : 0);
     }, [response]);
+
+    useEffect(() => {
+        if (!isScrollable && usersQuantityFromLastRequest > 0 && users) {
+            setAttempting(true);
+            setParams([
+                { params: { excludeActiveUser: true, after: users[users.length - 1] } },
+                null,
+            ]);
+        }
+    }, [isScrollable, usersQuantityFromLastRequest, users, setAttempting, setParams]);
 
     useEffect(() => {
         if (!awaitingResponse) {
