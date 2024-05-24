@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { AppContext } from "@/App";
 import PubSub from "pubsub-js";
 import Accessibility from "@/components/accessibility";
 import * as useAsync from "@/hooks/useAsync";
@@ -29,6 +30,8 @@ function Replies({
     canLoadMoreReplies = false,
     disableRepliesLink = false,
 }: RepliesTypes) {
+    const { isScrollable } = useContext(AppContext);
+
     const { postId } = useParams();
 
     const navigate = useNavigate();
@@ -40,6 +43,7 @@ function Replies({
     const [waiting, setWaiting] = useState(!overrideReplies);
 
     const [postReplies, setPostReplies] = useState<Response>([]);
+    const [repliesQuantityFromLastRequest, setRepliesQuantityFromLastRequest] = useState<number>(0);
     const [response, setParams, setAttempting, gettingPostReplies] = useAsync.GET<Params, Response>(
         {
             func: getPostReplies,
@@ -65,7 +69,35 @@ function Replies({
         setPostReplies((currentPostReplies) => {
             return currentPostReplies ? currentPostReplies.concat(newState || []) : newState || [];
         });
+        setRepliesQuantityFromLastRequest(newState ? newState.length : 0);
     }, [response]);
+
+    useEffect(() => {
+        if (!isScrollable && repliesQuantityFromLastRequest > 0 && postReplies) {
+            setAttempting(true);
+            setParams([
+                {
+                    params: {
+                        postId: !getIdFromURLParam
+                            ? _id
+                            : (postId as unknown as mongoose.Types.ObjectId),
+                        limit: undefined,
+                        after: postReplies[postReplies.length - 1],
+                    },
+                },
+                null,
+            ]);
+        }
+    }, [
+        isScrollable,
+        repliesQuantityFromLastRequest,
+        postReplies,
+        _id,
+        getIdFromURLParam,
+        postId,
+        setAttempting,
+        setParams,
+    ]);
 
     useEffect(() => {
         if (!overrideReplies) {
