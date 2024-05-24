@@ -193,6 +193,23 @@ function Replies({
     ]);
 
     useEffect(() => {
+        const publish = () => {
+            PubSub.publish("infobar-set-choices", [
+                "RecommendedUsers",
+                "RecentPosts",
+                "RecentChatActivity",
+            ]);
+        };
+
+        PubSub.subscribe("infobar-ready", () => publish());
+        publish();
+
+        return () => {
+            PubSub.unsubscribe("infobar-ready");
+        };
+    }, []);
+
+    useEffect(() => {
         let errorMessageRefCurrent: Element;
 
         const errorMessageObserver = new ResizeObserver((entries) => {
