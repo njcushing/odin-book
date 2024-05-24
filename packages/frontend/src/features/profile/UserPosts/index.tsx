@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import * as useAsync from "@/hooks/useAsync";
+import { AppContext } from "@/App";
 import { ProfileContext } from "@/features/profile/Main";
 import Posts from "@/features/posts";
 import Accessibility from "@/components/accessibility";
@@ -11,6 +12,7 @@ export type UserPostsTypes = {
 };
 
 function UserPosts({ repliesOnly = false }: UserPostsTypes) {
+    const { isScrollable } = useContext(AppContext);
     const { _id } = useContext(ProfileContext);
 
     const errorMessageRef = useRef(null);
@@ -20,6 +22,7 @@ function UserPosts({ repliesOnly = false }: UserPostsTypes) {
     const [waiting, setWaiting] = useState(true);
 
     const [posts, setPosts] = useState<Response>([]);
+    const [postsQuantityFromLastRequest, setPostsQuantityFromLastRequest] = useState<number>(0);
     const [response, setParams, setAttempting, gettingPosts] = useAsync.GET<Params, Response>(
         {
             func: getUserPosts,
@@ -34,7 +37,26 @@ function UserPosts({ repliesOnly = false }: UserPostsTypes) {
         setPosts((currentPosts) => {
             return currentPosts ? currentPosts.concat(newState || []) : newState || [];
         });
+        setPostsQuantityFromLastRequest(newState ? newState.length : 0);
     }, [response]);
+
+    useEffect(() => {
+        if (!isScrollable && postsQuantityFromLastRequest > 0 && posts) {
+            setAttempting(true);
+            setParams([
+                { params: { userId: _id, after: posts[posts.length - 1]._id, repliesOnly } },
+                null,
+            ]);
+        }
+    }, [
+        isScrollable,
+        postsQuantityFromLastRequest,
+        posts,
+        _id,
+        repliesOnly,
+        setAttempting,
+        setParams,
+    ]);
 
     useEffect(() => {
         setAttempting(true);
