@@ -181,6 +181,23 @@ function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
         };
     }, [likes, waiting, initialWaiting, errorMessageRef, returnToPostButtonRef]);
 
+    useEffect(() => {
+        const publish = () => {
+            PubSub.publish("infobar-set-choices", [
+                "RecommendedUsers",
+                "RecentPosts",
+                "RecentChatActivity",
+            ]);
+        };
+
+        PubSub.subscribe("infobar-ready", () => publish());
+        publish();
+
+        return () => {
+            PubSub.unsubscribe("infobar-ready");
+        };
+    }, []);
+
     const errorMessageElement =
         errorMessage.length > 0 ? (
             <p className={styles["error-message"]} ref={errorMessageRef}>
