@@ -67,9 +67,9 @@ This project was designed as part of The Odin Project's NodeJS course. It is a s
 
 ### Built With
 
-[![TypeScript][TypeScript]][TypeScript-url]
-[![React][React.js]][React-url]
-[![NodeJS][NodeJS.js]][NodeJS-url]
+* [![TypeScript][TypeScript]][TypeScript-url]
+* [![React][React.js]][React-url]
+* [![NodeJS][NodeJS.js]][NodeJS-url]
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -82,11 +82,14 @@ If you want to get this project running yourself, please follow these steps.
 
 ### Prerequisites
 
-Install npm
-* npm
+* Install npm
   ```sh
   npm install npm@latest -g
   ```
+* Install NodeJS
+* Create a new MongoDB database
+* Create a [Cloudinary][cloudinary-register-url] account
+    * Make a note of your account's cloud name, API key, and API secret - you will need these later
 
 ### Installation
 
@@ -94,13 +97,34 @@ Install npm
    ```sh
    git clone https://github.com/njcushing/odin-book.git
    ```
-2. Install dependencies
+2. Install the project's dependencies
    ```sh
    npm install
    ```
-3. Create a file for your environment variables: `.env`
-4. Inside `.env`, you will need the following environment variables:
-   `PORT` The port on which you want your server to be open, e.g. - `3000`
+3. Push the new local repository to GitHub
+   ```sh
+   git remote set-url origin http://github.com/your_username/your_repository
+   git push origin main
+   ```
+4. Set up the application as an OAuth app
+   * A tutorial for this can be found [here][https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app]
+   * Make note of the ClientID
+   * Generate a client secret and make note of this
+   * Set the 'Homepage URL' and 'Authorization callback URL' fields
+5. Create a file for your environment variables: `.env`
+6. Inside `.env`, you will need the following environment variables:
+   * `PORT` - The port on which you want your server to be open, e.g. - `3000`
+   * `MONGO_URI` - The connection string for your MongoDB cluster
+   * `AUTH_CLIENT_SECRET` - A password for creating JSONWebTokens
+   * `GITHUB_CLIENT_ID` - The ClientID in your application's OAuth settings
+   * `GITHUB_CLIENT_SECRET` - The generated client secret in your application's OAuth settings
+   * `GITHUB_CALLBACK_URI` - The callback URL to redirect the user to when authorizing their GitHub account (should be the same as the 'Authorization callback URL' field in your application's OAuth settings)
+   * `VITE_SERVER_DOMAIN` - Your server's domain, e.g. - `"http://localhost:3000"`
+   * `CLIENT_DOMAIN` - Your client's domain, e.g. - `"http://localhost:5173"`
+   * `TRUSTED_DOMAINS` - An array containing the domains your server should trust, e.g. - `["http://localhost:5173"]`
+   * `CLOUDINARY_NAME` - Your Cloudinary account's cloud name
+   * `CLOUDINARY_API_KEY` - Your Cloudinary account's API key
+   * `CLOUDINARY_API_SECRET` - Your Cloudinary account's API secret
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -155,15 +179,17 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- Contact -->
 ## Contact
 
-Niall Cushing - [![LinkedIn]][linkedin-url]
+Niall Cushing - [LinkedIn][linkedin-url]
 
-Project Link: [![https://github.com/njcushing/odin-book]][project-link]
+Project Link: [https://github.com/njcushing/odin-book][project-link]
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
 
 
 <!-- Markdown Links & Images -->
+[cloudinary-register-url]: https://cloudinary.com/users/register_free
+[github-oauth-tutorial]: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app
 [project-link]: https://github.com/njcushing/odin-book
 [license-shield]: https://img.shields.io/github/license/njcushing/odin-book.svg?style=for-the-badge
 [license-url]: https://github.com/njcushing/odin-book/blob/main/LICENSE.txt
