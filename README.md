@@ -107,25 +107,32 @@ If you want to get this project running yourself, please follow these steps.
    git remote set-url origin http://github.com/your_username/your_repository
    git push origin main
    ```
-4. Set up the application as an OAuth app
-   * A tutorial for this can be found [here][github-oauth-tutorial-url]
-   * Make note of the ClientID
-   * Generate a client secret and make note of this
-   * Set the 'Homepage URL' and 'Authorization callback URL' fields
+4. Set up the application as an OAuth app (if you don't do this, users won't be able to log in using their GitHub account)
+    * A tutorial for this can be found [here][github-oauth-tutorial-url]
+    * Make note of the ClientID
+    * Generate a client secret and make note of this
+    * Set the 'Homepage URL' and 'Authorization callback URL' fields
 5. Create a file for your environment variables: `.env`
 6. Inside `.env`, you will need the following environment variables:
-   * `PORT` - The port on which you want your server to be open, e.g. - `3000`
-   * `MONGO_URI` - The connection string for your MongoDB cluster
-   * `AUTH_CLIENT_SECRET` - A password for creating JSONWebTokens
-   * `GITHUB_CLIENT_ID` - The ClientID in your application's OAuth settings
-   * `GITHUB_CLIENT_SECRET` - The generated client secret in your application's OAuth settings
-   * `GITHUB_CALLBACK_URI` - The callback URL to redirect the user to when authorizing their GitHub account (should be the same as the 'Authorization callback URL' field in your application's OAuth settings)
-   * `VITE_SERVER_DOMAIN` - Your server's domain, e.g. - `"http://localhost:3000"`
-   * `CLIENT_DOMAIN` - Your client's domain, e.g. - `"http://localhost:5173"`
-   * `TRUSTED_DOMAINS` - An array containing the domains your server should trust, e.g. - `["http://localhost:5173"]`
-   * `CLOUDINARY_NAME` - Your Cloudinary account's cloud name
-   * `CLOUDINARY_API_KEY` - Your Cloudinary account's API key
-   * `CLOUDINARY_API_SECRET` - Your Cloudinary account's API secret
+    * `PORT` - The port on which you want your server to be open, e.g. - `3000`
+    * `MONGO_URI` - The connection string for your MongoDB cluster
+    * `AUTH_CLIENT_SECRET` - A password for creating JSONWebTokens
+    * `GITHUB_CLIENT_ID` - The ClientID in your application's OAuth settings
+    * `GITHUB_CLIENT_SECRET` - The generated client secret in your application's OAuth settings
+    * `GITHUB_CALLBACK_URI` - The callback URL to redirect the user to when authorizing their GitHub account (should be  the same as the 'Authorization callback URL' field in your application's OAuth settings)
+    * `GUEST_PASSWORD` - A password for the guest account
+    * `VITE_SERVER_DOMAIN` - Your server's domain, e.g. - `"http://localhost:3000"`
+    * `CLIENT_DOMAIN` - Your client's domain, e.g. - `"http://localhost:5173"`
+    * `TRUSTED_DOMAINS` - An array containing the domains your server should trust, e.g. - `["http://localhost:5173"]`
+    * `CLOUDINARY_NAME` - Your Cloudinary account's cloud name
+    * `CLOUDINARY_API_KEY` - Your Cloudinary account's API key
+    * `CLOUDINARY_API_SECRET` - Your Cloudinary account's API secret
+7. Run the npm scripts for compiling and starting the backend and frontend applications
+   ```sh
+   npm run start:back
+   npm run start:front
+   ```
+8. Open the client's domain in your chosen browser
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
