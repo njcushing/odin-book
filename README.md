@@ -1,3 +1,6 @@
+<a name="readme-top"></a>
+
+
 <!-- Project Shields -->
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
@@ -67,9 +70,9 @@ This project was designed as part of The Odin Project's NodeJS course. It is a s
 
 ### Built With
 
-* [![TypeScript][TypeScript]][TypeScript-url]
-* [![React][React.js]][React-url]
-* [![NodeJS][NodeJS.js]][NodeJS-url]
+[![TypeScript][TypeScript]][TypeScript-url]  
+[![React][React.js]][React-url]  
+[![NodeJS][NodeJS.js]][NodeJS-url]  
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -82,13 +85,11 @@ If you want to get this project running yourself, please follow these steps.
 
 ### Prerequisites
 
-* Install npm
-  ```sh
-  npm install npm@latest -g
-  ```
-* Install NodeJS
-* Create a new MongoDB database
-* Create a [Cloudinary][cloudinary-register-url] account
+* Install npm and NodeJS by following this [tutorial][npm-nodejs-install-tutorial-url]
+* If you don't have one already, create a MongoDB account [here][mongodb-register-url]
+    * Create a new MongoDB cluster, a tutorial for this can be found [here][mongodb-cluster-tutorial-url]
+        * Make note of your new cluster's connection string - you will need this later
+* Create a Cloudinary account [here][cloudinary-register-url]
     * Make a note of your account's cloud name, API key, and API secret - you will need these later
 
 ### Installation
@@ -107,7 +108,7 @@ If you want to get this project running yourself, please follow these steps.
    git push origin main
    ```
 4. Set up the application as an OAuth app
-   * A tutorial for this can be found [here][https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app]
+   * A tutorial for this can be found [here][github-oauth-tutorial-url]
    * Make note of the ClientID
    * Generate a client secret and make note of this
    * Set the 'Homepage URL' and 'Authorization callback URL' fields
@@ -188,8 +189,11 @@ Project Link: [https://github.com/njcushing/odin-book][project-link]
 
 
 <!-- Markdown Links & Images -->
+[npm-nodejs-install-tutorial-url]: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+[mongodb-register-url]: https://account.mongodb.com/account/register
+[mongodb-cluster-tutorial-url]: https://www.mongodb.com/resources/products/fundamentals/mongodb-cluster-setup
 [cloudinary-register-url]: https://cloudinary.com/users/register_free
-[github-oauth-tutorial]: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app
+[github-oauth-tutorial-url]: https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app
 [project-link]: https://github.com/njcushing/odin-book
 [license-shield]: https://img.shields.io/github/license/njcushing/odin-book.svg?style=for-the-badge
 [license-url]: https://github.com/njcushing/odin-book/blob/main/LICENSE.txt
