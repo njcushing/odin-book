@@ -16,6 +16,7 @@ import cloudinaryConfig from "@/utils/cloudinaryConfig";
 import sendResponse from "@/utils/sendResponse";
 import validateCredentialsFromToken from "@/utils/validateCredentialsFromToken";
 import * as Types from "@/utils/types";
+import createGuestAccount from "./utils/createGuestAccount";
 
 dotenv.config();
 dbConfig();
@@ -87,6 +88,9 @@ app.use("/user", routes.user);
 app.use("/users", routes.users);
 app.use("/post", routes.post);
 app.use("/chat", routes.chat);
+
+// Create guest account if necessary
+createGuestAccount();
 
 // Catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {
