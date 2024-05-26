@@ -8,6 +8,9 @@ dotenv.config();
 export default defineConfig({
     plugins: [react()],
     root: resolve(__dirname, "./src"),
+    build: {
+        outDir: resolve(__dirname, "../../dist/frontend"),
+    },
     resolve: {
         alias: [
             { find: "@", replacement: resolve(__dirname, "./src") },
