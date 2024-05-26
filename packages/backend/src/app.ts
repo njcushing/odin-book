@@ -30,7 +30,15 @@ const limiter = RateLimit({
 });
 app.use(limiter);
 
-app.use(helmet());
+app.use(
+    helmet.contentSecurityPolicy({
+        useDefaults: true,
+        directives: {
+            "img-src": ["'self'", "https://res.cloudinary.com", "data:"]
+        }
+    })
+);
+app.set("trust proxy", 1);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -63,6 +71,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(compression());
+
+// Serve frontend
+app.use(express.static(path.join(__dirname, "../../frontend")));
 
 // CORS config
 const trustedDomains: string[] = (process.env.TRUSTED_DOMAINS as unknown as string[]) || [];
