@@ -40,7 +40,7 @@ const getRecommendedPosts: apiFunctionTypes.GET<Params, Response> = async (
     });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/user/${userId}/recommended-posts?${urlParams}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${userId}/recommended-posts?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",

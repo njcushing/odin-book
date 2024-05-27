@@ -24,7 +24,7 @@ const followUser: apiFunctionTypes.PUT<Params, Body, Response> = async (
         };
     }
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/user/${userId}/follow`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${userId}/follow`, {
         signal: abortController ? abortController.signal : null,
         method: "PUT",
         mode: "cors",

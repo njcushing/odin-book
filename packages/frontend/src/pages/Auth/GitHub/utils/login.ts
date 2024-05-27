@@ -19,7 +19,7 @@ const login: apiFunctionTypes.GET<Params, Response> = async (data, abortControll
     });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/auth/github/login?${urlParams}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/auth/github/login?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",

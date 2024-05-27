@@ -33,7 +33,7 @@ const getPostReplies: apiFunctionTypes.GET<Params, Response> = async (
     });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/post/${postId}/replies?${urlParams}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/post/${postId}/replies?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",

@@ -9,7 +9,7 @@ const getAllUsers: apiFunctionTypes.GET<Params, Response> = async (
     data,
     abortController = null,
 ) => {
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/auth/login-as-guest`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/auth/login-as-guest`, {
         signal: abortController ? abortController.signal : null,
         method: "GET",
         mode: "cors",

@@ -57,14 +57,17 @@ const getChatOverview: apiFunctionTypes.GET<Params, Response> = async (
         };
     }
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/chat/${chatId}/overview`, {
-        signal: abortController ? abortController.signal : null,
-        method: "GET",
-        mode: "cors",
-        headers: {
-            Authorization: localStorage.getItem("odin-book-auth-token") || "",
+    const result = await fetch(
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/chat/${chatId}/overview`,
+        {
+            signal: abortController ? abortController.signal : null,
+            method: "GET",
+            mode: "cors",
+            headers: {
+                Authorization: localStorage.getItem("odin-book-auth-token") || "",
+            },
         },
-    })
+    )
         .then(async (response) => {
             const responseJSON = await response.json();
             saveTokenFromAPIResponse(responseJSON);

@@ -32,7 +32,7 @@ const getUserFollowing: apiFunctionTypes.GET<Params, Response> = async (
     });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/user/${userId}/following/users?${urlParams}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${userId}/following/users?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",

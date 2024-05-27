@@ -34,9 +34,9 @@ app.use(
     helmet.contentSecurityPolicy({
         useDefaults: true,
         directives: {
-            "img-src": ["'self'", "https://res.cloudinary.com", "data:"]
-        }
-    })
+            "img-src": ["'self'", "https://res.cloudinary.com", "data:"],
+        },
+    }),
 );
 app.set("trust proxy", 1);
 
@@ -72,9 +72,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(compression());
 
-// Serve frontend
-app.use(express.static(path.join(__dirname, "../../frontend")));
-
 // CORS config
 const trustedDomains: string[] = (process.env.TRUSTED_DOMAINS as unknown as string[]) || [];
 const getCorsOpts = (
@@ -93,12 +90,17 @@ const getCorsOpts = (
 app.use("*", cors(getCorsOpts));
 
 // Routes
-app.use("/", routes.index);
-app.use("/auth", routes.auth);
-app.use("/user", routes.user);
-app.use("/users", routes.users);
-app.use("/post", routes.post);
-app.use("/chat", routes.chat);
+app.use("/api/auth", routes.auth);
+app.use("/api/user", routes.user);
+app.use("/api/users", routes.users);
+app.use("/api/post", routes.post);
+app.use("/api/chat", routes.chat);
+
+// Serve frontend
+app.use(express.static(path.join(__dirname, "../../frontend")));
+app.get("*", (req, res) => {
+    res.sendFile("index.html", { root: path.join(__dirname, "../../frontend/") });
+});
 
 // Create guest account if necessary
 createGuestAccount();

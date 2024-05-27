@@ -39,7 +39,7 @@ function Preferences() {
                 />
             }
             func={generatePUTAsyncFunction<null>(
-                `${import.meta.env.VITE_SERVER_DOMAIN}/user/${extract("_id")}/preferences/theme`,
+                `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${extract("_id")}/preferences/theme`,
                 "theme",
             )}
             onSuccessHandler={(value) => {

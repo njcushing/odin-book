@@ -39,7 +39,7 @@ function Profile() {
                 />
             }
             func={generatePUTAsyncFunction<null>(
-                `${import.meta.env.VITE_SERVER_DOMAIN}/user/${extract("_id")}/preferences/bio`,
+                `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${extract("_id")}/preferences/bio`,
                 "bio",
             )}
             publishTopic="successful-settings-update-user-preferences-bio"
@@ -56,7 +56,7 @@ function Profile() {
                 />
             }
             func={generatePUTAsyncFunction<null>(
-                `${import.meta.env.VITE_SERVER_DOMAIN}/user/${extract("_id")}/preferences/displayName`,
+                `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${extract("_id")}/preferences/displayName`,
                 "displayName",
             )}
             publishTopic="successful-settings-update-user-preferences-displayName"
@@ -79,7 +79,7 @@ function Profile() {
                 />
             }
             func={generatePUTAsyncFunction<null>(
-                `${import.meta.env.VITE_SERVER_DOMAIN}/user/${extract("_id")}/preferences/profileImage`,
+                `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${extract("_id")}/preferences/profileImage`,
                 "profileImage",
             )}
             conversionFunc={async (value) => {
@@ -107,7 +107,7 @@ function Profile() {
                 />
             }
             func={generatePUTAsyncFunction<null>(
-                `${import.meta.env.VITE_SERVER_DOMAIN}/user/${extract("_id")}/preferences/headerImage`,
+                `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${extract("_id")}/preferences/headerImage`,
                 "headerImage",
             )}
             conversionFunc={async (value) => {

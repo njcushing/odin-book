@@ -20,7 +20,7 @@ const createChat: apiFunctionTypes.POST<null, Body, Response> = async (
         participants = body.participants;
     }
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/chat`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/chat`, {
         signal: abortController ? abortController.signal : null,
         method: "POST",
         mode: "cors",

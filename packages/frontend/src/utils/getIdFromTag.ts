@@ -21,7 +21,7 @@ const getIdFromTag: apiFunctionTypes.GET<Params, Response> = async (
         }
     });
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/user/id?${urlParams}`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/user/id?${urlParams}`, {
         signal: abortController ? abortController.signal : null,
         method: "GET",
         mode: "cors",

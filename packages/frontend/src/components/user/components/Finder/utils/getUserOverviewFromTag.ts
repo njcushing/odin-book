@@ -34,7 +34,7 @@ const getUserOverviewFromTag: apiFunctionTypes.GET<Params, Response> = async (
     });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/user/overviewFromTag?${urlParams}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/overviewFromTag?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",

@@ -51,7 +51,7 @@ const addParticipantsToChat: apiFunctionTypes.PUT<Params, Body, Response> = asyn
     }
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/chat/${chatId}/participants`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/chat/${chatId}/participants`,
         {
             signal: abortController ? abortController.signal : null,
             method: "PUT",

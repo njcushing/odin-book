@@ -24,7 +24,7 @@ const getAllUsers: apiFunctionTypes.GET<Params, Response> = async (
         }
     });
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/users/all?${urlParams}`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/users/all?${urlParams}`, {
         signal: abortController ? abortController.signal : null,
         method: "GET",
         mode: "cors",

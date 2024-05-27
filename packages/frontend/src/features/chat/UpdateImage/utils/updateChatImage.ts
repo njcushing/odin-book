@@ -39,7 +39,7 @@ const createChat: apiFunctionTypes.PUT<Params, Body, Response> = async (
         image = await convertArrayBufferToBase64(body.image);
     }
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/chat/${chatId}/image`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/chat/${chatId}/image`, {
         signal: abortController ? abortController.signal : null,
         method: "PUT",
         mode: "cors",

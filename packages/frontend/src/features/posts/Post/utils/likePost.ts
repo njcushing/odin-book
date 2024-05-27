@@ -24,7 +24,7 @@ const likePost: apiFunctionTypes.PUT<Params, Body, Response> = async (
         };
     }
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/post/${postId}/like`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/post/${postId}/like`, {
         signal: abortController ? abortController.signal : null,
         method: "PUT",
         mode: "cors",

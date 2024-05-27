@@ -38,7 +38,7 @@ const getUserPosts: apiFunctionTypes.GET<Params, Response> = async (
     });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/user/${userId}/posts?${urlParams}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${userId}/posts?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",

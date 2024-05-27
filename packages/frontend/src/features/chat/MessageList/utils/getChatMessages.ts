@@ -41,7 +41,7 @@ const getChatMessages: apiFunctionTypes.GET<Params, Response> = async (
     });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/chat/${chatId}/messages?${urlParams}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/chat/${chatId}/messages?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",

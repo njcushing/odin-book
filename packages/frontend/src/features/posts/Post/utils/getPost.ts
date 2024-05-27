@@ -45,7 +45,7 @@ const getPost: apiFunctionTypes.GET<Params, Response> = async (data, abortContro
         };
     }
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/post/${postId}`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/post/${postId}`, {
         signal: abortController ? abortController.signal : null,
         method: "GET",
         mode: "cors",

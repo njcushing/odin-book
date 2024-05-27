@@ -17,7 +17,7 @@ const login: apiFunctionTypes.POST<Params, Body, Response> = async (
     let body;
     if (data && data.body) body = data.body;
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/auth/login`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/auth/login`, {
         signal: abortController ? abortController.signal : null,
         method: "POST",
         mode: "cors",

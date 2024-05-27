@@ -31,7 +31,7 @@ const getOption: apiFunctionTypes.GET<Params, Response> = async (data, abortCont
         };
     }
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/user/${userId}/option`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${userId}/option`, {
         signal: abortController ? abortController.signal : null,
         method: "GET",
         mode: "cors",

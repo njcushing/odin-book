@@ -17,7 +17,7 @@ const createAccount: apiFunctionTypes.POST<null, Body, Response> = async (
     let body;
     if (data && data.body) body = data.body;
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/user`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/user`, {
         signal: abortController ? abortController.signal : null,
         method: "POST",
         mode: "cors",

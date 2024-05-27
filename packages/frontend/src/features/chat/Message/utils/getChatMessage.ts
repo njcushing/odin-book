@@ -79,7 +79,7 @@ const getChatMessage: apiFunctionTypes.GET<Params, Response> = async (
     }
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/chat/${chatId}/message/${messageId}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/chat/${chatId}/message/${messageId}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",

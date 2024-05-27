@@ -47,7 +47,7 @@ const getUserSummary: apiFunctionTypes.GET<Params, Response> = async (
         };
     }
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/user/${userId}/summary`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${userId}/summary`, {
         signal: abortController ? abortController.signal : null,
         method: "GET",
         mode: "cors",

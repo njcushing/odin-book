@@ -6,7 +6,7 @@ const getActiveUser: apiFunctionTypes.GET<null, UserTypes> = async (
     data,
     abortController = null,
 ) => {
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/user/active`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/user/active`, {
         signal: abortController ? abortController.signal : null,
         method: "GET",
         mode: "cors",

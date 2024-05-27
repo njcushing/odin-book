@@ -34,7 +34,7 @@ const changeChatName: apiFunctionTypes.PUT<Params, Body, Response> = async (
         name = body.name;
     }
 
-    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/chat/${chatId}/name`, {
+    const result = await fetch(`${import.meta.env.VITE_SERVER_DOMAIN}/api/chat/${chatId}/name`, {
         signal: abortController ? abortController.signal : null,
         method: "PUT",
         mode: "cors",

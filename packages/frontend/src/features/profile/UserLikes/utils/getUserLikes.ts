@@ -37,7 +37,7 @@ const getUserLikes: apiFunctionTypes.GET<Params, Response> = async (
     });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/user/${userId}/likes?${urlParams}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${userId}/likes?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",

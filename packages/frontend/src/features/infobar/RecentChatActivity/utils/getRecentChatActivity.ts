@@ -32,7 +32,7 @@ const getRecentChatActivity: apiFunctionTypes.GET<Params, Response> = async (
     });
 
     const result = await fetch(
-        `${import.meta.env.VITE_SERVER_DOMAIN}/user/${userId}/chat-activity?${urlParams}`,
+        `${import.meta.env.VITE_SERVER_DOMAIN}/api/user/${userId}/chat-activity?${urlParams}`,
         {
             signal: abortController ? abortController.signal : null,
             method: "GET",
