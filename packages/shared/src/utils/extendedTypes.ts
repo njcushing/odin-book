@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Types } from "mongoose";
 
 export type Setter<T> = React.Dispatch<React.SetStateAction<T>>;
 
@@ -43,11 +43,8 @@ export const isTypedArray = (value: unknown): boolean => {
     );
 };
 
-export type MongoDBObjectId =
-    | string
-    | number
-    | mongoose.mongo.BSON.ObjectId
-    | mongoose.mongo.BSON.ObjectIdLike
-    | Uint8Array;
+export type MongooseObjectId = Types.ObjectId;
+
+export const newMongooseObjectId = () => new Types.ObjectId();
 
 export type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
