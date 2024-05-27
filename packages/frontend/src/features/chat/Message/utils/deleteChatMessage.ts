@@ -1,10 +1,10 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    chatId: mongoose.Types.ObjectId | null | undefined;
-    messageId: mongoose.Types.ObjectId | null | undefined;
+    chatId: extendedTypes.MongooseObjectId | null | undefined;
+    messageId: extendedTypes.MongooseObjectId | null | undefined;
 };
 
 export type Response = null;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import * as useAsync from "@/hooks/useAsync";
 import { UserContext } from "@/context/user";
 import { ChatContext } from "@/features/chat/Active";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import PubSub from "pubsub-js";
 import Buttons from "@/components/buttons";
 import Images from "@/components/images";
@@ -19,13 +19,13 @@ import deleteChatMessage, {
 import styles from "./index.module.css";
 
 type MessageTypes = {
-    chatId?: mongoose.Types.ObjectId | undefined | null;
-    messageId?: mongoose.Types.ObjectId | undefined | null;
+    chatId?: extendedTypes.MongooseObjectId | undefined | null;
+    messageId?: extendedTypes.MongooseObjectId | undefined | null;
     overrideMessageData?: GetChatMessageResponse;
     messagePreloadInformaton?: {
-        author?: mongoose.Types.ObjectId | null;
+        author?: extendedTypes.MongooseObjectId | null;
         imageCount?: number;
-        replyingTo?: mongoose.Types.ObjectId | null;
+        replyingTo?: extendedTypes.MongooseObjectId | null;
         deleted?: boolean;
     };
     skeleton?: boolean;

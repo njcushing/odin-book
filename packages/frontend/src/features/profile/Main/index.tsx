@@ -3,7 +3,7 @@ import { useParams, useLocation, Outlet } from "react-router-dom";
 import Navigation from "@/components/navigation";
 import Accessibility from "@/components/accessibility";
 import * as useAsync from "@/hooks/useAsync";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import getIdFromTag, { Params, Response } from "@/utils/getIdFromTag";
 import { v4 as uuidv4 } from "uuid";
 import Profile from "..";
@@ -44,7 +44,7 @@ export const routes = [
 ];
 
 interface ProfileState {
-    _id?: mongoose.Types.ObjectId | null | undefined;
+    _id?: extendedTypes.MongooseObjectId | null | undefined;
     awaitingResponse: boolean;
 }
 
@@ -60,7 +60,7 @@ function Main() {
 
     const [waiting, setWaiting] = useState<boolean>(true);
 
-    const [state, setState] = useState<mongoose.Types.ObjectId | null | undefined>(null);
+    const [state, setState] = useState<extendedTypes.MongooseObjectId | null | undefined>(null);
     const [response, setParams, setAttempting, gettingIdFromTag] = useAsync.GET<Params, Response>(
         { func: getIdFromTag, parameters: [{ params: { accountTag: accountTag || "" } }, null] },
         true,

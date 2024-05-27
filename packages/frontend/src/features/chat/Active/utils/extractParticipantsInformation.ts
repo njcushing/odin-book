@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 
 import { Response } from "@/features/chat/utils/getChatOverview";
 
 export type ReturnTypes = {
     [key: string]: {
-        userId: mongoose.Types.ObjectId;
+        userId: extendedTypes.MongooseObjectId;
         inChatName: string;
         profileImage: {
-            _id: mongoose.Types.ObjectId;
+            _id: extendedTypes.MongooseObjectId;
             url: string;
             alt: string;
         } | null;

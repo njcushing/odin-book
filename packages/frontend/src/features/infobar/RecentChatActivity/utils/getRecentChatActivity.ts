@@ -1,10 +1,10 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 import { Response as GetChatOverviewResponse } from "@/features/chat/utils/getChatOverview";
 
 export type Params = {
-    userId: mongoose.Types.ObjectId | null | undefined;
+    userId: extendedTypes.MongooseObjectId | null | undefined;
 };
 
 export type Response = GetChatOverviewResponse[] | null;

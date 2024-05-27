@@ -4,12 +4,12 @@ import * as useAsync from "@/hooks/useAsync";
 import Modals from "@/components/modals";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import createChat, { Body, Response } from "./utils/createChat";
 import styles from "./index.module.css";
 
 type CreateTypes = {
-    defaultParticipants?: mongoose.Types.ObjectId[];
+    defaultParticipants?: extendedTypes.MongooseObjectId[];
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     onSuccessHandler?: (() => unknown) | null;
 };
@@ -22,7 +22,7 @@ function Create({
     const navigate = useNavigate();
 
     const [participants, setParticipants] =
-        useState<mongoose.Types.ObjectId[]>(defaultParticipants);
+        useState<extendedTypes.MongooseObjectId[]>(defaultParticipants);
 
     const [waiting, setWaiting] = useState<boolean>(false);
 

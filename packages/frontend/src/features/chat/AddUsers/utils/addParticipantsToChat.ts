@@ -1,23 +1,23 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    chatId: mongoose.Types.ObjectId | null | undefined;
+    chatId: extendedTypes.MongooseObjectId | null | undefined;
 };
 
 export type Body = {
-    participants: mongoose.Types.ObjectId[];
+    participants: extendedTypes.MongooseObjectId[];
 };
 
 export type Response = {
     user: {
-        _id: mongoose.Types.ObjectId;
+        _id: extendedTypes.MongooseObjectId;
         accountTag: string;
         preferences: {
             displayName: string;
             profileImage: {
-                _id: mongoose.Types.ObjectId;
+                _id: extendedTypes.MongooseObjectId;
                 url: string;
                 alt: string;
             } | null;
@@ -45,7 +45,7 @@ const addParticipantsToChat: apiFunctionTypes.PUT<Params, Body, Response> = asyn
     let body;
     if (data && data.body) body = data.body;
 
-    let participants: mongoose.Types.ObjectId[] = [];
+    let participants: extendedTypes.MongooseObjectId[] = [];
     if (body) {
         participants = body.participants;
     }

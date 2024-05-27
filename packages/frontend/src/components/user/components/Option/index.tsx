@@ -3,7 +3,7 @@ import { UserContext } from "@/context/user";
 import * as useAsync from "@/hooks/useAsync";
 import Buttons from "@/components/buttons";
 import Accessibility from "@/components/accessibility";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import User from "../..";
 import styles from "./index.module.css";
 import getOption, {
@@ -13,7 +13,7 @@ import getOption, {
 import followUser, { Params as FollowUserParams } from "./utils/followUser";
 
 export type OptionTypes = {
-    _id: mongoose.Types.ObjectId | undefined | null;
+    _id: extendedTypes.MongooseObjectId | undefined | null;
     overrideOptionData?: GetOptionResponse;
     skeleton?: boolean;
 };

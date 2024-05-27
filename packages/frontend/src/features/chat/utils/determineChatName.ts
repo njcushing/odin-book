@@ -1,12 +1,12 @@
 import { Response } from "@/features/chat/utils/getChatOverview";
 import combineParticipantNames from "@/features/chat/utils/combineParticipantNames";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 
 type Params = {
     chatData: Response;
     numberToCombine?: number;
     ignoreActiveUser?: boolean;
-    activeUserId?: mongoose.Types.ObjectId;
+    activeUserId?: extendedTypes.MongooseObjectId;
 };
 
 const determineChatName = (params: Params): string => {

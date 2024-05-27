@@ -2,7 +2,7 @@ import { useContext, useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
 import { AppContext } from "@/App";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import User from "@/components/user";
 import Accessibility from "@/components/accessibility";
 import * as calculateElementHeight from "@/utils/calculateElementHeight";
@@ -10,7 +10,7 @@ import getPostLikes, { Params, Response } from "./utils/getPostLikes";
 import styles from "./index.module.css";
 
 type LikesTypes = {
-    _id?: mongoose.Types.ObjectId;
+    _id?: extendedTypes.MongooseObjectId;
     getIdFromURLParam?: boolean;
 };
 
@@ -39,7 +39,7 @@ function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
                     params: {
                         postId: !getIdFromURLParam
                             ? _id
-                            : (postId as unknown as mongoose.Types.ObjectId),
+                            : (postId as unknown as extendedTypes.MongooseObjectId),
                         after: null,
                     },
                 },
@@ -66,7 +66,7 @@ function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
                     params: {
                         postId: !getIdFromURLParam
                             ? _id
-                            : (postId as unknown as mongoose.Types.ObjectId),
+                            : (postId as unknown as extendedTypes.MongooseObjectId),
                         after: likes[likes.length - 1],
                     },
                 },
@@ -92,7 +92,7 @@ function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
                 params: {
                     postId: !getIdFromURLParam
                         ? _id
-                        : (postId as unknown as mongoose.Types.ObjectId),
+                        : (postId as unknown as extendedTypes.MongooseObjectId),
                     after: null,
                 },
             },
@@ -126,7 +126,7 @@ function Likes({ _id, getIdFromURLParam = false }: LikesTypes) {
                         params: {
                             postId: !getIdFromURLParam
                                 ? _id
-                                : (postId as unknown as mongoose.Types.ObjectId),
+                                : (postId as unknown as extendedTypes.MongooseObjectId),
                             after: likes[likes.length - 1],
                         },
                     },

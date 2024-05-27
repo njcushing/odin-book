@@ -6,7 +6,7 @@ import getActiveUser from "./utils/getActiveUser";
 import extractUserProperty from "./utils/extractUserProperty";
 
 export interface UserTypes {
-    _id: extendedTypes.MongoDBObjectId | null;
+    _id: extendedTypes.MongooseObjectId | null;
     accountTag: string;
     githubId?: string;
     email?: string;
@@ -21,11 +21,11 @@ export interface UserTypes {
         displayName: string;
         bio: string;
         profileImage: {
-            _id: extendedTypes.MongoDBObjectId;
+            _id: extendedTypes.MongooseObjectId;
             url: string;
         } | null;
         headerImage: {
-            _id: extendedTypes.MongoDBObjectId;
+            _id: extendedTypes.MongooseObjectId;
             url: string;
         } | null;
         theme: string;

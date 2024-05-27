@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import Accessibility from "@/components/accessibility";
 import getChatOverview, { Params, Response } from "@/features/chat/utils/getChatOverview";
 import Infobar from "@/features/infobar";
@@ -12,7 +12,7 @@ import Chat from "..";
 import styles from "./index.module.css";
 
 type ActiveTypes = {
-    _id?: mongoose.Types.ObjectId;
+    _id?: extendedTypes.MongooseObjectId;
     getIdFromURLParam?: boolean;
 };
 
@@ -50,7 +50,7 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
                     params: {
                         chatId: !getIdFromURLParam
                             ? _id
-                            : (chatId as unknown as mongoose.Types.ObjectId),
+                            : (chatId as unknown as extendedTypes.MongooseObjectId),
                     },
                 },
                 null,
@@ -78,7 +78,7 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
                 params: {
                     chatId: !getIdFromURLParam
                         ? _id
-                        : (chatId as unknown as mongoose.Types.ObjectId),
+                        : (chatId as unknown as extendedTypes.MongooseObjectId),
                 },
             },
             null,

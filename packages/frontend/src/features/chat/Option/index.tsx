@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "@/context/user";
 import * as useAsync from "@/hooks/useAsync";
 import Accessibility from "@/components/accessibility";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import getChatOverview, { Params, Response } from "@/features/chat/utils/getChatOverview";
 import determineChatName from "@/features/chat/utils/determineChatName";
 import extractParticipantsInformation, {
@@ -13,7 +13,7 @@ import Chat from "..";
 import styles from "./index.module.css";
 
 type OptionTypes = {
-    _id: mongoose.Types.ObjectId | undefined | null;
+    _id: extendedTypes.MongooseObjectId | undefined | null;
     overrideOptionData?: Response;
     skeleton?: boolean;
 };
@@ -80,7 +80,7 @@ function Option({ _id, overrideOptionData, skeleton = false }: OptionTypes) {
     const chatName = determineChatName({
         chatData,
         ignoreActiveUser: true,
-        activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+        activeUserId: `${extract("_id")}` as unknown as extendedTypes.MongooseObjectId,
     });
 
     const username = (() => {

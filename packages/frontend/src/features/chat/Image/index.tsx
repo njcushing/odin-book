@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/context/user";
 import { Response } from "@/features/chat/utils/getChatOverview";
 import { ReturnTypes } from "@/features/chat/Active/utils/extractParticipantsInformation";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import styles from "./index.module.css";
 
 type Images = {
-    _id: mongoose.Types.ObjectId;
+    _id: extendedTypes.MongooseObjectId;
     url: string;
     alt: string;
 }[];
@@ -23,7 +23,7 @@ const defaultStyles: React.CSSProperties = {
 };
 
 const defaultProfileImage = () => ({
-    _id: new mongoose.Types.ObjectId(),
+    _id: extendedTypes.newMongooseObjectId(),
     url: "https://res.cloudinary.com/djzqtvl9l/image/upload/v1715426448/default_profile_image_kcvjq4.png",
     alt: "",
 });

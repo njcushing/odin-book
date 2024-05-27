@@ -8,7 +8,7 @@ import Posts from "@/features/posts";
 import Chat from "@/features/chat";
 import Users from "@/features/users";
 import Infobar from "@/features/infobar";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import Profile from "@/features/profile";
 import { routes as ProfileRoutes } from "@/features/profile/Main";
 import Settings from "@/features/settings";
@@ -91,7 +91,7 @@ function Root() {
         PubSub.subscribe("create-new-reply-button-click", (msg, data) => {
             setModal(
                 <Posts.Create
-                    replyingTo={data as unknown as mongoose.Types.ObjectId}
+                    replyingTo={data as unknown as extendedTypes.MongooseObjectId}
                     onCloseClickHandler={() => setModal(null)}
                     onSuccessHandler={() => setModal(null)}
                 />,

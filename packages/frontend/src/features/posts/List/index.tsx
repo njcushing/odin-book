@@ -5,7 +5,7 @@ import { AppContext } from "@/App";
 import { UserContext } from "@/context/user";
 import Buttons from "@/components/buttons";
 import PubSub from "pubsub-js";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import Accessibility from "@/components/accessibility";
 import getRecommendedPosts, { Params, Response } from "./utils/getRecommendedPosts";
 import Posts from "..";
@@ -32,7 +32,7 @@ function List() {
             parameters: [
                 {
                     params: {
-                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        userId: extract("_id") as extendedTypes.MongooseObjectId | undefined | null,
                         after: null,
                     },
                 },
@@ -57,7 +57,7 @@ function List() {
             setParams([
                 {
                     params: {
-                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        userId: extract("_id") as extendedTypes.MongooseObjectId | undefined | null,
                         after: posts[posts.length - 1]._id,
                     },
                 },
@@ -73,7 +73,7 @@ function List() {
             setParams([
                 {
                     params: {
-                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        userId: extract("_id") as extendedTypes.MongooseObjectId | undefined | null,
                         after: null,
                     },
                 },
@@ -123,7 +123,10 @@ function List() {
                 setParams([
                     {
                         params: {
-                            userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                            userId: extract("_id") as
+                                | extendedTypes.MongooseObjectId
+                                | undefined
+                                | null,
                             after: posts[posts.length - 1]._id,
                         },
                     },

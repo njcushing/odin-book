@@ -1,17 +1,17 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    userId: mongoose.Types.ObjectId | null | undefined;
-    after: mongoose.Types.ObjectId | null | undefined;
+    userId: extendedTypes.MongooseObjectId | null | undefined;
+    after: extendedTypes.MongooseObjectId | null | undefined;
     repliesOnly: boolean;
 };
 
 export type Response =
     | {
-          _id: mongoose.Types.ObjectId;
-          replyingTo: mongoose.Types.ObjectId | null;
+          _id: extendedTypes.MongooseObjectId;
+          replyingTo: extendedTypes.MongooseObjectId | null;
       }[]
     | null;
 

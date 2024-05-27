@@ -1,21 +1,20 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import * as extendedTypes from "@shared/utils/extendedTypes";
-import mongoose from "mongoose";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    postId: mongoose.Types.ObjectId | null | undefined;
+    postId: extendedTypes.MongooseObjectId | null | undefined;
 };
 
 export type Response = {
-    _id: mongoose.Types.ObjectId;
+    _id: extendedTypes.MongooseObjectId;
     author: {
-        _id: mongoose.Types.ObjectId;
+        _id: extendedTypes.MongooseObjectId;
         accountTag: string;
         preferences: {
             displayName: string;
             profileImage: {
-                _id: mongoose.Types.ObjectId;
+                _id: extendedTypes.MongooseObjectId;
                 url: extendedTypes.TypedArray | string;
                 alt: string;
             } | null;
@@ -23,11 +22,11 @@ export type Response = {
     };
     text: string;
     images: {
-        _id: mongoose.Types.ObjectId;
+        _id: extendedTypes.MongooseObjectId;
         url: extendedTypes.TypedArray | string;
         alt: string;
     }[];
-    replyingTo: mongoose.Types.ObjectId | null;
+    replyingTo: extendedTypes.MongooseObjectId | null;
     createdAt: string;
     likesCount: number;
     repliesCount: number;

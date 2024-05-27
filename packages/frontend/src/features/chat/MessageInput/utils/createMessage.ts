@@ -1,15 +1,15 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 import convertArrayBufferToBase64 from "@/utils/convertArrayBufferToBase64";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import { Response as GetChatMessagesResponse } from "@/features/chat/MessageList/utils/getChatMessages";
 
 export type Params = {
-    chatId: mongoose.Types.ObjectId | null | undefined;
+    chatId: extendedTypes.MongooseObjectId | null | undefined;
 };
 
 export type Body = {
-    replyingTo: mongoose.Types.ObjectId | undefined | null;
+    replyingTo: extendedTypes.MongooseObjectId | undefined | null;
     text: string;
     images: ArrayBuffer[];
 };

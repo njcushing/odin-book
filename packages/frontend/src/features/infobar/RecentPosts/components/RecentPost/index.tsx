@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Images from "@/components/images";
 import Accessibility from "@/components/accessibility";
 import * as useAsync from "@/hooks/useAsync";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import getPost, { Params, Response } from "@/features/posts/Post/utils/getPost";
 import createMultilineTextTruncateStyles from "@/utils/createMultilineTextTruncateStyles";
 import styles from "./index.module.css";
 
 type TRecentPost = {
-    _id?: mongoose.Types.ObjectId;
+    _id?: extendedTypes.MongooseObjectId;
     skeleton?: boolean;
 };
 

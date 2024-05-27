@@ -1,17 +1,17 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 import convertArrayBufferToBase64 from "@/utils/convertArrayBufferToBase64";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 
 export type Body = {
-    replyingTo: mongoose.Types.ObjectId | undefined | null;
+    replyingTo: extendedTypes.MongooseObjectId | undefined | null;
     text: string;
     images: ArrayBuffer[];
 };
 
 export type Response = {
-    _id: mongoose.Types.ObjectId;
-    replyingTo: mongoose.Types.ObjectId | null;
+    _id: extendedTypes.MongooseObjectId;
+    replyingTo: extendedTypes.MongooseObjectId | null;
 } | null;
 
 const createPost: apiFunctionTypes.POST<null, Body, Response> = async (

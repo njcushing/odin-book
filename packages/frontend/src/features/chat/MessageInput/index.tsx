@@ -4,7 +4,7 @@ import { ChatContext } from "@/features/chat/Active";
 import PubSub from "pubsub-js";
 import Buttons from "@/components/buttons";
 import Inputs from "@/components/inputs";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import validation from "@shared/validation";
 import { v4 as uuidv4 } from "uuid";
 import createMessage, { Params, Body, Response } from "./utils/createMessage";
@@ -34,7 +34,7 @@ function MessageInput() {
                     params: { chatId: chatData && chatData._id },
                     body: {
                         replyingTo: replyingTo
-                            ? (replyingTo.messageId as unknown as mongoose.Types.ObjectId)
+                            ? (replyingTo.messageId as unknown as extendedTypes.MongooseObjectId)
                             : null,
                         text: "",
                         images: [],
@@ -114,7 +114,7 @@ function MessageInput() {
                                 params: { chatId: chatData && chatData._id },
                                 body: {
                                     replyingTo: replyingTo
-                                        ? (replyingTo.messageId as unknown as mongoose.Types.ObjectId)
+                                        ? (replyingTo.messageId as unknown as extendedTypes.MongooseObjectId)
                                         : null,
                                     text,
                                     images: Object.keys(images).map((key) => images[key].data),

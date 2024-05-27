@@ -3,10 +3,9 @@ import { UserContext } from "@/context/user";
 import Modals from "@/components/modals";
 import Inputs from "@/components/inputs";
 import Buttons from "@/components/buttons";
-import * as extendedTypes from "@shared/utils/extendedTypes";
 import validate from "@shared/validation";
 import * as useAsync from "@/hooks/useAsync";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import createPost, { Body, Response } from "./utils/createPost";
 import Posts from "..";
 import styles from "./index.module.css";
@@ -22,7 +21,7 @@ type CreateTypes = {
     defaultText?: string;
     placeholder?: string;
     defaultImages?: Images;
-    replyingTo?: mongoose.Types.ObjectId | undefined | null;
+    replyingTo?: extendedTypes.MongooseObjectId | undefined | null;
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     onSuccessHandler?: (() => unknown) | null;
 };
@@ -66,17 +65,19 @@ function Create({
     }, [creatingPost]);
 
     const authorInfo = {
-        _id: (extract("_id") as mongoose.Types.ObjectId) || new mongoose.Types.ObjectId(),
+        _id:
+            (extract("_id") as extendedTypes.MongooseObjectId) ||
+            extendedTypes.newMongooseObjectId(),
         accountTag: `${extract("accountTag")}` || "User",
         preferences: {
             displayName:
                 `${extract("preferences.displayName")}` || `${extract("accountTag")}` || "User",
             profileImage: (extract("preferences.profileImage") as {
-                _id: mongoose.Types.ObjectId;
+                _id: extendedTypes.MongooseObjectId;
                 url: string;
                 alt: string;
             }) || {
-                _id: new mongoose.Types.ObjectId(),
+                _id: extendedTypes.newMongooseObjectId(),
                 url: "",
                 alt: "",
             },
@@ -122,12 +123,12 @@ function Create({
                 <div className={styles["content-container"]}>
                     <Posts.Post
                         overridePostData={{
-                            _id: new mongoose.Types.ObjectId(),
+                            _id: extendedTypes.newMongooseObjectId(),
                             author: authorInfo,
                             text,
                             images: Object.keys(images).map((key) => {
                                 return {
-                                    _id: new mongoose.Types.ObjectId(),
+                                    _id: extendedTypes.newMongooseObjectId(),
                                     url: images[key].data,
                                     alt: "",
                                 };

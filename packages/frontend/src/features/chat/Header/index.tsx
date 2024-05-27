@@ -6,7 +6,7 @@ import Buttons from "@/components/buttons";
 import determineChatName from "@/features/chat/utils/determineChatName";
 import validation from "@shared/validation";
 import createMultilineTextTruncateStyles from "@/utils/createMultilineTextTruncateStyles";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import changeChatName, { Params, Body, Response } from "./utils/changeChatName";
 import { Response as ChatOverviewResponse } from "../utils/getChatOverview";
 import styles from "./index.module.css";
@@ -32,7 +32,7 @@ function Header({ overrideChatName }: HeaderTypes) {
             determineChatName({
                 chatData,
                 ignoreActiveUser: true,
-                activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+                activeUserId: `${extract("_id")}` as unknown as extendedTypes.MongooseObjectId,
             }),
     );
 
@@ -41,7 +41,7 @@ function Header({ overrideChatName }: HeaderTypes) {
             determineChatName({
                 chatData,
                 ignoreActiveUser: true,
-                activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+                activeUserId: `${extract("_id")}` as unknown as extendedTypes.MongooseObjectId,
             }),
     );
     const [savedResponse, setSavedResponse] = useState<{
@@ -108,14 +108,16 @@ function Header({ overrideChatName }: HeaderTypes) {
                         determineChatName({
                             chatData,
                             ignoreActiveUser: true,
-                            activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+                            activeUserId:
+                                `${extract("_id")}` as unknown as extendedTypes.MongooseObjectId,
                         }),
                     );
                     setNameStored(
                         determineChatName({
                             chatData,
                             ignoreActiveUser: true,
-                            activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+                            activeUserId:
+                                `${extract("_id")}` as unknown as extendedTypes.MongooseObjectId,
                         }),
                     );
                 } else {
@@ -133,7 +135,7 @@ function Header({ overrideChatName }: HeaderTypes) {
                 determineChatName({
                     chatData,
                     ignoreActiveUser: true,
-                    activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+                    activeUserId: `${extract("_id")}` as unknown as extendedTypes.MongooseObjectId,
                 }),
             );
         }
@@ -141,7 +143,7 @@ function Header({ overrideChatName }: HeaderTypes) {
             determineChatName({
                 chatData,
                 ignoreActiveUser: true,
-                activeUserId: `${extract("_id")}` as unknown as mongoose.Types.ObjectId,
+                activeUserId: `${extract("_id")}` as unknown as extendedTypes.MongooseObjectId,
             }),
         );
     }, [chatData, editingName, extract]);

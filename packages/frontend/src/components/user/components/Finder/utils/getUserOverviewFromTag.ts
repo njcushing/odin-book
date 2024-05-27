@@ -1,5 +1,5 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
@@ -7,12 +7,12 @@ export type Params = {
 };
 
 export type Response = {
-    _id: mongoose.Types.ObjectId;
+    _id: extendedTypes.MongooseObjectId;
     accountTag: string;
     preferences: {
         displayName: string;
         profileImage?: {
-            _id: mongoose.Types.ObjectId;
+            _id: extendedTypes.MongooseObjectId;
             url: string;
             alt: string;
         } | null;

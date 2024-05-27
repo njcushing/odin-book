@@ -1,12 +1,12 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    userId: mongoose.Types.ObjectId | null | undefined;
+    userId: extendedTypes.MongooseObjectId | null | undefined;
 };
 
-export type Response = mongoose.Types.ObjectId[] | null;
+export type Response = extendedTypes.MongooseObjectId[] | null;
 
 const getRecommendedUsers: apiFunctionTypes.GET<Params, Response> = async (
     data,

@@ -7,14 +7,14 @@ import Images from "@/components/images";
 import Accessibility from "@/components/accessibility";
 import formatNumber from "@/utils/formatNumber";
 import * as useAsync from "@/hooks/useAsync";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import formatPostDate from "./utils/formatPostDate";
 import getPost, { Params as GetPostParams, Response as GetPostResponse } from "./utils/getPost";
 import likePost, { Params as LikePostParams } from "./utils/likePost";
 import styles from "./index.module.css";
 
 type PostTypes = {
-    _id?: mongoose.Types.ObjectId;
+    _id?: extendedTypes.MongooseObjectId;
     getIdFromURLParam?: boolean;
     overridePostData?: GetPostResponse;
     canReply?: boolean;
@@ -59,7 +59,7 @@ function Post({
                     params: {
                         postId: !getIdFromURLParam
                             ? _id
-                            : (postId as unknown as mongoose.Types.ObjectId),
+                            : (postId as unknown as extendedTypes.MongooseObjectId),
                     },
                 },
                 null,
@@ -85,7 +85,7 @@ function Post({
                     params: {
                         postId: !getIdFromURLParam
                             ? _id
-                            : (postId as unknown as mongoose.Types.ObjectId),
+                            : (postId as unknown as extendedTypes.MongooseObjectId),
                     },
                 },
                 null,

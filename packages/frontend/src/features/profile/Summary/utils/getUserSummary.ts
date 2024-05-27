@@ -1,13 +1,13 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    userId: mongoose.Types.ObjectId | null | undefined;
+    userId: extendedTypes.MongooseObjectId | null | undefined;
 };
 
 export type Response = {
-    _id: mongoose.Types.ObjectId | null | undefined;
+    _id: extendedTypes.MongooseObjectId | null | undefined;
     accountTag: string;
     githubId?: string;
     followingCount: number;
@@ -19,12 +19,12 @@ export type Response = {
         displayName: string;
         bio: string;
         profileImage: {
-            _id: mongoose.Types.ObjectId | null | undefined;
+            _id: extendedTypes.MongooseObjectId | null | undefined;
             url: string;
             alt: string;
         } | null;
         headerImage: {
-            _id: mongoose.Types.ObjectId | null | undefined;
+            _id: extendedTypes.MongooseObjectId | null | undefined;
             url: string;
             alt: string;
         } | null;

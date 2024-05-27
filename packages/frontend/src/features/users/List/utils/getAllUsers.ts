@@ -1,14 +1,14 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
     excludeActiveUser?: boolean;
-    after?: mongoose.Types.ObjectId | null | undefined;
+    after?: extendedTypes.MongooseObjectId | null | undefined;
     limit?: number;
 };
 
-export type Response = mongoose.Types.ObjectId[] | null;
+export type Response = extendedTypes.MongooseObjectId[] | null;
 
 const getAllUsers: apiFunctionTypes.GET<Params, Response> = async (
     data,

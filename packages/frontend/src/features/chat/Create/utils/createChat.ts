@@ -1,12 +1,12 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 
 export type Body = {
-    participants: mongoose.Types.ObjectId[];
+    participants: extendedTypes.MongooseObjectId[];
 };
 
-export type Response = mongoose.Types.ObjectId | null;
+export type Response = extendedTypes.MongooseObjectId | null;
 
 const createChat: apiFunctionTypes.POST<null, Body, Response> = async (
     data,
@@ -15,7 +15,7 @@ const createChat: apiFunctionTypes.POST<null, Body, Response> = async (
     let body;
     if (data && data.body) body = data.body;
 
-    let participants: mongoose.Types.ObjectId[] = [];
+    let participants: extendedTypes.MongooseObjectId[] = [];
     if (body) {
         participants = body.participants;
     }

@@ -5,7 +5,7 @@ import { UserContext } from "@/context/user";
 import Buttons from "@/components/buttons";
 import PubSub from "pubsub-js";
 import Accessibility from "@/components/accessibility";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import Chat from "..";
 import getUserChats, { Params, Response } from "./utils/getUserChats";
 import styles from "./index.module.css";
@@ -29,7 +29,7 @@ function List() {
             parameters: [
                 {
                     params: {
-                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        userId: extract("_id") as extendedTypes.MongooseObjectId | undefined | null,
                         after: null,
                     },
                 },
@@ -54,7 +54,7 @@ function List() {
             setParams([
                 {
                     params: {
-                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        userId: extract("_id") as extendedTypes.MongooseObjectId | undefined | null,
                         after: chats[chats.length - 1],
                     },
                 },
@@ -70,7 +70,7 @@ function List() {
             setParams([
                 {
                     params: {
-                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        userId: extract("_id") as extendedTypes.MongooseObjectId | undefined | null,
                         after: null,
                     },
                 },
@@ -115,7 +115,10 @@ function List() {
                 setParams([
                     {
                         params: {
-                            userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                            userId: extract("_id") as
+                                | extendedTypes.MongooseObjectId
+                                | undefined
+                                | null,
                             after: chats[chats.length - 1],
                         },
                     },

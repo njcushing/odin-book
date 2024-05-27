@@ -3,13 +3,13 @@ import * as useAsync from "@/hooks/useAsync";
 import Modals from "@/components/modals";
 import Buttons from "@/components/buttons";
 import User from "@/components/user";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import addParticipantsToChat, { Params, Body, Response } from "./utils/addParticipantsToChat";
 import styles from "./index.module.css";
 
 type AddUsersTypes = {
-    chatId: mongoose.Types.ObjectId;
-    defaultParticipants?: mongoose.Types.ObjectId[];
+    chatId: extendedTypes.MongooseObjectId;
+    defaultParticipants?: extendedTypes.MongooseObjectId[];
     onCloseClickHandler?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null;
     onSuccessHandler?: (() => void) | null;
 };
@@ -21,7 +21,7 @@ function AddUsers({
     onSuccessHandler = null,
 }: AddUsersTypes) {
     const [participants, setParticipants] =
-        useState<mongoose.Types.ObjectId[]>(defaultParticipants);
+        useState<extendedTypes.MongooseObjectId[]>(defaultParticipants);
 
     const [waiting, setWaiting] = useState<boolean>(false);
 

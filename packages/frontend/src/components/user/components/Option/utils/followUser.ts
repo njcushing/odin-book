@@ -1,9 +1,9 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    userId: mongoose.Types.ObjectId | null | undefined;
+    userId: extendedTypes.MongooseObjectId | null | undefined;
 };
 
 export type Body = null;

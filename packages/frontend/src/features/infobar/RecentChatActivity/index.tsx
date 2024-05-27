@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "@/context/user";
 import * as useAsync from "@/hooks/useAsync";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import extractParticipantsInformation, {
     ReturnTypes as extractedParticipantsInfo,
 } from "@/features/chat/Active/utils/extractParticipantsInformation";
@@ -32,7 +32,7 @@ function RecentChatActivity({ style }: TRecentChatActivity) {
             parameters: [
                 {
                     params: {
-                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        userId: extract("_id") as extendedTypes.MongooseObjectId | undefined | null,
                     },
                 },
                 null,
@@ -54,7 +54,7 @@ function RecentChatActivity({ style }: TRecentChatActivity) {
             setParams([
                 {
                     params: {
-                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        userId: extract("_id") as extendedTypes.MongooseObjectId | undefined | null,
                     },
                 },
                 null,

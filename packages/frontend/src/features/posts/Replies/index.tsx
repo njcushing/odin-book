@@ -4,7 +4,7 @@ import { AppContext } from "@/App";
 import PubSub from "pubsub-js";
 import Accessibility from "@/components/accessibility";
 import * as useAsync from "@/hooks/useAsync";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import * as calculateElementHeight from "@/utils/calculateElementHeight";
 import { v4 as uuidv4 } from "uuid";
 import Posts from "..";
@@ -12,8 +12,8 @@ import getPostReplies, { Params, Response } from "./utils/getPostReplies";
 import styles from "./index.module.css";
 
 type RepliesTypes = {
-    _id?: mongoose.Types.ObjectId;
-    overrideReplies?: mongoose.Types.ObjectId[];
+    _id?: extendedTypes.MongooseObjectId;
+    overrideReplies?: extendedTypes.MongooseObjectId[];
     getIdFromURLParam?: boolean;
     maxRepliesToDisplay?: number;
     numberOfRepliesToLoadOnMount?: number;
@@ -52,7 +52,7 @@ function Replies({
                     params: {
                         postId: !getIdFromURLParam
                             ? _id
-                            : (postId as unknown as mongoose.Types.ObjectId),
+                            : (postId as unknown as extendedTypes.MongooseObjectId),
                         limit: numberOfRepliesToLoadOnMount,
                         after: null,
                     },
@@ -80,7 +80,7 @@ function Replies({
                     params: {
                         postId: !getIdFromURLParam
                             ? _id
-                            : (postId as unknown as mongoose.Types.ObjectId),
+                            : (postId as unknown as extendedTypes.MongooseObjectId),
                         limit: undefined,
                         after: postReplies[postReplies.length - 1],
                     },
@@ -108,7 +108,7 @@ function Replies({
                     params: {
                         postId: !getIdFromURLParam
                             ? _id
-                            : (postId as unknown as mongoose.Types.ObjectId),
+                            : (postId as unknown as extendedTypes.MongooseObjectId),
                         limit: undefined,
                         after: null,
                     },
@@ -164,7 +164,7 @@ function Replies({
                             params: {
                                 postId: !getIdFromURLParam
                                     ? _id
-                                    : (postId as unknown as mongoose.Types.ObjectId),
+                                    : (postId as unknown as extendedTypes.MongooseObjectId),
                                 limit: undefined,
                                 after: postReplies[postReplies.length - 1],
                             },
@@ -244,7 +244,7 @@ function Replies({
             setParams([
                 {
                     params: {
-                        postId: postId as unknown as mongoose.Types.ObjectId,
+                        postId: postId as unknown as extendedTypes.MongooseObjectId,
                         limit: numberOfRepliesToLoadOnMount,
                         after: null,
                     },
@@ -274,7 +274,7 @@ function Replies({
                         _id={
                             !getIdFromURLParam
                                 ? _id
-                                : (postId as unknown as mongoose.Types.ObjectId)
+                                : (postId as unknown as extendedTypes.MongooseObjectId)
                         }
                         canReply
                         disableRepliesLink={disableRepliesLink}

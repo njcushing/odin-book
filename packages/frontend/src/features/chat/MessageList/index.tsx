@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import Accessibility from "@/components/accessibility";
 import useScrollableElement from "@/hooks/useScrollableElement";
 import Chat from "..";
@@ -9,7 +9,7 @@ import getChatMessages, { Params, Response } from "./utils/getChatMessages";
 import styles from "./index.module.css";
 
 type MessageListTypes = {
-    _id?: mongoose.Types.ObjectId;
+    _id?: extendedTypes.MongooseObjectId;
     getIdFromURLParam?: boolean;
 };
 
@@ -28,7 +28,7 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
                     params: {
                         chatId: !getIdFromURLParam
                             ? _id
-                            : (chatId as unknown as mongoose.Types.ObjectId),
+                            : (chatId as unknown as extendedTypes.MongooseObjectId),
                         before: null,
                     },
                 },
@@ -54,7 +54,7 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
                 params: {
                     chatId: !getIdFromURLParam
                         ? _id
-                        : (chatId as unknown as mongoose.Types.ObjectId),
+                        : (chatId as unknown as extendedTypes.MongooseObjectId),
                     before: null,
                 },
             },
@@ -102,7 +102,7 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
                         params: {
                             chatId: !getIdFromURLParam
                                 ? _id
-                                : (chatId as unknown as mongoose.Types.ObjectId),
+                                : (chatId as unknown as extendedTypes.MongooseObjectId),
                             before: messages[messages.length - 1]._id,
                         },
                     },
@@ -128,7 +128,7 @@ function MessageList({ _id, getIdFromURLParam = false }: MessageListTypes) {
                                     chatId={
                                         !getIdFromURLParam
                                             ? _id
-                                            : (chatId as unknown as mongoose.Types.ObjectId)
+                                            : (chatId as unknown as extendedTypes.MongooseObjectId)
                                     }
                                     messageId={message._id}
                                     messagePreloadInformaton={{

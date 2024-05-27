@@ -1,13 +1,13 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    postId: mongoose.Types.ObjectId | null | undefined;
-    after: mongoose.Types.ObjectId | null | undefined;
+    postId: extendedTypes.MongooseObjectId | null | undefined;
+    after: extendedTypes.MongooseObjectId | null | undefined;
 };
 
-export type Response = mongoose.Types.ObjectId[] | null;
+export type Response = extendedTypes.MongooseObjectId[] | null;
 
 const getPostLikes: apiFunctionTypes.GET<Params, Response> = async (
     data,

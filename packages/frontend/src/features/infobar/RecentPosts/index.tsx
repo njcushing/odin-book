@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "@/context/user";
 import * as useAsync from "@/hooks/useAsync";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import Accessibility from "@/components/accessibility";
 import getRecommendedPosts, {
     Params,
@@ -26,7 +26,7 @@ function RecentPosts({ style }: TRecentPosts) {
             parameters: [
                 {
                     params: {
-                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        userId: extract("_id") as extendedTypes.MongooseObjectId | undefined | null,
                         excludeActiveUser: true,
                         limit: 3,
                     },
@@ -50,7 +50,7 @@ function RecentPosts({ style }: TRecentPosts) {
             setParams([
                 {
                     params: {
-                        userId: extract("_id") as mongoose.Types.ObjectId | undefined | null,
+                        userId: extract("_id") as extendedTypes.MongooseObjectId | undefined | null,
                         excludeActiveUser: true,
                         limit: 3,
                     },

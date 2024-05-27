@@ -1,22 +1,22 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 
 export type Params = {
-    chatId: mongoose.Types.ObjectId | null | undefined;
+    chatId: extendedTypes.MongooseObjectId | null | undefined;
 };
 
 export type Response = {
-    _id: mongoose.Types.ObjectId;
-    createdBy: mongoose.Types.ObjectId;
+    _id: extendedTypes.MongooseObjectId;
+    createdBy: extendedTypes.MongooseObjectId;
     participants: {
         user: {
-            _id: mongoose.Types.ObjectId;
+            _id: extendedTypes.MongooseObjectId;
             accountTag: string;
             preferences: {
                 displayName: string;
                 profileImage: {
-                    _id: mongoose.Types.ObjectId;
+                    _id: extendedTypes.MongooseObjectId;
                     url: string;
                     alt: string;
                 } | null;
@@ -28,13 +28,13 @@ export type Response = {
     }[];
     name: string;
     image: {
-        _id: mongoose.Types.ObjectId;
+        _id: extendedTypes.MongooseObjectId;
         url: string;
         alt: string;
     } | null;
     recentMessage: {
-        _id: mongoose.Types.ObjectId;
-        author: mongoose.Types.ObjectId;
+        _id: extendedTypes.MongooseObjectId;
+        author: extendedTypes.MongooseObjectId;
         text: string;
         imageCount: number;
         deleted: boolean;

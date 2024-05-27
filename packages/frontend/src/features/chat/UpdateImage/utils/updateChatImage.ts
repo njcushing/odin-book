@@ -1,10 +1,10 @@
 import * as apiFunctionTypes from "@shared/utils/apiFunctionTypes";
 import saveTokenFromAPIResponse from "@/utils/saveTokenFromAPIResponse";
 import convertArrayBufferToBase64 from "@/utils/convertArrayBufferToBase64";
-import mongoose from "mongoose";
+import * as extendedTypes from "@shared/utils/extendedTypes";
 
 export type Params = {
-    chatId: mongoose.Types.ObjectId | null | undefined;
+    chatId: extendedTypes.MongooseObjectId | null | undefined;
 };
 
 export type Body = {
@@ -12,8 +12,8 @@ export type Body = {
 };
 
 export type Response = {
-    _id: mongoose.Types.ObjectId;
-    url: mongoose.Types.ObjectId;
+    _id: extendedTypes.MongooseObjectId;
+    url: extendedTypes.MongooseObjectId;
     alt: string;
 } | null;
 
