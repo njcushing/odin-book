@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import * as useAsync from "@/hooks/useAsync";
 import login, { Params, Response } from "./utils/login";
 import styles from "./index.module.css";
@@ -9,7 +9,8 @@ function Auth() {
         false,
     );
     const [errorMessage, setErrorMessage] = useState<string>("");
-    const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
+    const timeoutId = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -23,14 +24,14 @@ function Auth() {
                 "Code not returned from GitHub API. Unable to authorise login. Returning to login page.",
             );
 
-            if (timeoutId) clearTimeout(timeoutId);
+            if (timeoutId.current) clearTimeout(timeoutId.current);
             const id = setTimeout(() => {
                 window.location.href = "/login";
-                setTimeoutId(null);
+                timeoutId.current = null;
             }, 5000);
-            setTimeoutId(id);
+            timeoutId.current = id;
         }
-    }, [setParams, setAttempting, timeoutId]);
+    }, [setParams, setAttempting]);
 
     useEffect(() => {
         if (response && response.status >= 400 && response.message && response.message.length > 0) {
@@ -48,18 +49,18 @@ function Auth() {
     // redirect back to login after a delay
     useEffect(() => {
         if (response && response.status >= 400) {
-            if (timeoutId) clearTimeout(timeoutId);
+            if (timeoutId.current) clearTimeout(timeoutId.current);
             const id = setTimeout(() => {
                 window.location.href = "/login";
-                setTimeoutId(null);
+                timeoutId.current = null;
             }, 5000);
-            setTimeoutId(id);
+            timeoutId.current = id;
         }
 
         return () => {
-            if (timeoutId) clearTimeout(timeoutId);
+            if (timeoutId.current) clearTimeout(timeoutId.current);
         };
-    }, [timeoutId, response]);
+    }, [response]);
 
     return (
         <div className={styles["container"]}>
