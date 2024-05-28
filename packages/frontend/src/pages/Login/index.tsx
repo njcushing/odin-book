@@ -129,7 +129,9 @@ function Login() {
                     <p className={styles["alternate-login-message"]}>Or, log in another way</p>
                     <div className={styles["alternate-login-options"]}>
                         {!waiting ? (
-                            <a href="http://localhost:3000/auth/github">{githubIcon}</a>
+                            <a href={`${import.meta.env.VITE_SERVER_DOMAIN}/api/auth/github`}>
+                                {githubIcon}
+                            </a>
                         ) : (
                             githubIcon
                         )}
