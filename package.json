@@ -5,7 +5,6 @@
   "scripts": {
     "build": "vite build ./packages/frontend && tsc --project ./packages/backend/tsconfig.json && tsc-alias -p ./packages/backend/tsconfig.json",
     "start": "node ./dist/backend/src/bin/www.js",
-    "watch": "",
     "build:front": "vite build ./packages/frontend",
     "start:front": "vite ./packages/frontend",
     "start:front:built": "vite ./dist/frontend",
@@ -41,6 +40,7 @@
   "dependencies": {
     "@vitejs/plugin-react": "^4.2.1",
     "bcryptjs": "^2.4.3",
+    "bson-objectid": "^2.0.4",
     "buffer": "^6.0.3",
     "cloudinary": "^2.0.3",
     "compression": "^1.7.4",
