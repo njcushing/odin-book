@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
 import login, { Params, Response } from "./utils/login";
 import styles from "./index.module.css";
 
 function Auth() {
+    const navigate = useNavigate();
+
     const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
         { func: login },
         false,
     );
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-
-    if (response && response.status < 400) window.location.assign("/");
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -24,8 +25,15 @@ function Auth() {
             setErrorMessage(
                 "Code not returned from GitHub API. Unable to authorise login. Returning to login page.",
             );
+
+            if (timeoutId) clearTimeout(timeoutId);
+            const id = setTimeout(() => {
+                window.location.href = "/login";
+                setTimeoutId(null);
+            }, 5000);
+            setTimeoutId(id);
         }
-    }, [setParams, setAttempting]);
+    }, [setParams, setAttempting, timeoutId, navigate]);
 
     useEffect(() => {
         if (response && response.status >= 400 && response.message && response.message.length > 0) {
@@ -36,15 +44,16 @@ function Auth() {
     // redirect to homepage on success
     useEffect(() => {
         if (response && response.status < 400) {
-            window.location.assign("/");
+            navigate("/");
         }
-    }, [response]);
+    }, [response, navigate]);
 
     // redirect back to login after a delay
     useEffect(() => {
-        if (!timeoutId && response && response.status >= 400) {
+        if (response && response.status >= 400) {
+            if (timeoutId) clearTimeout(timeoutId);
             const id = setTimeout(() => {
-                window.location.assign("/login");
+                window.location.href = "/login";
                 setTimeoutId(null);
             }, 5000);
             setTimeoutId(id);
@@ -53,7 +62,7 @@ function Auth() {
         return () => {
             if (timeoutId) clearTimeout(timeoutId);
         };
-    }, [timeoutId, response]);
+    }, [timeoutId, response, navigate]);
 
     return (
         <div className={styles["container"]}>
