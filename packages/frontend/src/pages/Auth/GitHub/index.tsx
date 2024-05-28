@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import * as useAsync from "@/hooks/useAsync";
 import login, { Params, Response } from "./utils/login";
 import styles from "./index.module.css";
 
 function Auth() {
-    const navigate = useNavigate();
-
     const [response, setParams, setAttempting] = useAsync.GET<Params, Response>(
         { func: login },
         false,
@@ -33,7 +30,7 @@ function Auth() {
             }, 5000);
             setTimeoutId(id);
         }
-    }, [setParams, setAttempting, timeoutId, navigate]);
+    }, [setParams, setAttempting, timeoutId]);
 
     useEffect(() => {
         if (response && response.status >= 400 && response.message && response.message.length > 0) {
@@ -44,9 +41,9 @@ function Auth() {
     // redirect to homepage on success
     useEffect(() => {
         if (response && response.status < 400) {
-            navigate("/");
+            window.location.href = "/";
         }
-    }, [response, navigate]);
+    }, [response]);
 
     // redirect back to login after a delay
     useEffect(() => {
@@ -62,7 +59,7 @@ function Auth() {
         return () => {
             if (timeoutId) clearTimeout(timeoutId);
         };
-    }, [timeoutId, response, navigate]);
+    }, [timeoutId, response]);
 
     return (
         <div className={styles["container"]}>
