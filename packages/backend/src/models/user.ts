@@ -5,7 +5,7 @@ export type TUser = {
     type: "regular" | "guest";
     accountTag: string;
     githubId?: string;
-    email?: string;
+    email?: string | null;
     password?: string;
     admin: boolean;
     following: {
@@ -69,6 +69,7 @@ const UserSchema: Schema = new Schema(
                 message: (props: { value: string }) =>
                     validateUser.email(props.value, "back").message,
             },
+            sparse: true,
         },
         password: {
             type: String,
