@@ -143,7 +143,10 @@ function Summary() {
 
     return (
         <div className={styles["container"]}>
-            <Accessibility.Skeleton waiting={currentlyWaiting} style={{ width: "100%" }}>
+            <Accessibility.Skeleton
+                waiting={currentlyWaiting}
+                style={{ width: "100%", aspectRatio: "21 / 9" }}
+            >
                 <div
                     className={styles["banner-image"]}
                     style={{ width: "100%", aspectRatio: "21 / 9" }}
@@ -152,7 +155,7 @@ function Summary() {
                         <Images.Basic
                             src={userSummary.preferences.headerImage.url}
                             alt={userSummary.preferences.headerImage.alt}
-                            style={{ width: "100%", height: "100%" }}
+                            style={{ width: "100%", height: "100%", aspectRatio: "21 / 9" }}
                         />
                     ) : (
                         <p className={styles["banner-image-message"]}>
