@@ -42,8 +42,8 @@
 
     overflow: auto;
 
-    width: calc(100vw - (2 * 0.6rem));
-    height: calc(100vh - (2 * 0.6rem));
+    width: calc(calc(var(--vw, 1vw) * 100) - (2 * 0.6rem));
+    height: calc(calc(var(--vh, 1vh) * 100) - (2 * 0.6rem));
     padding: 0.6rem;
 
     animation: modalTranslate 0.4s ease-out forwards;

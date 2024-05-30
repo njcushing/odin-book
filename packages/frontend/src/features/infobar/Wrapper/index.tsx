@@ -48,7 +48,8 @@ function Wrapper({ type = "sticky", initialChoices, style, children }: TWrapper)
         };
     }, [wrapperRef, choices, childrenState]);
     let wrapperTop = "0px";
-    if (type === "sticky") wrapperTop = `min(0px, calc(100vh - ${wrapperHeight}px))`;
+    if (type === "sticky")
+        wrapperTop = `min(0px, calc(calc(var(--vh, 1vh) * 100) - ${wrapperHeight}px))`;
 
     // subscribe to topics for customising infobar
     useEffect(() => {
@@ -88,7 +89,7 @@ function Wrapper({ type = "sticky", initialChoices, style, children }: TWrapper)
             ? {
                   overflowX: "hidden",
                   overflowY: "auto",
-                  height: "100vh",
+                  height: "calc(var(--vh, 1vh) * 100)",
               }
             : {};
 

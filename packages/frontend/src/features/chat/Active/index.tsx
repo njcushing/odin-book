@@ -122,7 +122,7 @@ function Active({ _id, getIdFromURLParam = false }: ActiveTypes) {
     useEffect(() => {
         const publish = () => {
             PubSub.publish("infobar-set-style", {
-                height: "calc(100vh - (2 * 0.4rem))",
+                height: "calc(calc(var(--vh, 1vh) * 100) - (2 * 0.4rem))",
                 padding: "0.4rem",
             });
             PubSub.publish("infobar-set-choices", []);

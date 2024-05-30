@@ -4,7 +4,7 @@
 
     overflow-y: auto;
 
-    height: calc(100vh - (2 * 0.6rem));
+    height: calc(calc(var(--vh, 1vh) * 100) - (2 * 0.6rem));
     padding: 0.6rem;
 }
 

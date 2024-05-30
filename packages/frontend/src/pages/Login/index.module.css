@@ -6,7 +6,7 @@
     
     width: calc(100% - (2 * 0.8rem));
     height: max-content;
-    min-height: calc(100vh - (2 * 0.8rem));
+    min-height: calc(calc(var(--vh, 1vh) * 100) - (2 * 0.8rem));
     padding: 0.8rem;
 }
 
