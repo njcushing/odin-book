@@ -170,7 +170,7 @@ export const imageArray = (
             status: false,
             message:
                 messageType === "front"
-                    ? `Post image must be a Typed Array.`
+                    ? `Image must be a Typed Array.`
                     : `'image' field must be a Typed Array.`,
         };
     }
@@ -179,13 +179,13 @@ export const imageArray = (
             status: false,
             message:
                 messageType === "front"
-                    ? `Post image must be smaller than 2MB.`
+                    ? `Image must be smaller than 2MB.`
                     : `'image' field (Array) must be smaller than 2MB.`,
         };
     }
     return {
         status: true,
-        message: messageType === "front" ? `Valid post image.` : `'image' field (Array) is valid`,
+        message: messageType === "front" ? `Valid image.` : `'image' field (Array) is valid`,
     };
 };
 

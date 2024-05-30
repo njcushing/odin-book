@@ -33,7 +33,7 @@ export const imageArray = (
             status: false,
             message:
                 messageType === "front"
-                    ? `Post image must be a Typed Array.`
+                    ? `Message image must be a Typed Array.`
                     : `'image' field must be a Typed Array.`,
         };
     }
@@ -42,13 +42,14 @@ export const imageArray = (
             status: false,
             message:
                 messageType === "front"
-                    ? `Post image must be smaller than 2MB.`
+                    ? `Message image must be smaller than 2MB.`
                     : `'image' field (Array) must be smaller than 2MB.`,
         };
     }
     return {
         status: true,
-        message: messageType === "front" ? `Valid post image.` : `'image' field (Array) is valid`,
+        message:
+            messageType === "front" ? `Valid message image.` : `'image' field (Array) is valid`,
     };
 };
 
@@ -59,7 +60,7 @@ export const imageBase64 = (value: string, messageType: "front" | "back"): Retur
             status: false,
             message:
                 messageType === "front"
-                    ? `Post image must be a base64-encoded string.`
+                    ? `Message image must be a base64-encoded string.`
                     : `'image' field must be a base64-encoded string.`,
         };
     }
@@ -70,12 +71,13 @@ export const imageBase64 = (value: string, messageType: "front" | "back"): Retur
             status: false,
             message:
                 messageType === "front"
-                    ? `Post image must be smaller than 2MB.`
+                    ? `Message image must be smaller than 2MB.`
                     : `'image' field (Array) must be smaller than 2MB.`,
         };
     }
     return {
         status: true,
-        message: messageType === "front" ? `Valid post image.` : `'image' field (string) is valid`,
+        message:
+            messageType === "front" ? `Valid message image.` : `'image' field (string) is valid`,
     };
 };
