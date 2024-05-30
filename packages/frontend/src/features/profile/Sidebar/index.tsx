@@ -12,49 +12,13 @@ type SidebarTypes = {
 };
 
 function Sidebar({ type }: SidebarTypes) {
-    const { setUser, awaitingResponse, extract } = useContext(UserContext);
+    const { awaitingResponse, extract } = useContext(UserContext);
 
     const [waiting, setWaiting] = useState<boolean>(awaitingResponse);
 
     useEffect(() => {
         setWaiting(awaitingResponse);
     }, [awaitingResponse]);
-
-    useEffect(() => {
-        PubSub.unsubscribe("successful-settings-update-user-preferences-profileImage");
-        PubSub.unsubscribe("successful-settings-update-user-preferences-displayName");
-        PubSub.unsubscribe("successful-settings-update-user-preferences-bio");
-
-        PubSub.subscribe(
-            "successful-settings-update-user-preferences-profileImage",
-            (msg, data) => {
-                setUser((oldUser) => ({
-                    ...oldUser,
-                    preferences: { ...oldUser.preferences, profileImage: data.profileImage },
-                }));
-            },
-        );
-
-        PubSub.subscribe("successful-settings-update-user-preferences-displayName", (msg, data) => {
-            setUser((oldUser) => ({
-                ...oldUser,
-                preferences: { ...oldUser.preferences, displayName: data.displayName },
-            }));
-        });
-
-        PubSub.subscribe("successful-settings-update-user-preferences-bio", (msg, data) => {
-            setUser((oldUser) => ({
-                ...oldUser,
-                preferences: { ...oldUser.preferences, bio: data.bio },
-            }));
-        });
-
-        return () => {
-            PubSub.unsubscribe("successful-settings-update-user-preferences-profileImage");
-            PubSub.unsubscribe("successful-settings-update-user-preferences-displayName");
-            PubSub.unsubscribe("successful-settings-update-user-preferences-bio");
-        };
-    }, [setUser]);
 
     if (type === "thin") {
         return (

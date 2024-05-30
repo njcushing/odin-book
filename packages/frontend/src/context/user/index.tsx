@@ -118,6 +118,52 @@ function UserContextProvider({ children }: UserContextProviderTypes) {
         [state],
     );
 
+    // subscribe to topics that should result in the user state being changed
+    useEffect(() => {
+        PubSub.unsubscribe("successful-settings-update-user-preferences-headerImage");
+        PubSub.unsubscribe("successful-settings-update-user-preferences-profileImage");
+        PubSub.unsubscribe("successful-settings-update-user-preferences-displayName");
+        PubSub.unsubscribe("successful-settings-update-user-preferences-bio");
+
+        PubSub.subscribe("successful-settings-update-user-preferences-headerImage", (msg, data) => {
+            setState((oldState) => ({
+                ...oldState,
+                preferences: { ...oldState.preferences, headerImage: data.headerImage },
+            }));
+        });
+
+        PubSub.subscribe(
+            "successful-settings-update-user-preferences-profileImage",
+            (msg, data) => {
+                setState((oldState) => ({
+                    ...oldState,
+                    preferences: { ...oldState.preferences, profileImage: data.profileImage },
+                }));
+            },
+        );
+
+        PubSub.subscribe("successful-settings-update-user-preferences-displayName", (msg, data) => {
+            setState((oldState) => ({
+                ...oldState,
+                preferences: { ...oldState.preferences, displayName: data.displayName },
+            }));
+        });
+
+        PubSub.subscribe("successful-settings-update-user-preferences-bio", (msg, data) => {
+            setState((oldState) => ({
+                ...oldState,
+                preferences: { ...oldState.preferences, bio: data.bio },
+            }));
+        });
+
+        return () => {
+            PubSub.unsubscribe("successful-settings-update-user-preferences-headerImage");
+            PubSub.unsubscribe("successful-settings-update-user-preferences-profileImage");
+            PubSub.unsubscribe("successful-settings-update-user-preferences-displayName");
+            PubSub.unsubscribe("successful-settings-update-user-preferences-bio");
+        };
+    }, [setState]);
+
     return (
         <UserContext.Provider
             value={useMemo(
