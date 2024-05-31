@@ -200,20 +200,18 @@ Posts also have their own individual pages. When clicking the 'Likes' or 'Replie
 
 Users can create new chats by navigating to the chats list, where a button at the bottom of the screen can be clicked to bring up a modal. This modal contains a search bar that can be used to search for other users by their account tag. The specified user(s) can be added to a list and all users will be added to the new chat on submission.
 
-<!-- Image of chat list -->
+![Chat list screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156769/chat-list_ea0rmc.png)
 <!-- Image of chat modal -->
 
 Currently, any user can be added to any chat; there is no requirement for those users to be followed by/following any other user. On successful chat creation, the user will be redirected to the new chat.
 
-<!-- Image of new chat window -->
-
 Users can send messages in the chat that, similar to posts, can contain both text and images. Users can also reply to existing messages in the chat, and any messages that are in response to another will display that message's content above the main content of the message. Users can also delete their own messages.
 
-<!-- Image of messages in chat -->
+![Chat screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156770/chat-window_l67ibf.png)
 
 Users can change the name of the chat by clicking the 'Edit' button next to the chat's name. By default, the name will be a compilation of the various users within the chat. The image of the chat can also be changed by clicking the image; this will bring up a modal where a new image can be uploaded.
 
-<!-- Image of chat image modal -->
+![Update chat image modal screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156799/update-chat-image-modal_ouodsq.png)
 
 Finally, users can add participants to the chat by clicking the button to the right of the chat's name. This will bring up a similar modal as the one used to create the chat; new users can be selected before submission.
 
