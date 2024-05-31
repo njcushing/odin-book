@@ -72,7 +72,7 @@
 <!-- About the Project -->
 ## About the Project
 
-![Overview screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717155541/Overview_uojfwa.png)
+![Overview screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156400/overview_ew416a.png)
 
 This project was designed as part of The Odin Project's NodeJS course. It is a social media site with numerous features, including:
 * <a href="#posts">Posts</a>, which can contain both text and images,
@@ -173,11 +173,11 @@ When a user is trying to view the homepage without a valid token, they will auto
 
 When logged in as a guest, the user will not have access to most of the application's features; they will not be able to create posts, chats, follow/unfollow users, edit their account settings, etc. It exists only to provide a way of observing the application to those who do not wish to make an account.
 
-<!-- Image of login page -->
+![Login page screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156398/login_svvubw.png)
 
 If the user wishes to create their own account, they can do so by clicking the 'Create Account' button, which will redirect the user to the account creation page. Here, a valid username, email and password much be entered (all of which must satisfy some regular expression pattern). Upon submission and successful account creation, the user will be redirected to the homepage.
 
-<!-- Image of account creation page -->
+![Account creation page screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156398/create-account_qr9nel.png)
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -185,14 +185,14 @@ If the user wishes to create their own account, they can do so by clicking the '
 
 Posts can contain both text and images. To create a new post, a user must be on the homepage of the application, where other posts are displayed. At the bottom of the viewport there is a 'Create New Post' button which, when clicked, will open a modal where the user can both write text and select images from the filesystem. The content of the post will be displayed in a preview under the inputs so users can observe what their posts will look like before submission.
 
-<!-- Image of post list -->
-<!-- Image of post modal -->
+![Post creation modal screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156399/create-post-modal_em7nqt.png)
 
 Posts can also be liked and replied to. When replying to a post, the same modal is opened as when creating a new post, as replies are actually just posts that have a 'replyingTo' field set to the id of the post being replied to.
 
 Posts also have their own individual pages. When clicking the 'Likes' or 'Replies' on a post, it will redirect the user to a page with users who have liked the post, or a page containing posts in response to the selected post, respectively.
 
-<!-- Image of post replies page -->
+![Post replies screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156399/post-replies_jahrlr.png)
+![Post likes screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156534/post-likes_eltj4q.png)
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
