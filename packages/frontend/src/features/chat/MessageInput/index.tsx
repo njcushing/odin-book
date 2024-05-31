@@ -53,6 +53,7 @@ function MessageInput() {
                 setErrorMessage(response.message);
             } else {
                 setErrorMessage("");
+                setReplyingTo(null);
                 PubSub.publish("message-creation-successful", response.data);
 
                 // easy way to re-render Inputs.Message component on successful message creation, clearing inputs
