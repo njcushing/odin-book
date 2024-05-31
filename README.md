@@ -365,7 +365,7 @@ Project Link: [https://github.com/njcushing/odin-book][project-link]
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
 [Node.js]: https://img.shields.io/badge/NodeJS-417e38?style=for-the-badge&logo=node.js&logoColor=FFF
-[NodeJS-url]: https://reactjs.org/
+[NodeJS-url]: https://nodejs.org/en
 [MongoDB]: https://img.shields.io/badge/-MongoDB-4DB33D?style=for-the-badge&logo=mongodb&logoColor=FFFFFF
 [MongoDB-url]: https://mongodb.com/
   
