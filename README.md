@@ -58,6 +58,12 @@
     <li><a href="#future-features">Future Features</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li>
+      <a href="#credits">Credits</a>
+      <ul>
+        <li><a href="#stock-images">Stock Images</a></li>
+      </ul>
+    </li>
   </ol>
 </details>
 
@@ -276,8 +282,11 @@ While I am satisfied with the current state of the application and what it is ca
     - [ ] Users can edit their own messages
     - [ ] A more advanced text editor
 - [ ] Display images as a modal in their original resolution when clicking on them
+- [ ] Fix image resolution when displayed at varying sizes
 - [ ] Display 'popular' users (with many followers) in 'Recommended Users' tab in the absence of other recommendations
 - [ ] Add 'sign out' button
+- [ ] Add 'Notifications' tab to show users' replies to your posts
+- [ ] Add a way to tag other users in posts
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -303,6 +312,42 @@ Project Link: [https://github.com/njcushing/odin-book][project-link]
 
 
 
+<!-- Credits -->
+## Credits
+
+### Stock Images
+* Photo by <a href="https://unsplash.com/@lachlanjdempsey?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Lachlan Dempsey</a> on <a href="https://unsplash.com/photos/man-in-middle-of-wheat-field-6VPEOdpFNAs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@peter_mc_greats?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Pietro De Grandi</a> on <a href="https://unsplash.com/photos/three-brown-wooden-boat-on-blue-lake-water-taken-at-daytime-T7K4aEPoGGk?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@peter_mc_greats?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Pietro De Grandi</a> on <a href="https://unsplash.com/photos/three-brown-wooden-boat-on-blue-lake-water-taken-at-daytime-T7K4aEPoGGk?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@aleskrivec?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Ales Krivec</a> on <a href="https://unsplash.com/photos/photo-of-green-grass-field-at-sunrise-4miBe6zg5r0?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@leirenestrong?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Irene Strong</a> on <a href="https://unsplash.com/photos/mens-gray-crew-neck-shirt-v2aKnjMbP_k?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@sickle?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Sergey Pesterev</a> on <a href="https://unsplash.com/photos/silhouette-of-mountains-covered-by-fogs-at-the-horizon-JV78PVf3gGI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@jeffreykeenan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Jeffrey Keenan</a> on <a href="https://unsplash.com/photos/man-in-green-crew-neck-shirt-and-black-hat-pUhxoSapPFA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@marvelous?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Marvin Meyer</a> on <a href="https://unsplash.com/photos/person-scuba-diving-UpEv2kOnmCc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@j_erhunse?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Jeffery Erhunse</a> on <a href="https://unsplash.com/photos/man-in-white-shirt-standing-near-body-of-water-during-daytime-4XK2oKKvzVU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@jonathanroger?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Jonathan Roger</a> on <a href="https://unsplash.com/photos/building-beside-body-of-water-during-night-time-LY1eyQMFeyo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@1nimidiffa_?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Nimi Diffa</a> on <a href="https://unsplash.com/photos/man-in-red-sweater-wearing-black-framed-eyeglasses-OWabN5X6xOQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@daheedarlingson?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Dahee Son</a> on <a href="https://unsplash.com/photos/people-near-seashore-during-daytime-tMffGE7u1bI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@timbog80?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Tim Bogdanov</a> on <a href="https://unsplash.com/photos/man-standing-on-top-of-mountain-4uojMEdcwI8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@bmatangelo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brian Matangelo</a> on <a href="https://unsplash.com/photos/boy-in-swimming-goggles-in-swimming-pool-during-daytime-ZU23GWLoCWc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@henrihere?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Henri Pham</a> on <a href="https://unsplash.com/photos/woman-in-jacket-looking-at-building-u6JG0eYjcEU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@tli427?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Tony Lee</a> on <a href="https://unsplash.com/photos/square-brown-wooden-table-8IKf54pc3qk?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@steph?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Stephanie Liverani</a> on <a href="https://unsplash.com/photos/woman-wearing-black-scoop-neck-long-sleeved-shirt-Zz5LQe-VSMY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@brendangreenway?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Brendan Greenway</a> on <a href="https://unsplash.com/photos/aerial-photography-of-city-scapes-at-daytime-SouFaFk9-KQ?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@billstephan?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Bill Stephan</a> on <a href="https://unsplash.com/photos/golden-retriever-puppy-on-focus-photo-9LkqymZFLrE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@shotsbytania?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Tânia Mousinho</a> on <a href="https://unsplash.com/photos/white-and-blue-concrete-building-near-body-of-water-during-daytime-vF0l0bqLRKY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@englishmum?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Becky Fantham</a> on <a href="https://unsplash.com/photos/fruit-cake-on-blue-cake-holder-DIUJSBiJNoc?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@milltownphotography?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Sam Barber</a> on <a href="https://unsplash.com/photos/brown-rocks-on-lake-during-daytime-jpvytpATuDE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@krisatomic?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Kris Atomic</a> on <a href="https://unsplash.com/photos/round-brown-wooden-table-with-french-press-on-top-with-white-ceramic-teacup-beside-3b2tADGAWnU?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@campingwithstyle?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Shell CampingwithStyle</a> on <a href="https://unsplash.com/photos/brown-wooden-pathway-surrounded-by-green-trees-during-daytime-vC2aqFSIRh4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@bloberoonie?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Steve Taylor</a> on <a href="https://unsplash.com/photos/body-of-water-near-trees-jYdCDkBda44?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@zombience?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Ryan Spencer</a> on <a href="https://unsplash.com/photos/santorini-greece-XGKaRnWjv1c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+* Photo by <a href="https://unsplash.com/@henry_be?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Henry Be</a> on <a href="https://unsplash.com/photos/big-ben-london-MdJq0zFUwrw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+<p align="right">(<a href="#readme-top">Back to Top</a>)</p>
+
+
+
 <!-- Markdown Links & Images -->
 [npm-nodejs-install-tutorial-url]: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 [mongodb-register-url]: https://account.mongodb.com/account/register
@@ -320,3 +365,4 @@ Project Link: [https://github.com/njcushing/odin-book][project-link]
 [React-url]: https://reactjs.org/
 [NodeJS.js]: https://img.shields.io/badge/NodeJS-417e38?style=for-the-badge&logo=node.js&logoColor=FFF
 [NodeJS-url]: https://reactjs.org/
+  
