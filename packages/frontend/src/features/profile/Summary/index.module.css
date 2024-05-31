@@ -57,6 +57,8 @@
     font-weight: var(--text-bold-font-weight);
 
     max-width: 100%;
+    padding: 0.2rem;
+    margin: -0.2rem;
 }
 
 .account-tag {
