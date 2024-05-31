@@ -86,7 +86,8 @@ This project was designed as part of The Odin Project's NodeJS course. It is a s
 
 [![TypeScript][TypeScript]][TypeScript-url]  
 [![React][React.js]][React-url]  
-[![NodeJS][NodeJS.js]][NodeJS-url]  
+[![NodeJS][Node.js]][NodeJS-url]  
+[![MongoDB][MongoDB]][MongoDB-url]  
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -363,6 +364,8 @@ Project Link: [https://github.com/njcushing/odin-book][project-link]
 [TypeScript-url]: https://www.typescriptlang.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
-[NodeJS.js]: https://img.shields.io/badge/NodeJS-417e38?style=for-the-badge&logo=node.js&logoColor=FFF
+[Node.js]: https://img.shields.io/badge/NodeJS-417e38?style=for-the-badge&logo=node.js&logoColor=FFF
 [NodeJS-url]: https://reactjs.org/
+[MongoDB]: https://img.shields.io/badge/-MongoDB-4DB33D?style=for-the-badge&logo=mongodb&logoColor=FFFFFF
+[MongoDB-url]: https://mongodb.com/
   
