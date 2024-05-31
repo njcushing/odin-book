@@ -103,31 +103,23 @@ function Header({ overrideChatName }: HeaderTypes) {
                 setChatName(nameStored);
             } else {
                 setErrorMessage("");
+                let newChatName = chatName;
                 if (chatName.length === 0) {
-                    setChatName(
-                        determineChatName({
-                            chatData,
-                            ignoreActiveUser: true,
-                            activeUserId:
-                                `${extract("_id")}` as unknown as extendedTypes.MongooseObjectId,
-                        }),
-                    );
-                    setNameStored(
-                        determineChatName({
-                            chatData,
-                            ignoreActiveUser: true,
-                            activeUserId:
-                                `${extract("_id")}` as unknown as extendedTypes.MongooseObjectId,
-                        }),
-                    );
-                } else {
-                    setNameStored(chatName);
-                }
+                    newChatName = determineChatName({
+                        chatData,
+                        ignoreActiveUser: true,
+                        activeUserId:
+                            `${extract("_id")}` as unknown as extendedTypes.MongooseObjectId,
+                    });
+                    if (chatData) setChatData(() => ({ ...chatData, name: "" }));
+                } else if (chatData) setChatData(() => ({ ...chatData, name: newChatName }));
+                setChatName(newChatName);
+                setNameStored(newChatName);
                 setEditingName(false);
             }
             setSavedResponse(null);
         }
-    }, [savedResponse, chatData, chatName, nameStored, extract]);
+    }, [savedResponse, chatData, setChatData, chatName, nameStored, extract]);
 
     useEffect(() => {
         if (!editingName) {
