@@ -16,7 +16,7 @@
     A social media application designed as part of The Odin Project's NodeJS course.
     <br />
     <br />
-    <!-- <a href="https://github.com/othneildrew/Best-README-Template">View Live Demo</a> -->
+    <a href="https://njcushing-odin-book.fly.dev/login">View Live Demo</a>
   </p>
 </div>
 
