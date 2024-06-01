@@ -72,13 +72,18 @@
 <!-- About the Project -->
 ## About the Project
 
-![Overview screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156400/overview_ew416a.png)
+![Overview](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156400/overview_ew416a.png)
+![Mobile layout](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717257883/mobile-layout_oujogp.png)
 
 This project was designed as part of The Odin Project's NodeJS course. It is a social media site with numerous features, including:
 * <a href="#posts">Posts</a>, which can contain both text and images,
 * <a href="#chats">Chats</a> with other users,
 * A personal <a href="#profile">profile</a>, on which you can set a custom name, bio, profile image and theme, and which has individual 'tabs' for your posts, replies, likes, followed users and users following you,
 * An information sidebar which displays recommended users, recent posts from your followed users and recent chat activity.
+
+Also, by using a responsive layout, the application is compatible with a wide range of screen sizes!
+
+![Mobile layout](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717257883/mobile-layout_oujogp.png)
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -173,11 +178,11 @@ When a user is trying to view the homepage without a valid token, they will auto
 
 When logged in as a guest, the user will not have access to most of the application's features; they will not be able to create posts, chats, follow/unfollow users, edit their account settings, etc. It exists only to provide a way of observing the application to those who do not wish to make an account.
 
-![Login page screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156398/login_svvubw.png)
+![Login page](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156398/login_svvubw.png)
 
 If the user wishes to create their own account, they can do so by clicking the 'Create Account' button, which will redirect the user to the account creation page. Here, a valid username, email and password much be entered (all of which must satisfy some regular expression pattern). Upon submission and successful account creation, the user will be redirected to the homepage.
 
-![Account creation page screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156398/create-account_qr9nel.png)
+![Account creation page](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156398/create-account_qr9nel.png)
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -185,14 +190,14 @@ If the user wishes to create their own account, they can do so by clicking the '
 
 Posts can contain both text and images. To create a new post, a user must be on the homepage of the application, where other posts are displayed. At the bottom of the viewport there is a 'Create New Post' button which, when clicked, will open a modal where the user can both write text and select images from the filesystem. The content of the post will be displayed in a preview under the inputs so users can observe what their posts will look like before submission.
 
-![Post creation modal screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156399/create-post-modal_em7nqt.png)
+![Post creation modal](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156399/create-post-modal_em7nqt.png)
 
 Posts can also be liked and replied to. When replying to a post, the same modal is opened as when creating a new post, as replies are actually just posts that have a 'replyingTo' field set to the id of the post being replied to.
 
 Posts also have their own individual pages. When clicking the 'Likes' or 'Replies' on a post, it will redirect the user to a page with users who have liked the post, or a page containing posts in response to the selected post, respectively.
 
-![Post replies screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156399/post-replies_jahrlr.png)
-![Post likes screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156534/post-likes_eltj4q.png)
+![Post replies](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156399/post-replies_jahrlr.png)
+![Post likes](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156534/post-likes_eltj4q.png)
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -200,18 +205,18 @@ Posts also have their own individual pages. When clicking the 'Likes' or 'Replie
 
 Users can create new chats by navigating to the chats list, where a button at the bottom of the screen can be clicked to bring up a modal. This modal contains a search bar that can be used to search for other users by their account tag. The specified user(s) can be added to a list and all users will be added to the new chat on submission.
 
-![Chat list screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156769/chat-list_ea0rmc.png)
-<!-- Image of chat modal -->
+![Chat list](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156769/chat-list_ea0rmc.png)
+![Create chat modal](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717255885/create-chat-modal_ddiywd.png)
 
 Currently, any user can be added to any chat; there is no requirement for those users to be followed by/following any other user. On successful chat creation, the user will be redirected to the new chat.
 
 Users can send messages in the chat that, similar to posts, can contain both text and images. Users can also reply to existing messages in the chat, and any messages that are in response to another will display that message's content above the main content of the message. Users can also delete their own messages.
 
-![Chat screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156770/chat-window_l67ibf.png)
+![Chat](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156770/chat-window_l67ibf.png)
 
 Users can change the name of the chat by clicking the 'Edit' button next to the chat's name. By default, the name will be a compilation of the various users within the chat. The image of the chat can also be changed by clicking the image; this will bring up a modal where a new image can be uploaded.
 
-![Update chat image modal screenshot](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156799/update-chat-image-modal_ouodsq.png)
+![Update chat image modal](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156799/update-chat-image-modal_ouodsq.png)
 
 Finally, users can add participants to the chat by clicking the button to the right of the chat's name. This will bring up a similar modal as the one used to create the chat; new users can be selected before submission.
 
@@ -223,7 +228,7 @@ Every user has their own profile page that displays information about that user,
 
 If the user is observing another user's profile, a 'Follow'/'Unfollow' button will also be present, depending on whether they are currently following that user. If the user is observing their own profile, an 'Edit Profile' button will be present that, when clicked, will redirect the user to the settings page.
 
-<!-- Image of profile -->
+![Profile](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717255963/profile_vlul4k.png)
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
@@ -231,8 +236,8 @@ If the user is observing another user's profile, a 'Follow'/'Unfollow' button wi
 
 In the settings page, the user can select a category of settings, either 'Preferences' or 'Profile'. Here, the user can set their choice of theme, display name, bio and profile image.
 
-<!-- Image of settings page -->
-<!-- Image of different themes -->
+![Profile settings](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717255979/settings-profile_la8yyy.png)
+![Themes](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717257012/themes_mtyjso.png)
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
