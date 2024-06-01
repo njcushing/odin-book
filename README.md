@@ -82,7 +82,7 @@ This project was designed as part of The Odin Project's NodeJS course. It is a s
 
 Also, by using a responsive layout, the application is compatible with a wide range of screen sizes!
 
-<img src="https://res.cloudinary.com/djzqtvl9l/image/upload/v1717257883/mobile-layout_oujogp.png" alt="Mobile layout" style="width:190px;"/>
+<img src="https://res.cloudinary.com/djzqtvl9l/image/upload/v1717257883/mobile-layout_oujogp.png" alt="Mobile layout" style="width:285px;"/>
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
