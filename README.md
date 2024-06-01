@@ -73,7 +73,6 @@
 ## About the Project
 
 ![Overview](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156400/overview_ew416a.png)
-![Mobile layout](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717257883/mobile-layout_oujogp.png)
 
 This project was designed as part of The Odin Project's NodeJS course. It is a social media site with numerous features, including:
 * <a href="#posts">Posts</a>, which can contain both text and images,
