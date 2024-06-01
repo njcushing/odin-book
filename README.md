@@ -197,8 +197,8 @@ Posts can also be liked and replied to. When replying to a post, the same modal 
 
 Posts also have their own individual pages. When clicking the 'Likes' or 'Replies' on a post, it will redirect the user to a page with users who have liked the post, or a page containing posts in response to the selected post, respectively.
 
-![Post replies](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156399/post-replies_jahrlr.png)
 ![Post likes](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156534/post-likes_eltj4q.png)
+![Post replies](https://res.cloudinary.com/djzqtvl9l/image/upload/v1717156399/post-replies_jahrlr.png)
 
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
