@@ -1206,7 +1206,7 @@ export const chatActivity = [
                                                     {
                                                         $gte: [
                                                             "$$message.createdAt",
-                                                            { $subtract: [new Date(), 604800000] },
+                                                            { $subtract: [new Date(), 3.154e10] },
                                                         ],
                                                     },
                                                 ],
