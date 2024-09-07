@@ -7,8 +7,8 @@ const formatPostDate = (date: string): string => {
     const month = inputDate.monthLong;
     const { year } = inputDate;
 
-    let formattedDay;
-    if ((day > 3 && day < 21) || day > 23) {
+    let formattedDay = null;
+    if (day >= 11 && day <= 13) {
         formattedDay = `${day}th`;
     } else {
         switch (day % 10) {
@@ -23,6 +23,9 @@ const formatPostDate = (date: string): string => {
                 break;
             default:
         }
+    }
+    if (formattedDay === null) {
+        formattedDay = `${day}th`;
     }
 
     const time = DateTime.fromISO(date).toFormat("h:mm a");
